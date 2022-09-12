@@ -44,10 +44,10 @@ public class JwtTokenUtil {
                 .build();
     }
 
-    public static String getToken(String userId) {
+    public static String getToken(String userEmail) {
         Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
         return JWT.create()
-                .withSubject(userId)
+                .withSubject(userEmail)
                 .withExpiresAt(expires)
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
