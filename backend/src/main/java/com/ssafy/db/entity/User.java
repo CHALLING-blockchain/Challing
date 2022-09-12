@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String nickname;
     private String picURL;
+    private String desc;
 
 
 
