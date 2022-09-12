@@ -12,6 +12,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  output:
+    ansi:
+      enabled: always
 jwt:
   secret: mySecret
   expiration: 1296000000
