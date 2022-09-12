@@ -1,4 +1,4 @@
-package com.ssafy.service;
+package com.ssafy.api.service;
 
 public interface DonationService {
 }
