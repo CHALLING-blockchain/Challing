@@ -1,3 +1,8 @@
+/*
+ * ref:
+ * https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
+ * https://antdev.tistory.com/36?category=807235
+ */
 package com.ssafy.common.util;
 
 import com.google.gson.JsonElement;
@@ -58,7 +63,7 @@ public class KakaoApi {
             String line = "";
             StringBuilder result = new StringBuilder();
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 result.append(line);
             }
             logger.debug("\nresponse body = {}", result);
@@ -72,7 +77,7 @@ public class KakaoApi {
             br.close();
             bw.close();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -95,7 +100,7 @@ public class KakaoApi {
             String line = "";
             StringBuilder result = new StringBuilder();
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 result.append(line);
             }
             logger.debug("\nresponse body = {}", result);
@@ -114,14 +119,14 @@ public class KakaoApi {
             userInfo.put("email", email);
             userInfo.put("profile_image", profile_image);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return userInfo;
     }
 
     public void kakaoLogout(String accessToken) {
-        String reqURL="http://kapi.kakao.com/v1/user/logout";
+        String reqURL = "http://kapi.kakao.com/v1/user/logout";
         try {
             logger.debug("\nkakao logout");
 
@@ -137,12 +142,12 @@ public class KakaoApi {
             StringBuilder result = new StringBuilder();
             String line = "";
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 result.append(line);
             }
             logger.debug("\nresult : {}", result);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

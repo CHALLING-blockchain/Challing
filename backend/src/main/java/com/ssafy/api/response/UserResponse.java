@@ -22,7 +22,7 @@ public class UserResponse {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .picURL(user.getPicURL())
-                .desc(user.getDesc())
+                .desc(user.getDescription())
                 .build();
     }
 }

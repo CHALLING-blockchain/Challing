@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private UserService userService;
@@ -68,10 +69,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userId != null) {
                 // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-                User appUser = userService.getUserByEmail(userId);
-                if(appUser != null) {
+                Optional<User> appUserOptional = userService.getUserByEmail(userId);
+                if(appUserOptional.isPresent()) {
                     // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
-                    AppUserDetails appUserDetails = new AppUserDetails(appUser);
+                    AppUserDetails appUserDetails = new AppUserDetails(appUserOptional.get());
                     UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(userId,
                             null, appUserDetails.getAuthorities());
                     jwtAuthentication.setDetails(appUserDetails);

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -41,9 +43,9 @@ public class AuthController {
             return BaseResponse.fail("noEmail");
         }
 
-        User user = userService.getUserByEmail(email);
+        Optional<User> userOptional = userService.getUserByEmail(email);
 
-        if (user == null) {
+        if (userOptional.isEmpty()) {
             UserResponse userResponse = UserResponse.builder()
                     .email(email)
                     .picURL((String) userInfo.get("profile_image"))
@@ -60,7 +62,7 @@ public class AuthController {
         return BaseResponse.success(UserLoginResponse.builder()
                 .visited(true)
                 .jwt(token)
-                .user(UserResponse.of(user))
+                .user(UserResponse.of(userOptional.get()))
                 .build());
     }
 }
