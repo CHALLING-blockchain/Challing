@@ -47,20 +47,26 @@ public class AuthController {
 
         String email = (String) userInfo.get("email");
 
-        UserResponse userResponse = UserResponse.builder()
-                .email(email)
-                .picURL((String) userInfo.get("profile_image"))
-                .nickname((String) userInfo.get("nickname"))
-                .build();
-
         if (userInfo.get("email") == null) {
             return BaseResponse.fail("noEmail");
         }
 
         User user = userService.getUserByEmail(email);
 
+        if (user == null) {
+            UserResponse userResponse = UserResponse.builder()
+                    .email(email)
+                    .picURL((String) userInfo.get("profile_image"))
+                    .nickname((String) userInfo.get("nickname"))
+                    .build();
+            return BaseResponse.success(UserLoginResponse.builder()
+                    .visited(false)
+                    .user(userResponse)
+                    .build());
+        }
+
         return BaseResponse.success(UserLoginResponse.builder()
-                .visited(user == null ? false : true)
+                .visited(true)
                 .jwt(token)
                 .user(UserResponse.of(user))
                 .build());
