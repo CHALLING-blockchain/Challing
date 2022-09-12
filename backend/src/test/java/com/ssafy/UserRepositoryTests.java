@@ -9,13 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class BackendApplicationTests {
+class UserRepositoryTests {
 
 	@Autowired
 	UserRepository userRepository;
 
 	@Test
-	void contextLoads() {
+	void saveAndFindByEmail() {
 		User user = new User();
 		user.setEmail("email000");
 		user.setNickname("nickname000");
