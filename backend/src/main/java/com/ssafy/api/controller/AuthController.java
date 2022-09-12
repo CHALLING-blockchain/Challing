@@ -31,6 +31,10 @@ public class AuthController {
         String code = requestBody.get("code");
         logger.debug("code: {}", code);
 
+        if (code == null || code.trim().isEmpty()) {
+            return BaseResponse.fail("noCode");
+        }
+
         String accessToken = kakaoApi.getAccessToken(code);
         logger.debug("accessToken: {}", accessToken);
 
