@@ -35,6 +35,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Favorite> favorites = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Photo> photos = new ArrayList<>();
+
     public static User of(UserRegisterRequest userRegisterRequest){
         return User.builder()
                 .email(userRegisterRequest.getEmail())

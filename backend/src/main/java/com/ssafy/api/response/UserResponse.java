@@ -1,6 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.db.entity.Favorite;
+import com.ssafy.db.entity.Photo;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserInterest;
 import lombok.*;
@@ -23,6 +24,8 @@ public class UserResponse {
     private List<String> interests = new ArrayList<>();
     @Builder.Default
     private List<Long> challengeIds = new ArrayList<>();
+    @Builder.Default
+    private List<String> photos = new ArrayList<>();
 
     public static UserResponse of(User user){
         List<String> newInterests;
@@ -48,6 +51,17 @@ public class UserResponse {
             newChallengeIds = null;
         }
 
+        List<String> newPhotos;
+        try {
+            List<Photo> photos = user.getPhotos();
+            newPhotos = new ArrayList<>();
+            for(Photo photo : photos) {
+                newPhotos.add(photo.getPhotoUrl());
+            }
+        } catch (Exception e) {
+            newPhotos = null;
+        }
+
         return UserResponse.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
@@ -55,6 +69,7 @@ public class UserResponse {
                 .description(user.getDescription())
                 .interests(newInterests)
                 .challengeIds(newChallengeIds)
+                .photos(newPhotos)
                 .build();
     }
 }
