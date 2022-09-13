@@ -18,6 +18,9 @@ spring:
   output:
     ansi:
       enabled: always
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 logging:
   level:

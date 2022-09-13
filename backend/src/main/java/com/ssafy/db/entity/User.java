@@ -1,14 +1,21 @@
 package com.ssafy.db.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.api.request.UserRegisterRequest;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class User {
     @Id
     @GeneratedValue
@@ -19,4 +26,21 @@ public class User {
     private String nickname;
     private String picURL;
     private String description;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<UserInterest> userInterest = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private List<Favorite> favorites = new ArrayList<>();
+
+    public static User of(UserRegisterRequest userRegisterRequest){
+        return User.builder()
+                .email(userRegisterRequest.getEmail())
+                .nickname(userRegisterRequest.getNickname())
+                .picURL(userRegisterRequest.getPicurl())
+                .build();
+    }
+
 }
