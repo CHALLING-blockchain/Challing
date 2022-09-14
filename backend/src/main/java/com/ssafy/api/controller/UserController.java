@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.FavoriteRequest;
 import com.ssafy.api.request.PhotoRequest;
 import com.ssafy.api.request.UserRegisterRequest;
 import com.ssafy.api.request.UserUpdateRequest;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,11 +38,15 @@ public class UserController {
         return BaseResponse.success(UserResponse.of(user));
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("/mypage/{email}")
     @Transactional
-    public ResponseEntity<?> getUserInfo(@RequestParam String email){
+    public ResponseEntity<?> getUserInfo(@PathVariable("email") String email){
         Optional<User> optionalUser = userService.getUserByEmail(email);
+        if(optionalUser.isEmpty()){
+            return BaseResponse.fail("없는 이메일 입니다.");
+        }
         User user = optionalUser.get();
+        logger.debug("\n\n{}", user);
         user.setUserInterest(interestService.getInterest(user));
         user.setFavorites(favoriteService.getFavoriteList(user));
         user.setPhotos(photoService.getPhotoList(user));
@@ -53,13 +59,15 @@ public class UserController {
         return BaseResponse.success(UserResponse.of(user));
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<?> validCheck(@RequestParam("nickname") String nickname){
+    @GetMapping("/check/{nickname}")
+    public ResponseEntity<?> validCheck(@PathVariable("nickname") String nickname){
         return BaseResponse.success(userService.nicknameValid(nickname));
     }
 
-    @PostMapping("/favorite/{challenge_id}")
-    public ResponseEntity<?> addFavorite(@PathVariable("challenge_id") Long challengeId, @RequestParam("email") String email){
+    @PostMapping("/favorite")
+    public ResponseEntity<?> addFavorite(@RequestBody FavoriteRequest favoriteRequest){
+        String email = favoriteRequest.getEmail();
+        Long challengeId = favoriteRequest.getChallengeId();
         Optional<User> optionalUser = userService.getUserByEmail(email);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
@@ -70,8 +78,10 @@ public class UserController {
     }
 
     @Transactional
-    @DeleteMapping("/favorite/{challenge_id}")
-    public ResponseEntity<?> deleteFavorite(@PathVariable("challenge_id") Long challengeId, @RequestParam("email") String email){
+    @DeleteMapping("/favorite")
+    public ResponseEntity<?> deleteFavorite(@RequestBody FavoriteRequest favoriteRequest){
+        String email = favoriteRequest.getEmail();
+        Long challengeId = favoriteRequest.getChallengeId();
         Optional<User> optionalUser = userService.getUserByEmail(email);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
@@ -112,8 +122,5 @@ public class UserController {
 
         return BaseResponse.fail("인증사진 삭제 실패");
     }
-
-
-
 
 }
