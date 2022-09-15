@@ -3,9 +3,11 @@ pipeline {
 
   stages {
     stage('ls_before') {
-      dir('backend') {
-        sh 'echo backend'
-        sh 'ls'
+      steps {
+        dir('backend') {
+          sh 'echo backend'
+          sh 'ls'
+        }
       }
     }
 
