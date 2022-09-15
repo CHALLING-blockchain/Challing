@@ -1,7 +1,7 @@
 FROM openjdk:11
 ARG JAR_FILE=target/*.jar
 ENV PF_PROFILE                  = _ \
-    muPROFILE                   = _ \
+    PROFILE                     = _ \
     PF_DB_ADDRESS               = _ \
     DB_ADDRESS                  = _ \
     PF_DB_PASSWORD              = _ \
