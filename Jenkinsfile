@@ -48,7 +48,7 @@ pipeline {
       steps {
         dir('backend') {
           // sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --build-arg JO_PROFILE=${PF_PROFILE}${PROFILE} --build-arg JO_DB_ADDRESS=${PF_DB_ADDRESS}${DB_ADDRESS} --build-arg JO_DB_PASSWORD=${PF_DB_PASSWORD}${DB_PASSWORD} --build-arg JO_JWT_SECRET=${PF_JWT_SECRET}${JWT_SECRET} --build-arg JO_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} --tag ${BACKEND_IMAGE} .'
-          sh 'docker build --tag ${BACKEND_IMAGE} .'
+          sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
         }
       }
     }
