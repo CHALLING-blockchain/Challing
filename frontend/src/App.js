@@ -1,47 +1,22 @@
-import { useState } from "react";
-import useWeb3 from "./hooks/useWeb3";
-import useBalance from "./hooks/useBalance";
-import "./App.css";
+import React from 'react';
+import { Routes, Route } from "react-router-dom";
+import Auth from './components/auth/Auth';
+import ChallengeSearch from './components/challengeSearch/ChallengeSearch'
+import ChallengeShot from './components/challengeShot/ChallengeShot'
+import Main from './components/main/Main';
+import MyPage from './components/myPage/MyPage'
+import MyWallet from './components/myWallet/MyWallet';
 
-function App() {
-  // localstorage에 wallet 연결 확인
-  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
-  // loading status
-  const [isLoading, setIsLoading] = useState(false);
-  // error messages
-  const [errorMessage, setErrorMessage] = useState("");
-  // get active account and balance data from useWeb3 hook
-  const {
-    connect,
-    disconnect,
-    provider,
-    account: activeAccount,
-  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
-  // get active account balance from useBalance hook
-  const activeBalance = useBalance(
-    provider,
-    activeAccount,
-    setIsLoading,
-    setErrorMessage
-  );
-  // connectWalletOnPageLoad();
+function App(){
   return (
-    <div className="App">
-      {/* instantiate web3 only after a user clicks the button */}
-      {/* avoid doing it automatically */}
-      {!exist ? (
-        <button onClick={connect}>Connect to MetaMask</button>
-      ) : (
-        <>
-          <p>ACCOUNT : {activeAccount}</p>
-          <p>MY BALANCE: {activeBalance} ETH</p>
-          <button onClick={disconnect}>Disconnect</button>
-        </>
-      )}
-      {/* show loading and error statuses */}
-      {isLoading && <p>Loading...</p>}
-      {errorMessage && <p>{errorMessage}</p>}
-    </div>
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/challenge-search" element={<ChallengeSearch />} />
+      <Route path="/challenge-shot" element={<ChallengeShot />} />
+      <Route path="/my-page" element={<MyPage />} />
+      <Route path="/my-wallet" element={<MyWallet />} />
+    </Routes>
   );
 }
 
