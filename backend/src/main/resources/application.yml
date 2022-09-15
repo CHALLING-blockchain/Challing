@@ -15,9 +15,7 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-  output:
-    ansi:
-      enabled: always
+  output.ansi.enabled: always
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

@@ -3,6 +3,7 @@ spring:
     url: jdbc:mysql://${com.ssafy.db.address_and_port}/b106?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
     username: sp7333
     password: ${com.ssafy.db.password}
+  output.ansi.enabled: detect
 
 jwt:
   secret: ${com.ssafy.jwt.secret}
