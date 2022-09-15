@@ -1,33 +1,35 @@
-import { useState } from 'react';
-import useWeb3 from './hooks/useWeb3';
-import useBalance from './hooks/useBalance';
-import './App.css';
+import { useState } from "react";
+import useWeb3 from "./hooks/useWeb3";
+import useBalance from "./hooks/useBalance";
+import "./App.css";
 
 function App() {
+  // localstorage에 wallet 연결 확인
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
   // error messages
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   // get active account and balance data from useWeb3 hook
   const {
     connect,
     disconnect,
     provider,
     account: activeAccount,
-  } = useWeb3(setIsLoading, setErrorMessage);
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
   // get active account balance from useBalance hook
   const activeBalance = useBalance(
     provider,
     activeAccount,
     setIsLoading,
-    setErrorMessage,
+    setErrorMessage
   );
   // connectWalletOnPageLoad();
   return (
     <div className="App">
       {/* instantiate web3 only after a user clicks the button */}
       {/* avoid doing it automatically */}
-      {!provider ? (
+      {!exist ? (
         <button onClick={connect}>Connect to MetaMask</button>
       ) : (
         <>
