@@ -22,7 +22,7 @@ function App() {
     setIsLoading,
     setErrorMessage,
   );
-
+  // connectWalletOnPageLoad();
   return (
     <div className="App">
       {/* instantiate web3 only after a user clicks the button */}
