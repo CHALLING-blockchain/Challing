@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -27,11 +28,24 @@ public class KakaoApi {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final String CLIENT_ID;
     private final String REDIRECT_URI;
+    private final String test1;
+    private final String test2;
 
     public KakaoApi(@Value("${com.ssafy.kakao.client_id}") String CLIENT_ID,
-                    @Value("${com.ssafy.kakao.redirect_uri}") String REDIRECT_URI) {
+                    @Value("${com.ssafy.kakao.redirect_uri}") String REDIRECT_URI,
+                    @Value("${com.ssafy.env.test1}") String test1,
+                    @Value("${com.ssafy.env.test2}") String test2
+    ) {
         this.CLIENT_ID = CLIENT_ID;
         this.REDIRECT_URI = REDIRECT_URI;
+        this.test1 = test1;
+        this.test2 = test2;
+    }
+
+    @PostConstruct
+    public void init() {
+        logger.info("env test1: {}", test1);
+        logger.info("env test2: {}", test2);
     }
 
     public String getAccessToken(String code) {
