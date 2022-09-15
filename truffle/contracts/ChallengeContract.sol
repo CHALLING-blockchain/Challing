@@ -6,12 +6,11 @@ contract ChallengeContract {
     struct Vote{
         // 투표pk
         uint id;
-        string picURL;
-        string timestamp;
 
+        Photo photo;
         // 찬반
-        uint agree;
-        uint disagree;
+        uint pass;
+        uint fail;
 
         // 투표에 참여한 유저
         uint[] userIdList;
@@ -44,6 +43,8 @@ contract ChallengeContract {
         uint totalCount;
         uint dailyCount;
 
+        // 인증한 날
+        string[] dayAuth;
         // 실제 예치금
         uint userDeposit;
 
@@ -139,7 +140,7 @@ contract ChallengeContract {
 
     // 유저의 챌린지
     mapping(uint => Challenger[]) findByUserIdChallenger;
-    mapping(uint => Challenger[]) findByChallengeIdChallenger;
+    mapping(uint => mapping(uint=>Challenger)) findByChallengeIdChallenger;
 
     // 챌린저의 사진
     mapping(uint => mapping(uint=>Photo)) findByChallengerIdPhoto;
@@ -147,6 +148,11 @@ contract ChallengeContract {
     // 챌린지의 투표
     mapping(uint => mapping(uint=>Vote)) findByChallengeIdVote;
 
+    mapping(uint => Vote) voteRepository;
+    mapping(uint => Photo) photoRepository;
+    mapping(uint => Challenger) challengerRepository;
+    mapping(uint => DaliyChallenge) daliyChallengeRepository;
+    mapping(uint => DonationChallenge) donationChallengeRepository;
 
     uint[] dailyChallengeIds;
     uint[] donationChallengeIds;
@@ -195,20 +201,32 @@ contract ChallengeContract {
 
     // 유저가 챌린지에 참가
     function joinChallenge(uint challengeId,uint userId,string memory today) public payable{
-        string[100] memory urlList;
-        string[100] memory timestampList;
-        Challenger memory challenger=Challenger(
-            {
-                id:challengerSequence,
-                userId:userId,
-                challengeId:challengeId,
-                userAddress:msg.sender,
-                today:today,
-                totalCount:0,
-                dailyCount:0,
-                userDeposit:msg.value,
-                reward:0
-            });
+        // mapping(string=>bool) memory dayAuth;
+
+        // 챌린저들 저장소
+        // findByUserIdChallenger[userId][challengerSequence];
+        
+
+        // Challenger storage userIdChallenger=findByUserIdChallenger[userId][challengerSequence];
+        // userIdChallenger.id=challengerSequence;
+        // userIdChallenger.userId=userId;
+        // userIdChallenger.challengeId=challengeId;
+        // userIdChallenger.userAddress=msg.sender;
+        // userIdChallenger.today=today;
+        // userIdChallenger.userDeposit=msg.value;
+
+        // 챌린저 생성
+        Challenger storage challengeIdChallenger=findByChallengeIdChallenger[userId][challengerSequence];
+        challengeIdChallenger.id=challengerSequence;
+        challengeIdChallenger.userId=userId;
+        challengeIdChallenger.challengeId=challengeId;
+        challengeIdChallenger.userAddress=msg.sender;
+        challengeIdChallenger.today=today;
+        challengeIdChallenger.userDeposit=msg.value;
+
+        // 챌린저 유저아이디 검색챌린저에 추가
+        findByUserIdChallenger[userId].push(challengeIdChallenger);
+
         challengerSequence++;
 
         // 챌린지 아이디로 일상챌린지인지 기부챌린지인지 판단 후 유저 추가
@@ -222,9 +240,7 @@ contract ChallengeContract {
             challenge.totalDonation+=msg.value;
         }
 
-        // 챌린저들 저장소
-        findByUserIdChallenger[userId].push(challenger);
-        findByChallengeIdChallenger[challengeId].push(challenger);
+        
     }
 
     // 유저의 챌린지 조회
@@ -240,7 +256,7 @@ contract ChallengeContract {
             }
         }
 
-        Challenger[] memory challengers=findByUserIdChallenger[userId];
+        Challenger[] storage challengers=findByUserIdChallenger[userId];
 
         // 내가 참가한 챌린지
         uint[] memory myChallenges=new uint[](challengers.length);
@@ -301,10 +317,9 @@ contract ChallengeContract {
         
         findByChallengeIdVote[challengeId][voteSequence]=Vote({
             id:voteSequence,
-            picURL:findPhoto.picURL,
-            timestamp:findPhoto.timestamp,
-            agree:0,
-            disagree:0,
+            photo:findPhoto,
+            pass:0,
+            fail:0,
             userIdList:userIdList
         });
     }
@@ -318,5 +333,33 @@ contract ChallengeContract {
         }
         return voteList;
     }
+    
+    // 찬반 투표
+    function vote(uint userId,uint challengeId, uint voteId, bool pass) public{
+        Vote storage findVote=findByChallengeIdVote[challengeId][voteId];
+        if(pass) findVote.pass++;
+        else findVote.fail++;
+
+        findVote.userIdList.push(userId);
+        findByChallengeIdVote[challengeId][voteId]=findVote;
+    }
+
+    // 투표 종료
+    function endVote(uint challengeId,uint voteId,uint challengerId) public {
+        Vote storage vote=findByChallengeIdVote[challengeId][voteId];
+
+        // 노인정일시 챌린저의 토탈 카운트--
+        if(vote.pass<vote.fail){
+            Challenger storage challenger= challengerRepository[challengerId];
+            // 같은 날의 인증사진일 경우 중복 카운트 방지를 위한 로직
+            for (uint i=0;i<challenger.dayAuth.length;i++){
+                if(keccak256(abi.encodePacked(challenger.dayAuth[i])) == keccak256(abi.encodePacked(vote.photo.timestamp))){
+                    challenger.dayAuth[i]="";
+                    challenger.totalCount--;
+                }
+            }
+        }
+    }
+
     
 }
