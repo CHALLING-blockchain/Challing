@@ -17,6 +17,8 @@ pipeline {
       -Dcom.ssafy.env.test1=${ENV_TEST1}\
       -Dcom.ssafy.env.test2=${credentials('test2')}\
     """
+
+    BACKEND_IMAGE_TAG = 'backend/firstcontainer'
   }
 
   stages {
@@ -28,14 +30,14 @@ pipeline {
       }
     }
 
-    stage('backend_run') {
+    stage('backend_docker_build') {
       steps {
         dir('backend') {
           sh """\
             docker build\
             --build-arg JVM_OPTIONS=${JVM_OPTIONS}\
             --build-arg JAR_FILE=build/libs/\*.jar\
-            -t backend/first-container .\
+            -t ${BACKEND_IMAGE_TAG} .\
           """
         }
       }
