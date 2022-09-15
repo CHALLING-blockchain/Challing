@@ -5,6 +5,8 @@ spring:
     password: ${com.ssafy.db.password}
   output.ansi.enabled: detect
 
+logging.file.name: logs/backend.log
+
 jwt:
   secret: ${com.ssafy.jwt.secret}
 
