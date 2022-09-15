@@ -308,6 +308,15 @@ contract ChallengeContract {
             userIdList:userIdList
         });
     }
+    // 챌린지의 투표 리스트
+    function getVoteList(uint challengeId) public view returns(Vote[100] memory){
+        Vote[100] memory voteList;
 
+        for(uint i=0;i<voteSequence;i++){
+            if(findByChallengeIdVote[challengeId][i].id!=0)
+                voteList[i]=findByChallengeIdVote[challengeId][i];
+        }
+        return voteList;
+    }
     
 }
