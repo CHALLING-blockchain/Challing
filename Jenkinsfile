@@ -27,7 +27,7 @@ pipeline {
   }
 
   stages {
-    stages('clean_test') {
+    stage('clean_test') {
       steps {
         catchError {
           sh 'echo ignored'
