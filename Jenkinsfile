@@ -33,12 +33,7 @@ pipeline {
     stage('backend_docker_build') {
       steps {
         dir('backend') {
-          sh """\
-            docker build\
-            --build-arg JVM_OPTIONS=${JVM_OPTIONS}\
-            --build-arg JAR_FILE=build/libs/*.jar\
-            -t ${BACKEND_IMAGE_TAG} .\
-          """
+          sh 'docker build --build-arg JVM_OPTIONS=${JVM_OPTIONS} --build-arg JAR_FILE=build/libs/*.jar -t ${BACKEND_IMAGE_TAG} .'
         }
       }
     }
