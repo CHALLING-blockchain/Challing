@@ -17,6 +17,12 @@ pipeline {
   }
 
   stages {
+    stage('echo_jvm_options') {
+      steps {
+        sh 'echo ${JVM_OPTIONS}'
+      }
+    }
+
     stage('ls_before') {
       steps {
         dir('backend') {
