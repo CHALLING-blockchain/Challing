@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     PF_PROFILE = '-Dspring.profiles.active='
-    PROFILE = 'produnction'
+    PROFILE = 'production'
 
     PF_DB_ADDRESS = '-Dcom.ssafy.db.address_and_port='
     DB_ADDRESS = credentials('db.address_and_port')
