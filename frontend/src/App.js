@@ -23,18 +23,6 @@ function App() {
     setErrorMessage,
   );
 
-  // random non-empty account from RSK explorer https://explorer.rsk.co/
-  const [customAcount, setCustomAccount] = useState(
-    '0xC2a41f76CaCFa933c3496977f2160944EF8c2de3',
-  );
-  // get balance of the custom account
-  const customBalance = useBalance(
-    provider,
-    customAcount,
-    setIsLoading,
-    setErrorMessage,
-  );
-
   return (
     <div className="App">
       {/* instantiate web3 only after a user clicks the button */}
@@ -43,25 +31,8 @@ function App() {
         <button onClick={connect}>Connect to MetaMask</button>
       ) : (
         <>
-          <p>Connected with {activeAccount}</p>
-          <p>My balance: {activeBalance} RBTC</p>
-
-          {/* let a user enter any address and see its balance */}
-
-          <p>Check RSK account:</p>
-          <input
-            type="text"
-            value={customAcount}
-            onChange={(e) => setCustomAccount(e.target.value)}
-            style={{ width: '25rem' }}
-          />
-          <p>
-            <a href={`https://explorer.rsk.co/address/${customAcount}`}>
-              RSK account
-            </a>
-            {' balance:'}
-            {customBalance} RBTC
-          </p>
+          <p>ACCOUNT : {activeAccount}</p>
+          <p>MY BALANCE: {activeBalance} ETH</p>
           <button onClick={disconnect}>Disconnect</button>
         </>
       )}
