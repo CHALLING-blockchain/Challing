@@ -36,7 +36,7 @@ pipeline {
           sh """\
             docker build\
             --build-arg JVM_OPTIONS=${JVM_OPTIONS}\
-            --build-arg JAR_FILE=build/libs/\*.jar\
+            --build-arg JAR_FILE=build/libs/*.jar\
             -t ${BACKEND_IMAGE_TAG} .\
           """
         }
