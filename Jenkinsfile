@@ -47,7 +47,8 @@ pipeline {
     stage('backend_docker_image') {
       steps {
         dir('backend') {
-          sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --build-arg JO_PROFILE=${PF_PROFILE}${PROFILE} --build-arg JO_DB_ADDRESS=${PF_DB_ADDRESS}${DB_ADDRESS} --build-arg JO_DB_PASSWORD=${PF_DB_PASSWORD}${DB_PASSWORD} --build-arg JO_JWT_SECRET=${PF_JWT_SECRET}${JWT_SECRET} --build-arg JO_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} --tag ${BACKEND_IMAGE} .'
+          // sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --build-arg JO_PROFILE=${PF_PROFILE}${PROFILE} --build-arg JO_DB_ADDRESS=${PF_DB_ADDRESS}${DB_ADDRESS} --build-arg JO_DB_PASSWORD=${PF_DB_PASSWORD}${DB_PASSWORD} --build-arg JO_JWT_SECRET=${PF_JWT_SECRET}${JWT_SECRET} --build-arg JO_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} --tag ${BACKEND_IMAGE} .'
+          sh 'docker build --tag ${BACKEND_IMAGE} .'
         }
       }
     }
@@ -55,7 +56,7 @@ pipeline {
     stage('backend_docker_container') {
       steps {
         dir('backend') {
-          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE}'
+          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} -e spring.profiles.active=${PROFILE} -e com.ssafy.db.address_and_port=${DB_ADDRESS} -e com.ssafy.db.password=${DB_PASSWORD} -e com.ssafy.jwt.secret=${JWT_SECRET} -e com.ssafy.kakao.client_id=${KAKAO_CLIENT_ID} -e com.ssafy.kakao.redirect_uri=${KAKAO_LOGIN_REDIRECT_URI}'
         }
       }
     }
