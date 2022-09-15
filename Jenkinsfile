@@ -27,12 +27,35 @@ pipeline {
   }
 
   stages {
-    stage('clean_test') {
+    stage('stop_running_containers') {
       steps {
         catchError {
-          sh 'echo ignored'
+          sh 'docker stop ${BACKEND_CONTAINER}'
         }
-        sh 'echo ignored'
+      }
+    }
+
+    stage('remove_container') {
+      steps {
+        catchError {
+          sh 'docker rm ${BACKEND_CONTAINER}'
+        }
+      }
+    }
+
+    stage('remove_image') {
+      steps {
+        catchError {
+          sh 'docker image rm ${BACKEND_IMAGE}'
+        }
+      }
+    }
+
+    stage('prune_images') {
+      steps {
+        catchError {
+          sh 'docker image prune --force'
+        }
       }
     }
 
