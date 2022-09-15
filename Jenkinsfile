@@ -79,7 +79,7 @@ pipeline {
     stage('backend_docker_container') {
       steps {
         dir('backend') {
-          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} --build-arg PF_PROFILE=${PF_PROFILE} --build-arg PROFILE=${PROFILE} --build-arg PF_DB_ADDRESS=${PF_DB_ADDRESS} --build-arg DB_ADDRESS=${DB_ADDRESS} --build-arg PF_DB_PASSWORD=${PF_DB_PASSWORD} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg PF_JWT_SECRET=${PF_JWT_SECRET} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg PF_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID} --build-arg KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} --build-arg PF_KAKAO_LOGIN_REDIRECT_URI=${PF_KAKAO_LOGIN_REDIRECT_URI} --build-arg KAKAO_LOGIN_REDIRECT_URI=${KAKAO_LOGIN_REDIRECT_URI}'
+          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} --build-arg JO_PROFILE=${PF_PROFILE}${PROFILE} --build-arg JO_DB_ADDRESS=${PF_DB_ADDRESS}${DB_ADDRESS} --build-arg JO_DB_PASSWORD=${PF_DB_PASSWORD}${DB_PASSWORD} --build-arg JO_JWT_SECRET=${PF_JWT_SECRET}${JWT_SECRET} --build-arg JO_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} --build-arg JO_KAKAO_LOGIN_REDIRECT_URI=${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI}'
         }
       }
     }
