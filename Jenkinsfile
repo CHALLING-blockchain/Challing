@@ -79,7 +79,7 @@ pipeline {
     stage('backend_docker_container') {
       steps {
         dir('backend') {
-          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} -e spring.profiles.active=${PROFILE} -e com.ssafy.db.address_and_port=${DB_ADDRESS} -e com.ssafy.db.password=${DB_PASSWORD} -e com.ssafy.jwt.secret=${JWT_SECRET} -e com.ssafy.kakao.client_id=${KAKAO_CLIENT_ID} -e com.ssafy.kakao.redirect_uri=${KAKAO_LOGIN_REDIRECT_URI}'
+          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} -e SPRING_PROFILES_ACTIVE=${PROFILE} -e com.ssafy.db.address_and_port=${DB_ADDRESS} -e com.ssafy.db.password=${DB_PASSWORD} -e com.ssafy.jwt.secret=${JWT_SECRET} -e com.ssafy.kakao.client_id=${KAKAO_CLIENT_ID} -e com.ssafy.kakao.redirect_uri=${KAKAO_LOGIN_REDIRECT_URI}'
         }
       }
     }
