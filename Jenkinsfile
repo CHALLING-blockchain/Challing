@@ -78,7 +78,7 @@ pipeline {
     stage('backend_docker_container') {
       steps {
         // go
-        sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar pp.jar'
+        sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
       }
     }
   }
