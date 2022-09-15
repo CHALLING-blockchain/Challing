@@ -1,11 +1,4 @@
 FROM openjdk:11
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT java \
-    ${JO_PROFILE} \
-    ${JO_DB_ADDRESS} \
-    ${JO_DB_PASSWORD} \
-    ${JO_JWT_SECRET} \
-    ${JO_KAKAO_CLIENT_ID} \
-    ${JO_KAKAO_LOGIN_REDIRECT_URI} \
-    -jar /app.jar
+ENTRYPOINT ["sh", "-c", "java ${JO_PROFILE} ${JO_DB_ADDRESS} ${JO_DB_PASSWORD} ${JO_JWT_SECRET} ${JO_KAKAO_CLIENT_ID} ${JO_KAKAO_LOGIN_REDIRECT_URI} -jar /app.jar"]
