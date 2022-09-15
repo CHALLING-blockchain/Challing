@@ -70,7 +70,7 @@ pipeline {
     stage('backend_docker_image') {
       steps {
         dir('backend') {
-          sh 'docker build -e JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
+          sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
         }
       }
     }
