@@ -20,15 +20,6 @@ pipeline {
   }
 
   stages {
-    stage('ls_before') {
-      steps {
-        dir('backend') {
-          sh 'echo backend'
-          sh 'ls'
-        }
-      }
-    }
-
     stage('backend_build') {
       steps {
         dir('backend') {
@@ -37,21 +28,15 @@ pipeline {
       }
     }
 
-    stage('ls_after') {
+    stage('backend_run') {
       steps {
         dir('backend') {
-          sh 'echo backend'
-          sh 'ls'
-        }
-
-        dir('backend/build') {
-          sh 'echo backend build'
-          sh 'ls'
-        }
-
-        dir('backend/build/libs') {
-          sh 'echo backend build libs'
-          sh 'ls'
+          sh """\
+            docker build\
+            --build-arg JVM_OPTIONS=${JVM_OPTIONS}\
+            --build-arg JAR_FILE=build/libs/\*.jar\
+            -t backend/first-container .\
+          """
         }
       }
     }
