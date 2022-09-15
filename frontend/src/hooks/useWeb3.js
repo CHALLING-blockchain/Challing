@@ -77,9 +77,12 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       console.log("txObject: ", txObject);
 
       var hashObject = 0;
-      await web3.eth.sendTransaction(txObject).then(function (receipt) {
-        hashObject = receipt;
-      });
+      // await web3.eth.sendTransaction(txObject).then(function (receipt) {
+      //   hashObject = receipt;
+      // });
+      // send transaction end -------------------------------
+
+      // transaction details ------------------------------
       console.log("hashObject", hashObject);
       console.log("my txHash: ", hashObject.transactionHash);
       var hashToString = hashObject.transactionHash.toString();
@@ -87,18 +90,8 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       web3.eth.getTransaction(hashToString, function (error, result) {
         console.log("transaction detail: ", result);
       });
-      // send transaction end -------------------------------
+      // transaction details end --------------------------
 
-      // transaction 갯수
-      //console.log("transaction cnt: ",web3.eth.getTransactionCount(accounts[0]));
-
-      //직접 send_Transaction한 다음에 hash저장해놨다가 내역으로 불러오기
-
-      //txhash로 Transaction detail조회하기
-      // web3.eth.getTransaction('0x3200f0c385ecda01744a3ff43c548b2ecf8465df2fa8fc2c74a11ca8f251c099', function (error, result){
-      //   console.log("내 해쉬: ",result);
-      // });
-      // transaction history end -----------------------------
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
