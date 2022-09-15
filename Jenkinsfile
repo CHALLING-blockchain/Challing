@@ -79,7 +79,7 @@ pipeline {
     stage('backend_docker_container') {
       steps {
         dir('backend') {
-          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} -e SPRING_PROFILES_ACTIVE=${PROFILE} -e com.ssafy.db.address_and_port=${DB_ADDRESS} -e com.ssafy.db.password=${DB_PASSWORD} -e com.ssafy.jwt.secret=${JWT_SECRET} -e com.ssafy.kakao.client_id=${KAKAO_CLIENT_ID} -e com.ssafy.kakao.redirect_uri=${KAKAO_LOGIN_REDIRECT_URI}'
+          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} --build-arg PF_PROFILE=${PF_PROFILE} --build-arg PROFILE=${PROFILE} --build-arg PF_DB_ADDRESS=${PF_DB_ADDRESS} --build-arg DB_ADDRESS=${DB_ADDRESS} --build-arg PF_DB_PASSWORD=${PF_DB_PASSWORD} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg PF_JWT_SECRET=${PF_JWT_SECRET} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg PF_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID} --build-arg KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} --build-arg PF_KAKAO_LOGIN_REDIRECT_URI=${PF_KAKAO_LOGIN_REDIRECT_URI} --build-arg KAKAO_LOGIN_REDIRECT_URI=${KAKAO_LOGIN_REDIRECT_URI}'
         }
       }
     }
