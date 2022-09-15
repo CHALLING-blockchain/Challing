@@ -20,10 +20,22 @@ pipeline {
     PF_KAKAO_LOGIN_REDIRECT_URI = '-Dcom.ssafy.kakao.redirect_uri='
     KAKAO_LOGIN_REDIRECT_URI = 'https://j7b106.p.ssafy.io/loginresult'
 
-    BACKEND_IMAGE_TAG = 'backend/firstcontainer'
+    BACKEND_IMAGE = 'sp7333/backend'
+    BACKEND_CONTAINER = 'backend'
+    FRONTEND_IMAGE = 'sp7333/frontend'
+    FRONTEND_CONTAINER = 'frontend'
   }
 
   stages {
+    stages('clean_test') {
+      steps {
+        catchError {
+          sh 'echo ignored'
+        }
+        sh 'echo ignored'
+      }
+    }
+
     stage('backend_build') {
       steps {
         dir('backend') {
@@ -32,10 +44,18 @@ pipeline {
       }
     }
 
-    stage('backend_docker_build') {
+    stage('backend_docker_image') {
       steps {
         dir('backend') {
           sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --build-arg JO_PROFILE=${PF_PROFILE}${PROFILE} --build-arg JO_DB_ADDRESS=${PF_DB_ADDRESS}${DB_ADDRESS} --build-arg JO_DB_PASSWORD=${PF_DB_PASSWORD}${DB_PASSWORD} --build-arg JO_JWT_SECRET=${PF_JWT_SECRET}${JWT_SECRET} --build-arg JO_KAKAO_CLIENT_ID=${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} -t ${BACKEND_IMAGE_TAG} .'
+        }
+      }
+    }
+
+    stage('backend_docker_container') {
+      steps {
+        dir('backend') {
+          sh 'docker run --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE}'
         }
       }
     }
