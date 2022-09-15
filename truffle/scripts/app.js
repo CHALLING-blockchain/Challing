@@ -9,7 +9,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 // netListening();
 
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
-const accounts="0x6cf87c62341d803a7d771ad0538e7b4ae41b3d23"
+const accounts="0x34498bb1949f97ae2285fbf77c83b3438d3838b6"
 const test = async () => {
   const networkId = await web3.eth.net.getId();
   const { abi } = artifact;
@@ -67,14 +67,14 @@ const test = async () => {
     complet:false,
   }
   
-  const createDaliyChallenge = await contract.methods
-    .createDaliyChallenge(daliyChallenge)
-    .send({
-      from: accounts,
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(createDaliyChallenge)
+  // const createDaliyChallenge = await contract.methods
+  //   .createDaliyChallenge(daliyChallenge)
+  //   .send({
+  //     from: accounts,
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(createDaliyChallenge)
 
   // const createDonationChallenge = await contract.methods
   //   .createDonationChallenge(donationChallenge)
@@ -86,14 +86,14 @@ const test = async () => {
   // console.log(createDonationChallenge)
   
   // const joinChallenge = await contract.methods
-  // .joinChallenge(0,0)
+  // .joinChallenge(1,1,"220914")
   // .send({
   //   from: accounts,
-  //   gasLimit: 3_000_000,
+  //   gasLimit: 10_000_000,
   //   value: 1e18
   // })
   // .catch(console.error);
-
+  // console.log(joinChallenge)
   // const getMyChallenge = await contract.methods
   // .getMyChallenge(1)
   // .call({
@@ -103,39 +103,39 @@ const test = async () => {
   // console.log(getMyChallenge)
 
   const authenticate = await contract.methods
-  .authenticate(0,0)
+  .authenticate(1,1,"220914","naver.com")
   .call({
     from: accounts,
   })
   .catch(console.error);
   console.log(authenticate)
 
-  const getAllChallenge = await contract.methods
-    .getAllChallenge()
-    .call({
-      from: accounts,
-    })
-    .catch(console.error);
+  // const getAllChallenge = await contract.methods
+  //   .getAllChallenge()
+  //   .call({
+  //     from: accounts,
+  //   })
+  //   .catch(console.error);
 
-  const challenges={}
-  getAllChallenge[0].forEach((id,index) => {
-    const challenge=Object.assign({},getAllChallenge[2][index])
-    const size=Object.keys(challenge).length
-    for(let i=0;i<size/2;i++){
-      delete challenge[i]
-    }
-    challenges[Number(id)]=challenge
-  });
+  // const challenges={}
+  // getAllChallenge[0].forEach((id,index) => {
+  //   const challenge=Object.assign({},getAllChallenge[2][index])
+  //   const size=Object.keys(challenge).length
+  //   for(let i=0;i<size/2;i++){
+  //     delete challenge[i]
+  //   }
+  //   challenges[Number(id)]=challenge
+  // });
 
-  getAllChallenge[1].forEach((id,index) => {
-    const challenge=Object.assign({},getAllChallenge[3][index])
-    const size=Object.keys(challenge).length
-    for(let i=0;i<size/2;i++){
-      delete challenge[i]
-    }
-    challenges[Number(id)]=challenge
-  });
-  console.log(challenges)
+  // getAllChallenge[1].forEach((id,index) => {
+  //   const challenge=Object.assign({},getAllChallenge[3][index])
+  //   const size=Object.keys(challenge).length
+  //   for(let i=0;i<size/2;i++){
+  //     delete challenge[i]
+  //   }
+  //   challenges[Number(id)]=challenge
+  // });
+  // console.log(challenges)
 
 };
 

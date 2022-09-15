@@ -3,7 +3,33 @@ pragma solidity ^0.8.0;
 pragma abicoder v2;
 
 contract ChallengeContract {
+    struct Vote{
+        // 투표pk
+        uint id;
+        string picURL;
+        string timestamp;
+
+        // 찬반
+        uint agree;
+        uint disagree;
+
+        // 투표에 참여한 유저
+        uint[] userIdList;
+    }
+
+    struct Photo {
+        uint id;
+
+        uint challengerId;
+
+        string picURL;
+        string timestamp;
+    }
+
+
     struct Challenger {
+        // pk
+        uint id;
         // 유저,챌린지 fk
         uint userId;
         uint challengeId;
@@ -24,12 +50,6 @@ contract ChallengeContract {
         // 상금
         uint reward;
 
-        // 유저 인증 사진 리스트
-        string[1000] picURLList;
-        string[1000] picTimestamp;
-
-        // 사진 pk
-        uint sequence;
     }
     struct DaliyChallenge {
         // pk
@@ -109,7 +129,10 @@ contract ChallengeContract {
         bool complete;
     }
     
-    uint sequence = 1;
+    uint challengeSequence = 1;
+    uint voteSequence = 1;
+    uint photoSequence = 1;
+    uint challengerSequence=1;
     
     mapping(uint => DaliyChallenge) findByChallengeIdDaliyChallenge;
     mapping(uint => DonationChallenge) findByChallengeIdDonationChallenge;
@@ -117,6 +140,12 @@ contract ChallengeContract {
     // 유저의 챌린지
     mapping(uint => Challenger[]) findByUserIdChallenger;
     mapping(uint => Challenger[]) findByChallengeIdChallenger;
+
+    // 챌린저의 사진
+    mapping(uint => mapping(uint=>Photo)) findByChallengerIdPhoto;
+
+    // 챌린지의 투표
+    mapping(uint => mapping(uint=>Vote)) findByChallengeIdVote;
 
 
     uint[] dailyChallengeIds;
@@ -137,20 +166,20 @@ contract ChallengeContract {
     function createDaliyChallenge(DaliyChallenge memory daliyChallenge)
         public
     {
-        daliyChallenge.challengeId=sequence;
-        findByChallengeIdDaliyChallenge[sequence++]=daliyChallenge ;
+        daliyChallenge.challengeId=challengeSequence;
+        findByChallengeIdDaliyChallenge[challengeSequence++]=daliyChallenge ;
     }
     function createDonationChallenge(DonationChallenge memory donationChallenge)
         public
     {
-        donationChallenge.challengeId=sequence;
-        findByChallengeIdDonationChallenge[sequence++]=donationChallenge ;
+        donationChallenge.challengeId=challengeSequence;
+        findByChallengeIdDonationChallenge[challengeSequence++]=donationChallenge ;
     }
 
     // 전체 챌린지 조회
     function getAllChallenge() public returns(uint[] memory,uint[] memory,DaliyChallenge[] memory,DonationChallenge[] memory){
         
-        for(uint i=0;i<=sequence;i++){
+        for(uint i=0;i<=challengeSequence;i++){
             if(isDaliyChallenge(i)){
                 dailyChallengeIds.push(i);
                 dailyChallenges.push(findByChallengeIdDaliyChallenge[i]);
@@ -166,10 +195,11 @@ contract ChallengeContract {
 
     // 유저가 챌린지에 참가
     function joinChallenge(uint challengeId,uint userId,string memory today) public payable{
-        string[1000] memory urlList;
-        string[1000] memory timestampList;
+        string[100] memory urlList;
+        string[100] memory timestampList;
         Challenger memory challenger=Challenger(
             {
+                id:challengerSequence,
                 userId:userId,
                 challengeId:challengeId,
                 userAddress:msg.sender,
@@ -177,11 +207,9 @@ contract ChallengeContract {
                 totalCount:0,
                 dailyCount:0,
                 userDeposit:msg.value,
-                reward:0,
-                picURLList:urlList,
-                picTimestamp:timestampList,
-                sequence:0
+                reward:0
             });
+        challengerSequence++;
 
         // 챌린지 아이디로 일상챌린지인지 기부챌린지인지 판단 후 유저 추가
         if(isDaliyChallenge(challengeId)){
@@ -202,10 +230,10 @@ contract ChallengeContract {
     // 유저의 챌린지 조회
     function getMyChallenge(uint userId) public view returns(uint[] memory,uint[] memory){
         // 내가 생성한 챌린지
-        uint[] memory challengesByMe=new uint[](sequence);
+        uint[] memory challengesByMe=new uint[](challengeSequence);
         
         // 전체 챌린지를 순회하면서 챌린지의 ownerId와 userId가 같을 경우 추가
-        for(uint challengeId=0;challengeId<sequence;challengeId++){
+        for(uint challengeId=0;challengeId<challengeSequence;challengeId++){
             if((isDaliyChallenge(challengeId) && findByChallengeIdDaliyChallenge[challengeId].ownerId==userId) ||
             (isDonationChallenge(challengeId) && findByChallengeIdDonationChallenge[challengeId].ownerId==userId)){
                 challengesByMe[challengeId]=challengeId;
@@ -224,16 +252,17 @@ contract ChallengeContract {
 
 
     // 사진으로 유저 챌린지 인증
-    function authenticate(uint challengeId,uint userId, string memory today,string memory picURL) public{
+    function authenticate(uint challengeId,uint userId, string memory today,string memory picURL) public returns(Challenger memory){
         Challenger[] memory challengers=findByUserIdChallenger[userId];
         Challenger memory findChallenger;
 
         uint authDayTimes;
+        uint index=0;
         if(isDaliyChallenge(challengeId)) authDayTimes=findByChallengeIdDaliyChallenge[challengeId].authDayTimes;
         else if(isDonationChallenge(challengeId)) authDayTimes=findByChallengeIdDonationChallenge[challengeId].authDayTimes;
         
         // 챌린저 찾기
-        for(uint index=0;index<challengers.length;index++){
+        for(index;index<challengers.length;index++){
             if(challengers[index].challengeId==challengeId){
                 findChallenger=challengers[index];
                 break;
@@ -252,7 +281,33 @@ contract ChallengeContract {
         }
 
         // challengr에 사진url이랑 사진의 날짜 저장해서 신고하기 당했을 때 사용하기
-        findChallenger.picURLList[findChallenger.sequence]=picURL;
-        findChallenger.picTimestamp[findChallenger.sequence++]=today;
+        findByChallengerIdPhoto[findChallenger.id][photoSequence]=Photo({
+            id:photoSequence++,
+            challengerId:findChallenger.id,
+            picURL:picURL,
+            timestamp:today
+        });
+        
+        findByUserIdChallenger[userId][index]=findChallenger;
+
+        return findByUserIdChallenger[userId][index];
     }
+
+    // 신고하기
+    function report(uint challengeId,uint challengerId,uint photoId) public{
+   
+        Photo memory findPhoto=findByChallengerIdPhoto[challengerId][photoId];
+        uint[] memory userIdList;
+        
+        findByChallengeIdVote[challengeId][voteSequence]=Vote({
+            id:voteSequence,
+            picURL:findPhoto.picURL,
+            timestamp:findPhoto.timestamp,
+            agree:0,
+            disagree:0,
+            userIdList:userIdList
+        });
+    }
+
+    
 }
