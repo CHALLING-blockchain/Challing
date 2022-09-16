@@ -49,7 +49,7 @@ contract ChallengeContract {
         uint userDeposit;
 
         // 상금
-        uint reward;
+        int reward;
 
     }
     struct DaliyChallenge {
@@ -70,7 +70,7 @@ contract ChallengeContract {
         string goodPicURL;
         string badPicURL;
         
-        // 인증 빈도
+        // 인증 빈도 이걸 전체 인증횟수로 쓰자
         uint authWeekTimes;
         uint authDayTimes;
 
@@ -85,9 +85,8 @@ contract ChallengeContract {
         // 모집 인원 (인원 제한없으면 int(-1) 저장 이게 제일 큰값임)
         uint personnel;
 
-        // 예치금 (예치금 고정일 경우 max=0, min에다가 저장)
-        uint minDeposit;
-        uint maxDeposit;
+        // 예치금 
+        uint deposit;
 
         // 전체 예치금
         uint256 totalDeposit;
@@ -137,10 +136,13 @@ contract ChallengeContract {
     
     mapping(uint => DaliyChallenge) findByChallengeIdDaliyChallenge;
     mapping(uint => DonationChallenge) findByChallengeIdDonationChallenge;
+    mapping(uint => Vote) voteRepository;
+    mapping(uint => Photo) photoRepository;
+    mapping(uint => Challenger) challengerRepository;
 
     // 유저의 챌린지
     mapping(uint => Challenger[]) findByUserIdChallenger;
-    mapping(uint => mapping(uint=>Challenger)) findByChallengeIdChallenger;
+    mapping(uint => Challenger[]) findByChallengeIdChallenger;
 
     // 챌린저의 사진
     mapping(uint => mapping(uint=>Photo)) findByChallengerIdPhoto;
@@ -148,11 +150,8 @@ contract ChallengeContract {
     // 챌린지의 투표
     mapping(uint => mapping(uint=>Vote)) findByChallengeIdVote;
 
-    mapping(uint => Vote) voteRepository;
-    mapping(uint => Photo) photoRepository;
-    mapping(uint => Challenger) challengerRepository;
-    mapping(uint => DaliyChallenge) daliyChallengeRepository;
-    mapping(uint => DonationChallenge) donationChallengeRepository;
+    
+ 
 
     uint[] dailyChallengeIds;
     uint[] donationChallengeIds;
@@ -359,6 +358,43 @@ contract ChallengeContract {
                 }
             }
         }
+    }
+
+    // 챌린지 종료
+    function endDailyChallenge(uint challengeId) public{
+        DaliyChallenge storage challenge=findByChallengeIdDaliyChallenge[challengeId];
+        Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
+
+        int totalReward=0;
+        int count=0;
+        // 챌린저들 성공 퍼센티지에 따라서 전체 상금이랑 벌금을 계산
+        for(uint i=0;i<challengers.length;i++){
+            if(challenge.authWeekTimes==challengers[i].totalCount){
+                count++;
+            }  
+            else if(challenge.authWeekTimes/challengers[i].totalCount>=80){
+                challengers[i].reward=0;
+            }
+            else if(challenge.authWeekTimes/challengers[i].totalCount>=40){
+                challengers[i].reward-=int(challenge.deposit)*(80-int(challenge.authWeekTimes/challengers[i].totalCount)*100);
+                totalReward+=int(challengers[i].userDeposit)+challengers[i].reward;
+            }
+            else{
+                challengers[i].reward-=int(challenge.deposit);
+                totalReward+=int(challenge.deposit);
+            }
+        }
+        for(uint i=0;i<challengers.length;i++){
+            if(challenge.authWeekTimes!=challengers[i].totalCount) continue;
+            challengers[i].reward=totalReward/count;       
+        }
+    }
+
+    // 정산하기
+    function refund(uint challengerId)public payable{
+        Challenger memory challenger=challengerRepository[challengerId];
+        address userAddress=challenger.userAddress;
+        payable(userAddress).transfer(uint(int(challenger.userDeposit)+challenger.reward));
     }
 
     

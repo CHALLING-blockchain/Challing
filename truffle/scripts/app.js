@@ -9,7 +9,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 // netListening();
 
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
-const accounts="0x34498bb1949f97ae2285fbf77c83b3438d3838b6"
+const accounts="0xea2b73beb5dc05073d36c4e2a9c13c7fde0f29ca"
 const test = async () => {
   const networkId = await web3.eth.net.getId();
   const { abi } = artifact;
@@ -67,6 +67,15 @@ const test = async () => {
     complet:false,
   }
   
+  const createDaliyChallenge = await contract.methods
+    .test(5, 2)
+    .call({
+      from: accounts,
+      
+    })
+    .catch(console.error);
+  console.log(createDaliyChallenge)
+
   // const createDaliyChallenge = await contract.methods
   //   .createDaliyChallenge(daliyChallenge)
   //   .send({
@@ -102,13 +111,13 @@ const test = async () => {
   // .catch(console.error);
   // console.log(getMyChallenge)
 
-  const authenticate = await contract.methods
-  .authenticate(1,1,"220914","naver.com")
-  .call({
-    from: accounts,
-  })
-  .catch(console.error);
-  console.log(authenticate)
+  // const authenticate = await contract.methods
+  // .authenticate(1,1,"220914","naver.com")
+  // .call({
+  //   from: accounts,
+  // })
+  // .catch(console.error);
+  // console.log(authenticate)
 
   // const getAllChallenge = await contract.methods
   //   .getAllChallenge()
