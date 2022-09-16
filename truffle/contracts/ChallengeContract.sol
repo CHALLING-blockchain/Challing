@@ -7,18 +7,21 @@ contract ChallengeContract {
         // 투표pk
         uint id;
 
+        uint challengeId;
         Photo photo;
         // 찬반
         uint pass;
         uint fail;
 
+        // 시작시간
+        uint startTimestamp;
         // 투표에 참여한 유저
         uint[] userIdList;
     }
 
     struct Photo {
         uint id;
-
+        uint userId;
         uint challengerId;
 
         string picURL;
@@ -145,10 +148,10 @@ contract ChallengeContract {
     mapping(uint => Challenger[]) findByChallengeIdChallenger;
 
     // 챌린저의 사진
-    mapping(uint => mapping(uint=>Photo)) findByChallengerIdPhoto;
+    mapping(uint => Photo[]) findByChallengerIdPhoto;
 
     // 챌린지의 투표
-    mapping(uint => mapping(uint=>Vote)) findByChallengeIdVote;
+    mapping(uint => Vote[]) findByChallengeIdVote;
 
     
  
@@ -200,12 +203,10 @@ contract ChallengeContract {
 
     // 유저가 챌린지에 참가
     function joinChallenge(uint challengeId,uint userId,string memory today) public payable{
-        // mapping(string=>bool) memory dayAuth;
 
         // 챌린저들 저장소
         // findByUserIdChallenger[userId][challengerSequence];
         
-
         // Challenger storage userIdChallenger=findByUserIdChallenger[userId][challengerSequence];
         // userIdChallenger.id=challengerSequence;
         // userIdChallenger.userId=userId;
@@ -255,7 +256,7 @@ contract ChallengeContract {
             }
         }
 
-        Challenger[] storage challengers=findByUserIdChallenger[userId];
+        Challenger[] memory challengers=findByUserIdChallenger[userId];
 
         // 내가 참가한 챌린지
         uint[] memory myChallenges=new uint[](challengers.length);
@@ -263,6 +264,24 @@ contract ChallengeContract {
             myChallenges[index]=challengers[index].challengeId;
         }
         return(challengesByMe,myChallenges);
+    }
+
+    // 유저의 사진 조회
+    function getMyAllPhoto(uint userId) public view returns(Photo[] memory){
+        Challenger[] memory challengers=findByUserIdChallenger[userId];
+
+        Photo[] memory photoList;
+
+        uint photoCount=0;
+        for(uint i=0;i<challengers.length;i++){
+            Challenger memory challenger=challengers[i];
+            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
+            for(uint j=0;j<photo.length;i++){
+                photoList[photoCount++]=photo[j];
+            }
+        }
+
+        return photoList;
     }
 
 
@@ -296,12 +315,14 @@ contract ChallengeContract {
         }
 
         // challengr에 사진url이랑 사진의 날짜 저장해서 신고하기 당했을 때 사용하기
-        findByChallengerIdPhoto[findChallenger.id][photoSequence]=Photo({
-            id:photoSequence++,
-            challengerId:findChallenger.id,
-            picURL:picURL,
-            timestamp:today
-        });
+        Photo storage photo=photoRepository[photoSequence];
+        photo.id=photoSequence++;
+        photo.userId=userId;
+        photo.challengerId=findChallenger.id;
+        photo.picURL=picURL;
+        photo.timestamp=today;
+
+        findByChallengerIdPhoto[findChallenger.id].push(photo);
         
         findByUserIdChallenger[userId][index]=findChallenger;
 
@@ -309,33 +330,32 @@ contract ChallengeContract {
     }
 
     // 신고하기
-    function report(uint challengeId,uint challengerId,uint photoId) public{
-   
-        Photo memory findPhoto=findByChallengerIdPhoto[challengerId][photoId];
-        uint[] memory userIdList;
+    function report(uint challengeId,uint photoId) public{
+        Photo memory findPhoto=photoRepository[photoId];
         
-        findByChallengeIdVote[challengeId][voteSequence]=Vote({
-            id:voteSequence,
-            photo:findPhoto,
-            pass:0,
-            fail:0,
-            userIdList:userIdList
-        });
-    }
-    // 챌린지의 투표 리스트
-    function getVoteList(uint challengeId) public view returns(Vote[100] memory){
-        Vote[100] memory voteList;
+        Vote memory vote=voteRepository[voteSequence];
+        vote.id=voteSequence++;
+        vote.challengeId=challengeId;
+        vote.photo=findPhoto;
+        vote.startTimestamp=block.timestamp;
 
-        for(uint i=0;i<voteSequence;i++){
-            if(findByChallengeIdVote[challengeId][i].id!=0)
-                voteList[i]=findByChallengeIdVote[challengeId][i];
-        }
-        return voteList;
+        findByChallengeIdVote[challengeId].push(vote);
+
     }
+    // // 챌린지의 투표 리스트
+    // function getVoteList(uint challengeId) public view returns(Vote[100] memory){
+    //     Vote[100] memory voteList;
+
+    //     for(uint i=0;i<voteSequence;i++){
+    //         if(findByChallengeIdVote[challengeId][i].id!=0)
+    //             voteList[i]=findByChallengeIdVote[challengeId][i];
+    //     }
+    //     return voteList;
+    // }
     
     // 찬반 투표
-    function vote(uint userId,uint challengeId, uint voteId, bool pass) public{
-        Vote storage findVote=findByChallengeIdVote[challengeId][voteId];
+    function voting(uint userId,uint challengeId, uint voteId, bool pass) public{
+        Vote storage findVote=voteRepository[voteId];
         if(pass) findVote.pass++;
         else findVote.fail++;
 
@@ -345,7 +365,7 @@ contract ChallengeContract {
 
     // 투표 종료
     function endVote(uint challengeId,uint voteId,uint challengerId) public {
-        Vote storage vote=findByChallengeIdVote[challengeId][voteId];
+        Vote memory vote=findByChallengeIdVote[challengeId][voteId];
 
         // 노인정일시 챌린저의 토탈 카운트--
         if(vote.pass<vote.fail){
@@ -360,10 +380,10 @@ contract ChallengeContract {
         }
     }
 
-    // 챌린지 종료
+    // 일상챌린지 종료
     function endDailyChallenge(uint challengeId) public{
         DaliyChallenge storage challenge=findByChallengeIdDaliyChallenge[challengeId];
-        Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
+        Challenger[] storage challengers=findByChallengeIdChallenger[challengeId];
 
         int totalReward=0;
         int count=0;
@@ -391,11 +411,40 @@ contract ChallengeContract {
     }
 
     // 정산하기
-    function refund(uint challengerId)public payable{
-        Challenger memory challenger=challengerRepository[challengerId];
+    function refund(uint challengeId,uint userId)public payable{
+        Challenger[] memory challengers= findByUserIdChallenger[userId];
+        Challenger memory challenger;
+        for(uint i=0;i<challengers.length;i++){
+            if(challengers[i].challengeId==challengeId){
+                challenger=challengers[i];
+            }
+        }
+        
         address userAddress=challenger.userAddress;
         payable(userAddress).transfer(uint(int(challenger.userDeposit)+challenger.reward));
     }
 
-    
+    // 기부챌린지 종료
+    function endDonationChallenge(uint challengeId) public{
+        
+        
+    }
+
+
+    // 챌린지 디테일 
+    function getChallengeDetail(uint challengeId) public view returns(Challenger[] memory,Photo[] memory,Vote[] memory){
+        Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
+        Photo[] memory photoList;
+
+        uint photoCount=0;
+        for(uint i=0;i<challengers.length;i++){
+            Challenger memory challenger=challengers[i];
+            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
+            for(uint j=0;j<photo.length;i++){
+                photoList[photoCount++]=photo[j];
+            }
+        }
+        
+        return(challengers,photoList,findByChallengeIdVote[challengeId]);
+    }
 }
