@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChallengeSearch = () => {
+function ChallengeSearch(){
     return (
         <div>
             <h2>

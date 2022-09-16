@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Main = () => {
+function Main() {
     return (
         <div>
             <h2>

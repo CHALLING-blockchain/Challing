@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChallengeShot = () => {
+function ChallengeShot(){
     return (
         <div>
             <h2>

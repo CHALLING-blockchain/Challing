@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MyPage = () => {
+function MyPage(){
     return (
         <div>
             <h2>
