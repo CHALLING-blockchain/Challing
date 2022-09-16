@@ -36,4 +36,4 @@ com:
   ssafy:
     kakao:
       client_id: 07ca3e6446c8bfb6689ba8989b85cce4
-      redirect_uri: http://localhost/loginresult
+      redirect_uri: http://localhost:3000/loginresult

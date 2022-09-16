@@ -51,7 +51,7 @@ public class KakaoApi {
                     .append("&client_id=").append(CLIENT_ID)
                     .append("&redirect_uri=").append(REDIRECT_URI)
                     .append("&code=").append(code);
-
+            logger.debug("\n\nurl = {}\n\n", sb);
             bw.write(sb.toString());
             bw.flush();
 
