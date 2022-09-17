@@ -88,7 +88,7 @@ contract ChallengeContract {
         // 모집 인원 (인원 제한없으면 int(-1) 저장 이게 제일 큰값임)
         uint personnel;
 
-        // 예치금 
+        // 예치금 설정
         uint deposit;
 
         // 전체 예치금
@@ -384,7 +384,8 @@ contract ChallengeContract {
     function endDailyChallenge(uint challengeId) public{
         DaliyChallenge storage challenge=findByChallengeIdDaliyChallenge[challengeId];
         Challenger[] storage challengers=findByChallengeIdChallenger[challengeId];
-
+        challenge.complete=true;
+        
         int totalReward=0;
         int count=0;
         // 챌린저들 성공 퍼센티지에 따라서 전체 상금이랑 벌금을 계산
@@ -425,10 +426,10 @@ contract ChallengeContract {
     }
 
     // 기부챌린지 종료
-    function endDonationChallenge(uint challengeId) public{
+    // function endDonationChallenge(uint challengeId) public{
         
         
-    }
+    // }
 
 
     // 챌린지 디테일 
