@@ -10,9 +10,16 @@ function Login() {
     });
   });
 
+  function logout() {
+    window.location.replace(
+      `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&logout_redirect_uri=${process.env.REACT_APP_KAKAO_LOGOUT_REDIRECT_URL}`
+    );
+  }
+
   return (
     <div>
       <h2>Login</h2>
+      <button onClick={logout}>로그아웃</button>
     </div>
   );
 }

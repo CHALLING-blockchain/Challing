@@ -5,6 +5,7 @@ const base = {
     "Content-type": "application/json",
   },
 };
+
 class UserAPI {
   register(code) {
     const body = {
