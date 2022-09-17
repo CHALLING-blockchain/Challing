@@ -30,7 +30,7 @@ public class UserController {
     private final FavoriteService favoriteService;
     private final PhotoService photoService;
 
-    @PostMapping()
+    @PostMapping("/join")
     @Transactional
     public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userInfo) {
         User user = userService.registerUser(userInfo);
