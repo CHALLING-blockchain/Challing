@@ -1,6 +1,7 @@
 const Web3 = require("web3");
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+// const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/9e3c86130f904d3984f36541893213d3"));
 
 // const netListening = async () => {
 //   web3.eth.net.isListening().then(console.log).catch(console.error);
@@ -9,13 +10,25 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 // netListening();
 
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
-const accounts="0xea2b73beb5dc05073d36c4e2a9c13c7fde0f29ca"
+// 로컬
+// const accounts1="0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
+// const accounts2="0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0"
+
+// 메타마스크
+const privateKey1 = 'af4dbb9a76fa1fc79b4db351615bf5b3154c4ded9cb1cf4330208b732ff61475';
+const privateKey2 = '6c4d8261cc803d4b99028ff8b63f9f1e677709da718a7e5df57a62a7854a48f8';
+const account1 = web3.eth.accounts.privateKeyToAccount('0x' + privateKey1);
+const account2 = web3.eth.accounts.privateKeyToAccount('0x' + privateKey2);
+web3.eth.accounts.wallet.add(account1);
+web3.eth.accounts.wallet.add(account2);
+// web3.eth.defaultAccount = account1.address;
+
 const test = async () => {
   const networkId = await web3.eth.net.getId();
   const { abi } = artifact;
   const address = artifact.networks[networkId].address;
   const contract = new web3.eth.Contract(abi, address);
-  
+  console.log(address)
   const daliyChallenge = {
     challengeId:0,
     interestId: 0,
@@ -25,20 +38,17 @@ const test = async () => {
     mainPicURL: "naver.com",
     goodPicURL: "naver.com",
     badPicURL: "naver.com",
-    authWeekTimes: 3,
+    authWeekTimes: 1,
     authDayTimes: 1,
     startTime: 10,
     endTime: 11,
-    startDate: "2022.09.12",
-    endDate: "2022.09.12",
+    startDate: "20220919",
+    endDate: "20220919",
     personnel: 10,
-    minDeposit:0,
-    maxDeposit:10,
+    deposit:1,
+
     totalDeposit:0,
-    userId:[],
-    userAddress:[],
-    count:[],
-    userDeposit:[],
+
     complet:false,
   }
   const donationChallenge = {
@@ -66,63 +76,102 @@ const test = async () => {
     userDeposit:[],
     complet:false,
   }
-  
+// const createDonationChallenge = await contract.methods
+//     .createDonationChallenge(donationChallenge)
+//     .send({
+//       from: accounts1,
+//       gasLimit: 3_000_000,
+//     })
+//     .catch(console.error);
+//   console.log(createDonationChallenge)
+
   const createDaliyChallenge = await contract.methods
-    .test(5, 2)
-    .call({
-      from: accounts,
-      
+    .createDaliyChallenge(daliyChallenge)
+    .send({
+      from: account1.address,
+      gasLimit: 3_000_000,
     })
     .catch(console.error);
   console.log(createDaliyChallenge)
-
-  // const createDaliyChallenge = await contract.methods
-  //   .createDaliyChallenge(daliyChallenge)
-  //   .send({
-  //     from: accounts,
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log(createDaliyChallenge)
-
-  // const createDonationChallenge = await contract.methods
-  //   .createDonationChallenge(donationChallenge)
-  //   .send({
-  //     from: accounts,
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log(createDonationChallenge)
   
-  // const joinChallenge = await contract.methods
-  // .joinChallenge(1,1,"220914")
-  // .send({
-  //   from: accounts,
-  //   gasLimit: 10_000_000,
-  //   value: 1e18
-  // })
-  // .catch(console.error);
-  // console.log(joinChallenge)
+  const joinChallenge1 = await contract.methods
+  .joinChallenge(1,1,"220919")
+  .send({
+    from: account1.address,
+    gasLimit: 3_000_000,
+    value: 1e18
+  })
+  .catch(console.error);
+  console.log(joinChallenge1)
+
+  const joinChallenge2 = await contract.methods
+  .joinChallenge(1,2,"220919")
+  .send({
+    from: account2.address,
+    gasLimit: 3_000_000,
+    value: 1e18
+  })
+  .catch(console.error);
+  console.log(joinChallenge2)
+
+  const authenticate1 = await contract.methods
+  .authenticate(1,2,"220919","picURL")
+  .send({
+    from: account2.address,
+    gasLimit: 3_000_000,
+
+  })
+  .catch(console.error);
+  console.log(authenticate1)
+
+  const endDailyChallenge = await contract.methods
+  .endDailyChallenge(1)
+  .send({
+    from: account1.address,
+    gasLimit: 3_000_000,
+
+  })
+  .catch(console.error);
+  console.log(endDailyChallenge)
+
+  const refund1 = await contract.methods
+  .refund(1,1)
+  .send({
+    from: account1.address,
+    gasLimit: 3_000_000,
+  })
+  .catch(console.error);
+  console.log(refund1)
+
+  const refund2 = await contract.methods
+  .refund(1,2)
+  .send({
+    from: account2.address,
+    gasLimit: 3_000_000,
+  })
+  .catch(console.error);
+  console.log(refund2)
+
   // const getMyChallenge = await contract.methods
   // .getMyChallenge(1)
   // .call({
-  //   from: accounts,
+  //   from: account1,
   // })
   // .catch(console.error);
   // console.log(getMyChallenge)
 
-  // const authenticate = await contract.methods
-  // .authenticate(1,1,"220914","naver.com")
+  // const getChallengeDetail = await contract.methods
+  // .getChallengeDetail(1)
   // .call({
-  //   from: accounts,
+  //   from: accounts1,
   // })
   // .catch(console.error);
-  // console.log(authenticate)
+  // console.log(getChallengeDetail)
 
   // const getAllChallenge = await contract.methods
   //   .getAllChallenge()
   //   .call({
-  //     from: accounts,
+  //     from: accounts1,
   //   })
   //   .catch(console.error);
 
