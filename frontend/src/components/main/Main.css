@@ -1,6 +1,13 @@
 .Main{
-  /* background-color: blueviolet; */
 }
 h2 {
   margin: 0;
+}
+.Banner1{
+  width: 360px;
+  height: auto;
+}
+.Banner2{
+  width: 360px;
+  height: auto;
 }
