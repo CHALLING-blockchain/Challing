@@ -46,9 +46,8 @@ function MyWallet() {
       + accounts
       +`&startblock=0`
       +`&endblock=99999999`
-      +`&page=1`
-      +`&offset=10`
-      +`&sort=asc`
+      +`&offset=5`
+      +`&sort=desc`
       +`&apikey=`+process.env.REACT_APP_ETHERSCAN_API_KEY;
       
       axios.get(url).then(function(result){
@@ -61,12 +60,14 @@ function MyWallet() {
             const element = {
               from: data[index].from,
               to : data[index].to,
+              input : data[index].input,
               etherValue : Number(web3.utils.fromWei(data[index].value, "ether")).toFixed(3)
             }
             tmpData.push(element);
           }
           setTxData(tmpData);
           // console.log("txData", txData);
+          console.log("blockn: ",web3.eth.getBlockNumber())
       })
     }
     getAccount();
@@ -75,9 +76,12 @@ function MyWallet() {
 
   function txRendering(){
     const result = [];
-    for (let index = 0; index < txData.length; index++) {
+    for (let index = 0; index < data.length; index++) {
       //console.log("inside txRendering for");
-      result.push(<span key={index}>{JSON.stringify(txData[index])}<br></br></span>)
+      result.push(<span key={index}>input : {txData[index].input}<br></br></span>)
+      result.push(<span key={index}>from : {txData[index].from}<br></br></span>)
+      result.push(<span key={index}>to : {txData[index].to}<br></br></span>)
+      result.push(<span key={index}>value : {txData[index].etherValue}<br></br><br></br></span>)
     }
     return result;
   }

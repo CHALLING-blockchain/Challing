@@ -64,17 +64,18 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
         .then(function (result) {
           gasLimit = result;
         });
-      //console.log("gasLimit", gasLimit);
+      console.log("gasLimit", gasLimit);
 
       var txObject = {
         nonce: nonce,
         gasPrice: gasPrice,
-        gasLimit: gasLimit,
+        gasLimit: 60000,
         to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
         from: accounts[0],
         value: value,
+        data:"6368616c6c656e6765"
       };
-      //console.log("txObject: ", txObject);
+      console.log("txObject: ", txObject);
 
       var hashObject = 0;
       // await web3.eth.sendTransaction(txObject).then(function (receipt) {
@@ -88,7 +89,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       var hashToString = hashObject.transactionHash.toString();
       //console.log(hashToString);
       web3.eth.getTransaction(hashToString, function (error, result) {
-        //console.log("transaction detail: ", result);
+        console.log("transaction detail: ", result);
       });
       // transaction details end --------------------------
 
