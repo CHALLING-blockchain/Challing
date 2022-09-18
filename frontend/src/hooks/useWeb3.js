@@ -43,16 +43,16 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       await web3.eth.getTransactionCount(accounts[0]).then(function (result) {
         nonce = result;
       });
-      console.log("nonce:", nonce);
+      //console.log("nonce:", nonce);
 
       var gasPrice = 0;
       await web3.eth.getGasPrice().then(function (result) {
         gasPrice = result;
       });
-      console.log("gasPrice:", gasPrice);
+      //console.log("gasPrice:", gasPrice);
 
       var value = await web3.utils.toWei("0.1", "ether");
-      console.log("value:", value);
+      //console.log("value:", value);
 
       var gasLimit = 0;
       await web3.eth
@@ -64,7 +64,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
         .then(function (result) {
           gasLimit = result;
         });
-      console.log("gasLimit", gasLimit);
+      //console.log("gasLimit", gasLimit);
 
       var txObject = {
         nonce: nonce,
@@ -74,7 +74,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
         from: accounts[0],
         value: value,
       };
-      console.log("txObject: ", txObject);
+      //console.log("txObject: ", txObject);
 
       var hashObject = 0;
       // await web3.eth.sendTransaction(txObject).then(function (receipt) {
@@ -83,12 +83,12 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       // send transaction end -------------------------------
 
       // transaction details ------------------------------
-      console.log("hashObject", hashObject);
-      console.log("my txHash: ", hashObject.transactionHash);
+      //console.log("hashObject", hashObject);
+      //console.log("my txHash: ", hashObject.transactionHash);
       var hashToString = hashObject.transactionHash.toString();
-      console.log(hashToString);
+      //console.log(hashToString);
       web3.eth.getTransaction(hashToString, function (error, result) {
-        console.log("transaction detail: ", result);
+        //console.log("transaction detail: ", result);
       });
       // transaction details end --------------------------
 
