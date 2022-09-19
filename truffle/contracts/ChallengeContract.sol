@@ -68,7 +68,7 @@ contract ChallengeContract {
         // 상금
         uint reward;
     }
-    struct DaliyChallenge {
+    struct DailyChallenge {
         // pk
         uint challengeId;
 
@@ -152,7 +152,7 @@ contract ChallengeContract {
     uint photoSequence = 1;
     uint challengerSequence=1;
     
-    mapping(uint => DaliyChallenge) findByChallengeIdDaliyChallenge;
+    mapping(uint => DailyChallenge) findByChallengeIdDailyChallenge;
     mapping(uint => DonationChallenge) findByChallengeIdDonationChallenge;
     mapping(uint => Vote) voteRepository;
     mapping(uint => Photo) photoRepository;
@@ -172,12 +172,12 @@ contract ChallengeContract {
     
     uint[] dailyChallengeIds;
     uint[] donationChallengeIds;
-    DaliyChallenge[] dailyChallenges;
+    DailyChallenge[] dailyChallenges;
     DonationChallenge[] donationChallenges;
 
     // 챌린지아이디로 어느 챌린지에 존재하는지 판단
-    function isDaliyChallenge(uint challengeId) private view returns(bool){
-        return keccak256(abi.encodePacked(findByChallengeIdDaliyChallenge[challengeId].name)) != keccak256(abi.encodePacked(""));
+    function isDailyChallenge(uint challengeId) private view returns(bool){
+        return keccak256(abi.encodePacked(findByChallengeIdDailyChallenge[challengeId].name)) != keccak256(abi.encodePacked(""));
     }
 
     function isDonationChallenge(uint challengeId) private view returns(bool){
@@ -185,12 +185,12 @@ contract ChallengeContract {
     }
 
     // 챌린지 생성
-    function createDaliyChallenge(DaliyChallenge memory daliyChallenge)
+    function createDailyChallenge(DailyChallenge memory dailyChallenge)
         public
     {
-        daliyChallenge.challengeId=challengeSequence;
-        daliyChallenge.deposit*=1e18;
-        findByChallengeIdDaliyChallenge[challengeSequence++]=daliyChallenge ;
+        dailyChallenge.challengeId=challengeSequence;
+        dailyChallenge.deposit*=1e18;
+        findByChallengeIdDailyChallenge[challengeSequence++]=dailyChallenge ;
     }
     function createDonationChallenge(DonationChallenge memory donationChallenge)
         public
@@ -201,12 +201,12 @@ contract ChallengeContract {
     }
 
     // 전체 챌린지 조회
-    function getAllChallenge() public returns(uint[] memory,uint[] memory,DaliyChallenge[] memory,DonationChallenge[] memory){
+    function getAllChallenge() public returns(uint[] memory,uint[] memory,DailyChallenge[] memory,DonationChallenge[] memory){
         
         for(uint i=1;i<=challengeSequence;i++){
-            if(isDaliyChallenge(i)){
+            if(isDailyChallenge(i)){
                 dailyChallengeIds.push(i);
-                dailyChallenges.push(findByChallengeIdDaliyChallenge[i]);
+                dailyChallenges.push(findByChallengeIdDailyChallenge[i]);
             }
 
             else if(isDonationChallenge(i)){
@@ -234,8 +234,8 @@ contract ChallengeContract {
         challengerSequence++;
 
         // 챌린지 아이디로 일상챌린지인지 기부챌린지인지 판단 후 유저 추가
-        if(isDaliyChallenge(challengeId)){
-            DaliyChallenge storage challenge=findByChallengeIdDaliyChallenge[challengeId];
+        if(isDailyChallenge(challengeId)){
+            DailyChallenge storage challenge=findByChallengeIdDailyChallenge[challengeId];
             challenge.totalDeposit+=msg.value; 
         }
 
@@ -252,7 +252,7 @@ contract ChallengeContract {
         
         // 전체 챌린지를 순회하면서 챌린지의 ownerId와 userId가 같을 경우 추가
         for(uint challengeId=0;challengeId<challengeSequence;challengeId++){
-            if((isDaliyChallenge(challengeId) && findByChallengeIdDaliyChallenge[challengeId].ownerId==userId) ||
+            if((isDailyChallenge(challengeId) && findByChallengeIdDailyChallenge[challengeId].ownerId==userId) ||
             (isDonationChallenge(challengeId) && findByChallengeIdDonationChallenge[challengeId].ownerId==userId)){
                 challengesByMe[challengeId]=challengeId;
             }
@@ -296,7 +296,7 @@ contract ChallengeContract {
         uint authDayTimes;
         uint userIdIndex=0;
         uint challengeIdIndex=0;
-        if(isDaliyChallenge(challengeId)) authDayTimes=findByChallengeIdDaliyChallenge[challengeId].authDayTimes;
+        if(isDailyChallenge(challengeId)) authDayTimes=findByChallengeIdDailyChallenge[challengeId].authDayTimes;
         else if(isDonationChallenge(challengeId)) authDayTimes=findByChallengeIdDonationChallenge[challengeId].authDayTimes;
         
         // 챌린저 찾기
@@ -377,7 +377,7 @@ contract ChallengeContract {
 
     // 일상챌린지 종료
     function endDailyChallenge(uint challengeId) public{
-        DaliyChallenge storage challenge=findByChallengeIdDaliyChallenge[challengeId];
+        DailyChallenge storage challenge=findByChallengeIdDailyChallenge[challengeId];
         Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
         challenge.complete=true;
 
