@@ -66,7 +66,7 @@ contract ChallengeContract {
         uint userDeposit;
 
         // 상금
-        int reward;
+        uint reward;
     }
     struct DaliyChallenge {
         // pk
@@ -322,7 +322,7 @@ contract ChallengeContract {
 
 
         // 하루인증횟수 초과시 예외
-        require(authDayTimes<findChallenger.dailyCount,"One day authentication exceeded");
+        // require(authDayTimes<findChallenger.dailyCount,"One day authentication exceeded");
     
         // challengr에 사진url이랑 사진의 날짜 저장해서 신고하기 당했을 때 사용하기
         Photo storage photo=photoRepository[photoSequence];
@@ -371,6 +371,8 @@ contract ChallengeContract {
         // 노인정일시 챌린저의 토탈 카운트--
         if(vote.pass<vote.fail) challengerRepository[challengerId].totalCount--;
 
+        // 패스코인 지급 로직
+
     }
 
     // 일상챌린지 종료
@@ -379,25 +381,24 @@ contract ChallengeContract {
         Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
         challenge.complete=true;
 
-        int totalReward=0;
-        int count=0;
+        uint totalReward=0;
+        uint count=0;
         // 챌린저들 성공 퍼센티지에 따라서 전체 상금이랑 벌금을 계산
         for(uint i=0;i<challengers.length;i++){
-            
+            uint rate = (challengers[i].totalCount*100)/challenge.authTotalTimes;
             if(challenge.authTotalTimes==challengers[i].totalCount){
                 count++;               
             }  
-            else if(challengers[i].totalCount/challenge.authTotalTimes>=80){
+            else if(rate>=80){
                 challengers[i].reward=0;
             }
-            else if(challengers[i].totalCount/challenge.authTotalTimes>=40){
-                challengers[i].reward-=int(challenge.deposit)*(80-int(challenge.authTotalTimes/challengers[i].totalCount)*100);
-                totalReward+=int(challengers[i].userDeposit)+challengers[i].reward;
+            else if(rate>=40){
+                totalReward+=challengers[i].userDeposit-(challenge.deposit*rate)/100;
+                challengers[i].userDeposit=(challenge.deposit*rate)/100;
             }
-            else{
-                challengers[i].reward-=int(challenge.deposit);
-                totalReward+=int(challenge.deposit);
-                challengers[i].totalCount+=challenge.deposit;
+            else{        
+                totalReward+=challenge.deposit;
+                challengers[i].userDeposit=0;
             }
 
             findByChallengeIdChallenger[challengeId][i]=challengers[i];
@@ -439,11 +440,12 @@ contract ChallengeContract {
         for(uint i=0;i<challengers.length;i++){
             if(challengers[i].challengeId==challengeId){
                 challenger=challengers[i];
+                break;
             }
         }
         
         address userAddress=challenger.userAddress;
-        payable(userAddress).transfer(uint(int(challenger.userDeposit)+challenger.reward));
+        payable(userAddress).transfer(challenger.userDeposit+challenger.reward);
     }
 
     // 기부챌린지 종료

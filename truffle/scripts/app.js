@@ -11,8 +11,6 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
 // 로컬
-const account1 = "0x965F71De04c10b082F2bF9DaEa6e094A3365D75F";
-const account2 = "0xf6647A31F5668352769c976E3baEaF2fdb16fB62";
 
 // 메타마스크
 // const privateKey1 = 'af4dbb9a76fa1fc79b4db351615bf5b3154c4ded9cb1cf4330208b732ff61475';
@@ -28,9 +26,13 @@ const test = async () => {
   const { abi } = artifact;
   const address = artifact.networks[networkId].address;
   const contract = new web3.eth.Contract(abi, address);
-  console.log(address);
+
+  const accounts = await web3.eth.getAccounts();
+  const account1 = accounts[0];
+  const account2 = accounts[1];
+
   const daliyChallenge = {
-    challengeId: 0,
+    challengeId: 1,
     interestId: 0,
     ownerId: 0,
     name: "myChallene",
@@ -94,43 +96,43 @@ const test = async () => {
     .catch(console.error);
   console.log(createDaliyChallenge);
 
-  // const joinChallenge1 = await contract.methods
-  //   .joinChallenge(1, 1, "220919")
-  //   .send({
-  //     from: account1,
-  //     gasLimit: 3_000_000,
-  //     value: 1e18,
-  //   })
-  //   .catch(console.error);
-  // console.log(joinChallenge1);
+  const joinChallenge1 = await contract.methods
+    .joinChallenge(1, 1, "220919")
+    .send({
+      from: account1,
+      gasLimit: 3_000_000,
+      value: 1e18,
+    })
+    .catch(console.error);
+  console.log(joinChallenge1);
 
-  // const joinChallenge2 = await contract.methods
-  //   .joinChallenge(1, 2, "220919")
-  //   .send({
-  //     from: account2,
-  //     gasLimit: 3_000_000,
-  //     value: 1e18,
-  //   })
-  //   .catch(console.error);
-  // console.log(joinChallenge2);
+  const joinChallenge2 = await contract.methods
+    .joinChallenge(1, 2, "220919")
+    .send({
+      from: account2,
+      gasLimit: 3_000_000,
+      value: 1e18,
+    })
+    .catch(console.error);
+  console.log(joinChallenge2);
 
-  // const authenticate1 = await contract.methods
-  //   .authenticate(1, 2, "220919", "picURL")
-  //   .send({
-  //     from: account2,
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log(authenticate1);
+  const authenticate1 = await contract.methods
+    .authenticate(1, 2, "220919", "picURL")
+    .send({
+      from: account2,
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+  console.log(authenticate1);
 
-  // const endDailyChallenge = await contract.methods
-  //   .endDailyChallenge(1)
-  //   .send({
-  //     from: account1,
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log(endDailyChallenge);
+  const endDailyChallenge = await contract.methods
+    .endDailyChallenge(1)
+    .send({
+      from: account1,
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+  console.log(endDailyChallenge);
 
   const refund1 = await contract.methods
     .refund(1, 1)
@@ -158,13 +160,13 @@ const test = async () => {
   // .catch(console.error);
   // console.log(getMyChallenge)
 
-  // const getChallengeDetail = await contract.methods
-  // .getChallengeDetail(1)
-  // .call({
-  //   from: accounts1,
-  // })
-  // .catch(console.error);
-  // console.log(getChallengeDetail)
+  const getChallengeDetail = await contract.methods
+    .getChallengeDetail(1)
+    .call({
+      from: account1,
+    })
+    .catch(console.error);
+  console.log(getChallengeDetail);
 
   // const getAllChallenge = await contract.methods
   //   .getAllChallenge()
