@@ -7,6 +7,10 @@ import ChallengeSearch from "./components/challengeSearch/ChallengeSearch";
 import ChallengeShot from "./components/challengeShot/ChallengeShot";
 import Main from "./components/main/Main";
 import MyPage from "./components/myPage/MyPage";
+import MyProfile from "./components/myPage/MyProfile";
+import EditProfile from "./components/myPage/EditProfile";
+import MyShotZip from "./components/myPage/MyShotZip";
+import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
@@ -34,6 +38,10 @@ function App() {
         <Route path="/challenge-search" element={<ChallengeSearch />} />
         <Route path="/challenge-shot" element={<ChallengeShot />} />
         <Route path="/my-page" element={<MyPage />} />
+        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/my-shot-zip" element={<MyShotZip />} />
+        <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
       </Routes>
