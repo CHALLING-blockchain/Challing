@@ -43,16 +43,16 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       await web3.eth.getTransactionCount(accounts[0]).then(function (result) {
         nonce = result;
       });
-      console.log("nonce:", nonce);
+      //console.log("nonce:", nonce);
 
       var gasPrice = 0;
       await web3.eth.getGasPrice().then(function (result) {
         gasPrice = result;
       });
-      console.log("gasPrice:", gasPrice);
+      //console.log("gasPrice:", gasPrice);
 
       var value = await web3.utils.toWei("0.1", "ether");
-      console.log("value:", value);
+      //console.log("value:", value);
 
       var gasLimit = 0;
       await web3.eth
@@ -69,10 +69,11 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       var txObject = {
         nonce: nonce,
         gasPrice: gasPrice,
-        gasLimit: gasLimit,
+        gasLimit: 60000,
         to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
         from: accounts[0],
         value: value,
+        data:"6368616c6c656e6765"
       };
       console.log("txObject: ", txObject);
 
@@ -83,10 +84,10 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       // send transaction end -------------------------------
 
       // transaction details ------------------------------
-      console.log("hashObject", hashObject);
-      console.log("my txHash: ", hashObject.transactionHash);
+      //console.log("hashObject", hashObject);
+      //console.log("my txHash: ", hashObject.transactionHash);
       var hashToString = hashObject.transactionHash.toString();
-      console.log(hashToString);
+      //console.log(hashToString);
       web3.eth.getTransaction(hashToString, function (error, result) {
         console.log("transaction detail: ", result);
       });
