@@ -68,9 +68,6 @@ function MyWallet() {
           // challenge 데이터를 포함한 tx만 tmpData에 push
           if (hexToAscii(element.input).includes("challenge")) {
             // 트렌젝션을 보냈을때
-            console.log("계정=",accounts);
-            console.log("보냄=",element.from)
-            console.log("소문=",element.from.toLowerCase());
             if(element.from.toLowerCase()===accounts.toLowerCase()){
               element.sendOrReceive = "↓"
             }
@@ -131,18 +128,21 @@ function MyWallet() {
       {/* instantiate web3 only after a user clicks the button */}
       {/* avoid doing it automatically */}
       {!exist ? (
+        // 이것도 웹브라우저 사용자만 활성화
         <button onClick={connect}>메타마스크 지갑 연동</button>
       ) : (
         <>
           {/* <p>ACCOUNT : {activeAccount}</p> */}
-          <p>Etherium: {activeBalance} ETH</p>
+          <span>Etherium: <big><strong>{activeBalance}</strong></big> ETH</span>
           <p>== $</p>
-          <button onClick={disconnect}>Disconnect</button>
+          {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
+          {/* <button onClick={disconnect}>Disconnect</button> */}
           <br></br>
           <br></br>
           <span>
             Transaction History<br></br>
-           {txRendering()}{" "}
+           {txRendering()}{""}
+           <a href={'https://ropsten.etherscan.io/address/'+activeAccount}>Etherscan에서 계정보기</a>
           </span>
        </>
       )}

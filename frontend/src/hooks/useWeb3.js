@@ -64,7 +64,6 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
         .then(function (result) {
           gasLimit = result;
         });
-      console.log("gasLimit", gasLimit);
 
       var txObject = {
         nonce: nonce,
