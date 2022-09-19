@@ -49,7 +49,7 @@ function MyWallet() {
         `&apikey=` +
         process.env.REACT_APP_ETHERSCAN_API_KEY;
 
-        // url 요청
+      // url 요청
       axios.get(url).then(function (result) {
         console.log("etherscan api url: " + url);
         const data = result.data.result;
@@ -63,16 +63,20 @@ function MyWallet() {
               web3.utils.fromWei(data[index].value, "ether")
             ).toFixed(3),
             sendOrReceive: "",
+            timeStamp: timeConverter(data[index].timeStamp),
           };
           // challenge 데이터를 포함한 tx만 tmpData에 push
           if (hexToAscii(element.input).includes("challenge")) {
             // 트렌젝션을 보냈을때
-            if(element.from.includes(accounts)){
-              element.sendOrReceive = "↑"
+            console.log("계정=",accounts);
+            console.log("보냄=",element.from)
+            console.log("소문=",element.from.toLowerCase());
+            if(element.from.toLowerCase()===accounts.toLowerCase()){
+              element.sendOrReceive = "↓"
             }
             // 트렌젝션을 받았을때
             else{
-              element.sendOrReceive = "↓"
+              element.sendOrReceive = "↑"
             }
             tmpData.push(element);
           }
@@ -82,6 +86,7 @@ function MyWallet() {
     }
     getAccount();
   }, []);
+
   // 16진수 -> Ascii / String반환
   function hexToAscii(str1) {
     var hex = str1.toString();
@@ -92,21 +97,28 @@ function MyWallet() {
     return str;
   }
 
+  // Unix timestamp to date
+  function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    // var hour = a.getHours();
+    // var min = a.getMinutes();
+    // var sec = a.getSeconds();
+    var time = year + '/' + month + '/' +date;
+    return time;
+  }
+
   function txRendering() {
-    // console.log("txRendering");
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      //console.log("inside txRendering for");
+      if(hexToAscii(txData[index].input).substring(1).includes("challenge"))
       result.push(
         <span key={index}>
-          input : {hexToAscii(txData[index].input).substring(1)}
-          <br></br>
-          from : {txData[index].from}
-          <br></br>
-          to : {txData[index].to}
-          <br></br>
-          value : {txData[index].etherValue} {txData[index].sendOrReceive}
-          <br></br>
+          <p> {txData[index].timeStamp}</p>
+          <h3> {hexToAscii(txData[index].input).substring(1)} {txData[index].etherValue}ETH {txData[index].sendOrReceive}</h3>
           <br></br>
         </span>
       );
@@ -119,16 +131,19 @@ function MyWallet() {
       {/* instantiate web3 only after a user clicks the button */}
       {/* avoid doing it automatically */}
       {!exist ? (
-        <button onClick={connect}>Connect to MetaMask</button>
+        <button onClick={connect}>메타마스크 지갑 연동</button>
       ) : (
         <>
-          <p>ACCOUNT : {activeAccount}</p>
-          <p>MY BALANCE: {activeBalance} ETH</p>
+          {/* <p>ACCOUNT : {activeAccount}</p> */}
+          <p>Etherium: {activeBalance} ETH</p>
+          <p>== $</p>
           <button onClick={disconnect}>Disconnect</button>
-          <p>
-            [Transaction History]<br></br>
+          <br></br>
+          <br></br>
+          <span>
+            Transaction History<br></br>
            {txRendering()}{" "}
-          </p>
+          </span>
        </>
       )}
       {/* show loading and error statuses */}
