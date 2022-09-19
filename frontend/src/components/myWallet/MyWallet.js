@@ -12,9 +12,8 @@ function MyWallet() {
   const [isLoading, setIsLoading] = useState(false);
   // error messages
   const [errorMessage, setErrorMessage] = useState("");
-  // etherscan data 가져오기
-  const [data, setData] = useState(""); 
-  const [txData, setTxData] = useState(""); 
+  // challenge transaction Data
+  const [txData, setTxData] = useState("");
   // get active account and balance data from useWeb3 hook
   const {
     connect,
@@ -30,58 +29,87 @@ function MyWallet() {
     setIsLoading,
     setErrorMessage
   );
-  const tmpData = [];
+
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
-    var accounts="";
-    async function getAccount(){
+    var accounts = "";
+    async function getAccount() {
       const account = await web3.eth.getAccounts();
-      // console.log(account[0]);
-      accounts = account[0]
-      // console.log("accounts",accounts);
+      accounts = account[0];
 
-      const url = 
-      process.env.REACT_APP_ETHERSCAN_API_URL
-      +`&action=txlist&address=`
-      + accounts
-      +`&startblock=0`
-      +`&endblock=99999999`
-      +`&offset=5`
-      +`&sort=desc`
-      +`&apikey=`+process.env.REACT_APP_ETHERSCAN_API_KEY;
-      
-      axios.get(url).then(function(result){
-          // console.log("inside axios....");
-          console.log("etherscan api url: "+url);
-          const data = result.data.result;
-          console.log("data: ",data);
-          setData(data);
-          for (let index = 0; index < data.length; index++) {
-            const element = {
-              from: data[index].from,
-              to : data[index].to,
-              input : data[index].input,
-              etherValue : Number(web3.utils.fromWei(data[index].value, "ether")).toFixed(3)
+      //Etherscan API 
+      const url =
+        process.env.REACT_APP_ETHERSCAN_API_URL +
+        `&action=txlist&address=` +
+        accounts +
+        `&startblock=0` +
+        `&endblock=99999999` +
+        `&offset=5` +
+        `&sort=desc` +
+        `&apikey=` +
+        process.env.REACT_APP_ETHERSCAN_API_KEY;
+
+        // url 요청
+      axios.get(url).then(function (result) {
+        console.log("etherscan api url: " + url);
+        const data = result.data.result;
+        const tmpData = [];
+        for (let index = 0; index < data.length; index++) {
+          const element = {
+            from: data[index].from,
+            to: data[index].to,
+            input: data[index].input,
+            etherValue: Number(
+              web3.utils.fromWei(data[index].value, "ether")
+            ).toFixed(3),
+            sendOrReceive: "",
+          };
+          // challenge 데이터를 포함한 tx만 tmpData에 push
+          if (hexToAscii(element.input).includes("challenge")) {
+            // 트렌젝션을 보냈을때
+            if(element.from.includes(accounts)){
+              element.sendOrReceive = "↑"
+            }
+            // 트렌젝션을 받았을때
+            else{
+              element.sendOrReceive = "↓"
             }
             tmpData.push(element);
           }
-          setTxData(tmpData);
-          // console.log("txData", txData);
-          console.log("blockn: ",web3.eth.getBlockNumber())
-      })
+        }
+        setTxData(tmpData);
+      });
     }
     getAccount();
+  }, []);
+  // 16진수 -> Ascii / String반환
+  function hexToAscii(str1) {
+    var hex = str1.toString();
+    var str = "";
+    for (var n = 0; n < hex.length; n += 2) {
+      str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+    }
+    return str;
+  }
 
-  },[]);
-
-  function txRendering(){
+  function txRendering() {
+    // console.log("txRendering");
     const result = [];
-    for (let index = 0; index < data.length; index++) {
+    for (let index = 0; index < txData.length; index++) {
       //console.log("inside txRendering for");
-      result.push(<span key={index}>input : {txData[index].input}<br></br></span>)
-      result.push(<span key={index}>from : {txData[index].from}<br></br></span>)
-      result.push(<span key={index}>to : {txData[index].to}<br></br></span>)
-      result.push(<span key={index}>value : {txData[index].etherValue}<br></br><br></br></span>)
+      result.push(
+        <span key={index}>
+          input : {hexToAscii(txData[index].input).substring(1)}
+          <br></br>
+          from : {txData[index].from}
+          <br></br>
+          to : {txData[index].to}
+          <br></br>
+          value : {txData[index].etherValue} {txData[index].sendOrReceive}
+          <br></br>
+          <br></br>
+        </span>
+      );
     }
     return result;
   }
@@ -97,8 +125,11 @@ function MyWallet() {
           <p>ACCOUNT : {activeAccount}</p>
           <p>MY BALANCE: {activeBalance} ETH</p>
           <button onClick={disconnect}>Disconnect</button>
-          <p>[Transaction History]<br></br>{txRendering()} </p>
-        </>
+          <p>
+            [Transaction History]<br></br>
+           {txRendering()}{" "}
+          </p>
+       </>
       )}
       {/* show loading and error statuses */}
       {isLoading && <p>Loading...</p>}
