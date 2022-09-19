@@ -87,7 +87,7 @@ contract ChallengeContract {
         string badPicURL;
         
         // 인증 빈도 이걸 전체 인증횟수로 쓰자
-        uint authWeekTimes;
+        uint authTotalTimes;
         uint authDayTimes;
 
         // 인증가능시간
@@ -129,7 +129,7 @@ contract ChallengeContract {
         string goodPicURL;
         string badPicURL;
         // 인증 빈도
-        uint authWeekTimes;
+        uint authTotalTimes;
         uint authDayTimes;
         // 인증가능시간
         uint startTime;
@@ -143,6 +143,8 @@ contract ChallengeContract {
 
         // 챌린지 완료 여부
         bool complete;
+
+        bool success;
     }
     
     uint challengeSequence = 1;
@@ -382,14 +384,14 @@ contract ChallengeContract {
         // 챌린저들 성공 퍼센티지에 따라서 전체 상금이랑 벌금을 계산
         for(uint i=0;i<challengers.length;i++){
             
-            if(challenge.authWeekTimes==challengers[i].totalCount){
+            if(challenge.authTotalTimes==challengers[i].totalCount){
                 count++;               
             }  
-            else if(challengers[i].totalCount/challenge.authWeekTimes>=80){
+            else if(challengers[i].totalCount/challenge.authTotalTimes>=80){
                 challengers[i].reward=0;
             }
-            else if(challengers[i].totalCount/challenge.authWeekTimes>=40){
-                challengers[i].reward-=int(challenge.deposit)*(80-int(challenge.authWeekTimes/challengers[i].totalCount)*100);
+            else if(challengers[i].totalCount/challenge.authTotalTimes>=40){
+                challengers[i].reward-=int(challenge.deposit)*(80-int(challenge.authTotalTimes/challengers[i].totalCount)*100);
                 totalReward+=int(challengers[i].userDeposit)+challengers[i].reward;
             }
             else{
@@ -412,7 +414,7 @@ contract ChallengeContract {
             
         }
         for(uint i=0;i<challengers.length;i++){
-            if(challenge.authWeekTimes!=challengers[i].totalCount) continue;
+            if(challenge.authTotalTimes!=challengers[i].totalCount) continue;
             challengers[i].reward=totalReward/count;  
 
             findByChallengeIdChallenger[challengeId][i]=challengers[i];
@@ -444,14 +446,24 @@ contract ChallengeContract {
         payable(userAddress).transfer(uint(int(challenger.userDeposit)+challenger.reward));
     }
 
-    // // 기부챌린지 종료
-    // function endDonationChallenge(uint challengeId) public{
-    //     DonationChallenge storage challenge=findByChallengeIdDonationChallenge[challengeId];
-    //     Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
-    //     challenge.complete=true;
+    // 기부챌린지 종료
+    function endDonationChallenge(uint challengeId) public payable{
+        DonationChallenge storage challenge=findByChallengeIdDonationChallenge[challengeId];
+        Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
+        challenge.complete=true;
+        uint count=0;
+        for(uint i=0;i<challengers.length;i++){
+            uint rate=(challengers[i].totalCount*100)/challenge.authTotalTimes;
+            if(rate>=80) count++;
+        }
+        if((count*100)/challengers.length>=80){
+            Donation memory donation =donationRepository[challenge.donationId];
+            challenge.success=true;
 
-    //     challengers.length
-    // }
+            address donationAddress=donation.donationAddress;
+            payable(donationAddress).transfer(challenge.totalDonation);
+        }
+    }
 
 
     // 챌린지 디테일 
