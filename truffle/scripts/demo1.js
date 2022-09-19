@@ -18,7 +18,6 @@ const test = async () => {
   const { abi } = artifact;
   const address = artifact.networks[networkId].address;
   const contract = new web3.eth.Contract(abi, address);
-  console.log(address)
   const daliyChallenge = {
     challengeId:0,
     interestId: 0,
