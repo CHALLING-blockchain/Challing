@@ -38,7 +38,7 @@ const test = async () => {
     mainPicURL: "naver.com",
     goodPicURL: "naver.com",
     badPicURL: "naver.com",
-    authWeekTimes: 1,
+    authTotalTimes: 1,
     authDayTimes: 1,
     startTime: 10,
     endTime: 11,
