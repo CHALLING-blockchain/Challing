@@ -111,14 +111,20 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      if(hexToAscii(txData[index].input).substring(1).includes("challenge"))
-      result.push(
-        <span key={index}>
-          <p> {txData[index].timeStamp}</p>
-          <h3> {hexToAscii(txData[index].input).substring(1)} {txData[index].etherValue}ETH {txData[index].sendOrReceive}</h3>
-          <br></br>
-        </span>
-      );
+      if(hexToAscii(txData[index].input).substring(1).includes("challenge")){
+        var date = txData[index].timeStamp;
+        // 날짜별로 모아서 보여주기
+        if(index>=1&&index<txData.length&&txData[index].timeStamp===txData[index-1].timeStamp){
+          date = "";
+        }
+        result.push(
+          <span key={index}>
+            <p> {date} </p>
+            <h4> {hexToAscii(txData[index].input).substring(1)} {txData[index].etherValue}ETH {txData[index].sendOrReceive}</h4>
+            <br></br>
+          </span>
+        );
+      }
     }
     return result;
   }
@@ -143,6 +149,15 @@ function MyWallet() {
             Transaction History<br></br>
            {txRendering()}{""}
            <a href={'https://ropsten.etherscan.io/address/'+activeAccount}>Etherscan에서 계정보기</a>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
+           <br></br>
           </span>
        </>
       )}
