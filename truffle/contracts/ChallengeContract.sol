@@ -187,7 +187,7 @@ contract ChallengeContract {
     // 전체 챌린지 조회
     function getAllChallenge() public returns(uint[] memory,uint[] memory,DaliyChallenge[] memory,DonationChallenge[] memory){
         
-        for(uint i=0;i<=challengeSequence;i++){
+        for(uint i=1;i<=challengeSequence;i++){
             if(isDaliyChallenge(i)){
                 dailyChallengeIds.push(i);
                 dailyChallenges.push(findByChallengeIdDaliyChallenge[i]);
@@ -273,7 +273,8 @@ contract ChallengeContract {
 
     // 사진으로 유저 챌린지 인증
     function authenticate(uint challengeId,uint userId, string memory today,string memory picURL) public {
-        Challenger[] memory challengers=findByUserIdChallenger[userId];
+        Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
+        Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
         Challenger memory findChallenger;
 
         uint authDayTimes;
@@ -283,17 +284,18 @@ contract ChallengeContract {
         else if(isDonationChallenge(challengeId)) authDayTimes=findByChallengeIdDonationChallenge[challengeId].authDayTimes;
         
         // 챌린저 찾기
-        for(userIdIndex;userIdIndex<challengers.length;userIdIndex++){
-            if(challengers[userIdIndex].challengeId==challengeId){
-                findChallenger=challengers[userIdIndex];
+        for(userIdIndex;userIdIndex<challengersByUser.length;userIdIndex++){
+            if(challengersByUser[userIdIndex].challengeId==challengeId){
+                findChallenger=challengersByUser[userIdIndex];
                 break;
             }
         }
-        for(challengeIdIndex;challengeIdIndex<challengers.length;challengeIdIndex++){
-            if(challengers[challengeIdIndex].userId==userId){
+        for(challengeIdIndex;challengeIdIndex<challengersByChallenge.length;challengeIdIndex++){
+            if(challengersByChallenge[challengeIdIndex].userId==userId){
                 break;
             }
         }
+        
         // 다른날짜라면 하루 인증횟수 초기화
         if(keccak256(abi.encodePacked(findChallenger.today)) != keccak256(abi.encodePacked(today))){
             findChallenger.dailyCount=0;

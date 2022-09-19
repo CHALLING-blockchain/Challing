@@ -62,7 +62,7 @@ public class AuthController {
         }
 
         String token = JwtTokenUtil.getToken(email);
-
+        logger.debug("\n\ntoken:{}\n\n", token);
         return BaseResponse.success(UserLoginResponse.builder()
                 .visited(true)
                 .jwt(token)
