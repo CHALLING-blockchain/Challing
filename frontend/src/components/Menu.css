@@ -1,0 +1,11 @@
+.Menu{
+  display: flex;
+  justify-content: space-around;
+  height: 64px;
+  align-items: center;
+}
+
+.Footer{
+  position: fixed;
+  bottom: 0;
+}
