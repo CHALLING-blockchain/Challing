@@ -3,6 +3,22 @@ pragma solidity ^0.8.0;
 pragma abicoder v2;
 
 contract ChallengeContract {
+    struct Donation{
+        // 기부처pk
+        uint id;
+
+        // 기부챌린지fk
+        uint challengeId;
+
+        // 기부처 이름
+        string name;
+
+        // 기부처 지갑
+        address donationAddress;
+
+        // 기부처 홈페이지
+        string donationURL;
+    }
     struct Vote{
         // 투표pk
         uint id;
@@ -46,14 +62,11 @@ contract ChallengeContract {
         uint totalCount;
         uint dailyCount;
 
-        // 인증한 날
-        string[] dayAuth;
         // 실제 예치금
         uint userDeposit;
 
         // 상금
         int reward;
-
     }
     struct DaliyChallenge {
         // pk
@@ -142,6 +155,7 @@ contract ChallengeContract {
     mapping(uint => Vote) voteRepository;
     mapping(uint => Photo) photoRepository;
     mapping(uint => Challenger) challengerRepository;
+    mapping(uint => Donation) donationRepository;
 
     // 유저의 챌린지
     mapping(uint => Challenger[]) findByUserIdChallenger;
@@ -299,18 +313,15 @@ contract ChallengeContract {
         // 다른날짜라면 하루 인증횟수 초기화
         if(keccak256(abi.encodePacked(findChallenger.today)) != keccak256(abi.encodePacked(today))){
             findChallenger.dailyCount=0;
+            findChallenger.today=today;
         }
         findChallenger.dailyCount+=1;
+        findChallenger.totalCount+=1;
 
-        // 유저 인증날짜 추가
-        // findChallenger.dayAuth.push(today);
 
-        // 하루인증을 다했다면 전체인증 카운트
-        if(authDayTimes==findChallenger.dailyCount){
-            findChallenger.totalCount+=1;
-            findChallenger.dailyCount=0;
-        }
-
+        // 하루인증횟수 초과시 예외
+        require(authDayTimes<findChallenger.dailyCount,"One day authentication exceeded");
+    
         // challengr에 사진url이랑 사진의 날짜 저장해서 신고하기 당했을 때 사용하기
         Photo storage photo=photoRepository[photoSequence];
         photo.id=photoSequence++;
@@ -339,16 +350,7 @@ contract ChallengeContract {
         findByChallengeIdVote[challengeId].push(vote);
 
     }
-    // // 챌린지의 투표 리스트
-    // function getVoteList(uint challengeId) public view returns(Vote[100] memory){
-    //     Vote[100] memory voteList;
-
-    //     for(uint i=0;i<voteSequence;i++){
-    //         if(findByChallengeIdVote[challengeId][i].id!=0)
-    //             voteList[i]=findByChallengeIdVote[challengeId][i];
-    //     }
-    //     return voteList;
-    // }
+ 
     
     // 찬반 투표
     function voting(uint userId,uint challengeId, uint voteId, bool pass) public{
@@ -365,16 +367,8 @@ contract ChallengeContract {
         Vote memory vote=findByChallengeIdVote[challengeId][voteId];
 
         // 노인정일시 챌린저의 토탈 카운트--
-        if(vote.pass<vote.fail){
-            Challenger storage challenger= challengerRepository[challengerId];
-            // 같은 날의 인증사진일 경우 중복 카운트 방지를 위한 로직
-            for (uint i=0;i<challenger.dayAuth.length;i++){
-                if(keccak256(abi.encodePacked(challenger.dayAuth[i])) == keccak256(abi.encodePacked(vote.photo.timestamp))){
-                    challenger.dayAuth[i]="";
-                    challenger.totalCount--;
-                }
-            }
-        }
+        if(vote.pass<vote.fail) challengerRepository[challengerId].totalCount--;
+
     }
 
     // 일상챌린지 종료
@@ -450,10 +444,13 @@ contract ChallengeContract {
         payable(userAddress).transfer(uint(int(challenger.userDeposit)+challenger.reward));
     }
 
-    // 기부챌린지 종료
+    // // 기부챌린지 종료
     // function endDonationChallenge(uint challengeId) public{
-        
-        
+    //     DonationChallenge storage challenge=findByChallengeIdDonationChallenge[challengeId];
+    //     Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
+    //     challenge.complete=true;
+
+    //     challengers.length
     // }
 
 
