@@ -22,8 +22,8 @@ function ChallengeSearch(){
               <rect y="3" width="360" height="1" rx="0.5" fill="#E5E1FF"/>
               </g>
               <defs>
-              <filter id="filter0_d_214_2049" x="-4" y="0.5" width="368" height="9" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <filter id="filter0_d_214_2049" x="-4" y="0.5" width="368" height="9" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+              <feFlood floodOpacity="0" result="BackgroundImageFix"/>
               <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
               <feOffset dy="1.5"/>
               <feGaussianBlur stdDeviation="2"/>
