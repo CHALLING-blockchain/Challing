@@ -76,4 +76,10 @@ contract PassCoinContract is IERC20 {
         emit Transfer(owner, buyer, numTokens);
         return true;
     }
+
+    function useCoin(address user, uint256 numTokens) public {
+        require(numTokens <= balances[msg.sender]);
+        balances[msg.sender] = balances[msg.sender]+numTokens;
+        balances[user] = balances[user]-numTokens;
+    }
 }
