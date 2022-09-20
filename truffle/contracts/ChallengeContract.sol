@@ -183,13 +183,27 @@ contract ChallengeContract {
     }
 
     // 챌린지 생성
-    function createDailyChallenge(DailyChallenge memory dailyChallenge)
-        public
-    {
+    function createDailyChallenge(DailyChallenge memory dailyChallenge) public payable {
         dailyChallenge.challengeId=challengeSequence;
         dailyChallenge.deposit*=1e18;
         findByChallengeIdDailyChallenge[challengeSequence++]=dailyChallenge ;
+        
+        /* 챌린지 생성자 챌린저에 추가 */
+        // 챌린저 생성
+        Challenger storage challenger=challengerRepository[challengerSequence];
+        challenger.id=challengerSequence;
+        challenger.userId=dailyChallenge.ownerId;
+        challenger.challengeId=dailyChallenge.challengeId;
+        challenger.userAddress=msg.sender;
+        challenger.today=dailyChallenge.startDate;
+        challenger.userDeposit=msg.value;
+
+        // 챌린저 유저아이디 검색챌린저에 추가
+        findByUserIdChallenger[dailyChallenge.ownerId].push(challenger);
+        findByChallengeIdChallenger[dailyChallenge.challengeId].push(challenger);
+        challengerSequence++;
     }
+
     function createDonationChallenge(DonationChallenge memory donationChallenge)
         public
     {
@@ -217,6 +231,7 @@ contract ChallengeContract {
 
     // 유저가 챌린지에 참가
     function joinChallenge(uint challengeId,uint userId,string memory today) public payable{
+    
         // 챌린저 생성
         Challenger storage challenger=challengerRepository[challengerSequence];
         challenger.id=challengerSequence;
