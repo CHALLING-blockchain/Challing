@@ -72,7 +72,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       //   to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
       //   from: accounts[0],
       //   value: value,
-      //   data:"6368616c6c656e6765"
+      //   data: "ecb18ceba78120ecb0b8ec97ac",
       // };
       // console.log("txObject: ", txObject);
 
@@ -81,7 +81,6 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       //   hashObject = receipt;
       // });
       // send transaction end -------------------------------
-
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
