@@ -5,19 +5,19 @@ module.exports = {
       network_id: "*",
       port: 7545,
       host: "127.0.0.1",
-      gasPrice: 25000000000
-    }
+      gasPrice: 250000000000,
+    },
   },
   mocha: {},
   compilers: {
     solc: {
-      version: "0.8.14"
-    }
+      version: "0.8.14",
+    },
   },
   solc: {
     optimizer: {
-        enabled: true,
-        runs: 200
-    }
-  }
+      enabled: true,
+      runs: 200,
+    },
+  },
 };

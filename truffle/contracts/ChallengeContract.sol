@@ -2,7 +2,9 @@
 pragma solidity ^0.8.0;
 pragma abicoder v2;
 
-contract ChallengeContract {
+import "./PassCoinContract.sol";
+
+contract ChallengeContract is PassCoinContract{
     struct Donation{
         // 기부처pk
         uint id;
@@ -30,6 +32,7 @@ contract ChallengeContract {
         uint startTimestamp;
         // 투표에 참여한 유저
         uint[] userIdList;
+        bool[] userVoteList;
     }
 
     struct Photo {
@@ -347,10 +350,10 @@ contract ChallengeContract {
     }
 
     // 신고하기
-    function report(uint challengeId,uint photoId) public{
+    function report(uint challengeId,uint photoId,uint userId) public{
         Photo memory findPhoto=photoRepository[photoId];
         
-        Vote memory vote=voteRepository[voteSequence];
+        Vote storage vote=voteRepository[voteSequence];
         vote.id=voteSequence++;
         vote.challengeId=challengeId;
         vote.photo=findPhoto;
@@ -358,28 +361,59 @@ contract ChallengeContract {
 
         findByChallengeIdVote[challengeId].push(vote);
 
+        voting(userId, challengeId, vote.id, false); // 투표한 사람 자동으로 반대 투표
     }
- 
+
     
     // 찬반 투표
     function voting(uint userId,uint challengeId, uint voteId, bool pass) public{
         Vote storage findVote=voteRepository[voteId];
-        if(pass) findVote.pass++;
-        else findVote.fail++;
-        
+
         findVote.userIdList.push(userId);
-        findByChallengeIdVote[challengeId][voteId]=findVote;
+        if(pass){
+            findVote.pass++;
+            findVote.userVoteList.push(true);
+        }
+        else{
+            findVote.fail++;
+            findVote.userVoteList.push(false);
+        }
+
+        uint voteIndex = 0;
+        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
+            voteIndex++;
+        
+        findByChallengeIdVote[challengeId][voteIndex] = findVote;
     }
 
     // 투표 종료
-    function endVote(uint challengeId,uint voteId,uint challengerId) public {
-        Vote memory vote=findByChallengeIdVote[challengeId][voteId];
+    function endVote(uint challengeId,uint voteId,uint challengerId) public payable{
+        uint voteIndex = 0;
+        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
+            voteIndex++;
 
+        Vote memory vote=findByChallengeIdVote[challengeId][voteIndex];
+
+        /* 패스코인 지급 로직 */
         // 노인정일시 챌린저의 토탈 카운트--
-        if(vote.pass<vote.fail) challengerRepository[challengerId].totalCount--;
-
-        // 패스코인 지급 로직
-
+        if(vote.pass<vote.fail){
+            for (uint256 i = 0; i < vote.userIdList.length; i++) {
+                if(!vote.userVoteList[i]){
+                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];             
+                    transfer(challenger.userAddress, 1);
+                }
+            }
+            //Photo memory photo = vote.photo;
+            challengerRepository[challengerId].totalCount--;
+        }
+        else{
+            for (uint256 i = 0; i < vote.userIdList.length; i++) {
+                if(vote.userVoteList[i]){
+                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];
+                    transfer(challenger.userAddress, 1);
+                }
+            }
+        }
     }
 
     // 일상챌린지 종료
@@ -441,7 +475,7 @@ contract ChallengeContract {
     }
 
     // 정산하기
-    function refund(uint challengeId,uint userId)public payable{
+    function refund(uint challengeId,uint userId) public payable{
         Challenger[] memory challengers= findByUserIdChallenger[userId];
         Challenger memory challenger;
         for(uint i=0;i<challengers.length;i++){
@@ -482,16 +516,16 @@ contract ChallengeContract {
     // 챌린지 디테일 
     function getChallengeDetail(uint challengeId) public view returns(Challenger[] memory,Photo[] memory,Vote[] memory){
         Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
-        Photo[] memory photoList;
+        Photo[] memory photoList = new Photo[](photoSequence-1);
 
-        // uint photoCount=0;
-        // for(uint i=0;i<challengers.length;i++){
-        //     Challenger memory challenger=challengers[i];
-        //     Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-        //     for(uint j=0;j<photo.length;i++){
-        //         photoList[photoCount++]=photo[j];
-        //     }
-        // }
+        uint photoCount=0;
+        for(uint i=0;i<challengers.length;i++){
+            Challenger memory challenger=challengers[i];
+            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
+            for(uint j=0;j<photo.length;j++){
+                photoList[photoCount++] = photo[j];
+            }
+        }
         
         return(challengers,photoList,findByChallengeIdVote[challengeId]);
     }
