@@ -65,10 +65,10 @@ const test = async () => {
     userDeposit: [],
     complete: false,
   };
-  accounts.forEach(async (account, index) => {
-    const blance = await web3.eth.getBalance(account);
-    console.log(index + ":", blance, "ether");
-  });
+  // accounts.forEach(async (account, index) => {
+  //   const blance = await web3.eth.getBalance(account);
+  //   console.log(index + ":", blance, "ether");
+  // });
 
   // const createDaliyChallenge = await contract.methods
   //   .createDailyChallenge(daliyChallenge)
@@ -90,46 +90,64 @@ const test = async () => {
   //   .catch(console.error);
   // console.log(joinChallenge2);
 
-  const authenticate1 = await contract.methods
-    .authenticate(1, 2, "220919", "picURL")
-    .send({
-      from: accounts[1],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(authenticate1);
+  // const authenticate1 = await contract.methods
+  //   .authenticate(1, 2, "220919", "picURL")
+  //   .send({
+  //     from: accounts[1],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(authenticate1);
 
-  const endDailyChallenge = await contract.methods
-    .endDailyChallenge(1)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(endDailyChallenge);
+  // const endDailyChallenge = await contract.methods
+  //   .endDailyChallenge(1)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(endDailyChallenge);
 
-  const refund1 = await contract.methods
-    .refund(1, 1)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(refund1);
+  // const refund1 = await contract.methods
+  //   .refund(1, 1)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(refund1);
 
-  const refund2 = await contract.methods
-    .refund(1, 2)
-    .send({
-      from: accounts[1],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(refund2);
+  // const refund2 = await contract.methods
+  //   .refund(1, 2)
+  //   .send({
+  //     from: accounts[1],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(refund2);
 
-  await accounts.forEach(async (account, index) => {
-    const blance = await web3.eth.getBalance(account);
-    console.log(index + ":", blance, "ether");
-  });
+  // await accounts.forEach(async (account, index) => {
+  //   const blance = await web3.eth.getBalance(account);
+  //   console.log(index + ":", blance, "ether");
+  // });
+
+  // const reportTest = await contract.methods
+  //   .report(1, 1, 1)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(reportTest);
+
+  // const votingTest = await contract.methods
+  //   .voting(1, 1, 1, false)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(votingTest);
 
   // const getMyChallenge = await contract.methods
   // .getMyChallenge(1)
@@ -139,13 +157,13 @@ const test = async () => {
   // .catch(console.error);
   // console.log(getMyChallenge)
 
-  // const getChallengeDetail = await contract.methods
-  // .getChallengeDetail(1)
-  // .call({
-  //   from: accounts1,
-  // })
-  // .catch(console.error);
-  // console.log(getChallengeDetail)
+  const getChallengeDetail = await contract.methods
+    .getChallengeDetail(1)
+    .call({
+      from: accounts[1],
+    })
+    .catch(console.error);
+  console.log(getChallengeDetail[2][0]["userVoteList"]);
 
   // const getAllChallenge = await contract.methods
   //   .getAllChallenge()
