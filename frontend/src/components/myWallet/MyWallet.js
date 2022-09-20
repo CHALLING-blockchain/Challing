@@ -14,6 +14,9 @@ function MyWallet() {
   const [errorMessage, setErrorMessage] = useState("");
   // challenge transaction Data
   const [txData, setTxData] = useState("");
+  // ETH -> KRW
+  const [exData, setExData] = useState("");
+
   // get active account and balance data from useWeb3 hook
   const {
     connect,
@@ -38,7 +41,7 @@ function MyWallet() {
       accounts = account[0];
 
       //Etherscan API 
-      const url =
+      const etherscan_url =
         process.env.REACT_APP_ETHERSCAN_API_URL +
         `&action=txlist&address=` +
         accounts +
@@ -49,9 +52,14 @@ function MyWallet() {
         `&apikey=` +
         process.env.REACT_APP_ETHERSCAN_API_KEY;
 
-      // url 요청
-      axios.get(url).then(function (result) {
-        console.log("etherscan api url: " + url);
+      //Crypto API
+      const crypto_url = process.env.REACT_APP_CRYPTO_API_URL +
+        `&api_key=` + 
+        process.env.REACT_APP_CRYPTO_API_KEY;
+
+      // Etherscan API 요청
+      axios.get(etherscan_url).then(function (result) {
+        console.log("etherscan api url: " + etherscan_url);
         const data = result.data.result;
         const tmpData = [];
         for (let index = 0; index < data.length; index++) {
@@ -80,6 +88,14 @@ function MyWallet() {
         }
         setTxData(tmpData);
       });
+
+      // Crypto API 요청
+      await axios.get(crypto_url).then(function(result){
+        console.log("crypto api url: ",crypto_url);
+        const KRW = result.data.KRW;
+        console.log("KRW"+KRW);
+        setExData(KRW);
+      });
     }
     getAccount();
   }, []);
@@ -97,7 +113,7 @@ function MyWallet() {
   // Unix timestamp to date
   function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
-    var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
     var year = a.getFullYear();
     var month = months[a.getMonth()];
     var date = a.getDate();
@@ -134,13 +150,13 @@ function MyWallet() {
       {/* instantiate web3 only after a user clicks the button */}
       {/* avoid doing it automatically */}
       {!exist ? (
-        // 이것도 웹브라우저 사용자만 활성화
+        // 웹브라우저 사용자만 활성화
         <button onClick={connect}>메타마스크 지갑 연동</button>
       ) : (
         <>
           {/* <p>ACCOUNT : {activeAccount}</p> */}
           <span>Etherium: <big><strong>{activeBalance}</strong></big> ETH</span>
-          <p>== $</p>
+          <p> ≒ {exData * activeBalance}₩</p>
           {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
           {/* <button onClick={disconnect}>Disconnect</button> */}
           <br></br>
@@ -148,7 +164,7 @@ function MyWallet() {
           <span>
             Transaction History<br></br>
            {txRendering()}{""}
-           <a href={'https://ropsten.etherscan.io/address/'+activeAccount}>Etherscan에서 계정보기</a>
+           <a href={'https://ropsten.etherscan.io/address/'+activeAccount}>Etherscan에서 거래내역 상세보기</a>
            <br></br>
            <br></br>
            <br></br>
