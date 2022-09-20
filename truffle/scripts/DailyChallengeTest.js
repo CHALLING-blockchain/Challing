@@ -41,7 +41,7 @@ const test = async () => {
   })
   // 챌린지 생성
   const createDailyChallenge = await contract.methods
-    .createDaliyChallenge(daliyChallenge)
+    .createDailyChallenge(daliyChallenge)
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,

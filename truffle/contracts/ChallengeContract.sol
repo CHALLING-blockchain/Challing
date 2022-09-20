@@ -7,9 +7,6 @@ contract ChallengeContract {
         // 기부처pk
         uint id;
 
-        // 기부챌린지fk
-        uint challengeId;
-
         // 기부처 이름
         string name;
 
@@ -151,6 +148,7 @@ contract ChallengeContract {
     uint voteSequence = 1;
     uint photoSequence = 1;
     uint challengerSequence=1;
+    uint donationSequence=1;
     
     mapping(uint => DailyChallenge) findByChallengeIdDailyChallenge;
     mapping(uint => DonationChallenge) findByChallengeIdDonationChallenge;
@@ -293,24 +291,18 @@ contract ChallengeContract {
         Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
         Challenger memory findChallenger;
 
-        uint authDayTimes;
         uint userIdIndex=0;
         uint challengeIdIndex=0;
-        if(isDailyChallenge(challengeId)) authDayTimes=findByChallengeIdDailyChallenge[challengeId].authDayTimes;
-        else if(isDonationChallenge(challengeId)) authDayTimes=findByChallengeIdDonationChallenge[challengeId].authDayTimes;
         
         // 챌린저 찾기
-        for(userIdIndex;userIdIndex<challengersByUser.length;userIdIndex++){
-            if(challengersByUser[userIdIndex].challengeId==challengeId){
-                findChallenger=challengersByUser[userIdIndex];
-                break;
-            }
-        }
-        for(challengeIdIndex;challengeIdIndex<challengersByChallenge.length;challengeIdIndex++){
-            if(challengersByChallenge[challengeIdIndex].userId==userId){
-                break;
-            }
-        }
+        while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
+        while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
+        findChallenger=challengersByUser[userIdIndex];
+        
+
+        uint authDayTimes;
+        if(isDailyChallenge(challengeId)) authDayTimes=findByChallengeIdDailyChallenge[challengeId].authDayTimes;
+        else if(isDonationChallenge(challengeId)) authDayTimes=findByChallengeIdDonationChallenge[challengeId].authDayTimes;
         
         // 다른날짜라면 하루 인증횟수 초기화
         if(keccak256(abi.encodePacked(findChallenger.today)) != keccak256(abi.encodePacked(today))){
@@ -319,7 +311,6 @@ contract ChallengeContract {
         }
         findChallenger.dailyCount+=1;
         findChallenger.totalCount+=1;
-
 
         // 하루인증횟수 초과시 예외
         // require(authDayTimes<findChallenger.dailyCount,"One day authentication exceeded");
@@ -334,6 +325,7 @@ contract ChallengeContract {
 
         findByChallengerIdPhoto[findChallenger.id].push(photo);
         
+        // 챌린저 업데이트
         findByUserIdChallenger[userId][userIdIndex]=findChallenger;
         findByChallengeIdChallenger[challengeId][challengeIdIndex]=findChallenger;
         challengerRepository[findChallenger.id]=findChallenger;
@@ -359,7 +351,7 @@ contract ChallengeContract {
         Vote storage findVote=voteRepository[voteId];
         if(pass) findVote.pass++;
         else findVote.fail++;
-
+        
         findVote.userIdList.push(userId);
         findByChallengeIdVote[challengeId][voteId]=findVote;
     }
@@ -461,10 +453,14 @@ contract ChallengeContract {
         if((count*100)/challengers.length>=80){
             Donation memory donation =donationRepository[challenge.donationId];
             challenge.success=true;
-
+            for(uint i=0;i<challengers.length;i++){
+                challengers[i].userDeposit=0;
+            }
+        
             address donationAddress=donation.donationAddress;
             payable(donationAddress).transfer(challenge.totalDonation);
         }
+
     }
 
 
@@ -483,5 +479,23 @@ contract ChallengeContract {
         // }
         
         return(challengers,photoList,findByChallengeIdVote[challengeId]);
+    }
+
+    // 기부처 생성
+    function addDonation(Donation memory donation) public {
+        donation.id=donationSequence;
+        donationRepository[donationSequence++]=donation;
+    }
+
+    // 기부처 목록 반환
+    function getAllDonation() public view returns(uint[] memory,Donation[] memory) {
+        uint[] memory donationIds=new uint[](donationSequence);
+        Donation[] memory donationList=new Donation[](donationSequence);
+
+        for(uint i=1;i<=challengeSequence;i++){
+            donationIds[i]=i;
+            donationList[i]=donationRepository[i];
+        }
+        return (donationIds,donationList);
     }
 }
