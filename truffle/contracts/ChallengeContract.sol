@@ -213,6 +213,8 @@ contract ChallengeContract is PassCoinContract{
         donationChallenge.challengeId=challengeSequence;
         donationChallenge.setDonaion*=1e18;
         findByChallengeIdDonationChallenge[challengeSequence++]=donationChallenge ;
+
+        /* 챌린지 생성자 챌린저에 추가 */
     }
 
     // 전체 챌린지 조회
@@ -251,8 +253,8 @@ contract ChallengeContract is PassCoinContract{
 
         // 챌린지 아이디로 일상챌린지인지 기부챌린지인지 판단 후 유저 추가
         if(isDailyChallenge(challengeId)){
-            DailyChallenge storage challenge=findByChallengeIdDailyChallenge[challengeId];
-            challenge.totalDeposit+=msg.value; 
+            findByChallengeIdDailyChallenge[challengeId].totalDeposit+=msg.value;
+            
         }
 
         else if(isDonationChallenge(challengeId)){
@@ -294,7 +296,7 @@ contract ChallengeContract is PassCoinContract{
         for(uint i=0;i<challengers.length;i++){
             Challenger memory challenger=challengers[i];
             Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-            for(uint j=0;j<photo.length;i++){
+            for(uint j=0;j<photo.length;j++){
                 photoList[photoCount++]=photo[j];
             }
         }
@@ -387,34 +389,34 @@ contract ChallengeContract is PassCoinContract{
     }
 
     // 투표 종료
-    function endVote(uint challengeId,uint voteId,uint challengerId) public payable{
-        uint voteIndex = 0;
-        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
-            voteIndex++;
+    // function endVote(uint challengeId,uint voteId,uint challengerId) public payable{
+    //     uint voteIndex = 0;
+    //     while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
+    //         voteIndex++;
 
-        Vote memory vote=findByChallengeIdVote[challengeId][voteIndex];
+    //     Vote memory vote=findByChallengeIdVote[challengeId][voteIndex];
 
-        /* 패스코인 지급 로직 */
-        // 노인정일시 챌린저의 토탈 카운트--
-        if(vote.pass<vote.fail){
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(!vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];             
-                    transfer(challenger.userAddress, 1);
-                }
-            }
-            //Photo memory photo = vote.photo;
-            challengerRepository[challengerId].totalCount--;
-        }
-        else{
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];
-                    transfer(challenger.userAddress, 1);
-                }
-            }
-        }
-    }
+    //     /* 패스코인 지급 로직 */
+    //     // 노인정일시 챌린저의 토탈 카운트--
+    //     if(vote.pass<vote.fail){
+    //         for (uint256 i = 0; i < vote.userIdList.length; i++) {
+    //             if(!vote.userVoteList[i]){
+    //                 Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];             
+    //                 transfer(challenger.userAddress, 1);
+    //             }
+    //         }
+    //         //Photo memory photo = vote.photo;
+    //         challengerRepository[challengerId].totalCount--;
+    //     }
+    //     else{
+    //         for (uint256 i = 0; i < vote.userIdList.length; i++) {
+    //             if(vote.userVoteList[i]){
+    //                 Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];
+    //                 transfer(challenger.userAddress, 1);
+    //             }
+    //         }
+    //     }
+    // }
 
     // 일상챌린지 종료
     function endDailyChallenge(uint challengeId) public{
