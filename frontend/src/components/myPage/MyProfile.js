@@ -28,7 +28,7 @@ function MyProfile(){
             <p>입력하신 소개 내용이 없습니다.</p>
           </div>
           <svg width="360" height="8" viewBox="0 0 360 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="360" height="8" fill="#E5E6FF" fill-opacity="0.5"/>
+            <rect width="360" height="8" fill="#E5E6FF" fillOpacity="0.5"/>
           </svg>
           <p>이메일</p>
           <p>관심사</p>
