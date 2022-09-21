@@ -1,13 +1,15 @@
 package com.ssafy.db.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserInterest {
     @Id
     @GeneratedValue
@@ -21,5 +23,9 @@ public class UserInterest {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interest_id")
     private Interest interest;
+
+    public static UserInterest of(Interest interest, User user){
+        return UserInterest.builder().interest(interest).user(user).build();
+    }
 
 }

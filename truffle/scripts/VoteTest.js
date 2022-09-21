@@ -40,133 +40,127 @@ const test = async () => {
 
     complete: false,
   };
-  const donationChallenge = {
-    challengeId: 0,
-    interestId: 0,
-    ownerId: 0,
-    donationId: 0,
-    name: "myChallene",
-    desc: "desc",
-    setDonaion: 10,
-    mainPicURL: "naver.com",
-    goodPicURL: "naver.com",
-    badPicURL: "naver.com",
-    authWeekTimes: 3,
-    authDayTimes: 1,
-    startTime: 10,
-    endTime: 11,
-    startDate: "2022.09.12",
-    endDate: "2022.09.12",
-    personnel: 10,
-    totalDonation: 0,
-    userId: [],
-    userAddress: [],
-    count: [],
-    userDeposit: [],
-    complete: false,
-  };
-  await accounts.forEach(async (account, index) => {
-    const balance = await contract.methods
-    .balanceOf(account)
-    .call({
-      from: accounts[index],
-    })
-    .catch(console.error);
-    console.log(index + ":", balance, "ether");
-  });
-
-  const createDaliyChallenge = await contract.methods
-    .createDailyChallenge(daliyChallenge)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-      value: 1e18,
-    })
-    .catch(console.error);
-  console.log(createDaliyChallenge);
-
-  // 유저 10명 참가
-  accounts.slice(1).forEach(async (account, index) => {
-    const joinChallenge = await contract.methods
-      .joinChallenge(1, index + 2, "220919")
-      .send({
-        from: account,
-        gasLimit: 3_000_000,
-        value: 1e18,
-      })
-      .catch(console.error);
-  });
-  console.log("유저 참여 완료");
-
-
-  //   유저 1이 
   
-  const authenticate = await contract.methods
-    .authenticate(1, 1, `220921`, "picURL")
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
- 
-  console.log("유저 인증 완료");
 
-  const reportTest = await contract.methods
-    .report(1, 1, 1)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log("신고완료");
+  // 패스코인 지급 확인
+  // await accounts.forEach(async (account, index) => {
+  //   const balance = await contract.methods
+  //     .balanceOf(account)
+  //     .call({
+  //       from: accounts[index],
+  //     })
+  //     .catch(console.error);
+  //   console.log(index + ":", balance, "PASS");
+  // });
 
-  for (let i = 2; i <= 6; i++) {
-    const votingTest1 = await contract.methods
-      .voting(i, 1, 1, false)
-      .send({
-        from: accounts[0],
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  }
+  // // 유저2가 일상 챌린지 생성
+  // const createDaliyChallenge = await contract.methods
+  //   .createDailyChallenge(daliyChallenge)
+  //   .send({
+  //     from: accounts[1],
+  //     gasLimit: 3_000_000,
+  //     value: 1e18,
+  //   })
+  //   .catch(console.error);
+  // console.log("일상챌린지 생성");
 
-  for (let i = 7; i <= 10; i++) {
-    const votingTest1 = await contract.methods
-      .voting(i, 1, 1, true)
-      .send({
-        from: accounts[0],
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  }
+  // // 유저3부터 8명 참가
+  // accounts.slice(2).forEach(async (account, index) => {
+  //   const joinChallenge = await contract.methods
+  //     .joinChallenge(1, index + 2, "220919")
+  //     .send({
+  //       from: account,
+  //       gasLimit: 3_000_000,
+  //       value: 1e18,
+  //     })
+  //     .catch(console.error);
+  // });
+  // console.log("유저 참여 완료");
 
-  const endVoteTest = await contract.methods
-    .endVote(1, 1, 1)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log("endVoteTest");
+  // // 유저 2 인증
+  // const authenticate = await contract.methods
+  //   .authenticate(1, 1, `220921`, "picURL")
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log("유저 인증 완료");
+
+  // // 인증사진 신고 (유저 3번이 2번의 사진 신고)
+  // const reportTest = await contract.methods
+  //   .report(1, 1, 2)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log("신고완료");
+
+  // // 유저 3번부터 6번까지 fail 투표
+  // for (let i = 3; i <= 7; i++) {
+  //   const votingTest1 = await contract.methods
+  //     .voting(i, 1, 1, false)
+  //     .send({
+  //       from: accounts[i - 1],
+  //       gasLimit: 3_000_000,
+  //     })
+  //     .catch(console.error);
+  // }
+
+  // // 유저 7번부터 10번까지 pass 투표
+  // for (let i = 8; i <= 10; i++) {
+  //   const votingTest1 = await contract.methods
+  //     .voting(i, 1, 1, true)
+  //     .send({
+  //       from: accounts[i - 1],
+  //       gasLimit: 3_000_000,
+  //     })
+  //     .catch(console.error);
+  // }
+
+  // // 투표 종료(투표 결과에 따라 패스코인 지급 - fail 투표한 사람에게 지급)
+  // const endVoteTest = await contract.methods
+  //   .endVote(1, 1, 1)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log("endVoteTest");
+
+  
+
+  // 패스코인사용
+  // const usePasscoinTest = await contract.methods
+  //   .usePasscoin(2,1)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(usePasscoinTest);
 
 
+  // 패스코인 조회
   await accounts.forEach(async (account, index) => {
     const balance = await contract.methods
-    .balanceOf(account)
+      .balanceOf(account)
+      .call({
+        from: accounts[index],
+      })
+      .catch(console.error);
+    console.log(index + ":", balance, "PASS");
+  });
+
+  // 상세 정보 조회
+  const getChallengeDetail = await contract.methods
+    .getChallengeDetail(1)
     .call({
-      from: accounts[index],
+      from: accounts[0],
     })
     .catch(console.error);
-    console.log(index + ":", balance, "ether");
-  });
-  const getChallengeDetail = await contract.methods
-  .getChallengeDetail(1)
-  .call({
-    from: accounts[0],
-  })
-  .catch(console.error);
-  console.log(getChallengeDetail[0][0])
-
+  console.log(getChallengeDetail[0][1]);
 };
 
 test();

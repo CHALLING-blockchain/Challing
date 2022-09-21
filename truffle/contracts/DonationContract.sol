@@ -26,14 +26,12 @@ contract DonationContract{
     }
 
     // 기부처 목록 반환
-    function getAllDonation() public view returns(uint[] memory,Donation[] memory) {
-        uint[] memory donationIds=new uint[](donationSequence);
-        Donation[] memory donationList=new Donation[](donationSequence);
+    function getAllDonation() public view returns(Donation[] memory) {
+        Donation[] memory donationList=new Donation[](donationSequence-1);
 
-        for(uint i=1;i<=donationSequence;i++){
-            donationIds[i]=i;
-            donationList[i]=donationRepository[i];
+        for(uint i=0;i<donationSequence-1;i++){
+            donationList[i]=donationRepository[i+1];
         }
-        return (donationIds,donationList);
+        return donationList;
     }
 }

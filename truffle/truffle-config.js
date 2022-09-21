@@ -6,7 +6,6 @@ module.exports = {
       port: 7545,
       host: "127.0.0.1",
       gasPrice: 2500000000,
-
     },
   },
   mocha: {},
@@ -16,9 +15,8 @@ module.exports = {
     },
   },
   solc: {
-    
     version: "^0.8.0",
-    
+
     optimizer: {
       enabled: true,
       runs: 200,

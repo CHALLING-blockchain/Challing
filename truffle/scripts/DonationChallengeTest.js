@@ -90,7 +90,7 @@ const test = async () => {
   
   // 유저 1~8는 100% 인증, 유저9는 노인증
   
-  for(let userIdx=0;userIdx<5;userIdx++){
+  for(let userIdx=0;userIdx<9;userIdx++){
     const authenticate = await contract.methods
       .authenticate(1, userIdx+1, "day", "picURL")
       .send({
@@ -110,16 +110,16 @@ const test = async () => {
     .catch(console.error);
   console.log("챌린지 종료");
 
-  accounts.slice(0,9).forEach(async (account,index)=>{
-    const refund = await contract.methods
-      .refund(1, index+1)
-      .send({
-        from: account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  })
-  console.log("정산 완료");
+  // accounts.slice(0,9).forEach(async (account,index)=>{
+  //   const refund = await contract.methods
+  //     .refund(1, index+1)
+  //     .send({
+  //       from: account,
+  //       gasLimit: 3_000_000,
+  //     })
+  //     .catch(console.error);
+  // })
+  // console.log("정산 완료");
 
   await accounts.forEach(async (account,index)=>{
     const blance= await web3.eth.getBalance(account)

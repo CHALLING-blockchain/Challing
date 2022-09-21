@@ -15,9 +15,10 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-  output:
-    ansi:
-      enabled: always
+  output.ansi.enabled: always
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 logging:
   level:
@@ -33,4 +34,4 @@ com:
   ssafy:
     kakao:
       client_id: 07ca3e6446c8bfb6689ba8989b85cce4
-      redirect_uri: http://localhost/loginresult
+      redirect_uri: http://localhost:3000/loginresult
