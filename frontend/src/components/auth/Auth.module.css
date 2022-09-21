@@ -34,9 +34,8 @@
 }
 
 .loginButton{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
     margin: 16px;
     width: 328px;
     height: 64px;

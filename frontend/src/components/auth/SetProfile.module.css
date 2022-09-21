@@ -1,0 +1,22 @@
+.title{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.photoBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo{
+    height: 100px;
+    width: 100px;
+}
+.circle{
+    height: 100px;
+    width: 100px;
+}
