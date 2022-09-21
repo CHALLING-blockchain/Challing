@@ -1,0 +1,66 @@
+.MyPageHeader{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  /* identical to box height, or 24px */
+  text-align: center;
+  letter-spacing: -0.01em;
+  
+  background: linear-gradient(268.03deg, #926DFF 42.47%, #8497FF 57.84%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* text-fill-color: transparent; */
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.UserProfile{
+  width: 328px;
+  margin: 16px;
+  display: flex;
+  /* justify-content: flex-start; */
+}
+.ChallengeStatus{
+  width: 328px;
+  margin-left: 16px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+.ChallengeStatusBar{
+  /* Rectangle 145 */
+
+width: 328px;
+height: 40px;
+margin: 16px 8px 8px 16px;
+background: linear-gradient(252.68deg, #9272FF 27.32%, #8596FF 93.21%);
+border-radius: 20px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+text-align: center;
+
+font-size: 10px;
+color: white;
+font-weight: 600;
+}
+
+.MyShotZip{
+  display: flex;
+  width: 328px;
+  margin: 16px 8px 8px 16px;
+}
+.CreateChallenge{
+  display: flex;
+  width: 328px;
+  margin: 16px 8px 8px 16px;
+}
+.FavoriteChallenge{
+  display: flex;
+  width: 328px;
+  margin: 16px 8px 8px 16px;
+}
