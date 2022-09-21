@@ -20,3 +20,13 @@
     height: 100px;
     width: 100px;
 }
+
+.inputBox{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    padding: 16px;
+}
+
+.inputTag{
+    border-bottom: solid 1px #E5E6FF;
+}

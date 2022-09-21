@@ -1,0 +1,17 @@
+.buttonBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.NextButton{
+    width: 328px;
+    height: 48px;
+    margin: 16px;
+    background: linear-gradient(45deg, #8397ff, #926bff);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
