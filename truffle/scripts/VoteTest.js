@@ -65,10 +65,15 @@ const test = async () => {
     userDeposit: [],
     complete: false,
   };
-  //   accounts.forEach(async (account, index) => {
-  //     const blance = await web3.eth.getBalance(account);
-  //     console.log(index + ":", blance, "ether");
-  //   });
+  await accounts.forEach(async (account, index) => {
+    const balance = await contract.methods
+    .balanceOf(account)
+    .call({
+      from: accounts[index],
+    })
+    .catch(console.error);
+    console.log(index + ":", balance, "ether");
+  });
 
   const createDaliyChallenge = await contract.methods
     .createDailyChallenge(daliyChallenge)
@@ -81,9 +86,9 @@ const test = async () => {
   console.log(createDaliyChallenge);
 
   // 유저 10명 참가
-  accounts.forEach(async (account, index) => {
+  accounts.slice(1).forEach(async (account, index) => {
     const joinChallenge = await contract.methods
-      .joinChallenge(1, index + 1, "220919")
+      .joinChallenge(1, index + 2, "220919")
       .send({
         from: account,
         gasLimit: 3_000_000,
@@ -93,30 +98,17 @@ const test = async () => {
   });
   console.log("유저 참여 완료");
 
-  const joinChallenge2 = await contract.methods
-    .joinChallenge(1, 2, "220919")
+
+  //   유저 1이 
+  
+  const authenticate = await contract.methods
+    .authenticate(1, 1, `220921`, "picURL")
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
-      value: 1e18,
     })
     .catch(console.error);
-  console.log(joinChallenge2);
-
-  //   유저 1,2는 100% 인증
-  //   유저 3,4는 80% 인증
-  //   유저 5,6는 60% 인증
-  //   유저 7,8는 40% 인증
-  //   유저 9,10는 20% 인증
-  for (let userIdx = 0; userIdx < 10; userIdx++) {
-    const authenticate = await contract.methods
-      .authenticate(1, userIdx + 1, `${userIdx}`, "picURL")
-      .send({
-        from: accounts[userIdx],
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  }
+ 
   console.log("유저 인증 완료");
 
   const reportTest = await contract.methods
@@ -126,9 +118,9 @@ const test = async () => {
       gasLimit: 3_000_000,
     })
     .catch(console.error);
-  //console.log(reportTest);
+  console.log("신고완료");
 
-  for (let i = 2; i <= 5; i++) {
+  for (let i = 2; i <= 6; i++) {
     const votingTest1 = await contract.methods
       .voting(i, 1, 1, false)
       .send({
@@ -138,7 +130,7 @@ const test = async () => {
       .catch(console.error);
   }
 
-  for (let i = 6; i <= 10; i++) {
+  for (let i = 7; i <= 10; i++) {
     const votingTest1 = await contract.methods
       .voting(i, 1, 1, true)
       .send({
@@ -157,16 +149,24 @@ const test = async () => {
     .catch(console.error);
   console.log("endVoteTest");
 
-  const getChallengeDetail = await contract.methods
-    .getChallengeDetail(1)
+
+  await accounts.forEach(async (account, index) => {
+    const balance = await contract.methods
+    .balanceOf(account)
     .call({
-      from: accounts[0],
+      from: accounts[index],
     })
     .catch(console.error);
-  console.log(
-    getChallengeDetail[2][0]["userIdList"],
-    getChallengeDetail[2][0]["userVoteList"]
-  );
+    console.log(index + ":", balance, "ether");
+  });
+  const getChallengeDetail = await contract.methods
+  .getChallengeDetail(1)
+  .call({
+    from: accounts[0],
+  })
+  .catch(console.error);
+  console.log(getChallengeDetail[0][0])
+
 };
 
 test();

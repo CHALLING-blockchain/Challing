@@ -418,8 +418,22 @@ contract ChallengeContract is PassCoinContract{
                     transfer(challenger.userAddress, 1);
                 }
             }
-            //Photo memory photo = vote.photo;
+            //챌린저 업데이트
+            uint userId=challengerRepository[challengerId].userId;
             challengerRepository[challengerId].totalCount--;
+            
+            Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
+            Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
+
+            uint userIdIndex=0;
+            uint challengeIdIndex=0;
+        
+            // 챌린저 찾기
+            while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
+            while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
+
+            findByChallengeIdChallenger[challengeId][challengeIdIndex].totalCount--;
+            findByUserIdChallenger[userId][userIdIndex].totalCount--;
         }
         else{
             for (uint256 i = 0; i < vote.userIdList.length; i++) {

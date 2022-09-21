@@ -28,7 +28,7 @@ contract PassCoinContract is IERC20 {
     mapping(address => mapping (address => uint256)) allowed;
 
     // 전체 발행된 토큰량
-    uint256 totalSupply_ = 100000000 ether; 
+    uint256 totalSupply_ = 100000000; 
 
     constructor() {
         balances[msg.sender] = totalSupply_;
