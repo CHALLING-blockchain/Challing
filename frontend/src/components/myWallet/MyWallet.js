@@ -58,40 +58,43 @@ function MyWallet() {
         process.env.REACT_APP_CRYPTO_API_KEY;
 
       // Etherscan API 요청
-      axios.get(etherscan_url).then(function (result) {
-        console.log("etherscan api url: " + etherscan_url);
-        const data = result.data.result;
-        const tmpData = [];
-        for (let index = 0; index < data.length; index++) {
-          const element = {
-            from: data[index].from,
-            to: data[index].to,
-            input: data[index].input,
-            etherValue: Number(
-              web3.utils.fromWei(data[index].value, "ether")
-            ).toFixed(3),
-            sendOrReceive: "",
-            timeStamp: timeConverter(data[index].timeStamp),
-          };
-          // challenge 데이터를 포함한 tx만 tmpData에 push
-          if (element.input.includes("ecb18ceba781")) {
-            // 트렌젝션을 보냈을때
-            // console.log(
-            //   "input=",
-            //   utf8_hex_string_to_string(element.input.substr(2))
-            // );
-            if (element.from.toLowerCase() === accounts.toLowerCase()) {
-              element.sendOrReceive = "↓";
+      axios.get(etherscan_url).then(
+        function (result) {
+          console.log("etherscan api url: " + etherscan_url);
+          const data = result.data.result;
+          const tmpData = [];
+          for (let index = 0; index < data.length; index++) {
+            const element = {
+              from: data[index].from,
+              to: data[index].to,
+              input: data[index].input,
+              etherValue: Number(
+                web3.utils.fromWei(data[index].value, "ether")
+              ).toFixed(3),
+              sendOrReceive: "",
+              timeStamp: timeConverter(data[index].timeStamp),
+            };
+            // challenge 데이터를 포함한 tx만 tmpData에 push
+            if (element.input.includes("ecb18ceba781")) {
+              // 트렌젝션을 보냈을때
+              // console.log(
+              //   "input=",
+              //   utf8_hex_string_to_string(element.input.substr(2))
+              // );
+              if (element.from.toLowerCase() === accounts.toLowerCase()) {
+                element.sendOrReceive = "↓";
+              }
+              // 트렌젝션을 받았을때
+              else {
+                element.sendOrReceive = "↑";
+              }
+              tmpData.push(element);
             }
-            // 트렌젝션을 받았을때
-            else {
-              element.sendOrReceive = "↑";
-            }
-            tmpData.push(element);
           }
-        }
-        setTxData(tmpData);
-      });
+          setTxData(tmpData);
+        },
+        [activeBalance]
+      );
 
       // Crypto API 요청
       await axios.get(crypto_url).then(function (result) {
@@ -102,7 +105,7 @@ function MyWallet() {
       });
     }
     getAccount();
-  }, []);
+  }, [isLoading]);
 
   // 16진수(UTF8) -> 한글 변환-------------------------------------------------
   // UTF8 16 진수 문자열을 문자열로 변환
