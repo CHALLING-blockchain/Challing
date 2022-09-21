@@ -106,7 +106,7 @@ function MyWallet() {
       });
     }
     getAccount();
-  }, [isLoading]);
+  }, [activeAccount]);
 
   // 16진수(UTF8) -> 한글 변환-------------------------------------------------
   // UTF8 16 진수 문자열을 문자열로 변환
