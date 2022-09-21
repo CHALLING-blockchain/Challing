@@ -1,0 +1,35 @@
+
+.BackMyPage{
+  width: 328px;
+  height: 56px;
+  margin: 16px 8px 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.Profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 328px;
+  margin: 16px 8px 8px 16px;
+}
+.UserName{
+font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 100%;
+/* identical to box height, or 16px */
+text-align: center;
+letter-spacing: -0.01em;
+
+background: linear-gradient(180deg, #9270FF 0%, #8696FF 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+/* text-fill-color: transparent; */
+}
+.Intro{
+  display: flex;
+  font-size: 12px;
+}
