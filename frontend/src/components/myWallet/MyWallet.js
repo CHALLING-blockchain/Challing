@@ -58,23 +58,25 @@ function MyWallet() {
         process.env.REACT_APP_CRYPTO_API_KEY;
 
       // Etherscan API 요청
-      axios.get(etherscan_url).then(
-        function (result) {
-          console.log("etherscan api url: " + etherscan_url);
-          const data = result.data.result;
-          const tmpData = [];
-          for (let index = 0; index < data.length; index++) {
-            const element = {
-              from: data[index].from,
-              to: data[index].to,
-              input: data[index].input,
-              etherValue: Number(
-                web3.utils.fromWei(data[index].value, "ether")
-              ).toFixed(3),
-              sendOrReceive: "",
-              timeStamp: timeConverter(data[index].timeStamp),
-            };
-            // challenge 데이터를 포함한 tx만 tmpData에 push
+      axios.get(etherscan_url).then(function (result) {
+        console.log("etherscan api url: " + etherscan_url);
+        const data = result.data.result;
+        const tmpData = [];
+        for (let index = 0; index < data.length; index++) {
+          const element = {
+            from: data[index].from,
+            to: data[index].to,
+            input: data[index].input,
+            etherValue: Number(
+              web3.utils.fromWei(data[index].value, "ether")
+            ).toFixed(3),
+            sendOrReceive: "",
+            timeStamp: timeConverter(data[index].timeStamp),
+          };
+
+          //undefined 예외처리
+          if (element.input !== undefined) {
+            // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
             if (element.input.includes("ecb18ceba781")) {
               // 트렌젝션을 보냈을때
               // console.log(
@@ -91,10 +93,9 @@ function MyWallet() {
               tmpData.push(element);
             }
           }
-          setTxData(tmpData);
-        },
-        [activeBalance]
-      );
+        }
+        setTxData(tmpData);
+      });
 
       // Crypto API 요청
       await axios.get(crypto_url).then(function (result) {
@@ -231,7 +232,14 @@ function MyWallet() {
             </big>{" "}
             ETH
           </span>
-          <p> ≒ {exData * activeBalance}₩</p>
+          <p>
+            {" "}
+            ≒{" "}
+            {Math.floor(exData * activeBalance)
+              .toString()
+              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+            ₩
+          </p>
           {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
           <button onClick={disconnect}>Disconnect</button>
           <br></br>
