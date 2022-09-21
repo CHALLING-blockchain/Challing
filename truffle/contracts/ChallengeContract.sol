@@ -2,72 +2,11 @@
 pragma solidity ^0.8.0;
 pragma abicoder v2;
 
-import "./PassCoinContract.sol";
+import "./VoteContract.sol";
+import "./DonationContract.sol";
 
-contract ChallengeContract is PassCoinContract{
-    struct Donation{
-        // 기부처pk
-        uint id;
-
-        // 기부처 이름
-        string name;
-
-        // 기부처 지갑
-        address donationAddress;
-
-        // 기부처 홈페이지
-        string donationURL;
-    }
-    struct Vote{
-        // 투표pk
-        uint id;
-
-        uint challengeId;
-        Photo photo;
-        // 찬반
-        uint pass;
-        uint fail;
-
-        // 시작시간
-        uint startTimestamp;
-        // 투표에 참여한 유저
-        uint[] userIdList;
-        bool[] userVoteList;
-    }
-
-    struct Photo {
-        uint id;
-        uint userId;
-        uint challengerId;
-
-        string picURL;
-        string timestamp;
-    }
-
-
-    struct Challenger {
-        // pk
-        uint id;
-        // 유저,챌린지 fk
-        uint userId;
-        uint challengeId;
-
-        // 유저 지갑
-        address userAddress;
-
-        // 하루 성공횟수 구분을 위한 오늘 날짜 
-        string today;
-
-        // 전체 성공횟수, 하루 성공횟수
-        uint totalCount;
-        uint dailyCount;
-
-        // 실제 예치금
-        uint userDeposit;
-
-        // 상금
-        uint reward;
-    }
+contract ChallengeContract is VoteContract,DonationContract{
+    
     struct DailyChallenge {
         // pk
         uint challengeId;
@@ -148,29 +87,10 @@ contract ChallengeContract is PassCoinContract{
     }
     
     uint challengeSequence = 1;
-    uint voteSequence = 1;
-    uint photoSequence = 1;
-    uint challengerSequence=1;
-    uint donationSequence=1;
     
     mapping(uint => DailyChallenge) findByChallengeIdDailyChallenge;
     mapping(uint => DonationChallenge) findByChallengeIdDonationChallenge;
-    mapping(uint => Vote) voteRepository;
-    mapping(uint => Photo) photoRepository;
-    mapping(uint => Challenger) challengerRepository;
-    mapping(uint => Donation) donationRepository;
 
-    // 유저의 챌린지
-    mapping(uint => Challenger[]) findByUserIdChallenger;
-    mapping(uint => Challenger[]) findByChallengeIdChallenger;
-
-    // 챌린저의 사진
-    mapping(uint => Photo[]) findByChallengerIdPhoto;
-
-    // 챌린지의 투표
-    mapping(uint => Vote[]) findByChallengeIdVote;
-
-    
     uint[] dailyChallengeIds;
     uint[] donationChallengeIds;
     DailyChallenge[] dailyChallenges;
@@ -189,6 +109,7 @@ contract ChallengeContract is PassCoinContract{
     function createDailyChallenge(DailyChallenge memory dailyChallenge) public payable {
         dailyChallenge.challengeId=challengeSequence;
         dailyChallenge.deposit*=1e18;
+        dailyChallenge.totalDeposit*=1e18;
         findByChallengeIdDailyChallenge[challengeSequence++]=dailyChallenge ;
         
         /* 챌린지 생성자 챌린저에 추가 */
@@ -211,6 +132,7 @@ contract ChallengeContract is PassCoinContract{
     {
         donationChallenge.challengeId=challengeSequence;
         donationChallenge.setDonaion*=1e18;
+        donationChallenge.totalDonation*=1e18;
         findByChallengeIdDonationChallenge[challengeSequence++]=donationChallenge ;
 
         /* 챌린지 생성자 챌린저에 추가 */
@@ -298,26 +220,8 @@ contract ChallengeContract is PassCoinContract{
         return(challengesByMe,myChallenges);
     }
 
-    // 유저의 사진 조회
-    function getMyAllPhoto(uint userId) public view returns(Photo[] memory){
-        Challenger[] memory challengers=findByUserIdChallenger[userId];
-
-        Photo[] memory photoList;
-
-        uint photoCount=0;
-        for(uint i=0;i<challengers.length;i++){
-            Challenger memory challenger=challengers[i];
-            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-            for(uint j=0;j<photo.length;j++){
-                photoList[photoCount++]=photo[j];
-            }
-        }
-
-        return photoList;
-    }
-
-
-    // 사진으로 유저 챌린지 인증
+   
+     // 사진으로 유저 챌린지 인증
     function authenticate(uint challengeId,uint userId, string memory today,string memory picURL) public {
         Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
         Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
@@ -363,87 +267,8 @@ contract ChallengeContract is PassCoinContract{
         findByChallengeIdChallenger[challengeId][challengeIdIndex]=findChallenger;
         challengerRepository[findChallenger.id]=findChallenger;
     }
-
-    // 신고하기
-    function report(uint challengeId,uint photoId,uint userId) public{
-        Photo memory findPhoto=photoRepository[photoId];
-        
-        Vote storage vote=voteRepository[voteSequence];
-        vote.id=voteSequence++;
-        vote.challengeId=challengeId;
-        vote.photo=findPhoto;
-        vote.startTimestamp=block.timestamp;
-
-        findByChallengeIdVote[challengeId].push(vote);
-
-        voting(userId, challengeId, vote.id, false); // 투표한 사람 자동으로 반대 투표
-    }
-
     
-    // 찬반 투표
-    function voting(uint userId,uint challengeId, uint voteId, bool pass) public{
-        Vote storage findVote=voteRepository[voteId];
-
-        findVote.userIdList.push(userId);
-        if(pass){
-            findVote.pass++;
-            findVote.userVoteList.push(true);
-        }
-        else{
-            findVote.fail++;
-            findVote.userVoteList.push(false);
-        }
-
-        uint voteIndex = 0;
-        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
-            voteIndex++;
-        
-        findByChallengeIdVote[challengeId][voteIndex] = findVote;
-    }
-
-    // 투표 종료
-    function endVote(uint challengeId,uint voteId,uint challengerId) public payable{
-        uint voteIndex = 0;
-        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
-            voteIndex++;
-
-        Vote memory vote=findByChallengeIdVote[challengeId][voteIndex];
-
-        /* 패스코인 지급 로직 */
-        // 노인정일시 챌린저의 토탈 카운트--
-        if(vote.pass<vote.fail){
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(!vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];             
-                    transfer(challenger.userAddress, 1);
-                }
-            }
-            //챌린저 업데이트
-            uint userId=challengerRepository[challengerId].userId;
-            challengerRepository[challengerId].totalCount--;
-            
-            Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
-            Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
-
-            uint userIdIndex=0;
-            uint challengeIdIndex=0;
-        
-            // 챌린저 찾기
-            while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
-            while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
-
-            findByChallengeIdChallenger[challengeId][challengeIdIndex].totalCount--;
-            findByUserIdChallenger[userId][userIdIndex].totalCount--;
-        }
-        else{
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];
-                    transfer(challenger.userAddress, 1);
-                }
-            }
-        }
-    }
+    
 
     // 일상챌린지 종료
     function endDailyChallenge(uint challengeId) public{
@@ -503,21 +328,7 @@ contract ChallengeContract is PassCoinContract{
         }
     }
 
-    // 정산하기
-    function refund(uint challengeId,uint userId) public payable{
-        Challenger[] memory challengers= findByUserIdChallenger[userId];
-        Challenger memory challenger;
-        for(uint i=0;i<challengers.length;i++){
-            if(challengers[i].challengeId==challengeId){
-                challenger=challengers[i];
-                break;
-            }
-        }
-        
-        address userAddress=challenger.userAddress;
-        payable(userAddress).transfer(challenger.userDeposit+challenger.reward);
-    }
-
+    
     // 기부챌린지 종료
     function endDonationChallenge(uint challengeId) public payable{
         DonationChallenge storage challenge=findByChallengeIdDonationChallenge[challengeId];
@@ -541,7 +352,6 @@ contract ChallengeContract is PassCoinContract{
 
     }
 
-
     // 챌린지 디테일 
     function getChallengeDetail(uint challengeId) public view returns(Challenger[] memory,Photo[] memory,Vote[] memory){
         Challenger[] memory challengers=findByChallengeIdChallenger[challengeId];
@@ -557,49 +367,5 @@ contract ChallengeContract is PassCoinContract{
         }
         
         return(challengers,photoList,findByChallengeIdVote[challengeId]);
-    }
-
-    // 기부처 생성
-    function addDonation(Donation memory donation) public {
-        donation.id=donationSequence;
-        donationRepository[donationSequence++]=donation;
-    }
-
-    // 기부처 목록 반환
-    function getAllDonation() public view returns(uint[] memory,Donation[] memory) {
-        uint[] memory donationIds=new uint[](donationSequence);
-        Donation[] memory donationList=new Donation[](donationSequence);
-
-        for(uint i=1;i<=challengeSequence;i++){
-            donationIds[i]=i;
-            donationList[i]=donationRepository[i];
-        }
-        return (donationIds,donationList);
-    }
-
-    function usePasscoin(uint userId,uint challengeId) public{
-        
-        Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
-        Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
-        Challenger memory findChallenger;
-
-        uint userIdIndex=0;
-        uint challengeIdIndex=0;
-        
-        // 챌린저 찾기
-        while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
-        while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
-        findChallenger=challengersByUser[userIdIndex];
-
-        address userAddress=findChallenger.userAddress;
-        useCoin(userAddress,1);
-
-        findChallenger.totalCount+=1;
-
-
-        // 챌린저 업데이트
-        findByUserIdChallenger[userId][userIdIndex]=findChallenger;
-        findByChallengeIdChallenger[challengeId][challengeIdIndex]=findChallenger;
-        challengerRepository[findChallenger.id]=findChallenger;
     }
 }

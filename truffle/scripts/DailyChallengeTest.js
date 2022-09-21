@@ -35,12 +35,12 @@ const test = async () => {
 
     complet: false,
   };
-  // accounts.forEach(async (account,index)=>{
-  //   const blance= await web3.eth.getBalance(account)
-  //   console.log(index+":",blance,'ether')
-  // })
+  accounts.forEach(async (account,index)=>{
+    const blance= await web3.eth.getBalance(account)
+    console.log(index+":",blance,'ether')
+  })
 
-  // // // 챌린지 생성
+  // // 챌린지 생성
   // const createDailyChallenge = await contract.methods
   //   .createDailyChallenge(daliyChallenge)
   //   .send({
@@ -112,13 +112,13 @@ const test = async () => {
     console.log(index+":",blance,'ether')
   })
   
-  // const getChallengeDetail = await contract.methods
-  // .getChallengeDetail(1)
-  // .call({
-  //   from: accounts[0],
-  // })
-  // .catch(console.error);
-  // console.log(getChallengeDetail[0])
+  const getChallengeDetail = await contract.methods
+  .getChallengeDetail(1)
+  .call({
+    from: accounts[0],
+  })
+  .catch(console.error);
+  console.log(getChallengeDetail[0])
 
 };
 
