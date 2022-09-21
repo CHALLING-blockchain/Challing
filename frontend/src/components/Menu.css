@@ -1,0 +1,12 @@
+.Menu{
+  display: flex;
+  justify-content: space-around;
+  height: 64px;
+  align-items: center;
+  background-color: white;
+}
+
+.Footer{
+  position: fixed;
+  bottom: 0;
+}

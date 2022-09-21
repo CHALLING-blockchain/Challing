@@ -1,0 +1,32 @@
+.BackProfile{
+  width: 328px;
+  height: 56px;
+  margin: 16px 8px 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.EditSave{
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 100%;
+/* identical to box height, or 16px */
+text-align: right;
+letter-spacing: -0.01em;
+
+color: #755FFF;
+
+
+}
+.EditForm{
+  width: 328px;
+  margin: 16px 8px 8px 16px;
+}
+.NickName{
+  border-bottom: #755FFF 1px solid;
+}
+.EditIntro{
+  border-bottom: #755FFF 1px solid;
+}
