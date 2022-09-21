@@ -32,7 +32,7 @@ function SelectCertification({formCnt,setFormCnt,nTimesAWeek,setNTimesAWeek,auth
       <div>
         <p>인증 가능시간</p>
       </div>
-      {list.length === 4   ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {list.length === 4 ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
     </div>
   );
 }
