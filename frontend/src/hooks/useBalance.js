@@ -14,7 +14,7 @@ function useBalance(web3, account, setLoading, setErrorMessage) {
           const balanceInWei = await web3.eth.getBalance(correctedAccount);
           setBalance(
             // convert balance from wei to ether
-            Number(web3.utils.fromWei(balanceInWei, "ether")).toFixed(3)
+            Number(web3.utils.fromWei(balanceInWei, "ether")).toFixed(4)
           );
         } catch (error) {
           setErrorMessage(error.message);
