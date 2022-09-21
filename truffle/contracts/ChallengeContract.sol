@@ -277,18 +277,18 @@ contract ChallengeContract is PassCoinContract{
 
     // 유저의 챌린지 조회
     function getMyChallenge(uint userId) public view returns(uint[] memory,uint[] memory){
+        Challenger[] memory challengers=findByUserIdChallenger[userId];
         // 내가 생성한 챌린지
-        uint[] memory challengesByMe=new uint[](challengeSequence);
+        uint[] memory challengesByMe=new uint[](challengers.length);
         
+        uint myChallengeIndex = 0;
         // 전체 챌린지를 순회하면서 챌린지의 ownerId와 userId가 같을 경우 추가
         for(uint challengeId=0;challengeId<challengeSequence;challengeId++){
             if((isDailyChallenge(challengeId) && findByChallengeIdDailyChallenge[challengeId].ownerId==userId) ||
             (isDonationChallenge(challengeId) && findByChallengeIdDonationChallenge[challengeId].ownerId==userId)){
-                challengesByMe[challengeId]=challengeId;
+                challengesByMe[myChallengeIndex++] = challengeId;
             }
         }
-
-        Challenger[] memory challengers=findByUserIdChallenger[userId];
 
         // 내가 참가한 챌린지
         uint[] memory myChallenges=new uint[](challengers.length);
@@ -301,21 +301,26 @@ contract ChallengeContract is PassCoinContract{
     // 유저의 사진 조회
     function getMyAllPhoto(uint userId) public view returns(Photo[] memory){
         Challenger[] memory challengers=findByUserIdChallenger[userId];
-
-        Photo[] memory photoList;
-
+        
         uint photoCount=0;
         for(uint i=0;i<challengers.length;i++){
             Challenger memory challenger=challengers[i];
             Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-            for(uint j=0;j<photo.length;j++){
-                photoList[photoCount++]=photo[j];
+            photoCount += photo.length;
+        }
+
+        uint photoIndex = 0;
+        Photo[] memory photoList = new Photo[](photoCount);
+        for(uint i=0;i<challengers.length;i++){
+            Challenger memory challenger=challengers[i];
+            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
+            for (uint256 j = 0; j < photo.length; j++) {
+                photoList[photoIndex++] = photo[j];
             }
         }
 
         return photoList;
     }
-
 
     // 사진으로 유저 챌린지 인증
     function authenticate(uint challengeId,uint userId, string memory today,string memory picURL) public {
@@ -566,18 +571,16 @@ contract ChallengeContract is PassCoinContract{
     }
 
     // 기부처 목록 반환
-    function getAllDonation() public view returns(uint[] memory,Donation[] memory) {
-        uint[] memory donationIds=new uint[](donationSequence);
-        Donation[] memory donationList=new Donation[](donationSequence);
+    function getAllDonation() public view returns(Donation[] memory) {
+        Donation[] memory donationList=new Donation[](donationSequence-1);
 
-        for(uint i=1;i<=challengeSequence;i++){
-            donationIds[i]=i;
-            donationList[i]=donationRepository[i];
+        for(uint i=0;i<donationSequence-1;i++){
+            donationList[i]=donationRepository[i+1];
         }
-        return (donationIds,donationList);
+        return donationList;
     }
 
-    function usePasscoin(uint userId,uint challengeId) public{
+    function usePassCoin(uint userId,uint challengeId) public{
         
         Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
         Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
