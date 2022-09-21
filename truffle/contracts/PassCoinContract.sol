@@ -28,7 +28,7 @@ contract PassCoinContract is IERC20 {
     mapping(address => mapping (address => uint256)) allowed;
 
     // 전체 발행된 토큰량
-    uint256 totalSupply_ = 100000000 ether; 
+    uint256 totalSupply_ = 100000000; 
 
     constructor() {
         balances[msg.sender] = totalSupply_;
@@ -75,5 +75,11 @@ contract PassCoinContract is IERC20 {
         balances[buyer] = balances[buyer]+numTokens;
         emit Transfer(owner, buyer, numTokens);
         return true;
+    }
+
+    function useCoin(address user, uint256 numTokens) public {
+        require(numTokens <= balances[msg.sender]);
+        balances[msg.sender] = balances[msg.sender]+numTokens;
+        balances[user] = balances[user]-numTokens;
     }
 }

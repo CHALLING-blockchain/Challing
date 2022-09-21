@@ -43,17 +43,18 @@ const test = async () => {
     donationURL:"naver.com"
   }
 
-  // accounts.forEach(async (account,index)=>{
-  //   const blance= await web3.eth.getBalance(account)
-  //   console.log(index+":",blance,'ether')
-  // })
+  accounts.forEach(async (account,index)=>{
+    const blance= await web3.eth.getBalance(account)
+    console.log(index+":",blance,'ether')
+  })
 
-  // // 기부처 생성
+  // 기부처 생성
   // const addDonation = await contract.methods
   //   .addDonation(donation)
   //   .send({
   //     from: accounts[0],
   //     gasLimit: 3_000_000,
+      
   //   })
   //   .catch(console.error);
   // console.log("기부처 추가")
@@ -64,14 +65,15 @@ const test = async () => {
   //   .send({
   //     from: accounts[0],
   //     gasLimit: 3_000_000,
+  //     value:1e19
   //   })
   //   .catch(console.error);
   // console.log("챌린지 생성")
 
   // // 유저 9명 참가
-  // accounts.slice(0,9).forEach(async (account,index)=>{
+  // accounts.slice(1,9).forEach(async (account,index)=>{
   //   const joinChallenge = await contract.methods
-  //     .joinChallenge(1, index+1, "220919")
+  //     .joinChallenge(1, index+2, "220919")
   //     .send({
   //       from: account,
   //       gasLimit: 3_000_000,
@@ -117,18 +119,18 @@ const test = async () => {
   // })
   // console.log("정산 완료");
 
-  await accounts.forEach(async (account,index)=>{
-    const blance= await web3.eth.getBalance(account)
-    console.log(index+":",blance,'ether')
-  })
-  
-  // const getChallengeDetail = await contract.methods
-  // .getChallengeDetail(1)
-  // .call({
-  //   from: accounts[0],
+  // await accounts.forEach(async (account,index)=>{
+  //   const blance= await web3.eth.getBalance(account)
+  //   console.log(index+":",blance,'ether')
   // })
-  // .catch(console.error);
-  // console.log(getChallengeDetail)
+  
+  const getChallengeDetail = await contract.methods
+  .getChallengeDetail(1)
+  .call({
+    from: accounts[0],
+  })
+  .catch(console.error);
+  console.log(getChallengeDetail[0])
 
 };
 
