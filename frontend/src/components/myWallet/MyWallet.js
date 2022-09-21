@@ -35,7 +35,7 @@ function MyWallet() {
 
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
-    var accounts = "";
+    let accounts = "";
     async function getAccount() {
       const account = await web3.eth.getAccounts();
       accounts = account[0];
@@ -107,16 +107,16 @@ function MyWallet() {
   // 16진수(UTF8) -> 한글 변환-------------------------------------------------
   // UTF8 16 진수 문자열을 문자열로 변환
   function utf8_hex_string_to_string(hex_str1) {
-    var bytes2 = hex_string_to_bytes(hex_str1);
-    var str2 = utf8_bytes_to_string(bytes2);
+    let bytes2 = hex_string_to_bytes(hex_str1);
+    let str2 = utf8_bytes_to_string(bytes2);
     return str2;
   }
 
   // 바이트 배열을 16 진수 문자열로 변환
 
   function hex_string_to_bytes(hex_str) {
-    var result = [];
-    for (var i = 0; i < hex_str.length; i += 2) {
+    let result = [];
+    for (let i = 0; i < hex_str.length; i += 2) {
       result.push(hex_to_byte(hex_str.substr(i, 2)));
     }
     return result;
@@ -130,24 +130,24 @@ function MyWallet() {
   // UTF8 바이트 배열을 문자열로 변환
   function utf8_bytes_to_string(arr) {
     if (arr == null) return null;
-    var result = "";
-    var i;
+    let result = "";
+    let i;
     while ((i = arr.shift())) {
       if (i <= 0x7f) {
         result += String.fromCharCode(i);
       } else if (i <= 0xdf) {
-        var c = (i & 0x1f) << 6;
-        c += arr.shift() & 0x3f;
-        result += String.fromCharCode(c);
+        let c1 = (i & 0x1f) << 6;
+        c1 += arr.shift() & 0x3f;
+        result += String.fromCharCode(c1);
       } else if (i <= 0xe0) {
-        var c = ((arr.shift() & 0x1f) << 6) | 0x0800;
-        c += arr.shift() & 0x3f;
-        result += String.fromCharCode(c);
+        let c2 = ((arr.shift() & 0x1f) << 6) | 0x0800;
+        c2 += arr.shift() & 0x3f;
+        result += String.fromCharCode(c2);
       } else {
-        var c = (i & 0x0f) << 12;
-        c += (arr.shift() & 0x3f) << 6;
-        c += arr.shift() & 0x3f;
-        result += String.fromCharCode(c);
+        let c3 = (i & 0x0f) << 12;
+        c3 += (arr.shift() & 0x3f) << 6;
+        c3 += arr.shift() & 0x3f;
+        result += String.fromCharCode(c3);
       }
     }
     return result;
@@ -156,8 +156,8 @@ function MyWallet() {
 
   // Unix timestamp to date
   function timeConverter(UNIX_timestamp) {
-    var a = new Date(UNIX_timestamp * 1000);
-    var months = [
+    let a = new Date(UNIX_timestamp * 1000);
+    let months = [
       "01",
       "02",
       "03",
@@ -171,13 +171,13 @@ function MyWallet() {
       "11",
       "12",
     ];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    // var hour = a.getHours();
-    // var min = a.getMinutes();
-    // var sec = a.getSeconds();
-    var time = year + "/" + month + "/" + date;
+    let year = a.getFullYear();
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    // let hour = a.getHours();
+    // let min = a.getMinutes();
+    // let sec = a.getSeconds();
+    let time = year + "/" + month + "/" + date;
     return time;
   }
 
@@ -186,7 +186,7 @@ function MyWallet() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
       if (txData[index].input.includes("ecb18ceba781")) {
-        var date = txData[index].timeStamp;
+        let date = txData[index].timeStamp;
         // 날짜별로 모아서 보여주기
         if (
           index >= 1 &&
@@ -230,7 +230,7 @@ function MyWallet() {
           </span>
           <p> ≒ {exData * activeBalance}₩</p>
           {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
-          {/* <button onClick={disconnect}>Disconnect</button> */}
+          <button onClick={disconnect}>Disconnect</button>
           <br></br>
           <br></br>
           <span>
