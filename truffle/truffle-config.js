@@ -4,13 +4,24 @@ module.exports = {
     loc_development_development: {
       network_id: "*",
       port: 7545,
-      host: "127.0.0.1"
-    }
+      host: "127.0.0.1",
+      gasPrice: 25000000000,
+      gas:6721975
+    },
   },
   mocha: {},
   compilers: {
     solc: {
-      version: "0.8.14"
-    }
-  }
+      version: "0.8.14",
+    },
+  },
+  solc: {
+    
+    version: "^0.8.0",
+    
+    optimizer: {
+      enabled: true,
+      runs: 200,
+    },
+  },
 };
