@@ -1,13 +1,6 @@
 const Web3 = require("web3");
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-// const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/9e3c86130f904d3984f36541893213d3"));
-
-// const netListening = async () => {
-//   web3.eth.net.isListening().then(console.log).catch(console.error);
-// };
-
-// netListening();
 
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
 
@@ -66,18 +59,7 @@ const test = async () => {
     complete: false,
   };
 
-  // 패스코인 지급 확인
-  await accounts.forEach(async (account, index) => {
-    const balance = await contract.methods
-      .balanceOf(account)
-      .call({
-        from: accounts[index],
-      })
-      .catch(console.error);
-    console.log(index + ":", balance, "PASS");
-  });
-
-  // 일상 챌린지 생성
+  // 챌린지 생성
   const createDaliyChallenge = await contract.methods
     .createDailyChallenge(daliyChallenge)
     .send({
@@ -101,77 +83,90 @@ const test = async () => {
   });
   console.log("유저 참여 완료");
 
-  // 유저 1 인증
-  const authenticate = await contract.methods
+  // 유저 인증(1은 3개 인증, 2,3은 1개 인증)
+  const authenticate1 = await contract.methods
     .authenticate(1, 1, `220921`, "picURL")
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
     })
     .catch(console.error);
-  console.log("유저 인증 완료");
 
-  // 인증사진 신고 (유저 2번이 1번의 사진 신고)
-  const reportTest = await contract.methods
-    .report(1, 1, 2)
+  const authenticate2 = await contract.methods
+    .authenticate(1, 1, `220922`, "picURL")
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
     })
     .catch(console.error);
-  console.log("신고완료");
 
-  // 유저 3번부터 6번까지 fail 투표
-  for (let i = 3; i <= 6; i++) {
-    const votingTest1 = await contract.methods
-      .voting(i, 1, 1, false)
-      .send({
-        from: accounts[i - 1],
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  }
-
-  // 유저 7번부터 10번까지 pass 투표
-  for (let i = 7; i <= 10; i++) {
-    const votingTest1 = await contract.methods
-      .voting(i, 1, 1, true)
-      .send({
-        from: accounts[i - 1],
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
-  }
-
-  // 투표 종료(투표 결과에 따라 패스코인 지급 - fail 투표한 사람에게 지급)
-  const endVoteTest = await contract.methods
-    .endVote(1, 1, 1)
+  const authenticate3 = await contract.methods
+    .authenticate(1, 1, `220923`, "picURL")
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
     })
     .catch(console.error);
-  console.log("endVoteTest");
 
-  // 패스코인 조회
-  await accounts.forEach(async (account, index) => {
-    const balance = await contract.methods
-      .balanceOf(account)
-      .call({
-        from: accounts[index],
-      })
-      .catch(console.error);
-    console.log(index + ":", balance, "PASS");
-  });
+  const authenticate4 = await contract.methods
+    .authenticate(1, 2, `220921`, "picURL")
+    .send({
+      from: accounts[1],
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
 
-  // 상세 정보 조회
-  const getChallengeDetail = await contract.methods
-    .getChallengeDetail(1)
+  const authenticate5 = await contract.methods
+    .authenticate(1, 3, `220921`, "picURL")
+    .send({
+      from: accounts[2],
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+
+  // 모든 챌린지 조회
+  const getAllChallenge = await contract.methods
+    .getAllChallenge()
     .call({
       from: accounts[0],
     })
     .catch(console.error);
-  console.log(getChallengeDetail[0][0]);
-};
+  console.log("getAllChallenge", getAllChallenge);
 
+  // 일상 챌린지
+  const challenges = {};
+  getAllChallenge[0].forEach((id, index) => {
+    const challenge = Object.assign({}, getAllChallenge[2][index]);
+    const size = Object.keys(challenge).length;
+    for (let i = 0; i < size / 2; i++) {
+      delete challenge[i];
+    }
+    challenges[Number(id)] = challenge;
+  });
+
+  // 기부 챌린지
+  getAllChallenge[1].forEach((id, index) => {
+    const challenge = Object.assign({}, getAllChallenge[3][index]);
+    const size = Object.keys(challenge).length;
+    for (let i = 0; i < size / 2; i++) {
+      delete challenge[i];
+    }
+    challenges[Number(id)] = challenge;
+  });
+  console.log(challenges);
+
+  // 내가 생성한 챌린지, 내가 참여한 챌린지 조회
+  const getMyChallenge = await contract.methods
+    .getMyChallenge(1)
+    .call({ from: accounts[0] })
+    .catch(console.error);
+  console.log(getMyChallenge);
+
+  // 나의 모든 인증 사진들 조회
+  const getMyAllPhoto = await contract.methods
+    .getMyAllPhoto(1)
+    .call({ from: accounts[0] })
+    .catch(console.error);
+  console.log(getMyAllPhoto);
+};
 test();
