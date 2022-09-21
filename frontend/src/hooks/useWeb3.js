@@ -39,22 +39,22 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       setExist(true);
 
       // send transaction  ---------------------------------
-      // var nonce = 0;
+      // let nonce = 0;
       // await web3.eth.getTransactionCount(accounts[0]).then(function (result) {
       //   nonce = result;
       // });
       // //console.log("nonce:", nonce);
 
-      // var gasPrice = 0;
+      // let gasPrice = 0;
       // await web3.eth.getGasPrice().then(function (result) {
       //   gasPrice = result;
       // });
       // //console.log("gasPrice:", gasPrice);
 
-      // var value = await web3.utils.toWei("0.1", "ether");
+      // let value = await web3.utils.toWei("0.1", "ether");
       // //console.log("value:", value);
 
-      // var gasLimit = 0;
+      // let gasLimit = 0;
       // await web3.eth
       //   .estimateGas({
       //     to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
@@ -65,7 +65,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       //     gasLimit = result;
       //   });
 
-      // var txObject = {
+      // let txObject = {
       //   nonce: nonce,
       //   gasPrice: gasPrice,
       //   gasLimit: 60000,
@@ -76,7 +76,7 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       // };
       // console.log("txObject: ", txObject);
 
-      // var hashObject = 0;
+      // let hashObject = 0;
       // await web3.eth.sendTransaction(txObject).then(function (receipt) {
       //   hashObject = receipt;
       // });
