@@ -5,6 +5,7 @@ import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import SetProfile from "./components/auth/SetProfile"
 import PreCategory from "./components/auth/PreCategory";
+import ChallengeDetail from "./components/challengeDetail/ChallengeDetail";
 import ChallengeSearch from "./components/challengeSearch/ChallengeSearch";
 import ChallengeShot from "./components/challengeShot/ChallengeShot";
 import Main from "./components/main/Main";
@@ -82,6 +83,8 @@ function App() {
         <Route path="/logoutresult" element={<Logout />} />
         <Route path="/setprofile" element={<SetProfile />} />
         <Route path="/precategory" element={<PreCategory />} />
+        <Route path="/challenge-detail" element={<ChallengeDetail />} />
+        {/* <Route path="/challenge-detail:id" element={<ChallengeDetail />} /> */}
         <Route path="/challenge-search" element={<ChallengeSearch />} />
         <Route path="/challenge-shot" element={<ChallengeShot />} />
         <Route path="/my-page" element={<MyPage />} />

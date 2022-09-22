@@ -1,0 +1,35 @@
+.header{
+    height: 40px;
+    width: 360px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 0;
+    background-color: (0,0,0,0);
+}
+
+.icons{
+    width: 24px;
+    height: 24px;
+    border-radius: 30px;
+    background-color: white;
+    margin: 16px;
+
+}
+
+.backImg{
+    width: 360px;
+    height: 270px;
+}
+
+.titles{
+    width: 100vw;
+    padding: 16px;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+}
