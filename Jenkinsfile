@@ -30,7 +30,7 @@ pipeline {
     stage('mattermost_send_start') {
       steps {
         catchError {
-          mattermostSend 'depolying frontend and backend start'
+          mattermostSend 'depolying frontend and backend start\nbuild #${BUILD_NUMBER}'
         }
       }
     }
