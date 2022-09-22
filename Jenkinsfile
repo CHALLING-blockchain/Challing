@@ -17,8 +17,9 @@ pipeline {
       steps {
         catchError {
           mattermostSend(
-            color: "#FFF33C",
-            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n송제영"
+            color: '#FFF33C',
+            text: '@wp29dud',
+            message: 'Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
           )
         }
       }
@@ -97,8 +98,8 @@ pipeline {
               steps {
                 catchError {
                   mattermostSend(
-                    color: "#52C606",
-                    message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+                    color: '#52C606',
+                    message: 'Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
                   )
                 }
               }
@@ -126,8 +127,8 @@ pipeline {
               steps {
                 catchError {
                   mattermostSend(
-                    color: "#52C606",
-                    message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+                    color: '#52C606',
+                    message: 'Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
                   )
                 }
               }
@@ -141,8 +142,9 @@ pipeline {
       steps {
         catchError {
           mattermostSend(
-            color: "#3399FF",
-            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n송제영"
+            color: '#3399FF',
+            text: '@wp29dud',
+            message: 'Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
           )
         }
       }
