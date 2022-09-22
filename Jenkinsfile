@@ -29,7 +29,7 @@ pipeline {
   stages {
     stage('test_stage') {
       steps {
-        sh 'echo hello > text.txt'
+        sh 'echo DONE'
       }
     }
 
