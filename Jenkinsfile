@@ -30,7 +30,8 @@ pipeline {
     stage('mattermost_send_start') {
       steps {
         catchError {
-          mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/job/testjenkins/${BUILD_NUMBER}/|#${BUILD_NUMBER}> started")
+          // mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/job/testjenkins/${BUILD_NUMBER}/|#${BUILD_NUMBER}> started")
+          mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/blue/organizations/jenkins/testjenkins/detail/testjenkins/${BUILD_NUMBER}/pipeline|#${BUILD_NUMBER}> started")
         }
       }
     }
