@@ -1,10 +1,12 @@
-FROM node:16.17.0 as build-stage
+FROM node:16.17.0-alpine as build-stage
+WORKDIR /workdir/
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+ARG runscript=build
+RUN npm run ${runscript}
 
 FROM nginx:stable-alpine
-COPY --from=build-stage /build /usr/share/nginx/html
+COPY --from=build-stage /workdir/build/ /usr/share/nginx/html/
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT nginx -g "daemon off;"
