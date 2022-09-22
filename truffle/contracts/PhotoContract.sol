@@ -2,9 +2,7 @@
 pragma solidity ^0.8.0;
 pragma abicoder v2;
 
-import "./ChallengerContract.sol";
-
-contract PhotoContract is ChallengerContract{
+contract PhotoContract{
     struct Photo {
         uint id;
         uint userId;
@@ -14,32 +12,26 @@ contract PhotoContract is ChallengerContract{
         string timestamp;
     }
     uint photoSequence = 1;
-    mapping(uint => Photo) photoRepository;
+    mapping(uint => Photo) photoMap;
 
     // 챌린저의 사진
     mapping(uint => Photo[]) findByChallengerIdPhoto;
 
-    // 유저의 사진 조회
-    function getMyAllPhoto(uint userId) public view returns(Photo[] memory){
-        Challenger[] memory challengers=findByUserIdChallenger[userId];
-        
-        uint photoCount=0;
-        for(uint i=0;i<challengers.length;i++){
-            Challenger memory challenger=challengers[i];
-            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-            photoCount += photo.length;
-        }
+    // 사진 추가
+    function addPhoto(uint challengerId,uint userId,string memory picURL,string memory today) public {
+        // challengr에 사진url이랑 사진의 날짜 저장해서 신고하기 당했을 때 사용하기
+        Photo storage photo=photoMap[photoSequence];
+        photo.id=photoSequence++;
+        photo.userId=userId;
+        photo.challengerId=challengerId;
+        photo.picURL=picURL;
+        photo.timestamp=today;
 
-        uint photoIndex = 0;
-        Photo[] memory photoList = new Photo[](photoCount);
-        for(uint i=0;i<challengers.length;i++){
-            Challenger memory challenger=challengers[i];
-            Photo[] memory photo=findByChallengerIdPhoto[challenger.id];
-            for (uint256 j = 0; j < photo.length; j++) {
-                photoList[photoIndex++] = photo[j];
-            }
-        }
+        findByChallengerIdPhoto[challengerId].push(photo);
+    }
 
-        return photoList;
+    //유저의 사진 조회
+    function getChallengerPhoto(uint challengerId) public view returns(Photo[] memory){
+        return findByChallengerIdPhoto[challengerId];
     }
 }

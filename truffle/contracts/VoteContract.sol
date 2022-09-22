@@ -3,9 +3,8 @@ pragma solidity ^0.8.0;
 pragma abicoder v2;
 
 import "./PhotoContract.sol";
-import "./PassCoinContract.sol";
 
-contract VoteContract is PhotoContract, PassCoinContract{
+contract VoteContract is PhotoContract{
     struct Vote{
         // 투표pk
         uint id;
@@ -23,16 +22,16 @@ contract VoteContract is PhotoContract, PassCoinContract{
         bool[] userVoteList;
     }
     uint voteSequence = 1;
-    mapping(uint => Vote) voteRepository;
+    mapping(uint => Vote) voteMap;
 
     // 챌린지의 투표
     mapping(uint => Vote[]) findByChallengeIdVote;
 
      // 신고하기
     function report(uint challengeId,uint photoId,uint userId) public{
-        Photo memory findPhoto=photoRepository[photoId];
+        Photo memory findPhoto=photoMap[photoId];
         
-        Vote storage vote=voteRepository[voteSequence];
+        Vote storage vote=voteMap[voteSequence];
         vote.id=voteSequence++;
         vote.challengeId=challengeId;
         vote.photo=findPhoto;
@@ -43,8 +42,8 @@ contract VoteContract is PhotoContract, PassCoinContract{
         voting(userId, challengeId, vote.id, false); // 투표한 사람 자동으로 반대 투표
     }
     // 찬반 투표
-    function voting(uint userId,uint challengeId, uint voteId, bool pass) public{
-        Vote storage findVote=voteRepository[voteId];
+    function voting(uint challengeId,uint userId, uint voteId, bool pass) public{
+        Vote storage findVote=voteMap[voteId];
 
         findVote.userIdList.push(userId);
         if(pass){
@@ -64,73 +63,27 @@ contract VoteContract is PhotoContract, PassCoinContract{
     }
 
     // 투표 종료
-    function endVote(uint challengeId,uint voteId,uint challengerId) public payable{
-        uint voteIndex = 0;
-        while(findByChallengeIdVote[challengeId][voteIndex].id!=voteId) 
-            voteIndex++;
+    function endVote(uint voteId) public view returns(bool,uint[] memory){
+        Vote memory vote=voteMap[voteId];
 
-        Vote memory vote=findByChallengeIdVote[challengeId][voteIndex];
-
-        /* 패스코인 지급 로직 */
-        // 노인정일시 챌린저의 토탈 카운트--
-        if(vote.pass<vote.fail){
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(!vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];             
-                    transfer(challenger.userAddress, 1);
-                }
+        // 결과 맞춘 유저 찾기
+        uint[] memory userIdList=new uint[](vote.userIdList.length);
+        uint count=0;
+        for (uint256 i = 0; i < vote.userIdList.length; i++) {
+            if(vote.pass>vote.fail&&vote.userVoteList[i]){
+                userIdList[count++]=vote.userIdList[i];             
             }
-            //챌린저 업데이트
-            uint userId=challengerRepository[challengerId].userId;
-            challengerRepository[challengerId].totalCount--;
-            
-            Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
-            Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
-
-            uint userIdIndex=0;
-            uint challengeIdIndex=0;
-        
-            // 챌린저 찾기
-            while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
-            while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
-
-            findByChallengeIdChallenger[challengeId][challengeIdIndex].totalCount--;
-            findByUserIdChallenger[userId][userIdIndex].totalCount--;
-        }
-        else{
-            for (uint256 i = 0; i < vote.userIdList.length; i++) {
-                if(vote.userVoteList[i]){
-                    Challenger memory challenger = findByUserIdChallenger[vote.userIdList[i]][0];
-                    transfer(challenger.userAddress, 1);
-                }
+            else if (vote.pass<vote.fail&&!vote.userVoteList[i]){
+                userIdList[count++]=vote.userIdList[i];   
             }
         }
+
+        // 투표결과와 맞춘 유저 아이디 반환
+        return (vote.pass>vote.fail,userIdList);
     }
 
-    function usePasscoin(uint userId,uint challengeId) public{
-        
-        Challenger[] memory challengersByUser=findByUserIdChallenger[userId];
-        Challenger[] memory challengersByChallenge=findByChallengeIdChallenger[challengeId];
-        Challenger memory findChallenger;
-
-        uint userIdIndex=0;
-        uint challengeIdIndex=0;
-        
-        // 챌린저 찾기
-        while(challengersByChallenge[challengeIdIndex].userId!=userId) challengeIdIndex++;
-        while(challengersByUser[userIdIndex].challengeId!=challengeId) userIdIndex++;
-        findChallenger=challengersByUser[userIdIndex];
-
-        address userAddress=findChallenger.userAddress;
-        useCoin(userAddress,1);
-
-        findChallenger.totalCount+=1;
-
-
-        // 챌린저 업데이트
-        findByUserIdChallenger[userId][userIdIndex]=findChallenger;
-        findByChallengeIdChallenger[challengeId][challengeIdIndex]=findChallenger;
-        challengerRepository[findChallenger.id]=findChallenger;
+    // 챌린지 아이디로 투표리스트 조회
+    function getChallengeVote(uint challengeId)public view returns(Vote[] memory){
+        return findByChallengeIdVote[challengeId];
     }
-    
 }

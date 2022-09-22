@@ -17,12 +17,12 @@ contract DonationContract{
         string donationURL;
     }
     uint donationSequence=1;
-    mapping(uint => Donation) donationRepository;
+    mapping(uint => Donation) donationMap;
 
      // 기부처 생성
     function addDonation(Donation memory donation) public {
         donation.id=donationSequence;
-        donationRepository[donationSequence++]=donation;
+        donationMap[donationSequence++]=donation;
     }
 
     // 기부처 목록 반환
@@ -30,7 +30,7 @@ contract DonationContract{
         Donation[] memory donationList=new Donation[](donationSequence-1);
 
         for(uint i=0;i<donationSequence-1;i++){
-            donationList[i]=donationRepository[i+1];
+            donationList[i]=donationMap[i+1];
         }
         return donationList;
     }
