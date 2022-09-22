@@ -13,6 +13,7 @@ import MyPage from "./components/myPage/MyPage";
 import MyProfile from "./components/myPage/MyProfile";
 import EditProfile from "./components/myPage/EditProfile";
 import MyShotZip from "./components/myPage/MyShotZip";
+import CreateChallenge from "./components/myPage/CreateChallenge";
 import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
@@ -91,6 +92,7 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/my-shot-zip" element={<MyShotZip />} />
+        <Route path="/create-challenge" element={<CreateChallenge />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />

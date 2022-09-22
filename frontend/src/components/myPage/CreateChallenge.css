@@ -1,0 +1,4 @@
+.CreateChallenge{
+  display: flex;
+  flex-direction: column;
+}
