@@ -1,4 +1,4 @@
-com.ssafy.db.url.address: host.docker.internal
+com.ssafy.db.url.address: j7b106.p.ssafy.io
 
 spring.output.ansi.enabled: never
 
