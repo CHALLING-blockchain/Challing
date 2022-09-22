@@ -1,17 +1,11 @@
-spring:
-  datasource:
-    url: jdbc:mysql://${com.ssafy.db.address_and_port}/b106?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    username: sp7333
-    password: ${com.ssafy.db.password}
-  output.ansi.enabled: detect
-
+spring.output.ansi.enabled: never
 logging.file.name: logs/backend.log
 
-jwt:
-  secret: ${com.ssafy.jwt.secret}
-
-com:
-  ssafy:
-    kakao:
-      client_id: ${com.ssafy.kakao.client_id}
-      redirect_uri: ${com.ssafy.kakao.redirect_uri}
+# env from production runtime
+#
+#   spring.datasource.url
+#   spring.datasource.username
+#   spring.datasource.password
+#   jwt.secret
+#   com.ssafy.kakao.client_id
+#   com.ssafy.kakao.redirect_uri
