@@ -37,7 +37,7 @@ pipeline {
 
     stage('test_crefile') {
       steps {
-        sh 'echo $CREFILE > fooobaaa.txt'
+        sh 'cp $CREFILE foobar.txt'
       }
     }
 
