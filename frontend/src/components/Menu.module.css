@@ -4,9 +4,13 @@
   height: 64px;
   align-items: center;
   background-color: white;
+  border-radius: 10px;
+  border-top: solid 1px gray;
+  width: 100vw;
 }
 
 .Footer{
   position: fixed;
   bottom: 0;
+  width: 100vw;
 }
