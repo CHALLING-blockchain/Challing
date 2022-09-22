@@ -67,21 +67,13 @@ pipeline {
       }
     }
 
-    stage('remove_images') {
-      steps {
-        catchError {
-          sh "docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
-        }
-      }
-    }
-
-    stage('prune_images') {
-      steps {
-        catchError {
-          sh 'docker image prune --force'
-        }
-      }
-    }
+    // stage('remove_images') {
+    //   steps {
+    //     catchError {
+    //       sh "docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
+    //     }
+    //   }
+    // }
 
     stage('deploy') {
       parallel {
@@ -141,6 +133,14 @@ pipeline {
               }
             }
           }
+        }
+      }
+    }
+
+    stage('prune_images') {
+      steps {
+        catchError {
+          sh 'docker image prune --force'
         }
       }
     }
