@@ -90,3 +90,15 @@
 .policy{
     font-size:14px ;
 }
+
+.description p{
+    font-size: 14px;
+}
+
+.btnBox{
+    width: 100vw;
+    height: 64px;
+    display: fixed;
+    bottom: 0;
+
+}
