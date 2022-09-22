@@ -1,0 +1,47 @@
+.logoBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
+}
+
+.Logo{
+    width: 240px;
+
+}
+
+.imgBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centerImg{
+    width: 360px;
+}
+
+.textBox{
+    padding: 16px;
+}
+
+.text{
+    font-size: 16px;
+    margin: 0;
+}
+
+.pointText{
+    color: #755fff;
+}
+
+.loginButton{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    margin: 16px;
+    width: 328px;
+    height: 64px;
+    border-radius: 10px;
+    background-color: #FFCD00;
+    border: none;
+    font-size: 20px;
+    
+}
