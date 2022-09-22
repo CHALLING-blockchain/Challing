@@ -37,7 +37,7 @@ pipeline {
 
     stage('pipe_test') {
       steps {
-        sh 'cat $CREFILE >> .gitignore'
+        sh 'echo DONE'
       }
     }
 
