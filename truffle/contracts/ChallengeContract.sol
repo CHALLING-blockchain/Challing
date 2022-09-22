@@ -17,17 +17,6 @@ contract ChallengeContract is DonationChallengeContract{
         return keccak256(abi.encodePacked(donationChallengeMap[challengeId].name)) != keccak256(abi.encodePacked(""));
     }
 
-    // 챌린저 아이디 찾기(챌린저아이디,유저인덱스,챌린지인덱스)
-    function findingChallenger(uint challengeId,uint userId)public view returns(uint,uint,uint){       
-        uint userIdIndex=0;
-        uint challengeIdIndex=0;
-        // 챌린저 찾기
-        while(findByChallengeIdChallenger[challengeId][challengeIdIndex].userId!=userId) challengeIdIndex++;
-        while(findByUserIdChallenger[userId][userIdIndex].challengeId!=challengeId) userIdIndex++;
-        
-        return(findByUserIdChallenger[userId][userIdIndex].id,userIdIndex,challengeIdIndex);
-    }
-
     // 전체 챌린지 조회
     function getAllChallenge() public returns(uint[] memory,uint[] memory,DailyChallenge[] memory,DonationChallenge[] memory){
         
@@ -97,6 +86,16 @@ contract ChallengeContract is DonationChallengeContract{
         return(challengesByMe,myChallenges);
     }
 
+    // 챌린저 아이디 찾기(챌린저아이디,유저인덱스,챌린지인덱스)
+    function findingChallenger(uint challengeId,uint userId)public view returns(uint,uint,uint){       
+        uint userIdIndex=0;
+        uint challengeIdIndex=0;
+        // 챌린저 찾기
+        while(findByChallengeIdChallenger[challengeId][challengeIdIndex].userId!=userId) challengeIdIndex++;
+        while(findByUserIdChallenger[userId][userIdIndex].challengeId!=challengeId) userIdIndex++;
+        
+        return(findByUserIdChallenger[userId][userIdIndex].id,userIdIndex,challengeIdIndex);
+    }
 
     // 사진으로 유저 챌린지 인증
     function authenticate(uint challengeId,uint userId, uint challengerId,uint userIdIndex,uint challengeIdIndex, string memory today) public {
@@ -121,7 +120,12 @@ contract ChallengeContract is DonationChallengeContract{
     }
     
     // 챌린지 참여 챌린저들 리스트 반환 
-    function getChallenger(uint challengeId) public view returns(Challenger[] memory){
+    function getChallengers(uint challengeId) public view returns(Challenger[] memory){
         return(findByChallengeIdChallenger[challengeId]);
+    }
+
+    // 유저의 챌린저들 리스트 반환 
+    function getChallengersByUserId(uint userId) public view returns(Challenger[] memory){
+        return(findByUserIdChallenger[userId]);
     }
 }

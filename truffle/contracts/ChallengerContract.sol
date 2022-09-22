@@ -45,7 +45,7 @@ contract ChallengerContract is PassCoinContract{
         payable(userAddress).transfer(challenger.userDeposit+challenger.reward);
     }
 
-    // 패스코인써서 패스 이거랑 erc20에 useCoin 같이 사용
+    // 패스코인써서 패스 
     function usePasscoin(uint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex) public{
         Challenger memory findChallenger=challengerMap[challengerId];
 
@@ -62,7 +62,7 @@ contract ChallengerContract is PassCoinContract{
     
 
     // 투표결과반영
-    function voteR(uint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex) public{
+    function applyVoteResult(uint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex) public{
  
         Challenger memory findChallenger=challengerMap[challengerId];
 

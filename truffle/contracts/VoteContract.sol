@@ -39,7 +39,7 @@ contract VoteContract is PhotoContract{
 
         findByChallengeIdVote[challengeId].push(vote);
 
-        voting(userId, challengeId, vote.id, false); // 투표한 사람 자동으로 반대 투표
+        voting(challengeId,userId, vote.id, false); // 투표한 사람 자동으로 반대 투표
     }
     // 찬반 투표
     function voting(uint challengeId,uint userId, uint voteId, bool pass) public{
@@ -67,17 +67,23 @@ contract VoteContract is PhotoContract{
         Vote memory vote=voteMap[voteId];
 
         // 결과 맞춘 유저 찾기
-        uint[] memory userIdList=new uint[](vote.userIdList.length);
         uint count=0;
         for (uint256 i = 0; i < vote.userIdList.length; i++) {
-            if(vote.pass>vote.fail&&vote.userVoteList[i]){
+            if(vote.pass>vote.fail&&vote.userVoteList[i]) count++; 
+            else if (vote.pass<vote.fail&&!vote.userVoteList[i]) count++;
+        }
+        
+        uint[] memory userIdList=new uint[](count);
+        count=0;
+        for (uint256 i = 0; i < vote.userIdList.length; i++) {
+            if(vote.pass>vote.fail&&vote.userVoteList[i]) {
                 userIdList[count++]=vote.userIdList[i];             
             }
             else if (vote.pass<vote.fail&&!vote.userVoteList[i]){
                 userIdList[count++]=vote.userIdList[i];   
             }
         }
-
+        
         // 투표결과와 맞춘 유저 아이디 반환
         return (vote.pass>vote.fail,userIdList);
     }
