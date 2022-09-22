@@ -67,27 +67,53 @@ pipeline {
       }
     }
 
-    stage('parallel_go') {
+    // parallel stage start
+    stage('parallel_start') {
       parallel {
-        stage('backend_go') {
-          steps {
-            dir('backend') {
-              sh './gradlew clean bootJar ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI}'
+        stage('frontend') {
+          agent {
+            label 'frontend'
+          }
+
+          stages {
+            stage('frontend_echo') {
+              sh 'echo "hello_parallel"'
             }
-            dir('backend') {
-              sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
-            }
-            sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
           }
         }
 
-        stage('frontend_go') {
-          steps {
-            sh 'echo "hello_parallel"'
+        stage('backend') {
+          agent {
+            label 'backend'
+          }
+
+          stages {
+            stage('backend_build') {
+              steps {
+                dir('backend') {
+                  sh './gradlew clean bootJar ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI}'
+                }
+              }
+            }
+
+            stage('backend_docker_image') {
+              steps {
+                dir('backend') {
+                  sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
+                }
+              }
+            }
+
+            stage('backend_docker_container') {
+              steps {
+                sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
+              }
+            }
           }
         }
       }
     }
+    // parallel stage end
 
     stage('mattermost_send_completed') {
       steps {
