@@ -19,7 +19,7 @@ pipeline {
           mattermostSend(
             color: '#FFF33C',
             text: '@wp29dud',
-            message: 'Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
+            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
           )
         }
       }
@@ -144,7 +144,7 @@ pipeline {
           mattermostSend(
             color: '#3399FF',
             text: '@wp29dud',
-            message: 'Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
+            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
           )
         }
       }
