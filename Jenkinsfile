@@ -38,7 +38,7 @@ pipeline {
     stage('stop_running_containers') {
       steps {
         catchError {
-          sh 'docker stop ${BACKEND_CONTAINER}'
+          sh 'docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
         }
       }
     }
@@ -46,7 +46,7 @@ pipeline {
     stage('remove_container') {
       steps {
         catchError {
-          sh 'docker rm ${BACKEND_CONTAINER}'
+          sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
         }
       }
     }
@@ -54,7 +54,7 @@ pipeline {
     stage('remove_image') {
       steps {
         catchError {
-          sh 'docker image rm ${BACKEND_IMAGE}'
+          sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
         }
       }
     }
@@ -68,13 +68,21 @@ pipeline {
     }
 
     // parallel stage start
-    stage('parallel_start') {
+    stage('deploy') {
       parallel {
         stage('frontend') {
           stages {
-            stage('frontend_echo') {
+            stage('frontend_docker_image') {
               steps {
-                sh 'echo "hello_parallel"'
+                dir('frontend') {
+                  sh 'docker build --tag ${FRONTEND_IMAGE} .'
+                }
+              }
+            }
+
+            stage('frontend_docker_container') {
+              steps {
+                sh 'docker run -d --name ${FRONTEND_CONTAINER} -p 8081:80 ${FRONTEND_IMAGE}'
               }
             }
           }
