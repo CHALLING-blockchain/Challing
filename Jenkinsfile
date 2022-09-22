@@ -27,117 +27,123 @@ pipeline {
   }
 
   stages {
-    stage('mattermost_send_start') {
+    stage('test_stage') {
       steps {
-        catchError {
-          mattermostSend(
-            color: "#FFF33C",
-            message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
-          )
-        }
+        sh 'echo hello > text.txt'
       }
     }
 
-    stage('stop_running_containers') {
-      steps {
-        catchError {
-          sh 'docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
-        }
-      }
-    }
+    // stage('mattermost_send_start') {
+    //   steps {
+    //     catchError {
+    //       mattermostSend(
+    //         color: "#FFF33C",
+    //         message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+    //       )
+    //     }
+    //   }
+    // }
 
-    stage('remove_container') {
-      steps {
-        catchError {
-          sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
-        }
-      }
-    }
+    // stage('stop_running_containers') {
+    //   steps {
+    //     catchError {
+    //       sh 'docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
+    //     }
+    //   }
+    // }
 
-    stage('remove_image') {
-      steps {
-        catchError {
-          sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
-        }
-      }
-    }
+    // stage('remove_container') {
+    //   steps {
+    //     catchError {
+    //       sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
+    //     }
+    //   }
+    // }
 
-    stage('prune_images') {
-      steps {
-        catchError {
-          sh 'docker image prune --force'
-        }
-      }
-    }
+    // stage('remove_image') {
+    //   steps {
+    //     catchError {
+    //       sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
+    //     }
+    //   }
+    // }
 
-    stage('deploy') {
-      parallel {
-        stage('frontend') {
-          stages {
-            stage('frontend_docker_image') {
-              steps {
-                dir('frontend') {
-                  sh 'docker build --tag ${FRONTEND_IMAGE} .'
-                }
-              }
-            }
+    // stage('prune_images') {
+    //   steps {
+    //     catchError {
+    //       sh 'docker image prune --force'
+    //     }
+    //   }
+    // }
 
-            stage('frontend_docker_container') {
-              steps {
-                sh 'docker run -d --name ${FRONTEND_CONTAINER} -p 8081:80 ${FRONTEND_IMAGE}'
-              }
-            }
+    // stage('deploy') {
+    //   parallel {
+    //     stage('frontend') {
+    //       stages {
+    //         stage('frontend_docker_image') {
+    //           steps {
+    //             dir('frontend') {
+    //               sh 'docker build --tag ${FRONTEND_IMAGE} .'
+    //             }
+    //           }
+    //         }
 
-            stage('mattermost_send_frontend_complete') {
-              steps {
-                catchError {
-                  mattermostSend(
-                    color: "#52C606",
-                    message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
-                  )
-                }
-              }
-            }
-          }
-        }
+    //         stage('frontend_docker_container') {
+    //           steps {
+    //             sh 'docker run -d --name ${FRONTEND_CONTAINER} -p 8081:80 ${FRONTEND_IMAGE}'
+    //           }
+    //         }
 
-        stage('backend') {
-          stages {
-            stage('backend_build') {
-              steps {
-                dir('backend') {
-                  sh './gradlew clean bootJar ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI}'
-                }
-              }
-            }
+    //         stage('mattermost_send_frontend_complete') {
+    //           steps {
+    //             catchError {
+    //               mattermostSend(
+    //                 color: "#52C606",
+    //                 message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+    //               )
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
 
-            stage('backend_docker_image') {
-              steps {
-                dir('backend') {
-                  sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
-                }
-              }
-            }
+    //     stage('backend') {
+    //       stages {
+    //         stage('backend_build') {
+    //           steps {
+    //             dir('backend') {
+    //               sh './gradlew clean bootJar ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI}'
+    //             }
+    //           }
+    //         }
 
-            stage('backend_docker_container') {
-              steps {
-                sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
-              }
-            }
+    //         stage('backend_docker_image') {
+    //           steps {
+    //             dir('backend') {
+    //               sh 'docker build --build-arg JAR_FILE=build/libs/*.jar --tag ${BACKEND_IMAGE} .'
+    //             }
+    //           }
+    //         }
 
-            stage('mattermost_send_backend_complete') {
-              steps {
-                catchError {
-                  mattermostSend(
-                    color: "#52C606",
-                    message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
-                  )
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    //         stage('backend_docker_container') {
+    //           steps {
+    //             sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
+    //           }
+    //         }
+
+    //         stage('mattermost_send_backend_complete') {
+    //           steps {
+    //             catchError {
+    //               mattermostSend(
+    //                 color: "#52C606",
+    //                 message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+    //               )
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
