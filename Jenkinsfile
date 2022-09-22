@@ -77,7 +77,9 @@ pipeline {
 
           stages {
             stage('frontend_echo') {
-              sh 'echo "hello_parallel"'
+              steps {
+                sh 'echo "hello_parallel"'
+              }
             }
           }
         }
