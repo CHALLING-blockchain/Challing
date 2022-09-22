@@ -30,10 +30,7 @@ pipeline {
     stage('mattermost_send_start') {
       steps {
         catchError {
-          sh 'echo "${RUN_DISPLAY_URL} ${RUN_CHANGES_DISPLAY_URL} ${JOB_DISPLAY_URL}"'
-          // mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/job/testjenkins/${BUILD_NUMBER}/|#${BUILD_NUMBER}> started")
-          // mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/blue/organizations/jenkins/testjenkins/detail/testjenkins/${BUILD_NUMBER}/pipeline|#${BUILD_NUMBER}> started")
-          mattermostSend(message: "${RUN_DISPLAY_URL} ${RUN_CHANGES_DISPLAY_URL} ${JOB_DISPLAY_URL}")
+          mattermostSend(message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
         }
       }
     }
@@ -91,7 +88,7 @@ pipeline {
             stage('mattermost_send_frontend_complete') {
               steps {
                 catchError {
-                  mattermostSend 'deploying frontend complete'
+                  mattermostSend(message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
                 }
               }
             }
@@ -125,7 +122,7 @@ pipeline {
             stage('mattermost_send_backend_complete') {
               steps {
                 catchError {
-                  mattermostSend 'deploying backend complete'
+                  mattermostSend(message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
                 }
               }
             }
