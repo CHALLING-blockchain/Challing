@@ -30,7 +30,10 @@ pipeline {
     stage('mattermost_send_start') {
       steps {
         catchError {
-          mattermostSend(message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
+          mattermostSend(
+            color: "#FFF33C",
+            message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+          )
         }
       }
     }
@@ -88,7 +91,10 @@ pipeline {
             stage('mattermost_send_frontend_complete') {
               steps {
                 catchError {
-                  mattermostSend(message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
+                  mattermostSend(
+                    color: "#52C606",
+                    message: "Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+                  )
                 }
               }
             }
@@ -122,7 +128,10 @@ pipeline {
             stage('mattermost_send_backend_complete') {
               steps {
                 catchError {
-                  mattermostSend(message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>")
+                  mattermostSend(
+                    color: "#52C606",
+                    message: "Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+                  )
                 }
               }
             }
