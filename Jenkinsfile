@@ -18,7 +18,7 @@ pipeline {
         catchError {
           mattermostSend(
             color: "#FFF33C",
-            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n@wp29dud"
+            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n송제영"
           )
         }
       }
@@ -142,7 +142,7 @@ pipeline {
         catchError {
           mattermostSend(
             color: "#3399FF",
-            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n@wp29dud"
+            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n송제영"
           )
         }
       }
