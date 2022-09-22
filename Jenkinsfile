@@ -29,7 +29,7 @@ pipeline {
   stages {
     stage('test_stage') {
       steps {
-        sh 'echo DONE'
+        sh 'git clean -x --force'
       }
     }
 
