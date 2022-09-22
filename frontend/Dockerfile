@@ -1,6 +1,6 @@
 FROM node:16.17.0-alpine as build-stage
 WORKDIR /workdir/
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 ARG runscript=build
