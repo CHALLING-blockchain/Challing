@@ -1,13 +1,13 @@
 import React from 'react';
-import './Menu.css';
+import styles from './Menu.module.css';
 import { Link } from "react-router-dom";
 
 
 
 function Menu() {
     return (
-      <div className='Footer'>
-        <div className='Menu'>
+      <div className={styles.Footer}>
+        <div className={styles.Menu}>
           <Link to="/">
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 10.6667V23.6667C1 24.4031 1.59695 25 2.33333 25H8.23809C8.97448 25 9.57143 24.4031 9.57143 23.6667V14.7143H16.4285V23.6667C16.4285 24.4031 17.0255 25 17.7619 25H23.6667C24.4031 25 25 24.4031 25 23.6667V10.6667C25 10.247 24.8024 9.8518 24.4667 9.6L13 1L1.53333 9.6C1.19759 9.8518 1 10.247 1 10.6667V10.6667Z" fill="white" stroke="#BABDFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -37,9 +37,6 @@ function Menu() {
             </svg>
           </Link>
         </div>
-        <svg width="360" height="56" viewBox="0 0 360 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="360" height="56" fill="#8D8D8D"/>
-        </svg>
       </div>
     );
 };
