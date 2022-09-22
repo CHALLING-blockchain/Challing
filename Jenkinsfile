@@ -2,8 +2,6 @@ pipeline {
   agent any
 
   environment {
-    CREFILE = credentials('crefile')
-
     PF_PROFILE = '-Dspring.profiles.active='
     PROFILE = 'production'
 
@@ -32,12 +30,6 @@ pipeline {
     stage('git_clean') {
       steps {
         sh 'git clean -x --force'
-      }
-    }
-
-    stage('test_crefile') {
-      steps {
-        sh 'cp $CREFILE foobar.txt'
       }
     }
 
