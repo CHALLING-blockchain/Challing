@@ -33,12 +33,12 @@ pipeline {
     stage('set_env_files') {
       steps {
         dir('frontend') {
-          sh 'cp $FRONTEND_DEFAULT ./.env.local'
-          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+          sh 'cp ${FRONTEND_DEFAULT} ./.env.local'
+          sh 'cp ${FRONTEND_PRODUCTION} ./.env.production.local'
         }
 
         dir('backend/src/main/resources') {
-          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
+          sh 'cat ${BACKEND_PRODUCTION} >> ./application-production.yml'
         }
       }
     }
