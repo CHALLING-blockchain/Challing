@@ -30,9 +30,7 @@ pipeline {
     stage('mattermost_send_start') {
       steps {
         catchError {
-          sh 'echo "${BUILD_NUMBER}"'
-          // mattermostSend 'depolying frontend and backend start\nbuild #${BUILD_NUMBER}'
-          mattermostSend(message: BUILD_NUMBER)
+          mattermostSend(message: "Build <https://j7b106.p.ssafy.io:58888/job/testjenkins/${BUILD_NUMBER}/|#${BUILD_NUMBER}> started")
         }
       }
     }
