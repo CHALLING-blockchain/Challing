@@ -48,10 +48,14 @@ function ChallengeDetail() {
         <div className={styles.titles}>
             <div className={styles.user}>
                 <img style={{margin:'4px', width:'16px', height:'16px', borderRadius:'20px'}} src={profile} alt="" />
-                <span style={{fontSize:'16px'}}>커다란 솜사탕</span>
+                <span style={{fontSize:'12px'}}>커다란 솜사탕</span>
             </div>
             <div className={styles.title}>
-                
+                <span style={{fontSize:'16px', fontWeight:'bold'}}>영어, 외국어 10문장 쓰기</span>
+            </div>
+            <div className={styles.Tags}>
+                <span className={styles.Tag}>4주동안</span>
+                <span className={styles.Tag}>매일매일</span>
             </div>
         </div>
       </div>
