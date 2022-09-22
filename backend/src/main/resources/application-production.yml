@@ -1,11 +1,11 @@
 spring.output.ansi.enabled: never
 logging.file.name: logs/backend.log
+com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
 
 # env from production runtime
 #
-#   spring.datasource.url
 #   spring.datasource.username
 #   spring.datasource.password
 #   jwt.secret
+#   com.ssafy.db.url.address
 #   com.ssafy.kakao.client_id
-#   com.ssafy.kakao.redirect_uri

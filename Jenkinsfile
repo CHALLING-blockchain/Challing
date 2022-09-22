@@ -2,79 +2,96 @@ pipeline {
   agent any
 
   environment {
-    PF_PROFILE = '-Dspring.profiles.active='
-    PROFILE = 'production'
+    // PF_PROFILE = '-Dspring.profiles.active='
+    // PROFILE = 'production'
 
-    PF_DB_ADDRESS = '-Dcom.ssafy.db.address_and_port='
-    DB_ADDRESS = credentials('db.address_and_port')
+    // PF_DB_ADDRESS = '-Dcom.ssafy.db.address_and_port='
+    // DB_ADDRESS = credentials('db.address_and_port')
 
-    PF_DB_PASSWORD = '-Dcom.ssafy.db.password='
-    DB_PASSWORD = credentials('db.password')
+    // PF_DB_PASSWORD = '-Dcom.ssafy.db.password='
+    // DB_PASSWORD = credentials('db.password')
 
-    PF_JWT_SECRET = '-Dcom.ssafy.jwt.secret='
-    JWT_SECRET = credentials('jwt.secret')
+    // PF_JWT_SECRET = '-Dcom.ssafy.jwt.secret='
+    // JWT_SECRET = credentials('jwt.secret')
 
-    PF_KAKAO_CLIENT_ID = '-Dcom.ssafy.kakao.client_id='
-    KAKAO_CLIENT_ID = credentials('kakao.client_id')
+    // PF_KAKAO_CLIENT_ID = '-Dcom.ssafy.kakao.client_id='
+    // KAKAO_CLIENT_ID = credentials('kakao.client_id')
 
-    PF_KAKAO_LOGIN_REDIRECT_URI = '-Dcom.ssafy.kakao.redirect_uri='
-    KAKAO_LOGIN_REDIRECT_URI = 'https://j7b106.p.ssafy.io/loginresult'
+    // PF_KAKAO_LOGIN_REDIRECT_URI = '-Dcom.ssafy.kakao.redirect_uri='
+    // KAKAO_LOGIN_REDIRECT_URI = 'https://j7b106.p.ssafy.io/loginresult'
 
-    BACKEND_IMAGE = 'sp7333/backend'
-    BACKEND_CONTAINER = 'backend'
+    FRONTEND_DEFAULT = credentials('frontend_default')
+    FRONTEND_PRODUCTION = credentials('frontend_production')
+    BACKEND_PRODUCTION = credentials('backend_production')
+
     FRONTEND_IMAGE = 'sp7333/frontend'
     FRONTEND_CONTAINER = 'frontend'
+    BACKEND_IMAGE = 'sp7333/backend'
+    BACKEND_CONTAINER = 'backend'
   }
 
   stages {
+    stage('mattermost_send_start') {
+      steps {
+        catchError {
+          mattermostSend(
+            color: "#FFF33C",
+            message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+          )
+        }
+      }
+    }
+
     stage('git_clean') {
       steps {
         sh 'git clean --force'
       }
     }
 
-    // stage('mattermost_send_start') {
-    //   steps {
-    //     catchError {
-    //       mattermostSend(
-    //         color: "#FFF33C",
-    //         message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
-    //       )
-    //     }
-    //   }
-    // }
+    stage('set_env_files') {
+      steps {
+        dir('frontend') {
+          sh 'cp $FRONTEND_DEFAULT ./.env.local'
+          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+        }
 
-    // stage('stop_running_containers') {
-    //   steps {
-    //     catchError {
-    //       sh 'docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
-    //     }
-    //   }
-    // }
+        dir('backend/src/main/resources') {
+          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
+        }
+      }
+    }
 
-    // stage('remove_containers') {
-    //   steps {
-    //     catchError {
-    //       sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
-    //     }
-    //   }
-    // }
+    stage('stop_running_containers') {
+      steps {
+        catchError {
+          sh 'docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
+        }
+      }
+    }
 
-    // stage('remove_images') {
-    //   steps {
-    //     catchError {
-    //       sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
-    //     }
-    //   }
-    // }
+    stage('remove_containers') {
+      steps {
+        catchError {
+          sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
+        }
+      }
+    }
 
-    // stage('prune_images') {
-    //   steps {
-    //     catchError {
-    //       sh 'docker image prune --force'
-    //     }
-    //   }
-    // }
+    stage('remove_images') {
+      steps {
+        catchError {
+          sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
+        }
+      }
+    }
+
+    stage('prune_images') {
+      steps {
+        catchError {
+          sh 'docker image prune --force'
+        }
+      }
+    }
 
     // stage('deploy') {
     //   parallel {
@@ -83,7 +100,7 @@ pipeline {
     //         stage('frontend_docker_image') {
     //           steps {
     //             dir('frontend') {
-    //               sh 'docker build --tag ${FRONTEND_IMAGE} .'
+    //               sh 'docker build --build-arg runscript=buildprod --tag ${FRONTEND_IMAGE} .'
     //             }
     //           }
     //         }
