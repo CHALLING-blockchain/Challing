@@ -31,7 +31,8 @@ pipeline {
       steps {
         catchError {
           sh '${BUILD_NUMBER}'
-          mattermostSend 'depolying frontend and backend start\nbuild #${BUILD_NUMBER}'
+          // mattermostSend 'depolying frontend and backend start\nbuild #${BUILD_NUMBER}'
+          mattermostSend '${BUILD_NUMBER}'
         }
       }
     }
