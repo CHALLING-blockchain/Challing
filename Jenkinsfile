@@ -27,10 +27,10 @@ pipeline {
   }
 
   stages {
-    stage('mattermost_send_started') {
+    stage('mattermost_send_start') {
       steps {
         catchError {
-          mattermostSend 'started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) job display url: [${JOB_DISPLAY_URL}](${JOB_DISPLAY_URL})'
+          mattermostSend 'depolying frontend and backend start'
         }
       }
     }
@@ -67,7 +67,6 @@ pipeline {
       }
     }
 
-    // parallel stage start
     stage('deploy') {
       parallel {
         stage('frontend') {
@@ -83,6 +82,14 @@ pipeline {
             stage('frontend_docker_container') {
               steps {
                 sh 'docker run -d --name ${FRONTEND_CONTAINER} -p 8081:80 ${FRONTEND_IMAGE}'
+              }
+            }
+
+            stage('mattermost_send_frontend_complete') {
+              steps {
+                catchError {
+                  mattermostSend 'deploying frontend complete'
+                }
               }
             }
           }
@@ -111,16 +118,15 @@ pipeline {
                 sh 'docker run -d --name ${BACKEND_CONTAINER} -p 8080:8080 ${BACKEND_IMAGE} java ${PF_PROFILE}${PROFILE} ${PF_DB_ADDRESS}${DB_ADDRESS} ${PF_DB_PASSWORD}${DB_PASSWORD} ${PF_JWT_SECRET}${JWT_SECRET} ${PF_KAKAO_CLIENT_ID}${KAKAO_CLIENT_ID} ${PF_KAKAO_LOGIN_REDIRECT_URI}${KAKAO_LOGIN_REDIRECT_URI} -jar app.jar'
               }
             }
-          }
-        }
-      }
-    }
-    // parallel stage end
 
-    stage('mattermost_send_completed') {
-      steps {
-        catchError {
-          mattermostSend 'completed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) result display url: [${RUN_DISPLAY_URL}](${RUN_DISPLAY_URL})'
+            stage('mattermost_send_backend_complete') {
+              steps {
+                catchError {
+                  mattermostSend 'deploying backend complete'
+                }
+              }
+            }
+          }
         }
       }
     }
