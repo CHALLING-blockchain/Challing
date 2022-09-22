@@ -2,6 +2,8 @@ pipeline {
   agent any
 
   environment {
+    CREFILE = credentials('crefile')
+
     PF_PROFILE = '-Dspring.profiles.active='
     PROFILE = 'production'
 
@@ -27,9 +29,15 @@ pipeline {
   }
 
   stages {
-    stage('test_stage') {
+    stage('git_clean') {
       steps {
         sh 'git clean -x --force'
+      }
+    }
+
+    stage('test_crefile') {
+      steps {
+        sh 'echo $CREFILE > fooobaaa.txt'
       }
     }
 
@@ -52,7 +60,7 @@ pipeline {
     //   }
     // }
 
-    // stage('remove_container') {
+    // stage('remove_containers') {
     //   steps {
     //     catchError {
     //       sh 'docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}'
@@ -60,7 +68,7 @@ pipeline {
     //   }
     // }
 
-    // stage('remove_image') {
+    // stage('remove_images') {
     //   steps {
     //     catchError {
     //       sh 'docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}'
