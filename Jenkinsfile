@@ -71,10 +71,6 @@ pipeline {
     stage('parallel_start') {
       parallel {
         stage('frontend') {
-          agent {
-            label 'frontend'
-          }
-
           stages {
             stage('frontend_echo') {
               steps {
@@ -85,10 +81,6 @@ pipeline {
         }
 
         stage('backend') {
-          agent {
-            label 'backend'
-          }
-
           stages {
             stage('backend_build') {
               steps {
