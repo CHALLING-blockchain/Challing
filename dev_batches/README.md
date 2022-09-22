@@ -1,5 +1,9 @@
 ## Batch files for dev on Windows
 
+윈도우 사용자용 개발시 더블클릭으로만으로 편하게 프론트, 백 돌리라고 만든 거
+
+기존에 IDE 에서, 또는 알아서 잘 돌리던 사람들은 굳이 안 써도 됨
+
 ### Prerequisites
 
 - Docker Desktop 이 실행되어 있어야 함
