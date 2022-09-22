@@ -43,7 +43,7 @@ public class User {
         return User.builder()
                 .email(userRegisterRequest.getEmail())
                 .nickname(userRegisterRequest.getNickname())
-                .picURL(userRegisterRequest.getPicurl())
+                .picURL(userRegisterRequest.getPicURL())
                 .build();
     }
 
