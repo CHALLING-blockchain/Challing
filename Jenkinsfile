@@ -24,20 +24,12 @@ pipeline {
     BACKEND_CONTAINER = 'backend'
     FRONTEND_IMAGE = 'sp7333/frontend'
     FRONTEND_CONTAINER = 'frontend'
-
-    CREFILE = credentials('crefile')
   }
 
   stages {
     stage('git_clean') {
       steps {
-        sh 'git clean -x --force'
-      }
-    }
-
-    stage('pipe_test') {
-      steps {
-        sh 'echo DONE'
+        sh 'git clean --force'
       }
     }
 
