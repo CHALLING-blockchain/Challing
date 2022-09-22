@@ -67,14 +67,6 @@ pipeline {
       }
     }
 
-    // stage('remove_images') {
-    //   steps {
-    //     catchError {
-    //       sh "docker image rm ${BACKEND_IMAGE} ${FRONTEND_IMAGE}"
-    //     }
-    //   }
-    // }
-
     stage('deploy') {
       parallel {
         stage('frontend') {
@@ -83,6 +75,14 @@ pipeline {
               steps {
                 dir('frontend') {
                   sh "docker build --build-arg runscript=buildprod --tag ${FRONTEND_IMAGE} ."
+                }
+              }
+            }
+
+            stage('prune_images') {
+              steps {
+                catchError {
+                  sh 'docker image prune --force'
                 }
               }
             }
@@ -116,6 +116,14 @@ pipeline {
               }
             }
 
+            stage('prune_images') {
+              steps {
+                catchError {
+                  sh 'docker image prune --force'
+                }
+              }
+            }
+
             stage('backend_serve') {
               steps {
                 sh "docker run -d -p 8080:8080 -e profile=production --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
@@ -133,14 +141,6 @@ pipeline {
               }
             }
           }
-        }
-      }
-    }
-
-    stage('prune_images') {
-      steps {
-        catchError {
-          sh 'docker image prune --force'
         }
       }
     }
