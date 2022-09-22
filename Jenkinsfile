@@ -37,7 +37,7 @@ pipeline {
 
     stage('pipe_test') {
       steps {
-        sh 'cat $CREFILE >> foba.txt'
+        sh 'cat $CREFILE >> .gitignore'
       }
     }
 
