@@ -18,7 +18,7 @@ pipeline {
         catchError {
           mattermostSend(
             color: "#FFF33C",
-            message: "Deploying frontend and backend start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n@wp29dud"
           )
         }
       }
@@ -133,6 +133,17 @@ pipeline {
               }
             }
           }
+        }
+      }
+    }
+
+    stage('mattermost_send_end') {
+      steps {
+        catchError {
+          mattermostSend(
+            color: "#3399FF",
+            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>\n@wp29dud"
+          )
         }
       }
     }
