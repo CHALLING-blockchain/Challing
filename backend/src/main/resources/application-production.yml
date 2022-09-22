@@ -1,5 +1,9 @@
+com.ssafy.db.url.address: host.docker.internal
+
 spring.output.ansi.enabled: never
+
 logging.file.name: logs/backend.log
+
 com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
 
 # env from production runtime
@@ -7,5 +11,4 @@ com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
 #   spring.datasource.username
 #   spring.datasource.password
 #   jwt.secret
-#   com.ssafy.db.url.address
 #   com.ssafy.kakao.client_id
