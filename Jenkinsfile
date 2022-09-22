@@ -10,6 +10,9 @@ pipeline {
     FRONTEND_CONTAINER = 'frontend'
     BACKEND_IMAGE = 'sp7333/backend'
     BACKEND_CONTAINER = 'backend'
+
+    MMACCOUNT = '@wp29dud'
+    MSGSUFFIX = "\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
   }
 
   stages {
@@ -18,8 +21,8 @@ pipeline {
         catchError {
           mattermostSend(
             color: '#FFF33C',
-            text: '@wp29dud',
-            message: "Job start\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+            text: MMACCOUNT,
+            message: "Job start${MSGSUFFIX}"
           )
         }
       }
@@ -34,12 +37,12 @@ pipeline {
     stage('set_env_files') {
       steps {
         dir('frontend') {
-          sh 'cp ${FRONTEND_DEFAULT} ./.env.local'
-          sh 'cp ${FRONTEND_PRODUCTION} ./.env.production.local'
+          sh "cp ${FRONTEND_DEFAULT} ./.env.local"
+          sh "cp ${FRONTEND_PRODUCTION} ./.env.production.local"
         }
 
         dir('backend/src/main/resources') {
-          sh 'cat ${BACKEND_PRODUCTION} >> ./application-production.yml'
+          sh "cat ${BACKEND_PRODUCTION} >> ./application-production.yml"
         }
       }
     }
@@ -99,7 +102,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: 'Deploying frontend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
+                    message: "Deploying frontend complete${MSGSUFFIX}"
                   )
                 }
               }
@@ -128,7 +131,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: 'Deploying backend complete\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>'
+                    message: "Deploying backend complete${MSGSUFFIX}"
                   )
                 }
               }
@@ -143,8 +146,8 @@ pipeline {
         catchError {
           mattermostSend(
             color: '#3399FF',
-            text: '@wp29dud',
-            message: "Job end\nBuild <${RUN_DISPLAY_URL}|#${BUILD_NUMBER}>"
+            text: MMACCOUNT,
+            message: "Job end${MSGSUFFIX}"
           )
         }
       }
