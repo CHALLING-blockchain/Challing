@@ -14,6 +14,6 @@ export const allChallengeSlice = createSlice({
 });
 
 export const { setChallengeList } = allChallengeSlice.actions;
-export const challengeList = (state) => state.challengeList.setChallengeList;
+export const challengeList = (state) => state.challengeList.challengeList;
 
 export default allChallengeSlice.reducer;
