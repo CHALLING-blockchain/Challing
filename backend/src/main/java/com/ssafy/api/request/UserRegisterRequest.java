@@ -13,7 +13,7 @@ import java.util.List;
 public class UserRegisterRequest {
     private String email;
     private String nickname;
-    private String picurl;
+    private String picURL;
     @Builder.Default
     private List<String> interests = new ArrayList<>();
 }
