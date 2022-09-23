@@ -95,7 +95,9 @@ function SetProfile() {
             onChange={handleChange}
           />
         </div>
-        <span>{checkMsg}</span>
+
+        <p>{checkMsg}</p>
+
         <Next
           type="submit"
           label="Next"

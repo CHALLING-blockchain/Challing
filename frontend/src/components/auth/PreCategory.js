@@ -41,8 +41,8 @@ function PreCategory() {
         interests: interests,
       };
       UserAPI.join(body).then((response) => {
-        console.log(response);
-        dispatch(setUserInfo(response.data.body.user));
+        console.log("response", response);
+        dispatch(setUserInfo(response.data.body));
         navigate("/my-wallet");
       });
     }
