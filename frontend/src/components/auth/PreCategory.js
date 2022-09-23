@@ -1,4 +1,5 @@
-import { React, useEffect } from "react";
+import { React } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import UserAPI from "../../api/UserAPI";
@@ -15,6 +16,7 @@ import tea from "../../img/tea-cup.png";
 function PreCategory() {
   const interests = [];
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const addInterest = (props) => {
@@ -30,6 +32,7 @@ function PreCategory() {
   const join = () => {
     if (interests.length === 0) {
       alert("관심사를 선택해주세요!");
+      return;
     } else {
       const body = {
         email: user.email,
@@ -40,6 +43,7 @@ function PreCategory() {
       UserAPI.join(body).then((response) => {
         console.log(response);
         dispatch(setUserInfo(response.data.body.user));
+        navigate("/my-wallet");
       });
     }
   };
