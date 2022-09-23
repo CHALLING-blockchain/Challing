@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
+import donationIcon from '../../../img/donation-challenge-hand.png'
+import dailyIcon from '../../../img/daily-challenge-hand.png'
 
 function SelectChallenge({formCnt,setFormCnt,value,setValue}){
   return (
@@ -12,19 +14,21 @@ function SelectChallenge({formCnt,setFormCnt,value,setValue}){
         </Link>
         <p>챌린지 개설하기</p>
       </div>
-      <p className="FormHeader">어떤 형태의 챌린지인가요?</p>
-      <div className="SelectChallenge" value={value} onClick={()=>{
+      <p className={styles.FormHeader}>어떤 형태의 챌린지인가요?</p>
+      <div className={styles.SelectChallenge} value={value} onClick={()=>{
         setValue('기부챌린지')
         setFormCnt(formCnt+1)
         }
         }>
+        <img src={donationIcon} alt="donationIcon" style={{width:'120px'}}/>
         <p>기부 챌린지</p>
       </div>
-      <div className="SelectChallenge" onClick={()=>{
+      <div className={styles.SelectChallenge} onClick={()=>{
         setValue('일상챌린지')
         setFormCnt(formCnt+1)
         }}>
         <p>일상챌린지</p>
+        <img src={dailyIcon} alt="dailyIcon" style={{height:'120px'}}/>
       </div>
     </div>
   );

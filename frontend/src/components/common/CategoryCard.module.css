@@ -31,3 +31,16 @@
     font-size: 16px;
     margin: 8px;
 }
+
+.cardX{
+    width: 124px;
+    height: 116px;
+    border: none;
+    border-radius: 10px;
+    background-color: #F2F3FF;
+    opacity: 0.5;
+    margin: 8px;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+}

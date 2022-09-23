@@ -7,7 +7,7 @@
 .NextButton{
     width: 328px;
     height: 48px;
-    margin: 16px;
+    /* margin: 16px; */
     background: linear-gradient(45deg, #8397ff, #926bff);
     border: none;
     border-radius: 10px;
@@ -15,3 +15,15 @@
     font-weight: bold;
     color: white;
 }
+
+.NextButtonX{
+    width: 328px;
+    height: 48px;
+    /* margin: 16px; */
+    background: linear-gradient(252.68deg, rgba(146, 114, 255, 0.5) 27.32%, rgba(133, 150, 255, 0.5) 93.21%);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    }
