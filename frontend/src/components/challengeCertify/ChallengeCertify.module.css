@@ -1,0 +1,123 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+.backdrop{
+    width: 100vw;
+    height: 270px;
+}
+
+.desBox{
+    padding: 16px;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.subBox{
+    margin: 4px 0;
+}
+
+.oneline{
+    display: flex;
+    margin: 4px 0;
+    align-items: center;
+}
+
+.oneline img{
+    width: 24px;
+    height: 24px;
+    margin: 0 8px 0 0;
+}
+
+.oneline span{
+    font-size: 14px;
+}
+
+.btnBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn{
+    width: 328px;
+    height: 40px;
+    margin: 0 auto 16px;
+    background: linear-gradient(45deg, #8397ff, #926bff);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.hrTag{
+    width: 328px;
+    height: 0.5px;
+    background-color: #BABDFF;
+    border: none;
+    margin: 8px 16px;
+}
+
+.otherShot{
+    padding: 8px 16px;
+}
+
+.shotTitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shotTitle span{
+    font-size: 16px;
+}
+
+.shots{
+    display: flex;
+    align-items: center;
+    width: 328px;
+    margin: 4px auto;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+}
+.shots::-webkit-scrollbar{
+    height: 5px;
+}
+.shots::-webkit-scrollbar-thumb{
+    background-color: #755FFF;
+    border-radius: 10px;
+}
+.shots::-webkit-scrollbar-track{
+    background-color:  #E5E1FF;
+    border-radius: 10px;
+}
+
+.shots img{
+    width: 80px;
+    height: 80px;
+    border: none;
+    border-radius: 5px;
+    margin: 8px;
+}
+
+.voting{
+    margin: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.votingSub{
+    display: flex;
+    align-items: center;
+}
