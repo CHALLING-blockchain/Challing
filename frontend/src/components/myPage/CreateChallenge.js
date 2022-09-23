@@ -7,6 +7,9 @@ import SelectDonation from './challengeForm/SelectDonation';
 import ChallengeIntro from './challengeForm/ChallengeIntro';
 import ShotExample from './challengeForm/ShotExample';
 import SelectCertification from './challengeForm/SelectCertification';
+import SelectPeriod from './challengeForm/SelectPeriod';
+import SelectPeople from './challengeForm/SelectPeople';
+import SelectDeposit from './challengeForm/SelectDeposit';
 
 const donations = ["국경없는 의사회","세이브더 칠드런","초록우산","월드비전","유니세프"]
 function CreateChallenge() {
@@ -16,18 +19,21 @@ function CreateChallenge() {
     topic:"",
     title:"",
     donation:"",
-    donationMoney:"",
+    donationMoney:0,
     explanation:"",
     exPhotoUrl:"",
     goodShotUrl:"",
     badShotUrl:"",
     nTimesAWeek:"",
     authentications:"",
-    period:"",
+    startTime:"",
+    endTime:"",
+    period:0,
     challengeStart:"",
+    challengeEnd:"",
     peopleLimit:"",
-    LimitNum:"",
-    dailyMoney:""
+    limitNum:0,
+    dailyMoney:0,
   });
   
   const [formCnt,setFormCnt] = useState(0);
@@ -36,6 +42,7 @@ function CreateChallenge() {
 
   return(
     <div className="CreateChallenge">
+      
       <div>
         {/* 일상 & 기부 공통 폼 */}
         {formCnt === 0? 
@@ -46,7 +53,8 @@ function CreateChallenge() {
           setSelects((state)=>({
             ...state,challenge:value
           }));
-        }}/> : null }
+        }}/>
+        : null }
         { formCnt === 1 ? 
         <SelectTopic formCnt={formCnt}
         setFormCnt={(cnt)=>{setFormCnt(cnt)}}
@@ -131,6 +139,44 @@ function CreateChallenge() {
           }));
         }}
         />:null}
+        { formCnt === 7 && selects.challenge === "기부챌린지" ? 
+        <SelectPeriod formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        period={selects.period}
+        setPeriod={(value)=>{
+          setSelects((state)=>({
+            ...state,period:value
+          }));
+        }}
+        challengeStart={selects.challengeStart}
+        setChallengeStart={(value)=>{
+          setSelects((state)=>({
+            ...state,challengeStart:value
+          }));
+        }}
+        challengeEnd={selects.challengeEnd}
+        setChallengeEnd={(value)=>{
+          setSelects((state)=>({
+            ...state,challengeEnd:value
+          }));
+        }}
+        /> : null}
+        { formCnt === 8 && selects.challenge === "기부챌린지" ? 
+        <SelectPeople formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        peopleLimit={setSelects.peopleLimit}
+        setPeopleLimit={(value)=>{
+          setSelects((state)=>({
+            ...state,peopleLimit:value
+          }))
+        }}
+        limitNum={setSelects.limitNum}
+        setLimitNum={(value)=>{
+          setSelects((state)=>({
+            ...state,limitNum:value
+          }))
+        }}
+        /> : null}
         {/* 여기서부터 일상 챌린지 */}
         { formCnt === 3 && selects.challenge ==="일상챌린지" ? 
         <ChallengeIntro formCnt={formCnt}
@@ -179,7 +225,67 @@ function CreateChallenge() {
             ...state,authentications:value
           }));
         }}
+        startTime={selects.startTime}
+        setStartTime={(value)=>{
+          setSelects((state)=>({
+            ...state,startTime:value
+          }));
+        }}
+        endTime={selects.endTime}
+        setEndTime={(value)=>{
+          setSelects((state)=>({
+            ...state,endTime:value
+          }));
+        }}
         />:null}
+        { formCnt === 6 && selects.challenge === "일상챌린지" ? 
+        <SelectPeriod formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        period={selects.period}
+        setPeriod={(value)=>{
+          setSelects((state)=>({
+            ...state,period:value
+          }));
+        }}
+        challengeStart={selects.challengeStart}
+        setChallengeStart={(value)=>{
+          setSelects((state)=>({
+            ...state,challengeStart:value
+          }));
+        }}
+        challengeEnd={selects.challengeEnd}
+        setChallengeEnd={(value)=>{
+          setSelects((state)=>({
+            ...state,challengeEnd:value
+          }));
+        }}
+        /> : null}
+        { formCnt === 7 && selects.challenge === "일상챌린지" ? 
+        <SelectPeople formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        peopleLimit={setSelects.peopleLimit}
+        setPeopleLimit={(value)=>{
+          setSelects((state)=>({
+            ...state,peopleLimit:value
+          }))
+        }}
+        limitNum={setSelects.limitNum}
+        setLimitNum={(value)=>{
+          setSelects((state)=>({
+            ...state,limitNum:value
+          }))
+        }}
+        /> : null}
+        { formCnt === 8 && selects.challenge === "일상챌린지" ? 
+        <SelectDeposit formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        dailyMoney={setSelects.dailyMoney}
+        setDailyMoney={(value)=>{
+          setSelects((state)=>({
+            ...state,dailyMoney:value
+          }))
+        }}
+        /> : null}
       </div>
     </div>
   );

@@ -1,7 +1,23 @@
 import { useState } from 'react';
 import './challengeForm.css';
-function SelectCertification({formCnt,setFormCnt,nTimesAWeek,setNTimesAWeek,authentications,setAuthentications}){
-  const[list,setList] = useState([]);
+import Slider from 'rc-slider';
+import '../../../../node_modules/rc-slider/assets/index.css';
+import { current } from '@reduxjs/toolkit';
+
+function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthentications,setStartTime,setEndTime}){
+  const marks = {
+    0: <strong>00:00</strong>,
+    6: '06:00',
+    12: '12:00',
+    18: '18:00',
+    24: {
+      style: {
+        color: 'red',
+      },
+      label: <strong>24:00</strong>,
+    },
+  };
+  const[num,setNum] = useState(0);
   function NextButton(){
     return(
       <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
@@ -25,14 +41,28 @@ function SelectCertification({formCnt,setFormCnt,nTimesAWeek,setNTimesAWeek,auth
         <p>인증 빈도</p>
         <p>주간 참여 횟수와 하루 인증 횟수를 작성해주세요. 숫자만 입력 가능합니다.</p>
         <label for="week">주</label>
-        <input id="week" type="number" min="1" max="7"/>회
+        <input id="week" type="number" min="1" max="7" onChange={(e)=>{
+          setNTimesAWeek(e.target.value);
+          setNum((current)=>current+1);
+          }}/>회
         <label for="week">하루</label>
-        <input id="week" type="number" min="1" max="3"/>회
+        <input id="week" type="number" min="1" max="3" onChange={(e)=>{
+          setAuthentications(e.target.value);
+          setNum((current)=>current+1);;
+          }}/>회
       </div>
       <div>
         <p>인증 가능시간</p>
+        <div style={{height:'30px'}}>
+        <Slider dots range min={0} max={24} marks={marks} step={1} onChange={(e)=>{
+          setStartTime(e[0]);
+          setEndTime(e[1]);
+          setNum((current)=>current+1);;
+        }} defaultValue={[0, 24]} />
       </div>
-      {list.length === 4 ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      </div>
+
+      {num >= 3  ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
     </div>
   );
 }

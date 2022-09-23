@@ -28,7 +28,6 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
           // value는 텍스트인풋에서 넘겨준 props
           value={donationMoney}
           type="number"
-          maxLength="50"
           // 값이 바뀔때를 감지하여 setValue값을 변경시켜주어 넘겨주자
           onChange={(e) => {
             setDonationMoney(e.target.value);
