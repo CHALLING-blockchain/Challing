@@ -1,0 +1,21 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+.titleBox{
+    padding: 16px;
+    display: flex;
+    align-items: center;
+}
+.titleBox img{
+    width: 24px;
+    height: 24px;
+}
+.titleBox span{
+    font-size: 20px;
+}
