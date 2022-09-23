@@ -3,12 +3,12 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
-import counterReducer from "../features/counter/counterSlice";
 import userReducer from "./redux/userSlice";
+import allChallengeReducer from "./redux/allChallengeSlice";
 
 const reducers = combineReducers({
-  counter: counterReducer,
   user: userReducer,
+  challengeList: allChallengeReducer,
 });
 
 const persistConfig = {
