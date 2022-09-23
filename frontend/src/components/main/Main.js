@@ -45,40 +45,38 @@ function Main() {
           from: account1.address,
         })
         .catch(console.error);
+      //로컬에 챌린지 목록이 없고 데이터 추가가 안됬을때(추가해야됨)
+      if (Object.keys(selector).length === 0) {
+        // 일상 챌린지
+        const challenges = {};
+        getAllChallenge[0].forEach((id, index) => {
+          const challenge = Object.assign({}, getAllChallenge[2][index]);
+          const size = Object.keys(challenge).length;
+          for (let i = 0; i < size / 2; i++) {
+            delete challenge[i];
+          }
+          challenges[Number(id)] = challenge;
+        });
 
-      // 로컬 잔액 확인
-      // const accounts = await web3.eth.getAccounts();
-      // accounts.forEach(async (account, index) => {
-      //   const blance = await web3.eth.getBalance(account);
-      //   console.log(index + ":", blance, "ether");
-      // });
+        // 기부 챌린지
+        getAllChallenge[1].forEach((id, index) => {
+          const challenge = Object.assign({}, getAllChallenge[3][index]);
+          const size = Object.keys(challenge).length;
+          for (let i = 0; i < size / 2; i++) {
+            delete challenge[i];
+          }
+          challenges[Number(id)] = challenge;
+        });
+        // redux에 저장하기 ! (persist)
 
-      // 일상 챌린지
-      const challenges = {};
-      getAllChallenge[0].forEach((id, index) => {
-        const challenge = Object.assign({}, getAllChallenge[2][index]);
-        const size = Object.keys(challenge).length;
-        for (let i = 0; i < size / 2; i++) {
-          delete challenge[i];
-        }
-        challenges[Number(id)] = challenge;
-      });
-
-      // 기부 챌린지
-      getAllChallenge[1].forEach((id, index) => {
-        const challenge = Object.assign({}, getAllChallenge[3][index]);
-        const size = Object.keys(challenge).length;
-        for (let i = 0; i < size / 2; i++) {
-          delete challenge[i];
-        }
-        challenges[Number(id)] = challenge;
-      });
-      // redux에 저장하기 ! (persist)
-      dispatch(setChallengeList(challenges));
+        dispatch(setChallengeList(challenges));
+      }
     }
 
+    //로그인한 유저의 관심사 가져와서  저장
     let topicName = pickATopic(Object.keys(user.interests).length);
     setInterest(topicName);
+
     load();
   }, []);
 
@@ -142,8 +140,8 @@ function Main() {
     }
     return interestName;
   }
-  //추천 챌린지 목록 for문
-  function challengeRendering() {
+  //추천 챌린지(일상)
+  function dailyChallengeRendering() {
     const result = [];
     for (let index = 1; index <= Object.keys(selector).length; index++) {
       if (selector[index] !== undefined) {
@@ -171,15 +169,49 @@ function Main() {
     return result;
   }
 
+  //추천 챌린지(기부)
+  function donateChallengeRendering() {
+    const result = [];
+    for (let index = 1; index <= Object.keys(selector).length; index++) {
+      if (selector[index] !== undefined) {
+        const element = selector[index];
+        // console.log(element);
+        let dayGap = getDayGab(element.startDate);
+        // (시작 전&&관심사 일치&&기부) 챌린지만
+        if (
+          dayGap >= 0 &&
+          interestIdToName(element.interestId) === interest &&
+          "donationId" in element === true
+        ) {
+          result.push(
+            <span key={index}>
+              <br></br>
+              <p>{element.mainPicURL}</p>
+              <p>{element.name}</p>
+              <p>{dayGap}일 뒤 시작</p>
+            </span>
+          );
+        }
+      }
+    }
+
+    return result;
+  }
+
   return (
     <div className="Main">
       <Nav />
       <img className="Banner1" src={Banner_1} alt="Banner1" />
       <img className="Banner2" src={Banner_2} alt="Banner2" />
       <p>
-        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록
+        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
       </p>
-      {challengeRendering()}
+      {dailyChallengeRendering()}
+      <p>
+        <br></br>
+        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
+      </p>
+      {donateChallengeRendering()}
     </div>
   );
 }
