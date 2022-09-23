@@ -24,12 +24,81 @@
     height: 270px;
 }
 
-.titles{
+.paddingBox{
     width: 100vw;
     padding: 16px;
 }
 
-.user{
+.imgText{
     display: flex;
     align-items: center;
+    margin: auto 4px 0;
+}
+
+.imgText img{
+    margin: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 20px;
+}
+
+.imgText span{
+    font-size: 12px;
+}
+
+.Tag{
+    background-color: #EBEBEB;
+    font-size: 10px;
+    color: #3f3f3f;
+    border-radius: 3px;
+    margin: 4px;
+    padding: 2px;
+}
+
+.subtext{
+    display: flex;
+}
+
+.hrTag{
+    width: 328px;
+    height: 1px;
+    background-color: #BABDFF;
+    border: none;
+    margin: 8px 16px;
+}
+
+.refundBox{
+    background-color: #F2F3FF;
+    border: none;
+    border-radius: 5px;
+    width: 296px;
+    padding: 16px;
+    margin: 8px 0;
+}
+
+.oneLine{
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    margin: 4px 0;
+}
+
+.percentage{
+    color: #71727A;
+    font-size: 14px;
+}
+
+.policy{
+    font-size:14px ;
+}
+
+.description p{
+    font-size: 14px;
+}
+
+.btnBox{
+    width: 100vw;
+    height: 64px;
+    display: fixed;
+    bottom: 0;
+
 }

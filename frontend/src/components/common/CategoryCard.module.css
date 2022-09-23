@@ -1,6 +1,6 @@
 .card{
-    width: 156px;
-    height: 148px;
+    width: 124px;
+    height: 116px;
     border: none;
     border-radius: 10px;
     background-color: #F2F3FF;
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 16px;
+    margin: 0 auto;
 }
 
 .hrTag{
@@ -29,5 +29,5 @@
 .textTag{
     text-align: center;
     font-size: 16px;
-    margin: 16px;
+    margin: 8px;
 }
