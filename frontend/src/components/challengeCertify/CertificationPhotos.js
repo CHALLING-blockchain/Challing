@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CertificationPhotos.module.css"
 import camera from "../../img/camera.png"
+import testphoto from "../../img/test-back.jpg"
 
 function Header() {
   const navigate = useNavigate();
@@ -42,6 +43,77 @@ function Title(){
     );
 }
 
+function Tabs(){
+    const [state, setState] = useState('gather');
+    const handleClickBtn = (e) => {
+        setState(e.target.value)
+    }
+    const gatherInput = useRef();
+    const handleClick1 = () => {
+        gatherInput.current.click();
+    }
+    const sepaInput = useRef();
+    const handleClick2 = () => {
+      sepaInput.current.click();
+    };
+
+    return (
+      <div className={styles.tabs}>
+        <input
+          type="radio"
+          id={styles.gather}
+          name="tab_item"
+          value="gather"
+          checked={state === "gather"}
+          onChange={handleClickBtn}
+          ref={gatherInput}
+        />
+        <label className={styles.tabItem} for="gather" onClick={handleClick1}>
+          모아보기
+        </label>
+        <input
+          type="radio"
+          id={styles.separately}
+          name="tab_item"
+          value="separately"
+          checked={state === "separately"}
+          onChange={handleClickBtn}
+          ref={sepaInput}
+        />
+        <label
+          className={styles.tabItem}
+          for="seperately"
+          onClick={handleClick2}
+        >
+          따로보기
+        </label>
+
+        <div id={styles.gather_content} className={styles.content}>
+          <Gather></Gather>
+        </div>
+        <div id={styles.separately_content} className={styles.content}>
+          <Separately></Separately>
+        </div>
+      </div>
+    );
+}
+
+function Gather(){
+    return(
+        <div>
+            gather
+        </div>
+    )
+}
+
+function Separately(){
+    return(
+        <div>
+            separately
+        </div>
+    )
+}
+
 
 
 function CertificationPhotos(){
@@ -49,6 +121,7 @@ function CertificationPhotos(){
         <div>
             <Header></Header>
             <Title></Title>
+            <Tabs></Tabs>
         </div>
     )
 }

@@ -19,3 +19,40 @@
 .titleBox span{
     font-size: 20px;
 }
+
+.tabItem{
+    width: 180px;
+    height: 32px;
+    border: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(45deg, #8397ff, #926bff);
+    opacity: 0.4;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 32px;
+    display: block;
+    float: left;
+    transition: all 0.2s ease;
+}
+
+input[name="tab_item"] {
+    display: none;
+}
+
+.content{
+    display: none;
+    clear: both;
+}
+
+#gather:checked ~ #gather_content, 
+#separately:checked ~ #separately_content {
+    display: block;
+}
+
+.tabs input:checked + .tabItem {
+    opacity: 1;
+    background-color: linear-gradient(45deg, #8397ff, #926bff);
+}
