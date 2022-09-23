@@ -33,7 +33,7 @@ function CreateChallenge() {
     challengeStart:"",
     challengeEnd:"",
     peopleLimit:"",
-    limitNum:0,
+    limitNum:999,
     dailyMoney:0,
   });
   

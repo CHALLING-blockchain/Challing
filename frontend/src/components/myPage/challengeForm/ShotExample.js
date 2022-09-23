@@ -1,16 +1,26 @@
 import { useState } from 'react';
 import styles from './challengeForm.module.css';
 import NextButtonStyles from '../../common/NextButton.module.css';
+import {uploadImageFile} from '../../../plugins/s3upload';
 
-function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,setBadShotUrl}){
+function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
   //파일 미리볼 url을 저장해줄 state
   const [good,setGood] = useState("");
   const [bad,setBad] = useState("");
+
   // 파일 저장
   const saveGoodFileImage = (e) => {
     setGood(URL.createObjectURL(e.target.files[0]));
     setGoodShotUrl(URL.createObjectURL(e.target.files[0]));
   };
+  // 파일 s3에 저장
+  const s3SaveFileImage = async() => {
+    const goodUrl=await uploadImageFile(good);
+    setGoodShotUrl(goodUrl);
+    const badUrl=await uploadImageFile(bad);
+    setBadShotUrl(badUrl);
+  };
+    
   // 파일 삭제
   const deleteGoodFileImage = () => {
     URL.revokeObjectURL(good);
@@ -28,12 +38,12 @@ function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,s
   };
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (

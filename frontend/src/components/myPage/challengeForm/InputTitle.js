@@ -12,7 +12,7 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (

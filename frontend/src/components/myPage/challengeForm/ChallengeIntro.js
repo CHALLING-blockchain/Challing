@@ -18,6 +18,7 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
     const url=await uploadImageFile(fileImage);
+    setExPhotoUrl(url);
   };
   
   // 파일 삭제
@@ -28,12 +29,12 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   };
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}} disabled='false'>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   const[list,setList] = useState([]);
