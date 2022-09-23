@@ -4,11 +4,18 @@ import "./Main.css";
 import Nav from "../Nav";
 import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
-// import { CONTACT_ABI, CONTACT_ADDRESS } from "./config";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setChallengeList,
+  challengeList,
+} from "../../app/redux/allChallengeSlice";
 
 function Main() {
-  const [challengeList, setChallengeList] = useState([]);
+  // const [challengeList, setChallengeList] = useState([]);
+  const dispatch = useDispatch();
+  const selector = useSelector(challengeList);
   const artifact = require("../../contracts/ChallengeContract.json");
+
   useEffect(() => {
     async function load() {
       const web3 = new Web3(
@@ -53,8 +60,11 @@ function Main() {
         }
         challenges[Number(id)] = challenge;
       });
-      // console.log(challenges);
-      setChallengeList(challenges);
+      // redux에 저장하기 ! (persist)
+      dispatch(setChallengeList(challenges));
+
+      // setChallengeList(challenges);
+      console.log(selector);
     }
     load();
   }, []);
@@ -87,26 +97,26 @@ function Main() {
   //추천 챌린지 목록 for문
   function challengeRendering() {
     const result = [];
-    if (Object.keys(challengeList).length !== 0) {
-      for (let index = 1; index <= Object.keys(challengeList).length; index++) {
-        if (challengeList[index] !== undefined) {
-          const element = challengeList[index];
-          // console.log(element.name);
-          let dayGap = getDayGab(element.startDate);
-          if (!isNaN(dayGap)) {
-            // 추가) 여기에 유저 관심사로 조건문 걸어주기(element.interestId)
-            result.push(
-              <span key={index}>
-                <br></br>
-                <p>사진주소: {element.mainPicURL}</p>
-                <p>{element.name}</p>
-                <p>{dayGap}일 뒤 시작</p>
-              </span>
-            );
-          }
-        }
-      }
-    }
+    // if (Object.keys(challengeList).length !== 0) {
+    //   for (let index = 1; index <= Object.keys(challengeList).length; index++) {
+    //     if (challengeList[index] !== undefined) {
+    //       const element = challengeList[index];
+    //       // console.log(element.name);
+    //       let dayGap = getDayGab(element.startDate);
+    //       if (!isNaN(dayGap)) {
+    //         // 추가) 여기에 유저 관심사로 조건문 걸어주기(element.interestId)
+    //         result.push(
+    //           <span key={index}>
+    //             <br></br>
+    //             <p>사진주소: {element.mainPicURL}</p>
+    //             <p>{element.name}</p>
+    //             <p>{dayGap}일 뒤 시작</p>
+    //           </span>
+    //         );
+    //       }
+    //     }
+    //   }
+    // }
     return result;
   }
 
