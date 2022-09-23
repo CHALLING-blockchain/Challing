@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
 import Slider from 'rc-slider';
 import '../../../../node_modules/rc-slider/assets/index.css';
-import { current } from '@reduxjs/toolkit';
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthentications,setStartTime,setEndTime}){
   const marks = {
@@ -20,7 +20,12 @@ function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthenticatio
   const[num,setNum] = useState(0);
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -32,8 +37,8 @@ function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthenticatio
         <p>챌린지 개설하기</p>
       </div>
       <div>
-        <p className="FormHeader">챌린지 인증의 디테일을 정해주세요.</p>
-        <p className="FormEx">챌린지의 인증 빈도와 인증 가능시간을 정해<br/>
+        <p className={styles.FormHeader}>챌린지 인증의 디테일을 정해주세요.</p>
+        <p className={styles.FormEx}>챌린지의 인증 빈도와 인증 가능시간을 정해<br/>
                               챌린지의 성공확률을 높여보세요.<br/>
                               챌린지 개설 후 디테일 설정을 변경할 수 없습니다.<br/> </p>
       </div>
@@ -62,7 +67,7 @@ function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthenticatio
       </div>
       </div>
 
-      {num >= 3  ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {num >= 3  ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }

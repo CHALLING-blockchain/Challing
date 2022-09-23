@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
+
 function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,setLimitNum}){
-  const[num,setNum] = useState(0);
   const[tF,setTF] = useState(null);
   const [people,setPeople] = useState(25);
-  const plus = () => {setPeople((current)=>current+1);setLimitNum(people+1);setNum((current)=>current+1);}
-  const minus = () => {setPeople((current)=>current-1);setLimitNum(people-1);setNum((current)=>current+1);}
+  const plus = () => {setPeople((current)=>current+1);setLimitNum(people+1);}
+  const minus = () => {setPeople((current)=>current-1);setLimitNum(people-1);}
   function LimitFalse(){
     return(
-      <div className='False' >
+      <div className={styles.False} >
         <p>제한 인원</p>
-        <div className='LimitTF'>
+        <div className={styles.LimitTF}>
           <p>총</p>
-          <div className='People'>
-            <button disabled='false' onClick={minus}>-</button>
+          <div className={styles.People}>
+            <button disabled='false'>-</button>
             <p>{people}</p>
-            <button disabled='false' onClick={plus}>+</button>
+            <button disabled='false'>+</button>
           </div>
           <p>명</p>
         </div>
@@ -24,11 +25,11 @@ function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,se
   }
   function LimitTrue(){
     return(
-      <div className='True' >
+      <div className={styles.True} >
         <p>제한 인원</p>
-        <div className='LimitTF'>
+        <div className={styles.LimitTF}>
           <p>총</p>
-          <div className='People'>
+          <div className={styles.People}>
             <button disabled={!tF} onClick={minus}>-</button>
             <p>{people}</p>
             <button disabled={!tF} onClick={plus}>+</button>
@@ -40,7 +41,12 @@ function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,se
   }
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8 )</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8 )</button>
     )
   }
   return(
@@ -51,20 +57,20 @@ function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,se
         </svg>
         <p>챌린지 개설하기</p>
       </div>
-      <p className="FormHeader">모집인원을 설정해주세요.</p>
-      <p className="FormEx">챌린지에 참여할 인원 수를 정해수세요.<br/>
+      <p className={styles.FormHeader}>모집인원을 설정해주세요.</p>
+      <p className={styles.FormEx}>챌린지에 참여할 인원 수를 정해수세요.<br/>
                             챌린지 개설후 인원 수 변경이 불가합니다.<br/></p>
       <p>인원 제한 여부</p>
-      <div className='Limit'>
-        <div className="SelectLimit" value={peopleLimit} onClick={()=>{setPeopleLimit("true");setTF(true);setNum((current)=>current+1);}}>
+      <div className={styles.Limit}>
+        <div className={tF === true ? styles.SelectLimit : styles.SelectLimitX} value={peopleLimit} onClick={()=>{setPeopleLimit("true");setTF(true);setLimitNum(people);}}>
           <p>인원 제한 있음</p>
         </div>
-        <div className="SelectLimit" value={peopleLimit} onClick={()=>{setPeopleLimit("false");setTF(false);setNum((current)=>current+1);}}>
+        <div className={tF === false ? styles.SelectLimit : styles.SelectLimitX} value={peopleLimit} onClick={()=>{setPeopleLimit("false");setTF(false);}}>
           <p>인원 제한 없음</p>
         </div>
       </div>
       {tF === false || tF === null ? <LimitFalse/> : <LimitTrue/>}
-      { tF === false || num >= 2 ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      { tF !== null ? <NextButton/> : <NextButtonX/>}
     </div>
   )
 }

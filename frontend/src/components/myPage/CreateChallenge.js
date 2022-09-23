@@ -10,6 +10,7 @@ import SelectCertification from './challengeForm/SelectCertification';
 import SelectPeriod from './challengeForm/SelectPeriod';
 import SelectPeople from './challengeForm/SelectPeople';
 import SelectDeposit from './challengeForm/SelectDeposit';
+import CreateFinal from './challengeForm/CreateFinal';
 
 const donations = ["국경없는 의사회","세이브더 칠드런","초록우산","월드비전","유니세프"]
 function CreateChallenge() {
@@ -73,6 +74,11 @@ function CreateChallenge() {
             ...state,title:value
           }))
         }}/>:null}
+        { formCnt === 9 ? 
+        <CreateFinal formCnt={formCnt}
+        setFormCnt={(cnt)=>{setFormCnt(cnt)}}
+        selects={selects}/> : null}
+        
         {/* 여기부터 기부챌린지 */}
         { formCnt === 3 && selects.challenge ==="기부챌린지" ? 
         <SelectDonation formCnt={formCnt}
@@ -286,6 +292,7 @@ function CreateChallenge() {
           }))
         }}
         /> : null}
+        
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,setBadShotUrl}){
   //파일 미리볼 url을 저장해줄 state
@@ -27,7 +28,12 @@ function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,s
   };
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -39,8 +45,8 @@ function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,s
         <p>챌린지 개설하기</p>
       </div>
       <div>
-        <p className="FormHeader">인증샷 예시를 등록해주세요.</p>
-        <p className="FormEx">챌린지 참여자의 혼란을 방지하고, 참여자의 인증샷이<br/> 
+        <p className={styles.FormHeader}>인증샷 예시를 등록해주세요.</p>
+        <p className={styles.FormEx}>챌린지 참여자의 혼란을 방지하고, 참여자의 인증샷이<br/> 
                               올바른지 판단할 수 있는 기준을 마련해주세요.<br/> 
                               챌린지 개설 수 인증샷 예시는 변경할 수 없습니다.<br/> </p>
       </div>
@@ -63,7 +69,7 @@ function ShotExample({formCnt,setFormCnt,goodShotUrl,setGoodShotUrl,badShotUrl,s
           </div>)}
         </div>
       </div>
-      {good && bad !== ""   ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {good && bad !== ""   ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }

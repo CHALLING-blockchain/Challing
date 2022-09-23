@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
 import Calender from "../../../img/calender.png";
 import DatePicker from "react-datepicker";
 import addMonths from 'date-fns/addMonths';
 import { ko } from '../../../../node_modules/date-fns/esm/locale';
 import  '../../../../node_modules/react-datepicker/dist/react-datepicker.css'
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,setChallengeEnd}){
   const[num,setNum] = useState(0);
@@ -14,7 +15,12 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
   useEffect(()=>{setChallengeEnd(endDate)},[endDate])
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -25,32 +31,32 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
         </svg>
         <p>챌린지 개설하기</p>
       </div>
-      <p className="FormHeader">챌린지의 기간을 설정해주세요.</p>
-      <p className="FormEx">챌린지의 시작일자와 기간을 설정해주세요.<br/>
+      <p className={styles.FormHeader}>챌린지의 기간을 설정해주세요.</p>
+      <p className={styles.FormEx}>챌린지의 시작일자와 기간을 설정해주세요.<br/>
                             챌린지 개설 후 변경이 불가합니다.<br/></p>
-      <div className="Weeks">
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(7);setDay(7);setNum((current)=>current+1);}}>
+      <div className={styles.Weeks}>
+        <div className={day === 7 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(7);setDay(7);setNum((current)=>current+1);}}>
           <p>1주</p>
         </div>
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(14);setDay(14);setNum((current)=>current+1);}}>
+        <div className={day === 14 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(14);setDay(14);setNum((current)=>current+1);}}>
           <p>2주</p>
         </div>
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(21);setDay(21);setNum((current)=>current+1);}}>
+        <div className={day === 21 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(21);setDay(21);setNum((current)=>current+1);}}>
           <p>3주</p>
         </div>
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(28);setDay(28);setNum((current)=>current+1);}}>
+        <div className={day === 28 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(28);setDay(28);setNum((current)=>current+1);}}>
           <p>4주</p>
         </div>
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(35);setDay(35);setNum((current)=>current+1);}}>
+        <div className={day === 35 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(35);setDay(35);setNum((current)=>current+1);}}>
           <p>5주</p>
         </div>
-        <div className="SelectWeeks" value={period} onClick={()=>{setPeriod(42);setDay(42);setNum((current)=>current+1);}}>
+        <div className={day === 42 ? styles.SelectWeeks : styles.SelectWeekX} value={period} onClick={()=>{setPeriod(42);setDay(42);setNum((current)=>current+1);}}>
           <p>6주</p>
         </div>
       </div>
-      <div className='SelectDate'>
+      <div className={styles.SelectDate}>
         <DatePicker
-        className='DatePicker'
+        className={styles.DatePicker}
         dateFormat='yyyy/MM/dd'
         locale={ko}
         selected={startDate}
@@ -69,7 +75,7 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
       <div>
         {startDate.toLocaleDateString()} ~ {endDate.toLocaleDateString()}
       </div>
-      {num === 2 ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {num === 2 ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 };

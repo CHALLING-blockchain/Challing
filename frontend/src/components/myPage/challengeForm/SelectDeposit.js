@@ -1,11 +1,17 @@
 import { useState } from "react";
-
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
   const [money,setMoney] = useState(0);
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -17,11 +23,11 @@ function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
         <p>챌린지 개설하기</p>
       </div>
       <div>
-        <p className="FormHeader">예치금을 설정해주세요.</p>
-        <p className="FormEx">챌린지 참여자의 예치금을 지정해주세요.<br/>
+        <p className={styles.FormHeader}>예치금을 설정해주세요.</p>
+        <p className={styles.FormEx}>챌린지 참여자의 예치금을 지정해주세요.<br/>
                               챌린지 개설 후 예치금 변경이 불가합니다.<br/></p>
         <input
-          className="Input"
+          className={styles.Input}
           placeholder="예치금을 입력해주세요."
           // value는 텍스트인풋에서 넘겨준 props
           value={dailyMoney}
@@ -35,7 +41,7 @@ function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
         <p>*숫자만 입력가능합니다.</p>
       </div>
 
-     { money !== 0 ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+     { money !== 0 ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }

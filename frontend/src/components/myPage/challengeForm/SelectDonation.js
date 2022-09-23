@@ -1,12 +1,18 @@
 import { useState } from "react";
-
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,setDonationMoney,options}) {
   const [money,setMoney] = useState(0);
   const [dona,setDona] = useState("");
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -18,12 +24,12 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
         <p>챌린지 개설하기</p>
       </div>
       <div>
-        <p className="FormHeader">기부금을 설정해주세요.</p>
-        <p className="FormEx">챌린지 성공 시 기부처로 전달될 기부금을 설정해주세요.<br/>
+        <p className={styles.FormHeader}>기부금을 설정해주세요.</p>
+        <p className={styles.FormEx}>챌린지 성공 시 기부처로 전달될 기부금을 설정해주세요.<br/>
                               최소금액은 0.05 ETH 입니다.<br/>
                               챌린지 개설 후 기부금 변경이 불가합니다.<br/></p>
         <input
-          className="Input"
+          className={styles.Input}
           placeholder="기부금을 입력해주세요."
           // value는 텍스트인풋에서 넘겨준 props
           value={donationMoney}
@@ -37,8 +43,8 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
         <p>*숫자만 입력가능합니다.</p>
       </div>
       <div>
-        <p className="FormHeader">기부처를 선택해주세요.</p>
-        <p className="FormEx">챌린지 성공 시 기부금이 전달 될 기부처를 선택해주세요.</p>
+        <p className={styles.FormHeader}>기부처를 선택해주세요.</p>
+        <p className={styles.FormEx}>챌린지 성공 시 기부금이 전달 될 기부처를 선택해주세요.</p>
         <select value={donation} onChange={(e)=>{setDonation(e.target.value); setDona(e.target.value);}}>
           <option value=""> 기부처를 선택해주세요.</option>
           {options.map((item)=>(
@@ -46,7 +52,7 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
           ))}
         </select>
       </div>
-     { money && dona !== "" ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+     { money && dona !== "" ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }

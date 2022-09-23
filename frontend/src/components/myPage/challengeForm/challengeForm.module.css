@@ -4,6 +4,7 @@ height: 40px;
 background: rgba(229, 230, 255, 0.5);
 border-radius: 10px;
 }
+
 .SelectChallenge{
   font-weight: 700;
   font-size: 32px;
@@ -59,16 +60,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 }
-.NoNextButton{
-width: 328px;
-height: 48px;
-background: linear-gradient(252.68deg, rgba(146, 114, 255, 0.5) 27.32%, rgba(133, 150, 255, 0.5) 93.21%);
-border-radius: 10px;
-text-align: center;
-display: flex;
-justify-content: center;
-align-items: center;
-}
+
 .InputIntro{
 width: 328px;
 height: 160px;
@@ -83,12 +75,27 @@ background: #D9D9D9;
 border-radius: 5px;
 
 }
-.SelectWeeks{
+.SelectWeekX{
 width: 100px;
 height: 32px;
 background: rgba(186, 189, 255, 0.25);
 border-radius: 10px;
 
+font-weight: 400;
+font-size: 16px;
+letter-spacing: -0.01em;
+color: #000000;
+text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 8px;
+}
+.SelectWeeks{
+width: 100px;
+height: 32px;
+background: #BABDFF;
+border-radius: 10px;
 font-weight: 400;
 font-size: 16px;
 letter-spacing: -0.01em;
@@ -121,18 +128,30 @@ margin-top: 8px;
   align-items: center;
   margin-top: 8px;
 }
+.SelectLimitX{
+width: 160px;
+height: 32px;
+background: rgba(186, 189, 255, 0.25);
+border-radius: 10px;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
 .SelectLimit{
 width: 160px;
 height: 32px;
-
-background: rgba(186, 189, 255, 0.25);
+background: #BABDFF;
 border-radius: 10px;
-
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
 }
 .False{
   margin-top: 8px;
   margin-bottom: 8px;
-  
+
 }
 .LimitTF{
 width: 328px;

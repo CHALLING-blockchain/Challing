@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import './challengeForm.css';
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
 function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUrl,setExPhotoUrl}){
   const [length,setLength] = useState(0);
   //파일 미리볼 url을 저장해줄 state
@@ -19,7 +20,12 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   };
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   const[list,setList] = useState([]);
@@ -32,13 +38,13 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
         <p>챌린지 개설하기</p>
       </div>
       <div>
-        <p className="FormHeader">챌린지와 인증방법을 설명해주세요.</p>
-        <p className="FormEx">챌린지 참가자가 이해할 수 있도록 챌린지에 대한 자세한 설명과 
+        <p className={styles.FormHeader}>챌린지와 인증방법을 설명해주세요.</p>
+        <p className={styles.FormEx}>챌린지 참가자가 이해할 수 있도록 챌린지에 대한 자세한 설명과 
                               구체적인 인증방법을 작성해주세요.<br/>
                               개설된 챌린지의 설명은 수정할 수 없습니다.<br/></p>
         <p>챌린지 설명</p>
         <textarea
-          className="InputIntro"
+          className={styles.InputIntro}
           // value는 텍스트인풋에서 넘겨준 props
           value={explanation}
           type="text"
@@ -53,13 +59,13 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
         <p>{length}/1000자 이내</p>
       </div>
       <div>
-        <input className="FileUpload" type="file" accept="image/*" onChange={saveFileImage}/>
+        <input className={styles.FileUpload} type="file" accept="image/*" onChange={saveFileImage}/>
         {fileImage && (<div>
           <img alt="sample" src={fileImage} style={{width:"120px",height:"120px"}}/> 
           <button onClick={() => deleteFileImage()}>X</button>
         </div>)}
       </div>
-      {list.length >=1   ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {list.length >=1   ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }
