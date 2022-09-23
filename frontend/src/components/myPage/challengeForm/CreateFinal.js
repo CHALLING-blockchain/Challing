@@ -13,12 +13,12 @@ import profile from '../../../img/profile-basic.png';
 function CreateFinal({selects,formCnt,setFormCnt}){
   function DonationChallenge(){
     return(
-      <div>
-        <div>
+      <div style={{display:'flex',justifyContent:'space-around'}}>
+        <div style={{width:'104px',height:'96px'}}>
           <img src={donationIcon} alt="donationIcon" style={{width:'52px'}}/>
           <p>{selects.challenge}</p>
         </div>
-        <div>
+        <div style={{width:'104px',height:'96px'}}>
           {selects.topic === "운동" ? <div><img src={gym} alt="gym" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
           {selects.topic === "생황" ? <div><img src={calender} alt="calender" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
           {selects.topic === "취미" ? <div><img src={paint} alt="paint" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
@@ -26,29 +26,29 @@ function CreateFinal({selects,formCnt,setFormCnt}){
           {selects.topic === "학습" ? <div><img src={pencil} alt="pencil" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
           {selects.topic === "그 외" ? <div><img src={plus} alt="plus" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
         </div>
-        <div>
+        <div style={{width:'104px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>{selects.donationMoney}</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>챌린지 설명 보기</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={camera} alt="camera" style={{width:'40px'}}/>
           <p>인증샷 예시 보기</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회</p>
           <p>{selects.startTime}:00 ~ {selects.endTime}:00</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={calender} alt="calender" style={{width:'40px'}}/>
           <p>{selects.period/7}주동안</p>
           <p>{selects.challengeStart.toLocaleDateString()}부터</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={profile} alt="profile" style={{width:'40px'}}/>
           <p>{selects.peopleLimit === false ? <p>인원 제한 없음</p> : <p>인원 제한 있음</p>}</p>
           <p>{selects.limitNum}명</p>
@@ -59,41 +59,41 @@ function CreateFinal({selects,formCnt,setFormCnt}){
   function DailyChallenge(){
     return(
       <div>
-        <div>
+        <div style={{width:'104px',height:'96px'}}>
           <img src={dailyIcon} alt="dailyIcon" style={{height:'50px'}}/>
           <p>{selects.challenge}</p>
         </div>
-        <div>
+        <div style={{width:'104px',height:'96px'}}>
           {selects.topic === "운동" ? <div><img src={gym} alt="gym"/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "생황" ? <div><img src={calender} alt="gym"/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "취미" ? <div><img src={paint} alt="gym"/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "식생활" ? <div><img src={tea} alt="gym"/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "학습" ? <div><img src={pencil} alt="gym"/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "그 외" ? <div><img src={plus} alt="gym"/><p>{selects.topic}</p></div> : null}
+          {selects.topic === "생황" ? <div><img src={calender} alt="calender"/><p>{selects.topic}</p></div> : null}
+          {selects.topic === "취미" ? <div><img src={paint} alt="paint"/><p>{selects.topic}</p></div> : null}
+          {selects.topic === "식생활" ? <div><img src={tea} alt="tea"/><p>{selects.topic}</p></div> : null}
+          {selects.topic === "학습" ? <div><img src={pencil} alt="pencil"/><p>{selects.topic}</p></div> : null}
+          {selects.topic === "그 외" ? <div><img src={plus} alt="plus"/><p>{selects.topic}</p></div> : null}
         </div>
-        <div>
+        <div style={{width:'104px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>{selects.dailyMoney}</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>챌린지 설명 보기</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={camera} alt="camera" style={{width:'40px'}}/>
           <p>인증샷 예시 보기</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회</p>
           <p>{selects.startTime}:00 ~ {selects.endTime}:00</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={calender} alt="calender" style={{width:'40px'}}/>
           <p>{selects.period/7}주동안</p>
           <p>{selects.challengeStart.toLocaleDateString()}부터</p>
         </div>
-        <div>
+        <div style={{width:'160px',height:'96px'}}>
           <img src={profile} alt="profile" style={{width:'40px'}}/>
           <p>{selects.peopleLimit === false ? <p>인원 제한 없음</p> : <p>인원 제한 있음</p>}</p>
           <p>{selects.limitNum}명</p>
