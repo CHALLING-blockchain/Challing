@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import './challengeForm.css';
+import {uploadImageFile} from '../../../plugins/s3upload';
+
 function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUrl,setExPhotoUrl}){
+  // aws config
+
   const [length,setLength] = useState(0);
   //파일 미리볼 url을 저장해줄 state
   const [fileImage, setFileImage] = useState("");
 
-  // 파일 저장
-  const saveFileImage = (e) => {
-    setFileImage(URL.createObjectURL(e.target.files[0]));
-    setExPhotoUrl(URL.createObjectURL(e.target.files[0]));
+  // 파일 선택
+  const selectFileImage = async(e) => {
+    setFileImage(URL.createObjectURL(e.target.files[0]))
   };
 
+  // 파일 s3에 저장
+  const s3SaveFileImage = async() => {
+    const url=await uploadImageFile(fileImage);
+  };
+  
   // 파일 삭제
   const deleteFileImage = () => {
     URL.revokeObjectURL(fileImage);
@@ -53,13 +61,13 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
         <p>{length}/1000자 이내</p>
       </div>
       <div>
-        <input className="FileUpload" type="file" accept="image/*" onChange={saveFileImage}/>
+        <input className="FileUpload" type="file" accept="image/*" onChange={selectFileImage}/>
         {fileImage && (<div>
           <img alt="sample" src={fileImage} style={{width:"120px",height:"120px"}}/> 
           <button onClick={() => deleteFileImage()}>X</button>
         </div>)}
       </div>
-      {list.length >=1   ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {list.length >=1   ? <NextButton/> : <div onClick={()=>s3SaveFileImage()}className="NoNextButton">Next( {formCnt} / 8)</div>}
     </div>
   );
 }
