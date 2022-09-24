@@ -14,7 +14,7 @@ import java.util.List;
 public class UserUpdateRequest {
     private String email;
     private String nickname;
-    private String picurl;
+    private String picURL;
     private String description;
 
     @Builder.Default
@@ -24,7 +24,7 @@ public class UserUpdateRequest {
         return UserUpdateRequest.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .picurl(user.getPicURL())
+                .picURL(user.getPicURL())
                 .description(user.getDescription())
                 .build();
     }
