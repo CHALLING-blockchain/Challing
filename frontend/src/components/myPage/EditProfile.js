@@ -4,6 +4,7 @@ import "./EditProfile.css";
 import UserAPI from "../../api/UserAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
+import { uploadImageFile } from "../../plugins/s3upload";
 
 function EditProfile() {
   const user = useSelector(selectUser);
@@ -11,17 +12,19 @@ function EditProfile() {
   const navigate = useNavigate();
   console.log("user", user);
   const [fileImage, setFileImage] = useState(user.picURL);
+  const [uploadImage, setUploadImage] = useState(user.picURL);
   const [nickname, setNickname] = useState(user.nickname);
   const [description, setDescription] = useState(
     user.description == null ? "" : user.description
   );
-  const [validFlag, setValidFlag] = useState(false);
+  const [validFlag, setValidFlag] = useState(true);
   const [checkMsg, setCheckMsg] = useState("");
   const [interests, setInterests] = useState(user.interests);
   const totalInterests = ["운동", "학습", "생활", "취미", "식생활", "그 외"];
 
   const saveFileImage = (e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
+    setUploadImage(e.target.files[0]);
   };
   const photoInput = useRef();
   const handleClick = () => {
@@ -74,26 +77,35 @@ function EditProfile() {
   };
 
   const addInterest = (props) => {
+    console.log("props", props);
+    console.log("item", totalInterests[props]);
+    console.log("interests", interests);
     if (interests.includes(totalInterests[props])) {
-      let index = interests.indexOf(totalInterests[props]);
-      interests.splice(index, 1);
+      let newInterests = [...interests];
+      newInterests.splice(interests.indexOf(totalInterests[props]), 1);
+      setInterests([...newInterests]);
     } else {
-      interests.push(totalInterests[props]);
+      setInterests([...interests, totalInterests[props]]);
     }
-    console.log(interests);
-    setInterests([...interests]);
   };
 
-  const editInfo = () => {
+  const editInfo = async () => {
     if (validFlag) {
+      let url =
+        uploadImage !== user.picURL
+          ? await uploadImageFile(uploadImage)
+          : uploadImage;
+
+      let desc = description === "" ? null : description;
       const body = {
         email: user.email,
         nickname: nickname,
-        picURL: fileImage,
-        description: description,
+        picURL: url,
+        description: desc,
         interests: interests,
       };
-      UserAPI.updateMypage(body).then((response) => {
+      console.log("body", body);
+      UserAPI.updateMyPage(body).then((response) => {
         console.log("update response", response);
         dispatch(setUserInfo(response.data.body));
         navigate("/my-profile");
@@ -147,6 +159,7 @@ function EditProfile() {
           value={nickname}
           onChange={onChangeNickname}
           className="NickName"
+          maxLength={10}
         />
       </div>
       <div className="checkMsg">
@@ -161,12 +174,14 @@ function EditProfile() {
             placeholder="자신을 소개해보세요"
             value={description}
             onChange={onChangeDesc}
+            maxLength={18}
           />
         ) : (
           <input
             className="EditDesc"
             value={description}
             onChange={onChangeDesc}
+            maxLength={18}
           />
         )}
       </div>

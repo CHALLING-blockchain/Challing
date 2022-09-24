@@ -33,7 +33,7 @@
 }
 
 .checkMsg {
-  display: grid;
-  grid-template-columns: 2fr 4fr;
+  display: flex;
+  justify-content: center;
   padding-bottom: 16px;
 }

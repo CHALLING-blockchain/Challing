@@ -96,8 +96,7 @@ function SetProfile() {
           />
         </div>
 
-        <div className="checkMsg">
-          <p></p>
+        <div className={styles.checkMsg}>
           <span>{checkMsg}</span>
         </div>
 
