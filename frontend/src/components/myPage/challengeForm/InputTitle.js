@@ -1,11 +1,18 @@
 import { useState } from "react";
+import styles from './challengeForm.module.css';
+import NextButtonStyles from '../../common/NextButton.module.css';
 
 
 function InputTitle({formCnt,setFormCnt,value,setValue }) {
   const[title,setTitle] = useState("");
   function NextButton(){
     return(
-      <button className="NextButton" onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+    )
+  }
+  function NextButtonX(){
+    return(
+      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
     )
   }
   return (
@@ -16,12 +23,12 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
         </svg>
         <p>챌린지 개설하기</p>
       </div>
-      <p className="FormHeader">챌린지 제목을 작성해주세요.</p>
-      <p className="FormEx">챌린지를 잘 표현하는 제목을 사용해주세요.<br/>
+      <p className={styles.FormHeader}>챌린지 제목을 작성해주세요.</p>
+      <p className={styles.FormEx}>챌린지를 잘 표현하는 제목을 사용해주세요.<br/>
         비속어와 같은 타인에게 불쾌감을 주는 언어 사용시 <br/>
         계정이 영구적으로 정지 될 수 있습니다.</p>
       <input
-        className="Input"
+        className={styles.Input}
         placeholder="제목을 작성해주세요."
         // value는 텍스트인풋에서 넘겨준 props
         value={value}
@@ -34,7 +41,7 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
         }}
       />
       <p>(50자이내)</p>
-      {title !== "" ? <NextButton/> : <div className="NoNextButton">Next( {formCnt} / 8)</div>}
+      {title !== "" ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }
