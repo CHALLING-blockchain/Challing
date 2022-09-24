@@ -1,41 +1,181 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './EditProfile.css';
-import { useState } from 'react';
+import { React, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./EditProfile.css";
+import UserAPI from "../../api/UserAPI";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 
-function EditProfile(){
-    const [userName,setUserName] = useState();
-    const [intro,setIntro] = useState();
-    const onChangeUserName = (event) => setUserName(event.target.value);
-    const onChangeIntro = (event) => setIntro(event.target.value);
-    return (
-      <div className="EditProfile">
-        <div className="BackProfile">
-          <Link to="/my-profile">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-            </svg>
-          </Link>
-          <p>내 정보</p>
-          <Link to="/my-profile">
-            <p className="EditSave">완료</p>
-          </Link>
-        </div>
-        <div className="Profile">
-          <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 10C18.7639 10 17.5555 10.3666 16.5277 11.0533C15.4999 11.7401 14.6988 12.7162 14.2258 13.8582C13.7527 15.0003 13.6289 16.2569 13.8701 17.4693C14.1113 18.6817 14.7065 19.7953 15.5806 20.6694C16.4547 21.5435 17.5683 22.1387 18.7807 22.3799C19.9931 22.6211 21.2497 22.4973 22.3918 22.0242C23.5338 21.5512 24.5099 20.7501 25.1967 19.7223C25.8834 18.6945 26.25 17.4861 26.25 16.25C26.25 14.5924 25.5915 13.0027 24.4194 11.8306C23.2473 10.6585 21.6576 10 20 10Z" fill="black"/>
-            <path d="M20 2.5C16.5388 2.5 13.1554 3.52636 10.2775 5.44928C7.39967 7.37221 5.15665 10.1053 3.83212 13.303C2.50758 16.5007 2.16102 20.0194 2.83627 23.4141C3.51151 26.8087 5.17822 29.9269 7.62564 32.3744C10.0731 34.8218 13.1913 36.4885 16.5859 37.1637C19.9806 37.839 23.4993 37.4924 26.697 36.1679C29.8947 34.8434 32.6278 32.6003 34.5507 29.7225C36.4736 26.8446 37.5 23.4612 37.5 20C37.4948 15.3603 35.6494 10.9122 32.3686 7.6314C29.0878 4.35065 24.6397 2.50523 20 2.5V2.5ZM29.9906 31.1572C29.9658 29.5176 29.2977 27.9533 28.1304 26.8015C26.963 25.6498 25.3899 25.0028 23.75 25H16.25C14.6101 25.0028 13.037 25.6498 11.8697 26.8015C10.7023 27.9533 10.0342 29.5176 10.0094 31.1572C7.74259 29.1332 6.14405 26.4683 5.42543 23.5156C4.70681 20.5628 4.90201 17.4614 5.98518 14.6221C7.06835 11.7827 8.98841 9.33933 11.4911 7.61546C13.9938 5.89158 16.9611 4.96853 20 4.96853C23.039 4.96853 26.0062 5.89158 28.5089 7.61546C31.0116 9.33933 32.9317 11.7827 34.0148 14.6221C35.098 17.4614 35.2932 20.5628 34.5746 23.5156C33.856 26.4683 32.2574 29.1332 29.9906 31.1572V31.1572Z" fill="black"/>
+function EditProfile() {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log("user", user);
+  const [fileImage, setFileImage] = useState(user.picURL);
+  const [nickname, setNickname] = useState(user.nickname);
+  const [description, setDescription] = useState(
+    user.description == null ? "" : user.description
+  );
+  const [validFlag, setValidFlag] = useState(false);
+  const [checkMsg, setCheckMsg] = useState("");
+  const [interests, setInterests] = useState(user.interests);
+  const totalInterests = ["운동", "학습", "생활", "취미", "식생활", "그 외"];
+
+  const saveFileImage = (e) => {
+    setFileImage(URL.createObjectURL(e.target.files[0]));
+  };
+  const photoInput = useRef();
+  const handleClick = () => {
+    photoInput.current.click();
+  };
+  const onChangeNickname = (e) => {
+    setNickname(e.target.value);
+    if (e.target.value === user.nickname) {
+      setCheckMsg("");
+      setValidFlag(true);
+    } else if (e.target.value) {
+      UserAPI.validCheck(e.target.value).then((response) => {
+        if (response.data.body) {
+          setCheckMsg("사용 가능한 닉네임 입니다.");
+          setValidFlag(true);
+        } else {
+          setCheckMsg("이미 사용 중인 닉네임 입니다.");
+          setValidFlag(false);
+        }
+      });
+    } else {
+      setCheckMsg("");
+      setValidFlag(false);
+    }
+  };
+  const onChangeDesc = (e) => {
+    setDescription(e.target.value);
+  };
+  const getInterest = () => {
+    console.log("1", interests);
+    const items = [];
+    for (let index = 0; index < totalInterests.length; index++) {
+      items.push(
+        <span
+          key={index}
+          className={
+            interests.includes(totalInterests[index])
+              ? "selectItem"
+              : "disSelectItem"
+          }
+          onClick={() => {
+            addInterest(index);
+          }}
+        >
+          {totalInterests[index]}
+        </span>
+      );
+    }
+    return items;
+  };
+
+  const addInterest = (props) => {
+    if (interests.includes(totalInterests[props])) {
+      let index = interests.indexOf(totalInterests[props]);
+      interests.splice(index, 1);
+    } else {
+      interests.push(totalInterests[props]);
+    }
+    console.log(interests);
+    setInterests([...interests]);
+  };
+
+  const editInfo = () => {
+    if (validFlag) {
+      const body = {
+        email: user.email,
+        nickname: nickname,
+        picURL: fileImage,
+        description: description,
+        interests: interests,
+      };
+      UserAPI.updateMypage(body).then((response) => {
+        console.log("update response", response);
+        dispatch(setUserInfo(response.data.body));
+        navigate("/my-profile");
+      });
+    } else {
+      alert("닉네임을 확인하세요");
+    }
+  };
+
+  return (
+    <div className="EditProfile">
+      <div className="BackProfile">
+        <Link to="/my-profile">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z"
+              fill="#444444"
+            />
           </svg>
-        </div>
-        <div className="EditForm">
-          <p>닉네임 <input value={userName} onChange={onChangeUserName} className='NickName'/></p>
-          <p>소개 <input value={intro} onChange={onChangeIntro} className='EditIntro'/></p>
-          <p>관심사</p>
-        </div>
+        </Link>
+        <p>내 정보</p>
+        <p className="EditSave" onClick={editInfo}>
+          완료
+        </p>
       </div>
-        
-        
-    );
-};
+      <div className="Profile">
+        <img
+          onClick={handleClick}
+          style={{ width: "80px", height: "80px", borderRadius: "100px" }}
+          src={fileImage}
+          alt="sample"
+        />
+        <input
+          type="file"
+          name="imgUpload"
+          accept="image/*"
+          onChange={saveFileImage}
+          style={{ display: "none" }}
+          ref={photoInput}
+        />
+      </div>
+      <div className="inputBox">
+        <p>닉네임</p>
+        <input
+          value={nickname}
+          onChange={onChangeNickname}
+          className="NickName"
+        />
+      </div>
+      <div className="checkMsg">
+        <p></p>
+        <span>{checkMsg}</span>
+      </div>
+      <div className="inputBox">
+        <p>소개</p>
+        {user.description == null ? (
+          <input
+            className="EditDesc"
+            placeholder="자신을 소개해보세요"
+            value={description}
+            onChange={onChangeDesc}
+          />
+        ) : (
+          <input
+            className="EditDesc"
+            value={description}
+            onChange={onChangeDesc}
+          />
+        )}
+      </div>
+      <div className="inputBox">
+        <p>관심사</p>
+        <span>{getInterest()}</span>
+      </div>
+    </div>
+  );
+}
 
 export default EditProfile;

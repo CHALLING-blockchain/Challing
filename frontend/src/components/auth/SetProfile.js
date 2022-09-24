@@ -96,7 +96,10 @@ function SetProfile() {
           />
         </div>
 
-        <p>{checkMsg}</p>
+        <div className="checkMsg">
+          <p></p>
+          <span>{checkMsg}</span>
+        </div>
 
         <Next
           type="submit"

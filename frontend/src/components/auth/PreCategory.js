@@ -22,7 +22,8 @@ function PreCategory() {
   const addInterest = (props) => {
     console.log("click", props.title);
     if (interests.includes(props.title)) {
-      interests.pop(props.title);
+      let index = interests.indexOf(props.title);
+      interests.splice(index, 1);
     } else {
       interests.push(props.title);
     }
