@@ -22,7 +22,8 @@ function PreCategory() {
   const addInterest = (props) => {
     console.log("click", props.title);
     if (interests.includes(props.title)) {
-      interests.pop(props.title);
+      let index = interests.indexOf(props.title);
+      interests.splice(index, 1);
     } else {
       interests.push(props.title);
     }
@@ -41,8 +42,8 @@ function PreCategory() {
         interests: interests,
       };
       UserAPI.join(body).then((response) => {
-        console.log(response);
-        dispatch(setUserInfo(response.data.body.user));
+        console.log("response", response);
+        dispatch(setUserInfo(response.data.body));
         navigate("/my-wallet");
       });
     }
