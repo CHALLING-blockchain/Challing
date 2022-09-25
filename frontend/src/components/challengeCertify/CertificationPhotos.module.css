@@ -5,6 +5,7 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 4fr 1fr;
+    z-index: 2;
 }
 
 .titleBox{
@@ -18,4 +19,99 @@
 }
 .titleBox span{
     font-size: 20px;
+}
+
+.tabItem{
+    width: 180px;
+    height: 32px;
+    border: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(45deg, #8397ff, #926bff);
+    opacity: 0.4;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 32px;
+    display: block;
+    float: left;
+    transition: all 0.2s ease;
+    z-index: auto;
+}
+
+input[name="tab_item"] {
+    display: none;
+}
+
+.content{
+    display: none;
+    clear: both;
+}
+
+#gather:checked ~ #gather_content, 
+#separately:checked ~ #separately_content {
+    display: block;
+}
+
+.tabs input:checked + .tabItem {
+    opacity: 1;
+    background-color: linear-gradient(45deg, #8397ff, #926bff);
+}
+
+.gather{
+    display: grid;
+    width: 360px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.gather img{
+    width: 120px;
+    height: 120px;
+    border: solid 0.5px #755FFF;
+}
+
+.modal{
+    width: 296px;
+    padding: 16px;
+    margin: auto;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+}
+
+.modal img{
+    width: 296px;
+    height: 296px;
+}
+
+.userBox{
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    margin: auto 16px;
+}
+.user{
+    display: flex;
+    align-items: center;
+}
+.user img{
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 100px;
+}
+.user span{
+    font-size: 14px;
+    margin: 0 8px;
+}
+.report img{
+    width: 20px;
+    height: 20px;
+}
+
+.shotBox img{
+    width: 100vw;
+    height: auto;
 }
