@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef,useState,useCallback} from "react";
 import Webcam from "react-webcam";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./ChallengeCertify.module.css"
@@ -24,11 +24,11 @@ function WebcamCapture() {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-left"
+            className="bi bi-chevron-left"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
             />
           </svg>
@@ -49,9 +49,9 @@ function WebcamCapture() {
     );
   }
 
-  const [facingMode, setFacingMode] = React.useState(FACING_MODE_USER);
+  const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
 
-  const handleClick = React.useCallback(() => {
+  const handleClick = useCallback(() => {
     setFacingMode(
       prevState =>
         prevState === FACING_MODE_USER
@@ -66,13 +66,23 @@ function WebcamCapture() {
     facingMode: "user"
   };
 
-  const webcamRef = React.useRef(null);
-  const [imgSrc, setImgSrc] = React.useState(null);
+  const webcamRef = useRef(null);
+  const [imgSrc, setImgSrc] =useState(null);
 
-  const capture = React.useCallback(() => {
+  function handleCapture(){
+    let URL = webcamRef.current.getScreenshot();
+    var blobBin = atob(URL.split(',')[1]);	// base64 데이터 디코딩
+    var array = [];
+    for (var i = 0; i < blobBin.length; i++) {
+        array.push(blobBin.charCodeAt(i));
+    }
+    var file = new Blob([new Uint8Array(array)], {type: 'image/jpg'});
+    uploadImageFile(file);
+  }
+
+  const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
-    uploadImageFile(imageSrc);
   }, [webcamRef, setImgSrc]);
 
   return (
@@ -92,42 +102,44 @@ function WebcamCapture() {
             }}
           />
           <svg 
-            onClick={capture}
+            onClick={()=>{handleCapture();capture();}}
             width="100" 
             height="100" 
             viewBox="0 0 241 240" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M120.236 227.846C179.83 227.846 228.14 179.535 228.14 119.941C228.14 60.3475 179.83 12.0371 120.236 12.0371C60.6422 12.0371 12.3318 60.3475 12.3318 119.941C12.3318 179.535 60.6422 227.846 120.236 227.846Z" stroke="black" stroke-width="23.9787"/>
+            <path d="M120.236 227.846C179.83 227.846 228.14 179.535 228.14 119.941C228.14 60.3475 179.83 12.0371 120.236 12.0371C60.6422 12.0371 12.3318 60.3475 12.3318 119.941C12.3318 179.535 60.6422 227.846 120.236 227.846Z" stroke="black" strokeWidth="23.9787"/>
           </svg>
         </div>
       : null}
       {imgSrc !== null ? 
         <div>
           <div style={{ display: "fixed", top: "0" }}>
-        <div className={styles.header}>
-          <svg
-            style={{ margin: "auto" }}
-            onClick={() => setImgSrc(null)}
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-chevron-left"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-            />
-          </svg>
-          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 인증</p>
-          <div></div>
-        </div>
-      </div>
-          <img src={imgSrc} alt="shot"/>
-          {console.log(imgSrc)}
+            <div className={styles.header}>
+              <svg
+                style={{ margin: "auto" }}
+                onClick={() => setImgSrc(null)}
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-chevron-left"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+                />
+              </svg>
+              <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 인증</p>
+              <div></div>
+            </div>
+          </div>
+            <img src={imgSrc} alt="shot"/>
+            <div className={styles.btnBox}>
+              <button className={styles.btn}>인증하기</button>
+            </div>
         </div>
       : null}
     </div>

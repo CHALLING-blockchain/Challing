@@ -13,6 +13,7 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   // 파일 선택
   const selectFileImage = async(e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]))
+    setExPhotoUrl(URL.createObjectURL(e.target.files[0]))
     setS3File(e.target.files[0])
   };
 
