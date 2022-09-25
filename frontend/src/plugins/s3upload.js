@@ -12,12 +12,15 @@ region: process.env.REACT_APP_BUCKET_REGION,
 })
 export const uploadImageFile =async (image) => {
     const s3BaseUrl='https://special7333.s3.ap-northeast-2.amazonaws.com/'
+
     const imgName=v4()+'.jpg'
     const params = {
       ACL: 'public-read',
       Body: image,
       Bucket: process.env.REACT_APP_BUCKET_NAME,
       Key: imgName,
+      ContentEncoding: 'base64', // required
+      ContentType: `image/png` // required. Notice the back ticks
     }
     
     return new Promise(resolve=>{
