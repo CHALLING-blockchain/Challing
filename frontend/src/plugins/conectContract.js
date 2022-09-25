@@ -57,5 +57,6 @@ function conectContract(daliyChallenge) {
     });
     console.log(challenges);
   }
+  load();
 }
 export default conectContract;
