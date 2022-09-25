@@ -9,15 +9,16 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   const [length,setLength] = useState(0);
   //파일 미리볼 url을 저장해줄 state
   const [fileImage, setFileImage] = useState("");
-
+  const [s3file, setS3File] = useState("");
   // 파일 선택
   const selectFileImage = async(e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]))
+    setS3File(e.target.files[0])
   };
 
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
-    const url=await uploadImageFile(fileImage);
+    const url=await uploadImageFile(s3file);
     setExPhotoUrl(url);
   };
   
