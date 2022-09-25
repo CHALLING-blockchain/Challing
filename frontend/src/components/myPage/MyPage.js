@@ -1,13 +1,24 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import "./MyPage.css";
+import UserAPI from "../../api/UserAPI";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../app/redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 
 function MyPage() {
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
   const fileImage = user.picURL;
+
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      console.log("response", response);
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+    });
+  }, []);
+
   return (
     <div>
       <h2 className="MyPageHeader">마이페이지</h2>
@@ -111,66 +122,77 @@ function MyPage() {
           개설
         </div>
       </div>
-      <div className="menuItem">
+      <div
+        className="menuItem"
+        onClick={() => {
+          navigate("/my-shot-zip");
+        }}
+      >
         <p>나의 인증샷 모아보기</p>
-        <Link to="/my-shot-zip">
-          <svg
-            width="6"
-            height="10"
-            viewBox="0 0 6 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1L5 5L1 9"
-              stroke="black"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+
+        <svg
+          width="6"
+          height="10"
+          viewBox="0 0 6 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 1L5 5L1 9"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
-      <div className="menuItem">
+      <div
+        className="menuItem"
+        onClick={() => {
+          navigate("/create-challenge");
+        }}
+      >
         <p>챌린지 개설하기</p>
 
-        <Link to="/create-challenge">
-          <svg
-            width="6"
-            height="10"
-            viewBox="0 0 6 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1L5 5L1 9"
-              stroke="black"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+        <svg
+          width="6"
+          height="10"
+          viewBox="0 0 6 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 1L5 5L1 9"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
-      <div className="menuItem">
+      <div
+        className="menuItem"
+        onClick={() => {
+          navigate("/my-favorite-zip");
+        }}
+      >
         <p>챌린지 즐겨찾기</p>
-        <Link to="/my-favorite">
-          <svg
-            width="6"
-            height="10"
-            viewBox="0 0 6 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1L5 5L1 9"
-              stroke="black"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+
+        <svg
+          width="6"
+          height="10"
+          viewBox="0 0 6 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 1L5 5L1 9"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
     </div>
   );
