@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Header(){
     const navigate = useNavigate();
     return (
-      <div style={{ display: "fixed", top: "0" }}>
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
         <div className={styles.header}>
           <svg
             style={{ margin: "auto" }}

@@ -49,7 +49,8 @@ function App() {
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/votinghome" element={<VotingHome />} />
-        <Route path="/voting:id" element={<Voting />} />
+        {/* <Route path="/voting:id" element={<Voting />} /> */}
+        <Route path="/voting" element={<Voting />} />
 
       </Routes>
       <Menu />
