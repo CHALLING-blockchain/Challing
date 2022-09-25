@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         User updateUser = optionalUser.get();
 
         updateUser.setNickname(userUpdateInfo.getNickname());
-        updateUser.setPicURL(userUpdateInfo.getPicurl());
+        updateUser.setPicURL(userUpdateInfo.getPicURL());
         updateUser.setDescription(userUpdateInfo.getDescription());
 
         userInterestService.deleteAllByUser(updateUser);
