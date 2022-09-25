@@ -1,0 +1,92 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.desBox{
+    margin: 16px;
+    padding: 16px;
+    width: 296px;
+    background-color: #EDEEFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.desBox span{
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+.desBox p{
+    color: #4F4F4F;
+    font-size: 13px;
+}
+
+.voteImg img{
+    width: 328px;
+    height: auto;
+    margin: 0 16px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.prevoteBox{
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+.pass{
+    color: green;
+    width: 156px;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background-color: #CBCEFF;
+    font-size: 16px;
+    font-weight: bold;
+    margin: auto;
+}
+.fail{
+    color: red;
+    width: 156px;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background-color: #CBCEFF;
+    font-size: 16px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.passbar{
+    margin: 50px auto;
+    background-color: #eee;
+    width: 240px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.passBox{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    padding: 0 16px;
+}
+.failBox{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    padding: 0 16px;
+}
+.votedBox span{
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 4px;
+}

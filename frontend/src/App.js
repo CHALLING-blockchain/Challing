@@ -24,6 +24,7 @@ import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
 import Voting from "./components/voting/Voting";
 import VotingHome from "./components/voting/VotingHome";
+import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 
 function App() {
   return (
@@ -51,7 +52,9 @@ function App() {
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/votinghome" element={<VotingHome />} />
-        <Route path="/voting:id" element={<Voting />} />
+        {/* <Route path="/voting:id" element={<Voting />} /> */}
+        <Route path="/voting" element={<Voting />} />
+        <Route path="/web-cam-capture" element={<WebcamCapture />} />
       </Routes>
       <Menu />
     </div>
