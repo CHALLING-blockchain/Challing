@@ -73,8 +73,18 @@ function Description(){
 function Btn(){
     const [state, setState] = useState(false);
     return (
-      <div className={styles.btnBox}>
-        <button className={styles.btn} onClick={()=>{}} disabled={state}>📸 인증하기</button>
+      <div>
+        { state === false ? 
+        <Link to="/web-cam-capture">
+          <div className={styles.btnBox}>
+            <button className={styles.btn} >📸 인증하기</button>
+          </div> 
+        </Link>
+        :
+        <div className={styles.btnBox}>
+          <button className={styles.btn} disabled='true'>📸 인증완료</button>
+        </div>}
+        
       </div>
     );
 }
