@@ -9,7 +9,7 @@ import {
   setChallengeList,
   challengeList,
 } from "../../app/redux/allChallengeSlice";
-import { setNickName, selectUser } from "../../app/redux/userSlice";
+import { selectUser } from "../../app/redux/userSlice";
 
 function Main() {
   const selector = useSelector(challengeList);
@@ -44,31 +44,6 @@ function Main() {
     load();
   }, []);
 
-  //오늘로부터 챌린지 시작일 날짜 구하기
-  function getDayGab(startDate) {
-    // startDate = "2022-09-31";
-    let startDateArr = startDate.split("-");
-    startDate = new Date(startDateArr[0], startDateArr[1], startDateArr[2]);
-
-    let today = new Date();
-    let todayStr =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-
-    let todayDateArr = todayStr.split("-");
-    let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
-
-    // console.log("startDate: ", startDate);
-    // console.log("todayDate", todayDate);
-
-    let gap = todayDate - startDate;
-    var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
-    let dateGap = -parseInt(gap / currDay);
-    return dateGap;
-  }
   //관심사가 여러개일 경우 랜덤으로 하나 뽑기
   function pickATopic(length) {
     let min = 0;
@@ -112,18 +87,22 @@ function Main() {
         const element = selector[index];
         // console.log(element);
         let dayGap = getDayGab(element.startDate);
+        let startDay = dayGap + "일 뒤";
         // (시작 전&&관심사 일치&&일상) 챌린지만
         if (
           dayGap >= 0 &&
           interestIdToName(element.interestId) === interest &&
           "donationId" in element === false
         ) {
+          if (dayGap === 0) {
+            startDay = "오늘부터";
+          }
           result.push(
             <span key={index}>
               <br></br>
               <p>{element.mainPicURL}</p>
               <p>{element.name}</p>
-              <p>{dayGap}일 뒤 시작</p>
+              <p>{startDay} 시작</p>
             </span>
           );
         }
@@ -178,6 +157,27 @@ function Main() {
       {donateChallengeRendering()}
     </div>
   );
+}
+
+//오늘로부터 챌린지 시작일 날짜 구하기
+export function getDayGab(startDate) {
+  let startDateArr = startDate.split("-");
+  startDate = new Date(startDateArr[0], startDateArr[1], startDateArr[2]);
+
+  let today = new Date();
+  let todayStr =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+  let todayDateArr = todayStr.split("-");
+  let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
+
+  // console.log("startDate: ", startDate);
+  // console.log("todayDate", todayDate);
+
+  let gap = todayDate - startDate;
+  var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+  let dateGap = -parseInt(gap / currDay);
+  return dateGap;
 }
 
 export default Main;
