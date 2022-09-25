@@ -23,7 +23,7 @@ class UserAPI {
     return axios.get(`${base.baseUrl}/user/mypage/${email}`);
   }
 
-  updateMyPage({ body }) {
+  updateMyPage(body) {
     return axios.put(`${base.baseUrl}/user/mypage`, body);
   }
 

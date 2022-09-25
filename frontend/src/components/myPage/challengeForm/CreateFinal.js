@@ -11,7 +11,7 @@ import camera from '../../../img/camera.png';
 import profile from '../../../img/profile-basic.png';
 import CreateButtonStyles from '../../common/NextButton.module.css';
 import styles from './challengeForm.module.css';
-import conectContract from '../../../plugins/conectContract';
+import Contract from '../../../api/ContractAPI';
 
 function CreateFinal({selects,formCnt,setFormCnt}){
   const daliyChallenge = {
@@ -38,7 +38,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
   };
   function CreateButton(){
     return(
-      <button className={CreateButtonStyles.NextButton} onClick={()=>{conectContract(daliyChallenge);console.log('click')}}>챌린지 발행하기</button>
+      <button className={CreateButtonStyles.NextButton} onClick={()=>{Contract.createDailyChallenge().then(console.log);}}>챌린지 발행하기</button>
     )
   }
   function DonationChallenge(){
