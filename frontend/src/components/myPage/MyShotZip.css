@@ -1,6 +1,15 @@
-.BackMyPage{
+.MyShotZip {
+  height: 680px;
+}
+
+.BackMyPage {
   width: 328px;
   height: 56px;
   margin: 16px 8px 8px 16px;
   display: flex;
+}
+
+.PhotoList {
+  height: 600px;
+  overflow-y: scroll;
 }

@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
@@ -8,15 +8,18 @@ function MyProfile() {
   const user = useSelector(selectUser);
   console.log(user);
   const fileImage = user.picURL;
+  const totalInterests = ["운동", "학습", "생활", "취미", "식생활", "그 외"];
 
   const getInterest = () => {
     const items = [];
-    for (let index = 0; index < user.interests.length; index++) {
-      items.push(
-        <span key={index} className="selectItem">
-          {user.interests[index]}
-        </span>
-      );
+    for (let index = 0; index < totalInterests.length; index++) {
+      if (user.interests.includes(totalInterests[index])) {
+        items.push(
+          <span key={index} className="selectItem">
+            {totalInterests[index]}
+          </span>
+        );
+      }
     }
     return items;
   };
