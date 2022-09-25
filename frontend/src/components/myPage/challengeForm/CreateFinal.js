@@ -38,7 +38,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
   };
   function CreateButton(){
     return(
-      <button className={CreateButtonStyles.NextButton} onClick={()=>{Contract.createDailyChallenge().then(console.log);}}>챌린지 발행하기</button>
+      <button className={CreateButtonStyles.NextButton} onClick={()=>{Contract.createDailyChallenge(daliyChallenge).then(console.log);}}>챌린지 발행하기</button>
     )
   }
   function DonationChallenge(){

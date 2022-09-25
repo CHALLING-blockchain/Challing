@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
 
+
 function MyPage() {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const fileImage = user.picURL;
+
   return (
     <div>
       <h2 className="MyPageHeader">마이페이지</h2>
