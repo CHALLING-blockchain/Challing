@@ -11,7 +11,7 @@ class ContractAPI {
     this.web3 = new Web3(
       new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/38d65d8f902943d38a2876a0f4f9ad49")
     );
-    this.privateKey1 = 'af4dbb9a76fa1fc79b4db351615bf5b3154c4ded9cb1cf4330208b732ff61475';
+    this.privateKey1 = '446f29790263af454613250ef0cbe1809cf81174729478d2a43b3c95f9e3aa96';
 
     this.account1 = this.web3.eth.accounts.privateKeyToAccount(
       "0x" + this.privateKey1
@@ -27,7 +27,7 @@ class ContractAPI {
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
     this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
-    
+    this.account= await this.web3.eth.getAccounts()
   }
   
   // ChallengeContract
@@ -200,11 +200,11 @@ class ContractAPI {
   } 
 
   // DailyChallengeContract
-  async createDailyChallenge(address,dailyChallenge) {
+  async createDailyChallenge(dailyChallenge) {
     await this.init()
     return this.Ccontract.methods.createDailyChallenge(dailyChallenge)
       .send({
-        from: address,
+        from: this.account1.address,
         gasLimit: 3_000_000,
       })
       .catch(console.error);

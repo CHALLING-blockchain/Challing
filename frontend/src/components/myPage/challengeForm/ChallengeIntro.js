@@ -13,13 +13,14 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   // 파일 선택
   const selectFileImage = async(e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]))
-    setExPhotoUrl(URL.createObjectURL(e.target.files[0]))
+    // setExPhotoUrl(URL.createObjectURL(e.target.files[0]))
     setS3File(e.target.files[0])
   };
 
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
     const url=await uploadImageFile(s3file);
+    console.log(url)
     setExPhotoUrl(url);
   };
   
