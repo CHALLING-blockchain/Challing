@@ -1,13 +1,11 @@
 .header{
-    height: 40px;
-    width: 360px;
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 0;
     background-color: (0,0,0,0);
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+    z-index: 2;
 }
 
 .icons{
