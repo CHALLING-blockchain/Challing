@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Web3 from "web3";
 import "./Main.css";
 import Nav from "../Nav";
 import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
 import { useSelector, useDispatch } from "react-redux";
+import Contract from "../../api/ContractAPI";
 import {
   setChallengeList,
   challengeList,
@@ -12,12 +12,9 @@ import {
 import { setNickName, selectUser } from "../../app/redux/userSlice";
 
 function Main() {
-  // const [challengeList, setChallengeList] = useState([]);
-  const dispatch = useDispatch();
   const selector = useSelector(challengeList);
   const user = useSelector(selectUser);
-  const artifact = require("../../contracts/ChallengeContract.json");
-
+  const dispatch = useDispatch();
   //주제 이름 저장
   const [interest, setInterest] = useState("");
 
@@ -25,52 +22,19 @@ function Main() {
   //https://ropsten.infura.io/v3/38d65d8f902943d38a2876a0f4f9ad49
   useEffect(() => {
     async function load() {
-      const web3 = new Web3(
-        new Web3.providers.HttpProvider("http://localhost:7545")
-      );
-      const networkId = await web3.eth.net.getId();
-      const abi = artifact.abi;
-      const address = artifact.networks[networkId].address;
-      const contract = new web3.eth.Contract(abi, address);
-      const privateKey1 = process.env.REACT_APP_METAMASK_PRIVATE_KEY;
+      let allChallengeList = {};
+      await Contract.getAllChallenge().then((result) => {
+        // console.log("result: ", result);
+        allChallengeList = result;
+      });
 
-      const account1 = web3.eth.accounts.privateKeyToAccount(
-        "0x" + privateKey1
-      );
+      // console.log("allChallengeList: ", allChallengeList);
 
-      web3.eth.accounts.wallet.add(account1);
-      const getAllChallenge = await contract.methods
-        .getAllChallenge()
-        .call({
-          from: account1.address,
-        })
-        .catch(console.error);
-      //로컬에 챌린지 목록이 없고 데이터 추가가 안됬을때(추가해야됨)
-      if (Object.keys(selector).length === 0) {
-        // 일상 챌린지
-        const challenges = {};
-        getAllChallenge[0].forEach((id, index) => {
-          const challenge = Object.assign({}, getAllChallenge[2][index]);
-          const size = Object.keys(challenge).length;
-          for (let i = 0; i < size / 2; i++) {
-            delete challenge[i];
-          }
-          challenges[Number(id)] = challenge;
-        });
-
-        // 기부 챌린지
-        getAllChallenge[1].forEach((id, index) => {
-          const challenge = Object.assign({}, getAllChallenge[3][index]);
-          const size = Object.keys(challenge).length;
-          for (let i = 0; i < size / 2; i++) {
-            delete challenge[i];
-          }
-          challenges[Number(id)] = challenge;
-        });
-        // redux에 저장하기 ! (persist)
-
-        dispatch(setChallengeList(challenges));
-      }
+      // 추가) 생성이나 삭제될때 변하는값을 감지해서 변할때마다 실행시켜줘야됭!!!
+      // 로컬에 챌린지 목록이 없을때 -> redux에 저장
+      // if (Object.keys(selector).length === 0) {
+      dispatch(setChallengeList(allChallengeList));
+      // }
     }
 
     //로그인한 유저의 관심사 가져와서  저장
