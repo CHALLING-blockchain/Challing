@@ -1,13 +1,17 @@
 import React from "react";
-import styles from "./NextButton.module.css"
+import styles from "./NextButton.module.css";
 
 export default function NextButton(props) {
-    const { label, onClick, disabled } = props;
-    return (
-        <div className={styles.buttonBox}>
-            <button className={styles.NextButton} onClick={onClick} disabled={disabled}>
-                {label}
-            </button>
-        </div>
-    )
+  const { label, onClick, disabled, flag } = props;
+  return (
+    <div className={styles.buttonBox}>
+      <button
+        className={flag ? styles.NextButton : styles.NextButtonX}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {label}
+      </button>
+    </div>
+  );
 }
