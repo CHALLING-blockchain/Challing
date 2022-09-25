@@ -50,6 +50,7 @@ function MyShotZip() {
           </svg>
         </Link>
         <p>나의 인증샷 모아보기</p>
+        <p></p>
       </div>
       <div className="PhotoList">{getPhotoList()}</div>
     </div>

@@ -1,10 +1,10 @@
 import React from "react";
-import "./App.css"
+import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Auth from "./components/auth/Auth";
 import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
-import SetProfile from "./components/auth/SetProfile"
+import SetProfile from "./components/auth/SetProfile";
 import PreCategory from "./components/auth/PreCategory";
 import ChallengeDetail from "./components/challengeDetail/ChallengeDetail";
 import ChallengeSearch from "./components/challengeSearch/ChallengeSearch";
@@ -16,13 +16,14 @@ import MyPage from "./components/myPage/MyPage";
 import MyProfile from "./components/myPage/MyProfile";
 import EditProfile from "./components/myPage/EditProfile";
 import MyShotZip from "./components/myPage/MyShotZip";
+import MyShotDetail from "./components/myPage/MyShotDetail";
 import CreateChallenge from "./components/myPage/CreateChallenge";
 import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
-import Voting from './components/voting/Voting';
-import VotingHome from './components/voting/VotingHome';
+import Voting from "./components/voting/Voting";
+import VotingHome from "./components/voting/VotingHome";
 
 function App() {
   return (
@@ -44,13 +45,13 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/my-shot-zip" element={<MyShotZip />} />
+        <Route path="/my-shot-detail/:id" element={<MyShotDetail />} />
         <Route path="/create-challenge" element={<CreateChallenge />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/votinghome" element={<VotingHome />} />
         <Route path="/voting:id" element={<Voting />} />
-
       </Routes>
       <Menu />
     </div>

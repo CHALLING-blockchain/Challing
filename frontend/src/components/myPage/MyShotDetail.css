@@ -1,5 +1,5 @@
 .MyShotDetail {
-  height: 100vh;
+  height: 680px;
   background-color: #3a3a3a;
 }
 
@@ -7,5 +7,4 @@
   height: 150px;
   padding: 16px 8px 8px 16px;
   display: flex;
-  background-color: #3a3a3a;
 }
