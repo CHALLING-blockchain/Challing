@@ -111,7 +111,7 @@ function MyPage() {
           개설
         </div>
       </div>
-      <div className="MyShotZip">
+      <div className="menuItem">
         <p>나의 인증샷 모아보기</p>
         <Link to="/my-shot-zip">
           <svg
@@ -131,8 +131,9 @@ function MyPage() {
           </svg>
         </Link>
       </div>
-      <div className="CreateChallenge">
+      <div className="menuItem">
         <p>챌린지 개설하기</p>
+
         <Link to="/create-challenge">
           <svg
             width="6"
@@ -151,7 +152,7 @@ function MyPage() {
           </svg>
         </Link>
       </div>
-      <div className="FavoriteChallenge">
+      <div className="menuItem">
         <p>챌린지 즐겨찾기</p>
         <Link to="/my-favorite">
           <svg
