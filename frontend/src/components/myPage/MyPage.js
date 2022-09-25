@@ -17,7 +17,7 @@ function MyPage() {
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
     });
-  }, []);
+  }, [user.email, dispatch]);
 
   return (
     <div>
