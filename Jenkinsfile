@@ -44,7 +44,7 @@ pipeline {
             stage('set_files') {
               steps {
                 sh ' \
-                  cp $FRONTEND_DEFAULS frontend/.env.local \
+                  cp $FRONTEND_DEFAULT frontend/.env.local \
                   & cp $FRONTEND_PRODUCTION frontend/.env.production.local \
                   & cp -R ../contracts frontend/src \
                   & cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml \
