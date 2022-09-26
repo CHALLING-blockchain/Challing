@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./ResisterCard.module.css"
+import styles from "./RegisterCard.module.css";
 import pencil from "../../img/pencil.png";
 import gym from "../../img/gym.png";
 import calender from "../../img/calender.png";
@@ -7,7 +7,7 @@ import tea from "../../img/tea-cup.png";
 import plus from "../../img/plus.png";
 import paint from "../../img/paint-kit.png";
 
-function ResisterCard({ type, title, times, period, img }) {
+function RegisterCard({ type, title, times, period, img }) {
   console.log(type);
   let typeImg = pencil;
   if (type === "운동") {
@@ -32,13 +32,13 @@ function ResisterCard({ type, title, times, period, img }) {
           <span>{type}</span>
         </div>
         <div className={styles.subBox}>
-            <p className={styles.title}>{title}</p>
-            <span className={styles.sub}>주 {times}일</span>
-            <span className={styles.sub}>{period}</span>
+          <p className={styles.title}>{title}</p>
+          <span className={styles.sub}>주 {times}일</span>
+          <span className={styles.sub}>{period}</span>
         </div>
       </div>
     </div>
   );
 }
 
-export default ResisterCard;
+export default RegisterCard;

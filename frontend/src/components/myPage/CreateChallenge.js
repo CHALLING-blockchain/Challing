@@ -144,6 +144,18 @@ function CreateChallenge() {
             ...state,authentications:value
           }));
         }}
+        startTime={selects.startTime}
+        setStartTime={(value)=>{
+          setSelects((state)=>({
+            ...state,startTime:value
+          }));
+        }}
+        endTime={selects.endTime}
+        setEndTime={(value)=>{
+          setSelects((state)=>({
+            ...state,endTime:value
+          }));
+        }}
         />:null}
         { formCnt === 7 && selects.challenge === "기부챌린지" ? 
         <SelectPeriod formCnt={formCnt}
