@@ -26,10 +26,9 @@ function SetProfile() {
 
   const handleChange = (e) => {
     setNickname(e.target.value);
-    console.log("e", e.target.value);
-    console.log("n", nickname);
+    // console.log("e", e.target.value);
+    // console.log("n", nickname);
     if (e.target.value !== "") {
-      console.log("111111 들어왔님");
       UserAPI.validCheck(e.target.value).then((response) => {
         if (response.data.body) {
           setCheckMsg("사용 가능한 닉네임 입니다.");
@@ -40,7 +39,6 @@ function SetProfile() {
         }
       });
     } else {
-      console.log("222222 들어왔님");
       setValidFlag(false);
       setCheckMsg("");
     }
