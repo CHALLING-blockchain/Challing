@@ -81,9 +81,9 @@ public class UserController {
 
     @PostMapping("/favorite")
     public ResponseEntity<?> addFavorite(@RequestBody FavoriteRequest favoriteRequest){
-        String email = favoriteRequest.getEmail();
+        Long userId = favoriteRequest.getUserId();
         Long challengeId = favoriteRequest.getChallengeId();
-        Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserById(userId);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -95,9 +95,9 @@ public class UserController {
     @Transactional
     @DeleteMapping("/favorite")
     public ResponseEntity<?> deleteFavorite(@RequestBody FavoriteRequest favoriteRequest){
-        String email = favoriteRequest.getEmail();
+        Long userId = favoriteRequest.getUserId();
         Long challengeId = favoriteRequest.getChallengeId();
-        Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserById(userId);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -112,7 +112,7 @@ public class UserController {
     @Transactional
     @PostMapping("/photo")
     public ResponseEntity<?> addPhoto(@RequestBody PhotoRequest photoRequest){
-        Optional<User> optionalUser = userService.getUserByEmail(photoRequest.getEmail());
+        Optional<User> optionalUser = userService.getUserById(photoRequest.getUserId());
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -125,7 +125,7 @@ public class UserController {
     @Transactional
     @DeleteMapping("/photo")
     public ResponseEntity<?> deletePhoto(@RequestBody PhotoRequest photoRequest){
-        Optional<User> optionalUser = userService.getUserByEmail(photoRequest.getEmail());
+        Optional<User> optionalUser = userService.getUserById(photoRequest.getUserId());
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
