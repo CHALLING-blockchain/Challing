@@ -23,6 +23,8 @@ import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
 import Voting from './components/voting/Voting';
 import VotingHome from './components/voting/VotingHome';
+import ConfirmResister from "./components/challengeResister/ConfirmResister";
+import SuccessResister from "./components/challengeResister/SuccessResister";
 
 function App() {
   return (
@@ -51,6 +53,11 @@ function App() {
         <Route path="/votinghome" element={<VotingHome />} />
         {/* <Route path="/voting:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />
+        {/* <Route path="/confirm-resister:id" element={<ConfirmResister />} />
+        <Route path="/success-resister:id" element={<SuccessResister />} /> */}
+        <Route path="/confirm-resister" element={<ConfirmResister />} />
+        <Route path="/success-resister" element={<SuccessResister />} />
+
 
       </Routes>
       <Menu />
