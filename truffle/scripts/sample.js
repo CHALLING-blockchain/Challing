@@ -1,5 +1,6 @@
 const Web3 = require("web3");
-const infuraUrl = "https://ropsten.infura.io/v3/" + REACT_APP_INFURA_API_KEY;
+const infuraUrl =
+  "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider("https://localhost:7545")
