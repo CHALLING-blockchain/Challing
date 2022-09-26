@@ -1,29 +1,43 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "./ChallengeDetail.module.css"
-import back from "../../img/test-back.jpg"
-import profile from "../../img/profile-basic.png"
-import person from "../../img/person.png"
-import dollar from "../../img/dollarCoin.png"
-import eth from "../../img/ethCoin.png"
-import calender from "../../img/calender.png"
-import bulb from "../../img/bulb.png"
-import camera from "../../img/camera.png"
-import symbol from "../../img/symbol-dynamic.png"
-import favbook from "../../img/bookmark.png"
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { challengeList } from "../../app/redux/allChallengeSlice";
+import UserAPI from "../../api/UserAPI";
+import Contract from "../../api/ContractAPI";
+import styles from "./ChallengeDetail.module.css";
+import back from "../../img/test-back.jpg";
+import profile from "../../img/profile-basic.png";
+import person from "../../img/person.png";
+import dollar from "../../img/dollarCoin.png";
+import eth from "../../img/ethCoin.png";
+import calender from "../../img/calender.png";
+import bulb from "../../img/bulb.png";
+import camera from "../../img/camera.png";
+import symbol from "../../img/symbol-dynamic.png";
+import favbook from "../../img/bookmark.png";
 import Next from "../common/NextButton";
 
-function Header() {
+function Header(props) {
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(false);
-  const checkmark = () => {
+
+  const checkmark = async () => {
+    const body = {
+      userId: props.challenge.ownerId,
+      challengeId: props.challenge.challengeId,
+    };
     if (bookmark === true) {
-        setBookmark(false);
+      await UserAPI.deleteFavorite(body).then((response) => {
+        console.log("delete", response);
+      });
+      setBookmark(false);
     } else {
-        setBookmark(true);
+      await UserAPI.addFavorite(body).then((response) => {
+        console.log("add", response);
+      });
+      setBookmark(true);
     }
-    // 북마크 되면 호출하는 api?
-  }
+  };
 
   return (
     <div style={{ position: "sticky", top: "0px" }}>
@@ -55,7 +69,7 @@ function Header() {
             alt=""
           />
         </Link>
-        <div style={{margin:'auto', display:'flex', alignItems:'center'}}>
+        <div style={{ margin: "auto", display: "flex", alignItems: "center" }}>
           {bookmark === true ? (
             <img
               onClick={checkmark}
@@ -77,154 +91,215 @@ function Header() {
   );
 }
 
-function TopBox(){
-    return (
-      <div>
-        {/* 유저닉네임, 타이틀, 해시태그 */}
-        <div className={styles.paddingBox}>
-          <div className={styles.imgText}>
-            <img src={profile} alt="" />
-            <span>커다란 솜사탕</span>
-          </div>
-          <span style={{ fontSize: "16px", fontWeight: "bold", margin:'4px' }}>
-            영어, 외국어 10문장 쓰기
+function TopBox(props) {
+  console.log("topbox", props);
+  const [user, setUser] = useState({});
+  const [challengers, setChallengers] = useState(10);
+  const week =
+    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+  useEffect(() => {
+    const getUserInfo = async () => {
+      await UserAPI.getUserById(props.challenge.ownerId).then((response) => {
+        setUser(response.data.body);
+        console.log(response.data.body);
+      });
+    };
+
+    const getChallengers = async () => {
+      await Contract.getChallengers(props.challenge.challengeId).then(
+        (result) => {
+          setChallengers(result.length);
+        }
+      );
+    };
+    getUserInfo();
+    getChallengers();
+  }, [props.challenge.ownerId, props.challenge.challengeId]);
+
+  return (
+    <div>
+      {/* 유저닉네임, 타이틀, 해시태그 */}
+      <div className={styles.paddingBox}>
+        <div className={styles.imgText}>
+          <img src={user.picURL} alt="" />
+          <span>{user.nickname}</span>
+        </div>
+        <span style={{ fontSize: "16px", fontWeight: "bold", margin: "4px" }}>
+          {props.challenge.name}
+        </span>
+        <div className={styles.Tags}>
+          <span className={styles.Tag}>{week}주 동안</span>
+          <span className={styles.Tag}>
+            하루 {props.challenge.authDayTimes}번
           </span>
-          <div className={styles.Tags}>
-            <span className={styles.Tag}>4주동안</span>
-            <span className={styles.Tag}>매일매일</span>
+        </div>
+        {/* 참가인원수, 예치금 */}
+        <div className={styles.subtext}>
+          <div className={styles.imgText}>
+            <img src={person} alt="personChar" />
+            <span>현재 {challengers}명</span>
           </div>
-          {/* 참가인원수, 예치금 */}
-          <div className={styles.subtext}>
-            <div className={styles.imgText}>
-              <img src={person} alt="personChar" />
-              <span>현재 3명</span>
-            </div>
-            <div className={styles.imgText}>
-              <img src={dollar} alt="" />
-              <span>0.05 eth</span>
-            </div>
+          <div className={styles.imgText}>
+            <img src={dollar} alt="" />
+            <span>{props.challenge.deposit / Math.pow(10, 18)} eth</span>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
-function PeriodBox(){
-    return (
-        <div className={styles.paddingBox}>
-            <div className={styles.imgText}>
-                <img src={calender} alt="" />
-                <span style={{fontSize:'16px'}}>챌린지 기간</span>
-            </div>
-            <div>
-                <p style={{margin:'4px'}}>9월 5일(월) ~ 9월 18일(일)</p>
-            </div>
-        </div>
-    )
+function PeriodBox(props) {
+  const start = props.challenge.startDate;
+  let startMonth = Number(start.substr(5, 2));
+  let startDay = Number(start.substr(8));
+  const end = props.challenge.endDate;
+  let endMonth = Number(end.substr(5, 2));
+  let endDay = Number(end.substr(8));
+
+  return (
+    <div className={styles.paddingBox}>
+      <div className={styles.imgText}>
+        <img src={calender} alt="" />
+        <span style={{ fontSize: "16px" }}>챌린지 기간</span>
+      </div>
+      <div>
+        <p style={{ margin: "4px" }}>
+          {startMonth}월 {startDay}일 ~ {endMonth}월 {endDay}일
+        </p>
+      </div>
+    </div>
+  );
 }
 
-function RefundPolicy(){
-    return (
-      <div className={styles.paddingBox}>
-        <div className={styles.imgText}>
-          <img src={eth} alt="" />
-          <span style={{ fontSize: "16px" }}>환급정책</span>
+function RefundPolicy() {
+  return (
+    <div className={styles.paddingBox}>
+      <div className={styles.imgText}>
+        <img src={eth} alt="" />
+        <span style={{ fontSize: "16px" }}>환급정책</span>
+      </div>
+      <div className={styles.refundBox}>
+        <div className={styles.oneLine}>
+          <span className={styles.percentage}>100% 성공</span>
+          <span className={styles.policy}>참가비 전액 환급 + 성공 리워드</span>
         </div>
-        <div className={styles.refundBox}>
-          <div className={styles.oneLine}>
-            <span className={styles.percentage}>100% 성공</span>
-            <span className={styles.policy}>참가비 전액 환급 + 성공 리워드</span>
-          </div>
-          <div className={styles.oneLine}>
-            <span className={styles.percentage}>99%이하 80%이상</span>
-            <span className={styles.policy}>참가비 전액 환급</span>
-          </div>
-          <div className={styles.oneLine}>
-            <span className={styles.percentage}>79%이하 40%이상</span>
-            <span className={styles.policy}>참가비 일부 환급</span>
-          </div>
-          <div className={styles.oneLine}>
-            <span className={styles.percentage}>40% 미만</span>
-            <span className={styles.policy}>환급금 없음</span>
-          </div>
+        <div className={styles.oneLine}>
+          <span className={styles.percentage}>99%이하 80%이상</span>
+          <span className={styles.policy}>참가비 전액 환급</span>
+        </div>
+        <div className={styles.oneLine}>
+          <span className={styles.percentage}>79%이하 40%이상</span>
+          <span className={styles.policy}>참가비 일부 환급</span>
+        </div>
+        <div className={styles.oneLine}>
+          <span className={styles.percentage}>40% 미만</span>
+          <span className={styles.policy}>환급금 없음</span>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
-function Description(){
-    return (
-      <div className={styles.paddingBox}>
-        <div className={styles.imgText}>
-          <img src={bulb} alt="" />
-          <span style={{ fontSize: "16px" }}>챌린지 설명</span>
+function Description(props) {
+  const week =
+    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+
+  return (
+    <div className={styles.paddingBox}>
+      <div className={styles.imgText}>
+        <img src={bulb} alt="" />
+        <span style={{ fontSize: "16px" }}>챌린지 설명</span>
+      </div>
+      <div className={styles.description}>
+        <div style={{ margin: "8px 0" }}>
+          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+            챌린지 진행 시 꼭 알아주세요!
+          </p>
+          <p>
+            ☝ {week}주 동안, 하루에 {props.challenge.authDayTimes}번 인증샷을
+            촬영하셔야 합니다.
+          </p>
+          <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
         </div>
-        <div className={styles.description}>
-          <div style={{ margin: "8px 0" }}>
-            <p style={{ fontSize: "16px", fontWeight: "bold" }}>
-              챌린지 진행 시 꼭 알아주세요!
-            </p>
-            <p>☝ 4주 동안 매일, 하루에 1번 인증샷을 촬영하셔야 합니다.</p>
-            <p>☝ 인증 가능한 요일은 월, 화, 수, 목, 금, 토, 일 입니다.</p>
-            <p>☝ 사진첩을 사용하실 수 없습니다.</p>
-            <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
-          </div>
-          <div style={{ margin: "8px 0" }}>
-            <p style={{ fontSize: "16px", fontWeight: "bold" }}>
-              인증 방법 및 주의사항
-            </p>
-            <p>👉 필사한 내용 사진찍기</p>
-            <p>👉 다른 챌린지에서 올리신 동일한 인증샷으로 재인증 하시면</p>
-            <p>신고 혹은 불이익이 있을 수 있습니다.</p>
-          </div>
+        <div style={{ margin: "8px 0" }}>
+          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+            인증 방법 및 주의사항
+          </p>
+          <p>👉 필사한 내용 사진찍기</p>
+          <p>👉 다른 챌린지에서 올리신 동일한 인증샷으로 재인증 하시면</p>
+          <p>신고 혹은 불이익이 있을 수 있습니다.</p>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
-function ShotDescription(){
-    return (
-      <div className={styles.paddingBox}>
-        <div className={styles.imgText}>
-          <img src={camera} alt="" />
-          <span style={{ fontSize: "16px" }}>인증샷 이렇게 찍어주세요!</span>
+function ShotDescription(props) {
+  console.log("shot", props);
+  return (
+    <div className={styles.paddingBox}>
+      <div className={styles.imgText}>
+        <img src={camera} alt="" />
+        <span style={{ fontSize: "16px" }}>인증샷 이렇게 찍어주세요!</span>
+      </div>
+      <div className={styles.shots}>
+        <div className={styles.shot}>
+          <img
+            style={{ width: "150px", height: "150px", margin: "auto" }}
+            src={props.challenge.goodPicURL}
+            alt=""
+          />
+          <p>좋은 예시</p>
         </div>
-        <div className={styles.shots}>
-            <div></div>
+        <div className={styles.shot}>
+          <img
+            style={{ width: "150px", height: "150px", margin: "auto" }}
+            src={props.challenge.badPicURL}
+            alt=""
+          />
+          <p>나쁜 예시</p>
         </div>
       </div>
-    );
+    </div>
+  );
 }
-
-
 
 function ChallengeDetail() {
-    return (
-      <div>
-        <Header></Header>
-        <img className={styles.backImg} src={back} alt="challegePhoto" />
+  const { id } = useParams();
+  const challenge = useSelector(challengeList)[id];
+  console.log("challenge", challenge);
 
-        <TopBox></TopBox>
-        <hr className={styles.hrTag} />
-        <PeriodBox></PeriodBox>
-        <hr className={styles.hrTag} />
-        <RefundPolicy></RefundPolicy>
-        <hr className={styles.hrTag} />
-        <Description></Description>
-        <hr className={styles.hrTag} />
-        <ShotDescription></ShotDescription>
+  return (
+    <div>
+      <Header challenge={challenge}></Header>
+      <img
+        className={styles.backImg}
+        src={challenge.mainPicURL}
+        alt="challegePhoto"
+      />
 
-        <div style={{ width: "100vw", height: "56px" }}></div>
-        <div className={styles.btnBox}>
-            <Next
-            type="submit"
-            label="챌린지 신청하기"
-            onClick={() => {}}
-            disabled={false}
-            ></Next>
-        </div>
+      <TopBox challenge={challenge}></TopBox>
+      <hr className={styles.hrTag} />
+      <PeriodBox challenge={challenge}></PeriodBox>
+      <hr className={styles.hrTag} />
+      <RefundPolicy></RefundPolicy>
+      <hr className={styles.hrTag} />
+      <Description challenge={challenge}></Description>
+      <hr className={styles.hrTag} />
+      <ShotDescription challenge={challenge}></ShotDescription>
+
+      {/* <div style={{ width: "100vw", height: "56px" }}></div> */}
+      <div className={styles.btnBox}>
+        <Next
+          type="submit"
+          label="챌린지 신청하기"
+          onClick={() => {}}
+          disabled={false}
+        ></Next>
       </div>
-    );
+    </div>
+  );
 }
 
 export default ChallengeDetail;

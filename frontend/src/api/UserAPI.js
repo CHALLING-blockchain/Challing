@@ -23,6 +23,10 @@ class UserAPI {
     return axios.get(`${base.baseUrl}/user/mypage/${email}`);
   }
 
+  getUserById(id) {
+    return axios.get(`${base.baseUrl}/user/info/${id}`);
+  }
+
   updateMyPage(body) {
     return axios.put(`${base.baseUrl}/user/mypage`, body);
   }
@@ -32,33 +36,26 @@ class UserAPI {
     return axios.get(`${base.baseUrl}/user/check/${nickname}`);
   }
 
-  addFavorite(email, challengeId) {
-    const body = {
-      email: email,
-      challengeId: challengeId,
-    };
+  addFavorite(body) {
     return axios.post(`${base.baseUrl}/user/favorite`, body);
   }
 
-  deleteFavorite(email, challengeId) {
-    const body = {
-      email: email,
-      challengeId: challengeId,
-    };
-    return axios.delete(`${base.baseUrl}/user/favorite`, body);
+  deleteFavorite(body) {
+    console.log("delete", body);
+    return axios.delete(`${base.baseUrl}/user/favorite`, { data: body });
   }
 
-  addPhoto(email, photoUrl) {
+  addPhoto(userId, photoUrl) {
     const body = {
-      email: email,
+      userId: userId,
       photoUrl: photoUrl,
     };
     return axios.post(`${base.baseUrl}/user/photo`, body);
   }
 
-  deletePhoto(email, photoUrl) {
+  deletePhoto(userId, photoUrl) {
     const body = {
-      email: email,
+      userId: userId,
       photoUrl: photoUrl,
     };
     return axios.delete(`${base.baseUrl}/user/photo`, body);

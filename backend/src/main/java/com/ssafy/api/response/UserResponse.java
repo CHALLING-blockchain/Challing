@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
-
+    private Long id;
     private String email;
     private String nickname;
     private String picURL;
@@ -63,6 +63,7 @@ public class UserResponse {
         }
 
         return UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .picURL(user.getPicURL())
