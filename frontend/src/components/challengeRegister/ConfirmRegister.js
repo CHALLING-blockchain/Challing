@@ -1,12 +1,12 @@
 import React from "react";
-import styles from "./ConfirmResister.module.css";
+import styles from "./ConfirmRegister.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as getInterestStr from "../main/Main.js";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import Contract from "../../api/ContractAPI";
 import { useEffect, useState } from "react";
-import ResisterCard from "../common/ResisterCard";
+import RegisterCard from "../common/RegisterCard";
 import test from "../../img/test-back.jpg";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
@@ -139,7 +139,7 @@ function MyBalance() {
   );
 }
 
-function ConfirmResister() {
+function ConfirmRegister() {
   //챌린지 아이디
   const { id } = useParams();
   const selector = useSelector(challengeList);
@@ -152,13 +152,13 @@ function ConfirmResister() {
   return (
     <div>
       <Header></Header>
-      <ResisterCard
+      <RegisterCard
         type={getInterestStr.interestIdToName(element.interestId)}
         title={element.name}
         times={perWeek}
         period={element.startDate + "~" + element.endDate}
         img={element.mainPicURL}
-      ></ResisterCard>
+      ></RegisterCard>
       <Inform></Inform>
       <MyBalance></MyBalance>
       <RefundPolicy></RefundPolicy>
@@ -167,4 +167,4 @@ function ConfirmResister() {
   );
 }
 
-export default ConfirmResister;
+export default ConfirmRegister;

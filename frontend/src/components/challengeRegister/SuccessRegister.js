@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import styles from "./SuccessResister.module.css"
-import ResisterCard from "../common/ResisterCard";
+import styles from "./SuccessRegister.module.css";
+import RegisterCard from "../common/RegisterCard";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
-import test from "../../img/test-back.jpg"
+import test from "../../img/test-back.jpg";
 import { Link } from "react-router-dom";
 import Next from "../common/NextButton";
-
-
 
 function Header() {
   return (
@@ -52,42 +50,38 @@ function Btn() {
   const [deposit, setDeposit] = useState(0);
   return (
     <div className={styles.btnBox}>
-        <Link to="/">
-            <Next
-                type="submit"
-                label="홈으로"
-                onClick={() => {
-                    
-                }}
-                disabled={false}
-                flag={true}
-            ></Next>
-
-        </Link>
+      <Link to="/">
+        <Next
+          type="submit"
+          label="홈으로"
+          onClick={() => {}}
+          disabled={false}
+          flag={true}
+        ></Next>
+      </Link>
     </div>
   );
 }
 
-
-function SuccessResister(){
-    return (
-      <div>
-        <Header></Header>
-        <div className={styles.title}>
-          <p>챌린지에 성공적으로</p>
-          <p>참가하였습니다.</p>
-        </div>
-        <ResisterCard
-          type={"학습"}
-          title={"영어, 외국어 10문장 쓰기"}
-          times={"3"}
-          period={"2022.09.15 ~ 2022.09.22"}
-          img={test}
-        ></ResisterCard>
-        <Inform></Inform>
-        <Btn></Btn>
+function SuccessRegister() {
+  return (
+    <div>
+      <Header></Header>
+      <div className={styles.title}>
+        <p>챌린지에 성공적으로</p>
+        <p>참가하였습니다.</p>
       </div>
-    );
+      <RegisterCard
+        type={"학습"}
+        title={"영어, 외국어 10문장 쓰기"}
+        times={"3"}
+        period={"2022.09.15 ~ 2022.09.22"}
+        img={test}
+      ></RegisterCard>
+      <Inform></Inform>
+      <Btn></Btn>
+    </div>
+  );
 }
 
-export default SuccessResister;
+export default SuccessRegister;
