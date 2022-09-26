@@ -24,8 +24,8 @@ import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
 import Voting from "./components/voting/Voting";
 import VotingHome from "./components/voting/VotingHome";
-import ConfirmResister from "./components/challengeResister/ConfirmResister";
-import SuccessResister from "./components/challengeResister/SuccessResister";
+import ConfirmRegister from "./components/challengeRegister/ConfirmRegister";
+import SuccessRegister from "./components/challengeRegister/SuccessRegister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 
 function App() {
@@ -55,10 +55,10 @@ function App() {
         <Route path="/votinghome" element={<VotingHome />} />
         {/* <Route path="/voting:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />
-        <Route path="/confirm-register/:id" element={<ConfirmResister />} />
-        {/* <Route path="/success-register/:id" element={<SuccessResister />} /> */}
-        {/* <Route path="/confirm-register" element={<ConfirmResister />} /> */}
-        <Route path="/success-register" element={<SuccessResister />} />
+        <Route path="/confirm-register/:id" element={<ConfirmRegister />} />
+        {/* <Route path="/success-register/:id" element={<SuccessRegister />} /> */}
+        {/* <Route path="/confirm-register" element={<ConfirmRegister />} /> */}
+        <Route path="/success-register" element={<SuccessRegister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
       </Routes>
       <Menu />
