@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setChallengeList,
-  challengeList,
-} from "../../app/redux/allChallengeSlice";
+import { useSelector } from "react-redux";
+import { challengeList } from "../../app/redux/allChallengeSlice";
 import "./ChallengeSearch.css";
 import * as getDayGab from "../main/Main.js";
 
@@ -24,7 +21,14 @@ function ChallengeSearch() {
         ) {
           const element = selector[index];
           console.log(element);
-          let dayGap = getDayGab.getDayGab(element.startDate);
+          let dayGap = getDayGab.getDayGab(
+            element.startDate,
+            element.startDate,
+            true
+          );
+          let period = Math.floor(
+            getDayGab.getDayGab(element.startDate, element.endDate, false) / 7
+          );
           let startDay = dayGap + "일 뒤";
           // 시작 전 챌린지만
           if (dayGap >= 0) {
@@ -37,6 +41,7 @@ function ChallengeSearch() {
                 <p>{element.mainPicURL}</p>
                 <p>{element.name}</p>
                 <p>{startDay} 시작</p>
+                <p>{period}주 동안</p>
               </span>
             );
           }
