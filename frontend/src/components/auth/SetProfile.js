@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import styles from "./SetProfile.module.css";
 // import basic from "../../img/profile-basic.png";
-import Next from "../common/NextButton";
+import nextButton from "../common/NextButton.module.css";
 import UserAPI from "../../api/UserAPI";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,12 +23,13 @@ function SetProfile() {
   const [nickname, setNickname] = useState("");
   const [validFlag, setValidFlag] = useState(false);
   const [checkMsg, setCheckMsg] = useState("");
-  useEffect(() => {
-    console.log("state user", user);
-  });
+
   const handleChange = (e) => {
     setNickname(e.target.value);
-    if (e.target.value) {
+    console.log("e", e.target.value);
+    console.log("n", nickname);
+    if (e.target.value !== "") {
+      console.log("111111 들어왔님");
       UserAPI.validCheck(e.target.value).then((response) => {
         if (response.data.body) {
           setCheckMsg("사용 가능한 닉네임 입니다.");
@@ -39,8 +40,9 @@ function SetProfile() {
         }
       });
     } else {
-      setCheckMsg("");
+      console.log("222222 들어왔님");
       setValidFlag(false);
+      setCheckMsg("");
     }
   };
   const handleSubmit = (e) => {
@@ -49,7 +51,7 @@ function SetProfile() {
       dispatch(setNickName(nickname));
       navigate("/precategory");
     } else {
-      alert("닉네임을 확인하세요");
+      return;
     }
   };
 
@@ -100,12 +102,17 @@ function SetProfile() {
           <span>{checkMsg}</span>
         </div>
 
-        <Next
-          type="submit"
-          label="Next"
-          onClick={() => {}}
-          disabled={false}
-        ></Next>
+        <div className={nextButton.buttonBox}>
+          <button
+            className={
+              validFlag ? nextButton.NextButton : nextButton.NextButtonX
+            }
+            onClick={() => {}}
+            disabled={false}
+          >
+            Next
+          </button>
+        </div>
       </form>
     </div>
   );
