@@ -135,7 +135,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: "Deploying backend complete${MSGSUFFIX}"
+                    message: "Deploying backend complete${MSGSUFFIX}\n\n[페이지](https://j7b106.p.ssafy.io/)"
                   )
                 }
               }
