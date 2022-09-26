@@ -54,7 +54,6 @@ function EditProfile() {
     setDescription(e.target.value);
   };
   const getInterest = () => {
-    console.log("1", interests);
     const items = [];
     for (let index = 0; index < totalInterests.length; index++) {
       items.push(
@@ -77,9 +76,6 @@ function EditProfile() {
   };
 
   const addInterest = (props) => {
-    console.log("props", props);
-    console.log("item", totalInterests[props]);
-    console.log("interests", interests);
     if (interests.includes(totalInterests[props])) {
       let newInterests = [...interests];
       newInterests.splice(interests.indexOf(totalInterests[props]), 1);

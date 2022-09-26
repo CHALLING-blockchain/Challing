@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setChallengeList,
-  challengeList,
-} from "../../app/redux/allChallengeSlice";
+import { useSelector } from "react-redux";
+import { challengeList } from "../../app/redux/allChallengeSlice";
 import "./ChallengeSearch.css";
-import Main from "../main/Main";
+import * as getDayGab from "../main/Main.js";
 
 function ChallengeSearch() {
   const [search, setSearch] = useState("");
@@ -23,18 +20,31 @@ function ChallengeSearch() {
           selector[index].name.includes(search)
         ) {
           const element = selector[index];
-          // let dayGap = Main.getDayGab(element.startDate);
-          // 시작 전 챌린지만
-          // if (dayGap >= 0) {
-          result.push(
-            <span key={index}>
-              <br></br>
-              <p>{element.mainPicURL}</p>
-              <p>{element.name}</p>
-              {/* <p>{dayGap}일 뒤 시작</p> */}
-            </span>
+          console.log(element);
+          let dayGap = getDayGab.getDayGab(
+            element.startDate,
+            element.startDate,
+            true
           );
-          // }
+          let period = Math.floor(
+            getDayGab.getDayGab(element.startDate, element.endDate, false) / 7
+          );
+          let startDay = dayGap + "일 뒤";
+          // 시작 전 챌린지만
+          if (dayGap >= 0) {
+            if (dayGap === 0) {
+              startDay = "오늘부터";
+            }
+            result.push(
+              <span key={index}>
+                <br></br>
+                <p>{element.mainPicURL}</p>
+                <p>{element.name}</p>
+                <p>{startDay} 시작</p>
+                <p>{period}주 동안</p>
+              </span>
+            );
+          }
         }
       }
     }

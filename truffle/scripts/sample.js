@@ -1,6 +1,10 @@
 const Web3 = require("web3");
+const infuraUrl =
+  "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/38d65d8f902943d38a2876a0f4f9ad49"));
+const web3 = new Web3(
+  new Web3.providers.HttpProvider("https://localhost:7545")
+);
 
 const Cartifact = require("../../frontend/src/contracts/ChallengeContract.json");
 const Vartifact = require("../../frontend/src/contracts/VoteContract.json");
@@ -18,14 +22,14 @@ const simulation = async () => {
   const Vcontract = new web3.eth.Contract(Vabi, Vaddress);
 
   // 본인 메타마스크 프라이빗키 넣기
-  const privateKey1 = 'af4dbb9a76fa1fc79b4db351615bf5b3154c4ded9cb1cf4330208b732ff61475';
+  const privateKey1 = process.env.REACT_APP_METAMASK_PRIVATE_KEY;
 
   // 프라이빗키로 계정 만들어줌
-  const account1 = web3.eth.accounts.privateKeyToAccount('0x' + privateKey1);
+  const account1 = web3.eth.accounts.privateKeyToAccount("0x" + privateKey1);
 
   // web3에 메타마스크 계정 추가
   web3.eth.accounts.wallet.add(account1);
-  
+
   const daliyChallenge = {
     challengeId: 0,
     interestId: 1,
@@ -55,10 +59,10 @@ const simulation = async () => {
     .send({
       from: account1.address,
       gasLimit: 3_000_000,
-      value:1e18
+      value: 1e18,
     })
     .catch(console.error);
-  console.log("챌린지 생성")
+  console.log("챌린지 생성");
 
   // 모든 챌린지 조회
   const getAllChallenge = await Ccontract.methods

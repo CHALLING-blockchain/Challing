@@ -25,6 +25,12 @@
   /* justify-content: flex-start; */
   align-items: center;
 }
+.UserProfile > img {
+  margin-right: 5px;
+}
+.UserProfile > p {
+  margin-right: 5px;
+}
 .ChallengeStatus {
   width: 328px;
   margin-left: 16px;
@@ -50,7 +56,7 @@
   font-weight: 600;
 }
 
-.MyShotZip {
+/* .MyShotZip {
   display: flex;
   width: 328px;
   margin: 16px 8px 8px 16px;
@@ -64,4 +70,11 @@
   display: flex;
   width: 328px;
   margin: 16px 8px 8px 16px;
+} */
+
+.menuItem {
+  display: flex;
+  width: 328px;
+  margin: 20px 8px 20px 16px;
+  justify-content: space-between;
 }
