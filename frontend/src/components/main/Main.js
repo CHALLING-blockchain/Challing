@@ -47,33 +47,6 @@ function Main() {
     return user.interests[randNum];
   }
 
-  function interestIdToName(interestId) {
-    let interestName = "운동";
-    switch (interestId) {
-      case "0":
-        interestName = "운동";
-        break;
-      case "1":
-        interestName = "생활";
-        break;
-      case "2":
-        interestName = "취미";
-        break;
-      case "3":
-        interestName = "식생활";
-        break;
-      case "4":
-        interestName = "학습";
-        break;
-      case "5":
-        interestName = "그 외";
-        break;
-      default:
-        interestName = "운동";
-        break;
-    }
-    return interestName;
-  }
   //추천 챌린지(일상)
   function dailyChallengeRendering() {
     const result = [];
@@ -184,4 +157,31 @@ export function getDayGab(startDate, endDate, isToday) {
   }
 }
 
+export function interestIdToName(interestId) {
+  let interestName = "운동";
+  switch (interestId) {
+    case "0":
+      interestName = "운동";
+      break;
+    case "1":
+      interestName = "생활";
+      break;
+    case "2":
+      interestName = "취미";
+      break;
+    case "3":
+      interestName = "식생활";
+      break;
+    case "4":
+      interestName = "학습";
+      break;
+    case "5":
+      interestName = "그 외";
+      break;
+    default:
+      interestName = "운동";
+      break;
+  }
+  return interestName;
+}
 export default Main;

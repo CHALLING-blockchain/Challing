@@ -55,10 +55,10 @@ function App() {
         <Route path="/votinghome" element={<VotingHome />} />
         {/* <Route path="/voting:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />
-        {/* <Route path="/confirm-resister:id" element={<ConfirmResister />} />
-        <Route path="/success-resister:id" element={<SuccessResister />} /> */}
-        <Route path="/confirm-resister" element={<ConfirmResister />} />
-        <Route path="/success-resister" element={<SuccessResister />} />
+        <Route path="/confirm-register/:id" element={<ConfirmResister />} />
+        {/* <Route path="/success-register/:id" element={<SuccessResister />} /> */}
+        {/* <Route path="/confirm-register" element={<ConfirmResister />} /> */}
+        <Route path="/success-register" element={<SuccessResister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
       </Routes>
       <Menu />
