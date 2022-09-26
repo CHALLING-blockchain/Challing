@@ -12,6 +12,7 @@ import profile from '../../../img/profile-basic.png';
 import CreateButtonStyles from '../../common/NextButton.module.css';
 import styles from './challengeForm.module.css';
 import ContractAPI from '../../../api/ContractAPI';
+import moment from 'moment';
 
 function CreateFinal({selects,formCnt,setFormCnt}){
   const daliyChallenge = {
@@ -36,9 +37,37 @@ function CreateFinal({selects,formCnt,setFormCnt}){
 
     complet: false,
   };
-  function CreateButton(){
+  const donationChallenge = {
+    challengeId: 1,
+    interestId: 0,
+    ownerId: 1,
+    donationId: 1,
+    name: selects.title,
+    desc: selects.explanation,
+    setDonaion: selects.donationMoney,
+    mainPicURL: selects.exPhotoUrl,
+    goodPicURL: selects.goodShotUrl,
+    badPicURL: selects.badShotUrl,
+    authTotalTimes: (selects.nTimesAWeek*selects.authentications*selects.period),
+    authDayTimes: selects.authentications,
+    startTime: selects.startTime,
+    endTime: selects.endTime,
+    startDate: selects.challengeStart,
+    endDate: selects.challengeEnd,
+    personnel: selects.limitNum,
+    totalDonation: 10,
+
+    complet: false,
+    success: false,
+  };
+  function DailyCreateButton(){
     return(
       <button className={CreateButtonStyles.NextButton} onClick={()=>{ContractAPI.createDailyChallenge(daliyChallenge).then(console.log);}}>챌린지 발행하기</button>
+    )
+  }
+  function DonationCreateButton(){
+    return(
+      <button className={CreateButtonStyles.NextButton} onClick={()=>{ContractAPI.createDonationChallenge(donationChallenge).then(console.log);}}>챌린지 발행하기</button>
     )
   }
   function DonationChallenge(){
@@ -59,6 +88,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
         <div className={styles.Card1}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
           <p>{selects.donationMoney}</p>
+          <p>{selects.donation}</p>
         </div>
         <div className={styles.Card2}>
           <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
@@ -76,7 +106,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
         <div className={styles.Card2}>
           <img src={calender} alt="calender" style={{width:'40px'}}/>
           <p>{selects.period/7}주동안</p>
-          <p>{selects.challengeStart.toLocaleDateString()}부터</p>
+          <p>{moment(selects.challengeStart).format('YYYY-MM-DD')}부터</p>
         </div>
         <div className={styles.Card2}>
           <img src={profile} alt="profile" style={{width:'40px'}}/>
@@ -121,7 +151,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
         <div className={styles.Card2}>
           <img src={calender} alt="calender" style={{width:'40px'}}/>
           <p>{selects.period/7}주동안</p>
-          <p>{selects.challengeStart.toLocaleDateString()}부터</p>
+          <p>{moment(selects.challengeStart).format('YYYY-MM-DD')}부터</p>
         </div>
         <div className={styles.Card2}>
           <img src={profile} alt="profile" style={{width:'40px'}}/>
@@ -139,8 +169,8 @@ function CreateFinal({selects,formCnt,setFormCnt}){
         </svg>
         <p>챌린지 개설하기</p>
       </div>
-      {selects.challenge === "기부챌린지" ? <DonationChallenge/> : <DailyChallenge/>}
-      <CreateButton/>
+      {selects.challenge === "기부챌린지" ? <DonationChallenge/> :<DailyChallenge/>}
+      {selects.challenge === "기부챌린지" ? <DonationCreateButton/> :<DailyCreateButton/>}
     </div>
   )
 }

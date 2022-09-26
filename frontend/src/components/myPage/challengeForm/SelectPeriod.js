@@ -6,13 +6,14 @@ import addMonths from 'date-fns/addMonths';
 import { ko } from '../../../../node_modules/date-fns/esm/locale';
 import  '../../../../node_modules/react-datepicker/dist/react-datepicker.css'
 import NextButtonStyles from '../../common/NextButton.module.css';
+import moment from 'moment';
 
 function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,setChallengeEnd}){
   const[num,setNum] = useState(0);
   const[day,setDay] = useState(0);
   const[endDate,setEndDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
-  useEffect(()=>{setChallengeEnd(endDate)},[endDate])
+  useEffect(()=>{setChallengeEnd(moment(endDate).format('YYYY-MM-DD'))},[endDate])
   function NextButton(){
     return(
       <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
@@ -61,9 +62,10 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
         locale={ko}
         selected={startDate}
         onChange={(date) => {
-                    const start = new Date(date) 
+                    const start = new Date(date)
+                    const startData = moment(date).format('YYYY-MM-DD');
                     setStartDate(start);
-                    setChallengeStart(date);
+                    setChallengeStart(startData);
                     setEndDate(new Date(date.setDate(date.getDate()+day)));
                     setNum((current)=>current+1);}}
         minDate={new Date()}
@@ -73,7 +75,7 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
         <img style={{width:'24px',height:'24px'}} src={Calender} alt='calenderIcon'/>
       </div>
       <div>
-        {startDate.toLocaleDateString()} ~ {endDate.toLocaleDateString()}
+        시작 : {moment(startDate).format('YYYY-MM-DD')} - 종료 : {moment(endDate).format('YYYY-MM-DD')}
       </div>
       {num === 2 ? <NextButton/> : <NextButtonX/>}
     </div>
