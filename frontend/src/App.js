@@ -22,8 +22,10 @@ import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
-import Voting from "./components/voting/Voting";
-import VotingHome from "./components/voting/VotingHome";
+import Voting from './components/voting/Voting';
+import VotingHome from './components/voting/VotingHome';
+import ConfirmResister from "./components/challengeResister/ConfirmResister";
+import SuccessResister from "./components/challengeResister/SuccessResister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 
 function App() {
@@ -54,7 +56,12 @@ function App() {
         <Route path="/votinghome" element={<VotingHome />} />
         {/* <Route path="/voting:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />
+        {/* <Route path="/confirm-resister:id" element={<ConfirmResister />} />
+        <Route path="/success-resister:id" element={<SuccessResister />} /> */}
+        <Route path="/confirm-resister" element={<ConfirmResister />} />
+        <Route path="/success-resister" element={<SuccessResister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
+
       </Routes>
       <Menu />
     </div>
