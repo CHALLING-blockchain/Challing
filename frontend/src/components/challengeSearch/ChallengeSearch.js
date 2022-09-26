@@ -47,6 +47,30 @@ function ChallengeSearch() {
           }
         }
       }
+    } else {
+      for (let index = 1; index <= Object.keys(selector).length; index++) {
+        const element = selector[index];
+        let dayGap = getDayGab.getDayGab(
+          element.startDate,
+          element.startDate,
+          true
+        );
+        let startDay = dayGap + "일 뒤";
+        // 시작 전 챌린지만
+        if (dayGap >= 0) {
+          if (dayGap === 0) {
+            startDay = "오늘부터";
+          }
+          result.push(
+            <span key={index}>
+              <br></br>
+              <p>{element.mainPicURL}</p>
+              <p>{element.name}</p>
+              <p>{startDay} 시작</p>
+            </span>
+          );
+        }
+      }
     }
     return result;
   }
