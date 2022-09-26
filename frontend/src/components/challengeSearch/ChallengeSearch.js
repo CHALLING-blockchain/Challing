@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
+import { useNavigate } from "react-router-dom";
 import "./ChallengeSearch.css";
 import * as getDayGab from "../main/Main.js";
 
@@ -9,7 +10,7 @@ function ChallengeSearch() {
   const [search, setSearch] = useState("");
   const onChange = (event) => setSearch(event.target.value);
   const selector = useSelector(challengeList);
-
+  const navigate = useNavigate();
   //챌린지 검색
   function challengeSearchRendering() {
     const result = [];
@@ -31,20 +32,25 @@ function ChallengeSearch() {
           );
           let startDay = dayGap + "일 뒤";
           // 시작 전 챌린지만
-          if (dayGap >= 0) {
-            if (dayGap === 0) {
-              startDay = "오늘부터";
-            }
-            result.push(
-              <span key={index}>
-                <br></br>
-                <p>{element.mainPicURL}</p>
-                <p>{element.name}</p>
-                <p>{startDay} 시작</p>
-                <p>{period}주 동안</p>
-              </span>
-            );
+          // if (dayGap >= 0) {
+          if (dayGap === 0) {
+            startDay = "오늘부터";
           }
+          result.push(
+            <span
+              key={index}
+              onClick={() => {
+                toChallengeDetail(element.challengeId);
+              }}
+            >
+              <br></br>
+              <p>{element.mainPicURL}</p>
+              <p>{element.name}</p>
+              <p>{startDay} 시작</p>
+              <p>{period}주 동안</p>
+            </span>
+          );
+          // }
         }
       }
     } else {
@@ -62,7 +68,12 @@ function ChallengeSearch() {
             startDay = "오늘부터";
           }
           result.push(
-            <span key={index}>
+            <span
+              key={index}
+              onClick={() => {
+                toChallengeDetail(element.challengeId);
+              }}
+            >
               <br></br>
               <p>{element.mainPicURL}</p>
               <p>{element.name}</p>
@@ -73,6 +84,12 @@ function ChallengeSearch() {
       }
     }
     return result;
+  }
+
+  //챌린지 디테일로 넘기기
+  function toChallengeDetail(index) {
+    console.log("toChallengeDetail", index);
+    navigate(`/challenge-detail/${index}`);
   }
 
   return (

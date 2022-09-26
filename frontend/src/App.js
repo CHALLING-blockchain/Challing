@@ -22,8 +22,8 @@ import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
 import Alarm from "./components/alarm/Alarm";
-import Voting from './components/voting/Voting';
-import VotingHome from './components/voting/VotingHome';
+import Voting from "./components/voting/Voting";
+import VotingHome from "./components/voting/VotingHome";
 import ConfirmResister from "./components/challengeResister/ConfirmResister";
 import SuccessResister from "./components/challengeResister/SuccessResister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
@@ -38,8 +38,7 @@ function App() {
         <Route path="/logoutresult" element={<Logout />} />
         <Route path="/setprofile" element={<SetProfile />} />
         <Route path="/precategory" element={<PreCategory />} />
-        <Route path="/challenge-detail" element={<ChallengeDetail />} />
-        {/* <Route path="/challenge-detail:id" element={<ChallengeDetail />} /> */}
+        <Route path="/challenge-detail/:id" element={<ChallengeDetail />} />
         <Route path="/challenge-search" element={<ChallengeSearch />} />
         <Route path="/challenge-shot" element={<ChallengeShot />} />
         <Route path="/challenge-certify" element={<ChallengeCertify />} />
@@ -61,7 +60,6 @@ function App() {
         <Route path="/confirm-resister" element={<ConfirmResister />} />
         <Route path="/success-resister" element={<SuccessResister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
-
       </Routes>
       <Menu />
     </div>
