@@ -37,6 +37,12 @@ pipeline {
       }
     }
 
+    stage('copy_contracts_artifacts') {
+      steps {
+        sh 'cp -R ../contracts ./frontend/src'
+      }
+    }
+
     stage('set_env_files') {
       steps {
         dir('frontend') {
@@ -98,7 +104,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: "Deploying frontend complete${MSGSUFFIX}"
+                    message: "Deploying frontend complete${MSGSUFFIX}\n\n[페이지](https://j7b106.p.ssafy.io/)"
                   )
                 }
               }

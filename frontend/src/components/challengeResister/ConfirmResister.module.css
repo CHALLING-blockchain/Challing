@@ -1,0 +1,69 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+.informBox > p{
+    font-size: 16px;
+    padding: 16px;
+    font-weight: bold;
+}
+
+.desBox{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    margin: 0 16px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.flexBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.flexBox img{
+    width: 20px;
+    height: 20px;
+}
+.flexBox span{
+    font-size: 14px;
+    color: #71727A;
+}
+.desBox > span{
+    font-size: 14px;
+    padding: 0 24px;
+}
+
+.hrTag{
+    width: 328px;
+    height: 1px;
+    background-color: #BABDFF;
+    border: none;
+    margin: 16px 16px;
+}
+
+.balanceBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px 20px;
+}
+.balanceBox span{
+    font-size: 16px;
+}
+
+
+.btnBox{
+    border-top: solid 0.1px gray;
+    height: 64px;
+    position: fixed;
+    bottom: 64px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
