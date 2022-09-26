@@ -53,6 +53,21 @@ public class UserController {
         return BaseResponse.success(UserResponse.of(user));
     }
 
+    @GetMapping("/info/{id}")
+    @Transactional
+    public ResponseEntity<?> getUserInfoById(@PathVariable("id") long id) {
+        Optional<User> optionalUser = userService.getUserById(id);
+        if(optionalUser.isEmpty()){
+            return BaseResponse.fail("없는 유저입니다.");
+        }
+        User user = optionalUser.get();
+        logger.debug("\n\n{}", user);
+        user.setUserInterest(interestService.getInterest(user));
+        user.setFavorites(favoriteService.getFavoriteList(user));
+        user.setPhotos(photoService.getPhotoList(user));
+        return BaseResponse.success(UserResponse.of(user));
+    }
+
     @PutMapping("/mypage")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest updateInfo) {
         User user = userService.updateUser(updateInfo);
