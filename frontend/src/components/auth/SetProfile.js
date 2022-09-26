@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import styles from "./SetProfile.module.css";
 // import basic from "../../img/profile-basic.png";
 import nextButton from "../common/NextButton.module.css";
