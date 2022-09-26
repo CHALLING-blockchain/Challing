@@ -39,71 +39,78 @@ function MyWallet() {
     async function getAccount() {
       const account = await web3.eth.getAccounts();
       accounts = account[0];
-      //Etherscan API
-      const etherscan_url =
-        process.env.REACT_APP_ETHERSCAN_API_URL +
-        `&action=txlist&address=` +
-        accounts +
-        `&startblock=0` +
-        `&endblock=99999999` +
-        `&offset=5` +
-        `&sort=desc` +
-        `&apikey=` +
-        process.env.REACT_APP_ETHERSCAN_API_KEY;
+      if (accounts === undefined) {
+        connect();
+      } else {
+        //Etherscan API
+        const etherscan_url =
+          process.env.REACT_APP_ETHERSCAN_API_URL +
+          `&action=txlist&address=` +
+          accounts +
+          `&startblock=0` +
+          `&endblock=99999999` +
+          `&offset=5` +
+          `&sort=desc` +
+          `&apikey=` +
+          process.env.REACT_APP_ETHERSCAN_API_KEY;
 
-      //Crypto API
-      const crypto_url =
-        process.env.REACT_APP_CRYPTO_API_URL +
-        `&api_key=` +
-        process.env.REACT_APP_CRYPTO_API_KEY;
+        //Crypto API
+        const crypto_url =
+          process.env.REACT_APP_CRYPTO_API_URL +
+          `&api_key=` +
+          process.env.REACT_APP_CRYPTO_API_KEY;
 
-      // Etherscan API 요청
-      axios.get(etherscan_url).then(function (result) {
-        console.log("etherscan api url: " + etherscan_url);
-        const data = result.data.result;
-        const tmpData = [];
-        for (let index = 0; index < data.length; index++) {
-          const element = {
-            from: data[index].from,
-            to: data[index].to,
-            input: data[index].input,
-            etherValue: Number(
-              web3.utils.fromWei(data[index].value, "ether")
-            ).toFixed(3),
-            sendOrReceive: "",
-            timeStamp: timeConverter(data[index].timeStamp),
-          };
+        // Etherscan API 요청
+        axios.get(etherscan_url).then(function (result) {
+          console.log("etherscan api url: " + etherscan_url);
+          const data = result.data.result;
+          const tmpData = [];
+          for (let index = 0; index < data.length; index++) {
+            if (isNaN(data[index].value)) {
+              connect();
+            }
+            const element = {
+              from: data[index].from,
+              to: data[index].to,
+              input: data[index].input,
+              etherValue: Number(
+                web3.utils.fromWei(data[index].value, "ether")
+              ).toFixed(3),
+              sendOrReceive: "",
+              timeStamp: timeConverter(data[index].timeStamp),
+            };
 
-          //undefined 예외처리
-          if (element.input !== undefined) {
-            // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-            if (element.input.includes("ecb18ceba781")) {
-              // 트렌젝션을 보냈을때
-              // console.log(
-              //   "input=",
-              //   utf8_hex_string_to_string(element.input.substr(2))
-              // );
-              if (element.from.toLowerCase() === accounts.toLowerCase()) {
-                element.sendOrReceive = "↓";
+            //undefined 예외처리
+            if (element.input !== undefined) {
+              // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
+              if (element.input.includes("ecb18ceba781")) {
+                // 트렌젝션을 보냈을때
+                // console.log(
+                //   "input=",
+                //   utf8_hex_string_to_string(element.input.substr(2))
+                // );
+                if (element.from.toLowerCase() === accounts.toLowerCase()) {
+                  element.sendOrReceive = "↓";
+                }
+                // 트렌젝션을 받았을때
+                else {
+                  element.sendOrReceive = "↑";
+                }
+                tmpData.push(element);
               }
-              // 트렌젝션을 받았을때
-              else {
-                element.sendOrReceive = "↑";
-              }
-              tmpData.push(element);
             }
           }
-        }
-        setTxData(tmpData);
-      });
+          setTxData(tmpData);
+        });
 
-      // Crypto API 요청
-      await axios.get(crypto_url).then(function (result) {
-        console.log("crypto api url: ", crypto_url);
-        const KRW = result.data.KRW;
-        console.log("KRW" + KRW);
-        setExData(KRW);
-      });
+        // Crypto API 요청
+        await axios.get(crypto_url).then(function (result) {
+          console.log("crypto api url: ", crypto_url);
+          const KRW = result.data.KRW;
+          console.log("KRW" + KRW);
+          setExData(KRW);
+        });
+      }
     }
     getAccount();
   }, [activeAccount]);
