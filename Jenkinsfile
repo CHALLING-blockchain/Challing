@@ -104,7 +104,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: "Deploying frontend complete${MSGSUFFIX}\n\n[페이지](https://j7b106.p.ssafy.io/)"
+                    message: "Deploying frontend complete${MSGSUFFIX}\n\n[서비스 열기](https://j7b106.p.ssafy.io/)"
                   )
                 }
               }
@@ -132,7 +132,7 @@ pipeline {
 
             stage('backend_serve') {
               steps {
-                sh "docker run -d -p 8080:8080 -e profile=production --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
+                sh "docker run -d -p 8080:8080 -e profile=production --add-host=host.docker.internal:host-gateway --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
               }
             }
 
