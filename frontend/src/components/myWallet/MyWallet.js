@@ -4,6 +4,12 @@ import { useState } from "react";
 import useWeb3 from "../../hooks/useWeb3";
 import useBalance from "../../hooks/useBalance";
 import Web3 from "web3";
+import styles from "./MyWallet.module.css"
+import logo from "../../img/logo-color.png"
+import walletImg from "../../img/auth-wallet-img.png"
+import metamaskImg from "../../img/metamask.png"
+import plus from "../../img/plus.png"
+
 
 function MyWallet() {
   // localstorage에 wallet 연결 확인
@@ -83,7 +89,7 @@ function MyWallet() {
             //undefined 예외처리
             if (element.input !== undefined) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-              if (element.input.includes("ecb18ceba781")) {
+              // if (element.input.includes("ecb18ceba781")) {
                 // 트렌젝션을 보냈을때
                 // console.log(
                 //   "input=",
@@ -97,7 +103,7 @@ function MyWallet() {
                   element.sendOrReceive = "↑";
                 }
                 tmpData.push(element);
-              }
+              // }
             }
           }
           setTxData(tmpData);
@@ -196,7 +202,7 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      if (txData[index].input.includes("ecb18ceba781")) {
+      // if (txData[index].input.includes("ecb18ceba781")) {
         let date = txData[index].timeStamp;
         // 날짜별로 모아서 보여주기
         if (
@@ -207,67 +213,92 @@ function MyWallet() {
           date = "";
         }
         result.push(
-          <span key={index}>
+          <div key={index} className={styles.historyContent}>
             <p> {date} </p>
-            <h4>
-              {" "}
-              {utf8_hex_string_to_string(txData[index].input.substr(2))}{" "}
-              {txData[index].etherValue}ETH {txData[index].sendOrReceive}
-            </h4>
-            <br></br>
-          </span>
+            <div className={styles.content}>
+              <div className={styles.titleContent}>
+                <p>
+                  {utf8_hex_string_to_string(txData[index].input.substr(2))}
+                </p>
+              </div>
+              <div></div>
+              <div className={styles.ethcontent}>
+                <p>
+                  {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+                </p>
+              </div>
+            </div>
+          </div>
         );
-      }
+      // }
     }
     return result;
   }
 
   return (
-    <div className="App">
+    <div>
       {/* instantiate web3 only after a user clicks the button */}
       {/* avoid doing it automatically */}
       {!exist ? (
         // 웹브라우저 사용자만 활성화
-        <button onClick={connect}>메타마스크 지갑 연동</button>
+        <div className={styles.preInterlockBox}>
+          <img className={styles.logo} src={logo} alt="" />
+          <img className={styles.walletImg} src={walletImg} alt="" />
+          <div className={styles.walletText}>
+            <p>지갑을 연동하여</p>
+            <p>
+              <span style={{ color: "#926EFF" }}>챌링</span>의 다양한 챌린지를
+              경험해보세요🙂
+            </p>
+          </div>
+          <button className={styles.interlockBtn} onClick={connect}>
+            <img src={metamaskImg} alt="" />
+            <span>MetaMask 연동</span>
+            <div></div>
+          </button>
+        </div>
       ) : (
         <>
           {/* <p>ACCOUNT : {activeAccount}</p> */}
-          <span>
-            Etherium:{" "}
-            <big>
-              <strong>{activeBalance}</strong>
-            </big>{" "}
-            ETH
-          </span>
-          <p>
-            {" "}
-            ≒{" "}
-            {Math.floor(exData * activeBalance)
-              .toString()
-              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-            ₩
-          </p>
-          {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
-          <button onClick={disconnect}>Disconnect</button>
-          <br></br>
-          <br></br>
-          <span>
-            Transaction History<br></br>
-            {txRendering()}
-            {""}
-            <a href={"https://ropsten.etherscan.io/address/" + activeAccount}>
-              Etherscan에서 거래내역 상세보기
-            </a>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-          </span>
+          <div>
+            <div className={styles.header}>
+              <p>나의 지갑</p>
+            </div>
+            <div className={styles.balanceBox}>
+              <p style={{ fontSize: "12px" }}>Etherium</p>
+              <p style={{ fontSize: "16px", margin: "0 0 4px 0" }}>
+                <span style={{ fontWeight: "bold", fontSize: "32px" }}>
+                  {activeBalance}
+                </span>{" "}
+                ETH
+              </p>
+              <p style={{ fontSize: "12px" }}>
+                <span>≒ </span>
+                {Math.floor(exData * activeBalance)
+                  .toString()
+                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                ₩
+              </p>
+            </div>
+
+            {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
+            {/* <button onClick={disconnect}>Disconnect</button> */}
+            <div className={styles.historyBox}>
+              <p>Transaction History</p>
+              <div className={styles.scroll}>{txRendering()}</div>
+              <a
+                className={styles.ethscan}
+                href={"https://ropsten.etherscan.io/address/" + activeAccount}
+              >
+                <img src={plus} alt="" />
+                <p>
+                  <span style={{ color: "#755FFF" }}>  Etherscan</span>에서
+                  거래내역 상세보기
+                </p>
+              </a>
+            </div>
+            <div style={{height:'80px'}}></div>
+          </div>
         </>
       )}
       {/* show loading and error statuses */}
