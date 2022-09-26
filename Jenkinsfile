@@ -31,44 +31,86 @@ pipeline {
       }
     }
 
-    stage('git_clean') {
-      steps {
-        sh 'git clean --force'
-      }
-    }
+    stage('pre_deploy') {
+      parallel {
+        stage('file_work') {
+          stages {
+            stage('git_clean') {
+              steps {
+                sh 'git clean --force'
+              }
+            }
 
-    stage('copy_contracts_artifacts') {
-      steps {
-        sh 'cp -R ../contracts ./frontend/src'
-      }
-    }
+            stage('post_clean') {
+              parallel {
+                stage('frontend_env_default') {
+                  stages {
+                    stage('.env.local') {
+                      steps {
+                        dir('frontend') {
+                          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+                        }
+                      }
+                    }
+                  }
+                }
 
-    stage('set_env_files') {
-      steps {
-        dir('frontend') {
-          // 크리덴셜의 경우 문자열 대체하지 않고 변수명을 그대로 씀
-          sh 'cp $FRONTEND_DEFAULT ./.env.local'
-          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+                stage('frontend_env_production') {
+                  stages {
+                    stage('.env.production.local') {
+                      steps {
+                        dir('frontend') {
+                          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+                        }
+                      }
+                    }
+                  }
+                }
+
+                stage('frontend_artifacts') {
+                  stages {
+                    stage('contracts') {
+                      steps {
+                        sh 'cp -R ../contracts ./frontend/src'
+                      }
+                    }
+                  }
+                }
+
+                stage('backend_properties') {
+                  stages {
+                    stage('application-production.yml') {
+                      steps {
+                        dir('backend/src/main/resources') {
+                          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
 
-        dir('backend/src/main/resources') {
-          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
-        }
-      }
-    }
+        stage('docker_work') {
+          stages {
+            stage('prune_images') {
+              steps {
+                catchError {
+                  sh 'docker image prune --force'
+                }
+              }
+            }
 
-    stage('stop_running_containers') {
-      steps {
-        catchError {
-          sh "docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
-        }
-      }
-    }
-
-    stage('remove_containers') {
-      steps {
-        catchError {
-          sh "docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
+            stage('remove_containers') {
+              steps {
+                catchError {
+                  sh "docker rm --force ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -81,14 +123,6 @@ pipeline {
               steps {
                 dir('frontend') {
                   sh "docker build --build-arg runscript=buildprod --tag ${FRONTEND_IMAGE} ."
-                }
-              }
-            }
-
-            stage('prune_images') {
-              steps {
-                catchError {
-                  sh 'docker image prune --force'
                 }
               }
             }
@@ -118,14 +152,6 @@ pipeline {
               steps {
                 dir('backend') {
                   sh "docker build --tag ${BACKEND_IMAGE} ."
-                }
-              }
-            }
-
-            stage('prune_images') {
-              steps {
-                catchError {
-                  sh 'docker image prune --force'
                 }
               }
             }
