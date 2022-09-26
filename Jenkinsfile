@@ -41,53 +41,14 @@ pipeline {
               }
             }
 
-            stage('post_clean') {
-              parallel {
-                stage('frontend_env_default') {
-                  stages {
-                    stage('.env.local') {
-                      steps {
-                        dir('frontend') {
-                          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
-                        }
-                      }
-                    }
-                  }
-                }
-
-                stage('frontend_env_production') {
-                  stages {
-                    stage('.env.production.local') {
-                      steps {
-                        dir('frontend') {
-                          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
-                        }
-                      }
-                    }
-                  }
-                }
-
-                stage('frontend_artifacts') {
-                  stages {
-                    stage('contracts') {
-                      steps {
-                        sh 'cp -R ../contracts ./frontend/src'
-                      }
-                    }
-                  }
-                }
-
-                stage('backend_properties') {
-                  stages {
-                    stage('application-production.yml') {
-                      steps {
-                        dir('backend/src/main/resources') {
-                          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
-                        }
-                      }
-                    }
-                  }
-                }
+            stage('set_files') {
+              steps {
+                sh ' \
+                  cp $FRONTEND_DEFAULS frontend/.env.local \
+                  & cp $FRONTEND_PRODUCTION frontend/.env.production.local \
+                  & cp -R ../contracts frontend/src \
+                  & cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml \
+                '
               }
             }
           }
