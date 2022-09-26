@@ -3,7 +3,7 @@ WORKDIR /workdir/
 COPY package*.json ./
 RUN npm install
 COPY . .
-ARG runscript=build
+ARG runscript=buildprod
 RUN npm run ${runscript}
 
 FROM nginx:stable-alpine
