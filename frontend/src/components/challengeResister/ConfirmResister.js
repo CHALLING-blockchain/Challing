@@ -74,6 +74,7 @@ function Btn(){
           label={deposit + " ETH 지불하기"}
           onClick={() => {}}
           disabled={false}
+          flag={true}
         ></Next>
       </div>
     );
