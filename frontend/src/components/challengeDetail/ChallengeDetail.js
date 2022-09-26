@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import UserAPI from "../../api/UserAPI";
+import Contract from "../../api/ContractAPI";
 import styles from "./ChallengeDetail.module.css";
 import back from "../../img/test-back.jpg";
 import profile from "../../img/profile-basic.png";
@@ -93,7 +94,9 @@ function Header(props) {
 function TopBox(props) {
   console.log("topbox", props);
   const [user, setUser] = useState({});
-
+  const [challengers, setChallengers] = useState(10);
+  const week =
+    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
   useEffect(() => {
     const getUserInfo = async () => {
       await UserAPI.getUserById(props.challenge.ownerId).then((response) => {
@@ -101,8 +104,17 @@ function TopBox(props) {
         console.log(response.data.body);
       });
     };
+
+    const getChallengers = async () => {
+      await Contract.getChallengers(props.challenge.challengeId).then(
+        (result) => {
+          setChallengers(result.length);
+        }
+      );
+    };
     getUserInfo();
-  }, [props.challenge.ownerId]);
+    getChallengers();
+  }, [props.challenge.ownerId, props.challenge.challengeId]);
 
   return (
     <div>
@@ -116,14 +128,16 @@ function TopBox(props) {
           {props.challenge.name}
         </span>
         <div className={styles.Tags}>
-          <span className={styles.Tag}>4주동안</span>
-          <span className={styles.Tag}>매일매일</span>
+          <span className={styles.Tag}>{week}주 동안</span>
+          <span className={styles.Tag}>
+            하루 {props.challenge.authDayTimes}번
+          </span>
         </div>
         {/* 참가인원수, 예치금 */}
         <div className={styles.subtext}>
           <div className={styles.imgText}>
             <img src={person} alt="personChar" />
-            <span>현재 3명</span>
+            <span>현재 {challengers}명</span>
           </div>
           <div className={styles.imgText}>
             <img src={dollar} alt="" />
@@ -135,7 +149,14 @@ function TopBox(props) {
   );
 }
 
-function PeriodBox() {
+function PeriodBox(props) {
+  const start = props.challenge.startDate;
+  let startMonth = Number(start.substr(5, 2));
+  let startDay = Number(start.substr(8));
+  const end = props.challenge.endDate;
+  let endMonth = Number(end.substr(5, 2));
+  let endDay = Number(end.substr(8));
+
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -143,7 +164,9 @@ function PeriodBox() {
         <span style={{ fontSize: "16px" }}>챌린지 기간</span>
       </div>
       <div>
-        <p style={{ margin: "4px" }}>9월 5일(월) ~ 9월 18일(일)</p>
+        <p style={{ margin: "4px" }}>
+          {startMonth}월 {startDay}일 ~ {endMonth}월 {endDay}일
+        </p>
       </div>
     </div>
   );
@@ -178,7 +201,10 @@ function RefundPolicy() {
   );
 }
 
-function Description() {
+function Description(props) {
+  const week =
+    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -190,8 +216,10 @@ function Description() {
           <p style={{ fontSize: "16px", fontWeight: "bold" }}>
             챌린지 진행 시 꼭 알아주세요!
           </p>
-          <p>☝ 4주 동안 매일, 하루에 1번 인증샷을 촬영하셔야 합니다.</p>
-          <p>☝ 인증 가능한 요일은 월, 화, 수, 목, 금, 토, 일 입니다.</p>
+          <p>
+            ☝ {week}주 동안, 하루에 {props.challenge.authDayTimes}번 인증샷을
+            촬영하셔야 합니다.
+          </p>
           <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
         </div>
         <div style={{ margin: "8px 0" }}>
@@ -209,7 +237,6 @@ function Description() {
 
 function ShotDescription(props) {
   console.log("shot", props);
-  console.log("ijmg", props.challenge.goodPicURL);
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -217,12 +244,20 @@ function ShotDescription(props) {
         <span style={{ fontSize: "16px" }}>인증샷 이렇게 찍어주세요!</span>
       </div>
       <div className={styles.shots}>
-        <div>
-          <img src={props.challenge.goodPicURL} alt="" />
+        <div className={styles.shot}>
+          <img
+            style={{ width: "150px", height: "150px", margin: "auto" }}
+            src={props.challenge.goodPicURL}
+            alt=""
+          />
           <p>좋은 예시</p>
         </div>
-        <div>
-          <img src={props.challenge.badPicURL} alt="" />
+        <div className={styles.shot}>
+          <img
+            style={{ width: "150px", height: "150px", margin: "auto" }}
+            src={props.challenge.badPicURL}
+            alt=""
+          />
           <p>나쁜 예시</p>
         </div>
       </div>
@@ -246,15 +281,15 @@ function ChallengeDetail() {
 
       <TopBox challenge={challenge}></TopBox>
       <hr className={styles.hrTag} />
-      <PeriodBox></PeriodBox>
+      <PeriodBox challenge={challenge}></PeriodBox>
       <hr className={styles.hrTag} />
       <RefundPolicy></RefundPolicy>
       <hr className={styles.hrTag} />
-      <Description></Description>
+      <Description challenge={challenge}></Description>
       <hr className={styles.hrTag} />
       <ShotDescription challenge={challenge}></ShotDescription>
 
-      <div style={{ width: "100vw", height: "56px" }}></div>
+      {/* <div style={{ width: "100vw", height: "56px" }}></div> */}
       <div className={styles.btnBox}>
         <Next
           type="submit"
