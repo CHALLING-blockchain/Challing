@@ -27,9 +27,9 @@ function Main() {
       });
 
       // 로컬에 챌린지 목록이 없을때 -> redux에 저장
-      if (Object.keys(selector).length === 0) {
-        dispatch(setChallengeList(allChallengeList));
-      }
+      // if (Object.keys(selector).length === 0) {
+      dispatch(setChallengeList(allChallengeList));
+      // }
     }
 
     //로그인한 유저의 관심사 가져와서  저장
