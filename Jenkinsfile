@@ -99,7 +99,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: "Deploying frontend complete${MSGSUFFIX}\n\n[서비스 열기](https://j7b106.p.ssafy.io/)"
+                    message: "Deploying frontend complete${MSGSUFFIX}"
                   )
                 }
               }
@@ -144,7 +144,7 @@ pipeline {
           mattermostSend(
             color: '#3399FF',
             text: MMACCOUNT,
-            message: "Job end${MSGSUFFIX}"
+            message: "Job end${MSGSUFFIX}\n\nhttps://j7b106.p.ssafy.io/"
           )
         }
       }
