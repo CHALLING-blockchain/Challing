@@ -4,12 +4,11 @@ import { useState } from "react";
 import useWeb3 from "../../hooks/useWeb3";
 import useBalance from "../../hooks/useBalance";
 import Web3 from "web3";
-import styles from "./MyWallet.module.css"
-import logo from "../../img/logo-color.png"
-import walletImg from "../../img/auth-wallet-img.png"
-import metamaskImg from "../../img/metamask.png"
-import plus from "../../img/plus.png"
-
+import styles from "./MyWallet.module.css";
+import logo from "../../img/logo-color.png";
+import walletImg from "../../img/auth-wallet-img.png";
+import metamaskImg from "../../img/metamask.png";
+import plus from "../../img/plus.png";
 
 function MyWallet() {
   // localstorage에 wallet 연결 확인
@@ -89,7 +88,7 @@ function MyWallet() {
             //undefined 예외처리
             if (element.input !== undefined) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-              // if (element.input.includes("ecb18ceba781")) {
+              if (element.input.includes("ecb18ceba781")) {
                 // 트렌젝션을 보냈을때
                 // console.log(
                 //   "input=",
@@ -103,7 +102,7 @@ function MyWallet() {
                   element.sendOrReceive = "↑";
                 }
                 tmpData.push(element);
-              // }
+              }
             }
           }
           setTxData(tmpData);
@@ -202,7 +201,7 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      // if (txData[index].input.includes("ecb18ceba781")) {
+      if (txData[index].input.includes("ecb18ceba781")) {
         let date = txData[index].timeStamp;
         // 날짜별로 모아서 보여주기
         if (
@@ -230,7 +229,7 @@ function MyWallet() {
             </div>
           </div>
         );
-      // }
+      }
     }
     return result;
   }
@@ -292,12 +291,12 @@ function MyWallet() {
               >
                 <img src={plus} alt="" />
                 <p>
-                  <span style={{ color: "#755FFF" }}>  Etherscan</span>에서
+                  <span style={{ color: "#755FFF" }}> Etherscan</span>에서
                   거래내역 상세보기
                 </p>
               </a>
             </div>
-            <div style={{height:'80px'}}></div>
+            <div style={{ height: "80px" }}></div>
           </div>
         </>
       )}
