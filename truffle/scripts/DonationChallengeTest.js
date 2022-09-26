@@ -2,7 +2,6 @@ const Web3 = require("web3");
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
-
 const artifact = require("../../frontend/src/contracts/ChallengeContract.json");
 
 const test = async () => {
@@ -11,45 +10,45 @@ const test = async () => {
   const address = artifact.networks[networkId].address;
   const contract = new web3.eth.Contract(abi, address);
 
-  const accounts=await web3.eth.getAccounts();
-  
+  const accounts = await web3.eth.getAccounts();
+
   const donationChallenge = {
     challengeId: 1,
-    interestId: 1,
+    interestId: 0,
     ownerId: 1,
     donationId: 1,
-    name: "myChallene",
+    name: "매일 30분 걷고 기부하자",
     desc: "desc",
     setDonaion: 10,
-    mainPicURL: "naver.com",
-    goodPicURL: "naver.com",
-    badPicURL: "naver.com",
+    mainPicURL: "mainPicURL",
+    goodPicURL: "goodPicURL",
+    badPicURL: "badPicURL",
     authTotalTimes: 1,
     authDayTimes: 1,
     startTime: 10,
     endTime: 11,
-    startDate: "2022.09.12",
-    endDate: "2022.09.12",
+    startDate: "2022-10-01",
+    endDate: "2022-10-20",
     personnel: 10,
     totalDonation: 10,
- 
+
     complet: false,
-    success: false
+    success: false,
   };
 
   // 10번 유저의 지갑을 기부처 지갑으로 등록
-  const donation={
-    id:0,
-    name:"기부처1",
-    donationAddress:accounts[9],
-    donationURL:"naver.com"
-  }
+  const donation = {
+    id: 0,
+    name: "기부처1",
+    donationAddress: accounts[9],
+    donationURL: "naver.com",
+  };
 
   // 유저별 현재 잔액 조회
-  accounts.forEach(async (account,index)=>{
-    const blance= await web3.eth.getBalance(account)
-    console.log(index+":",blance,'ether')
-  })
+  accounts.forEach(async (account, index) => {
+    const blance = await web3.eth.getBalance(account);
+    console.log(index + ":", blance, "ether");
+  });
 
   // 기부처 등록
   const addDonation = await contract.methods
@@ -57,10 +56,9 @@ const test = async () => {
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
-      
     })
     .catch(console.error);
-  console.log("기부처 등록")
+  console.log("기부처 등록");
 
   // 유저1이 챌린지 생성하면서 10이더 사용
   const createDonationChallenge = await contract.methods
@@ -68,31 +66,30 @@ const test = async () => {
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
-      value:1e19
+      value: 1e19,
     })
     .catch(console.error);
-  console.log("챌린지 생성")
+  console.log("챌린지 생성");
 
   // 유저 9명 참가
 
-  accounts.slice(1,9).forEach(async (account,index)=>{
+  accounts.slice(1, 9).forEach(async (account, index) => {
     const joinChallenge = await contract.methods
-      .joinChallenge(1, index+2, "220919")
+      .joinChallenge(1, index + 2, "220919")
       .send({
         from: account,
         gasLimit: 3_000_000,
         value: 1e19,
       })
       .catch(console.error);
-  })
+  });
   console.log("유저 참여 완료");
 
-  
   // 유저 1~8는 100% 인증, 유저9는 노인증
-  
-  for(let userIdx=0;userIdx<9;userIdx++){
+
+  for (let userIdx = 0; userIdx < 9; userIdx++) {
     const authenticate = await contract.methods
-      .authenticate(1, userIdx+1, "day", "picURL")
+      .authenticate(1, userIdx + 1, "day", "picURL")
       .send({
         from: accounts[userIdx],
         gasLimit: 3_000_000,
@@ -121,19 +118,18 @@ const test = async () => {
   // })
   // console.log("정산 완료");
 
-  await accounts.forEach(async (account,index)=>{
-    const blance= await web3.eth.getBalance(account)
-    console.log(index+":",blance,'ether')
-  })
-  
-  const getChallengeDetail = await contract.methods
-  .getChallengeDetail(1)
-  .call({
-    from: accounts[0],
-  })
-  .catch(console.error);
-  console.log(getChallengeDetail[0])
+  await accounts.forEach(async (account, index) => {
+    const blance = await web3.eth.getBalance(account);
+    console.log(index + ":", blance, "ether");
+  });
 
+  const getChallengeDetail = await contract.methods
+    .getChallengeDetail(1)
+    .call({
+      from: accounts[0],
+    })
+    .catch(console.error);
+  console.log(getChallengeDetail[0]);
 };
 
 test();
