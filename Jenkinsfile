@@ -37,6 +37,12 @@ pipeline {
       }
     }
 
+    stage('copy_contracts_artifacts') {
+      steps {
+        sh 'cp -R ../contracts ./frontend/src'
+      }
+    }
+
     stage('set_env_files') {
       steps {
         dir('frontend') {
