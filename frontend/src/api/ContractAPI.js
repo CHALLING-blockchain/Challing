@@ -9,7 +9,7 @@ class ContractAPI {
     this.Vartifact = require("../contracts/VoteContract.json");
     const infuraUrl =
       "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
-    this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
+    this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
     this.privateKey1 = process.env.REACT_APP_METAMASK_PRIVATE_KEY;
 
     this.account1 = this.web3.eth.accounts.privateKeyToAccount(
