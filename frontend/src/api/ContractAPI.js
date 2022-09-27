@@ -19,7 +19,7 @@ class ContractAPI {
     this.Cabi = this.Cartifact.abi;
     this.Caddress = this.Cartifact.networks[this.networkId].address;
     this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
-
+    // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
     this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
@@ -352,13 +352,14 @@ class ContractAPI {
 
   async getPasscoin() {
     await this.init();
-    console.log("getPasscoin", this.accounts);
-    return this.Ccontract.methods
-      .balanceOf(this.account)
-      .call({
-        from: this.account,
-      })
-      .catch(console.error);
+    if (this.account !== undefined) {
+      return this.Ccontract.methods
+        .balanceOf(this.account)
+        .call({
+          from: this.account,
+        })
+        .catch(console.error);
+    }
   }
 }
 
