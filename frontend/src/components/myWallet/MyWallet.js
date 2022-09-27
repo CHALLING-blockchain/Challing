@@ -9,6 +9,7 @@ import logo from "../../img/logo-color.png";
 import walletImg from "../../img/auth-wallet-img.png";
 import metamaskImg from "../../img/metamask.png";
 import plus from "../../img/plus.png";
+import ContractAPI from "../../api/ContractAPI";
 
 function MyWallet() {
   // localstorage에 wallet 연결 확인
@@ -21,6 +22,8 @@ function MyWallet() {
   const [txData, setTxData] = useState("");
   // ETH -> KRW
   const [exData, setExData] = useState("");
+  // passCoin
+  const [passData, setPassData] = useState("");
 
   // get active account and balance data from useWeb3 hook
   const {
@@ -37,6 +40,25 @@ function MyWallet() {
     setIsLoading,
     setErrorMessage
   );
+
+  function PassCoin() {
+    // console.log("mywallet: ", activeAccount);
+    const Contract = new ContractAPI(activeAccount);
+    useEffect(() => {
+      if (activeAccount !== undefined && activeAccount !== "") {
+        console.log("activeAccount", activeAccount);
+        async function load() {
+          await Contract.getPasscoin().then((result) => {
+            setPassData(result);
+          });
+        }
+        load();
+        console.log("passCoin", passData);
+      }
+    }, [activeAccount]);
+
+    return <p>나의 패스코인 : {passData}</p>;
+  }
 
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
@@ -279,7 +301,7 @@ function MyWallet() {
                 ₩
               </p>
             </div>
-
+            <PassCoin></PassCoin>
             {/* 웹 브라우저 사용자만 연결해제 버튼 활성화 */}
             {/* <button onClick={disconnect}>Disconnect</button> */}
             <div className={styles.historyBox}>

@@ -15,19 +15,22 @@ function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
   //파일 미리볼 url을 저장해줄 state
   const [good,setGood] = useState(photoUpload);
   const [bad,setBad] = useState(photoUpload);
+  const [s3Good,setS3Good] = useState("");
+  const [s3Bad,setS3Bad] = useState("");
 
   // 파일 저장
   const saveGoodFileImage = (e) => {
     if (e.target.files[0] !== undefined){
       setGood(URL.createObjectURL(e.target.files[0]));
+      setS3Good(e.target.files[0])
       setGoodShotUrl(URL.createObjectURL(e.target.files[0]));
     } else { setGood(photoUpload) }
   };
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
-    const goodUrl=await uploadImageFile(good);
+    const goodUrl=await uploadImageFile(s3Good);
     setGoodShotUrl(goodUrl);
-    const badUrl=await uploadImageFile(bad);
+    const badUrl=await uploadImageFile(s3Bad);
     setBadShotUrl(badUrl);
   };
     
@@ -40,6 +43,7 @@ function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
   const saveBadFileImage = (e) => {
     if (e.target.files[0] !== undefined){
       setBad(URL.createObjectURL(e.target.files[0]));
+      setS3Bad(e.target.files[0])
       setBadShotUrl(URL.createObjectURL(e.target.files[0]));
     } else { setBad(photoUpload) }
   };

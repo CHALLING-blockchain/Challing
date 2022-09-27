@@ -1,4 +1,6 @@
-com.ssafy.db.url.address: j7b106.p.ssafy.io
+com.ssafy:
+  db.url.host: host.docker.internal
+  backeth.base_url: http://host.docker.internal:8082/api
 
 spring.output.ansi.enabled: never
 

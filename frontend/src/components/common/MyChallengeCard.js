@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import styles from "./ResisterCard.module.css"
+import styles from "./MyChallengeCard.module.css";
 import pencil from "../../img/pencil.png";
 import gym from "../../img/gym.png";
 import calender from "../../img/calender.png";
 import tea from "../../img/tea-cup.png";
 import plus from "../../img/plus.png";
 import paint from "../../img/paint-kit.png";
+import chart from "../../img/chart.png"
 
-function ResisterCard({ type, title, times, period, img }) {
+function MyChallengeCard({ type, title, times, period, img, count }) {
   console.log(type);
   let typeImg = pencil;
   if (type === "운동") {
@@ -18,7 +19,7 @@ function ResisterCard({ type, title, times, period, img }) {
     typeImg = paint;
   } else if (type === "식생활") {
     typeImg = tea;
-  } else {
+  } else if (type === '그 외') {
     typeImg = plus;
   }
   return (
@@ -27,18 +28,22 @@ function ResisterCard({ type, title, times, period, img }) {
         <img src={img} alt="" />
       </div>
       <div className={styles.des}>
-        <div className={styles.type}>
-          <img src={pencil} alt="" />
-          <span>{type}</span>
+        <div className={styles.count}>
+          <img src={chart} alt="" />
+          <span>누적 참가횟수 {count}회</span>
         </div>
         <div className={styles.subBox}>
-            <p className={styles.title}>{title}</p>
-            <span className={styles.sub}>주 {times}일</span>
-            <span className={styles.sub}>{period}</span>
+            <div style={{display:'flex', alignItems:'center'}}>
+                <img src={typeImg} alt="" />
+                <span className={styles.title}>{title}</span>
+
+            </div>
+          <span className={styles.sub}>주 {times}일</span>
+          <span className={styles.sub}>{period}</span>
         </div>
       </div>
     </div>
   );
 }
 
-export default ResisterCard;
+export default MyChallengeCard;

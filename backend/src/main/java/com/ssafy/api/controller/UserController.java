@@ -53,6 +53,21 @@ public class UserController {
         return BaseResponse.success(UserResponse.of(user));
     }
 
+    @GetMapping("/info/{id}")
+    @Transactional
+    public ResponseEntity<?> getUserInfoById(@PathVariable("id") long id) {
+        Optional<User> optionalUser = userService.getUserById(id);
+        if(optionalUser.isEmpty()){
+            return BaseResponse.fail("없는 유저입니다.");
+        }
+        User user = optionalUser.get();
+        logger.debug("\n\n{}", user);
+        user.setUserInterest(interestService.getInterest(user));
+        user.setFavorites(favoriteService.getFavoriteList(user));
+        user.setPhotos(photoService.getPhotoList(user));
+        return BaseResponse.success(UserResponse.of(user));
+    }
+
     @PutMapping("/mypage")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest updateInfo) {
         User user = userService.updateUser(updateInfo);
@@ -66,9 +81,9 @@ public class UserController {
 
     @PostMapping("/favorite")
     public ResponseEntity<?> addFavorite(@RequestBody FavoriteRequest favoriteRequest){
-        String email = favoriteRequest.getEmail();
+        Long userId = favoriteRequest.getUserId();
         Long challengeId = favoriteRequest.getChallengeId();
-        Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserById(userId);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -80,9 +95,9 @@ public class UserController {
     @Transactional
     @DeleteMapping("/favorite")
     public ResponseEntity<?> deleteFavorite(@RequestBody FavoriteRequest favoriteRequest){
-        String email = favoriteRequest.getEmail();
+        Long userId = favoriteRequest.getUserId();
         Long challengeId = favoriteRequest.getChallengeId();
-        Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserById(userId);
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -97,7 +112,7 @@ public class UserController {
     @Transactional
     @PostMapping("/photo")
     public ResponseEntity<?> addPhoto(@RequestBody PhotoRequest photoRequest){
-        Optional<User> optionalUser = userService.getUserByEmail(photoRequest.getEmail());
+        Optional<User> optionalUser = userService.getUserById(photoRequest.getUserId());
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }
@@ -110,7 +125,7 @@ public class UserController {
     @Transactional
     @DeleteMapping("/photo")
     public ResponseEntity<?> deletePhoto(@RequestBody PhotoRequest photoRequest){
-        Optional<User> optionalUser = userService.getUserByEmail(photoRequest.getEmail());
+        Optional<User> optionalUser = userService.getUserById(photoRequest.getUserId());
         if(optionalUser.isEmpty()){
             return BaseResponse.fail("없는 이메일 입니다.");
         }

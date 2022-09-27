@@ -31,44 +31,47 @@ pipeline {
       }
     }
 
-    stage('git_clean') {
-      steps {
-        sh 'git clean --force'
-      }
-    }
+    stage('pre_deploy') {
+      parallel {
+        stage('file_work') {
+          stages {
+            stage('git_clean') {
+              steps {
+                sh 'git clean --force'
+              }
+            }
 
-    stage('copy_contracts_artifacts') {
-      steps {
-        sh 'cp -R ../contracts ./frontend/src'
-      }
-    }
-
-    stage('set_env_files') {
-      steps {
-        dir('frontend') {
-          // 크리덴셜의 경우 문자열 대체하지 않고 변수명을 그대로 씀
-          sh 'cp $FRONTEND_DEFAULT ./.env.local'
-          sh 'cp $FRONTEND_PRODUCTION ./.env.production.local'
+            stage('set_files') {
+              steps {
+                sh '\
+                  cp $FRONTEND_DEFAULT frontend/.env.local & \
+                  cp $FRONTEND_PRODUCTION frontend/.env.production.local & \
+                  cp -R ../contracts frontend/src & \
+                  cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml & \
+                '
+              }
+            }
+          }
         }
 
-        dir('backend/src/main/resources') {
-          sh 'cat $BACKEND_PRODUCTION >> ./application-production.yml'
-        }
-      }
-    }
+        stage('docker_work') {
+          stages {
+            stage('prune_images') {
+              steps {
+                catchError {
+                  sh 'docker image prune --force'
+                }
+              }
+            }
 
-    stage('stop_running_containers') {
-      steps {
-        catchError {
-          sh "docker stop ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
-        }
-      }
-    }
-
-    stage('remove_containers') {
-      steps {
-        catchError {
-          sh "docker rm ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
+            stage('remove_containers') {
+              steps {
+                catchError {
+                  sh "docker rm --force ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -85,14 +88,6 @@ pipeline {
               }
             }
 
-            stage('prune_images') {
-              steps {
-                catchError {
-                  sh 'docker image prune --force'
-                }
-              }
-            }
-
             stage('frontend_serve') {
               steps {
                 sh "docker run -d -p 8081:80 --name ${FRONTEND_CONTAINER} ${FRONTEND_IMAGE}"
@@ -104,7 +99,7 @@ pipeline {
                 catchError {
                   mattermostSend(
                     color: '#52C606',
-                    message: "Deploying frontend complete${MSGSUFFIX}\n\n[페이지](https://j7b106.p.ssafy.io/)"
+                    message: "Deploying frontend complete${MSGSUFFIX}"
                   )
                 }
               }
@@ -122,17 +117,9 @@ pipeline {
               }
             }
 
-            stage('prune_images') {
-              steps {
-                catchError {
-                  sh 'docker image prune --force'
-                }
-              }
-            }
-
             stage('backend_serve') {
               steps {
-                sh "docker run -d -p 8080:8080 -e profile=production --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
+                sh "docker run -d -p 8080:8080 -e profile=production --add-host=host.docker.internal:host-gateway --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
               }
             }
 
@@ -157,7 +144,7 @@ pipeline {
           mattermostSend(
             color: '#3399FF',
             text: MMACCOUNT,
-            message: "Job end${MSGSUFFIX}"
+            message: "Job end${MSGSUFFIX}\n\nhttps://j7b106.p.ssafy.io/"
           )
         }
       }

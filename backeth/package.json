@@ -1,0 +1,21 @@
+{
+  "name": "backeth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "cross-env DEBUG='backeth:*' NODE_ENV=default node ./index.js",
+    "prod": "cross-env DEBUG='backeth:*' NODE_ENV=production node ./index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.3",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.2",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "web3": "^1.8.0"
+  }
+}

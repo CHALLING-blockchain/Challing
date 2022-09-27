@@ -1,12 +1,12 @@
 import React from "react";
-import styles from "./ConfirmResister.module.css";
+import styles from "./ConfirmRegister.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as getInterestStr from "../main/Main.js";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import Contract from "../../api/ContractAPI";
 import { useEffect, useState } from "react";
-import ResisterCard from "../common/ResisterCard";
+import RegisterCard from "../common/RegisterCard";
 import test from "../../img/test-back.jpg";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
@@ -15,7 +15,7 @@ import Next from "../common/NextButton";
 import useWeb3 from "../../hooks/useWeb3";
 import useBalance from "../../hooks/useBalance";
 import Web3 from "web3";
-import * as getDayGab from "../main/Main.js";
+import * as getDayGap from "../main/Main.js";
 
 function Header() {
   const navigate = useNavigate();
@@ -44,13 +44,10 @@ function Header() {
   );
 }
 
-function Inform() {
+function Inform(props) {
   const web3 = new Web3(window.ethereum);
-  const { id } = useParams();
-  const selector = useSelector(challengeList);
-  const element = selector[id];
   const [challengeCntData, setChallengeCntData] = useState("");
-
+  const id = props.challengeId;
   useEffect(() => {
     async function load() {
       await Contract.getChallengers(id).then((result) => {
@@ -79,7 +76,9 @@ function Inform() {
             <span>예치금</span>
           </div>
           <span>
-            {Number(web3.utils.fromWei(element.deposit, "ether")).toFixed(3)}{" "}
+            {Number(
+              web3.utils.fromWei(props.challenge.deposit, "ether")
+            ).toFixed(3)}{" "}
             eth
           </span>
         </div>
@@ -89,18 +88,16 @@ function Inform() {
   );
 }
 
-function Btn() {
+function Btn(props) {
   const web3 = new Web3(window.ethereum);
-  const { id } = useParams();
-  const selector = useSelector(challengeList);
-  const element = selector[id];
   return (
     <div className={styles.btnBox}>
       <Next
         type="submit"
         label={
-          Number(web3.utils.fromWei(element.deposit, "ether")).toFixed(3) +
-          " ETH 지불하기"
+          Number(web3.utils.fromWei(props.challenge.deposit, "ether")).toFixed(
+            3
+          ) + " ETH 지불하기"
         }
         onClick={() => {}}
         disabled={false}
@@ -139,32 +136,34 @@ function MyBalance() {
   );
 }
 
-function ConfirmResister() {
+function ConfirmRegister() {
   //챌린지 아이디
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
 
   let week = Math.floor(
-    getDayGab.getDayGab(element.startDate, element.endDate, false)
+    getDayGap.getDayGapFromDates(element.startDate, element.endDate) / 7
   );
+  console.log("week: ", week);
+  console.log(element.authTotalTimes);
   let perWeek = Math.floor(element.authTotalTimes / week);
   return (
     <div>
       <Header></Header>
-      <ResisterCard
+      <RegisterCard
         type={getInterestStr.interestIdToName(element.interestId)}
         title={element.name}
         times={perWeek}
         period={element.startDate + "~" + element.endDate}
         img={element.mainPicURL}
-      ></ResisterCard>
-      <Inform></Inform>
+      ></RegisterCard>
+      <Inform challenge={element} challengeId={id}></Inform>
       <MyBalance></MyBalance>
       <RefundPolicy></RefundPolicy>
-      <Btn></Btn>
+      <Btn challenge={element}></Btn>
     </div>
   );
 }
 
-export default ConfirmResister;
+export default ConfirmRegister;

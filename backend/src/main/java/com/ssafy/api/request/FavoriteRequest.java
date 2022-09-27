@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteRequest {
-    private String email;
+    private Long userId;
     private Long challengeId;
 }

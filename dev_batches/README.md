@@ -29,3 +29,34 @@
 | --------- | ---- | --------- |
 | backend   | 8080 | devdocker |
 | frontend  | 3000 | default   |
+
+## 로컬 Ethereum 구성 추가
+
+로컬에서 이더리움 네트워크 구성하고 컨트랙트 배포 및 마이그레이션까지 한 번에 하기
+
+### Prerequisite
+
+트러플 cli 깔려 있어야 함
+
+- 확인
+```sh
+truffle --version
+```
+
+- 설치
+```sh
+npm install -g truffle
+```
+
+### Batches
+
+| file | description |
+| --- | --- |
+| eth-all.bat | 로컬 가나슈 구동 & 컨트랙트 배포 & 마이그레이션 |
+| eth-ganache.bat | 로컬 가나슈 구동 |
+| eth-migrate.bat | (로컬 가나슈가 구동되어 있어야 함) 컨트랙트 배포 & 마이그레이션 |
+
+### Config
+
+- Ganache endpoint : http://localhost:7545
+- Build directory : frontend/src/contracts

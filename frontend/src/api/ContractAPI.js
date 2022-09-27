@@ -1,41 +1,38 @@
 import Web3 from "web3";
 
 class ContractAPI {
-  constructor() {
-    this.init();
+  constructor(address) {
+    this.init(address);
   }
-  async init() {
+  async init(address) {
     this.Cartifact = require("../contracts/ChallengeContract.json");
     this.Vartifact = require("../contracts/VoteContract.json");
     const infuraUrl =
       "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
-    this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-    this.privateKey1 = process.env.REACT_APP_METAMASK_PRIVATE_KEY;
-
-    this.account1 = this.web3.eth.accounts.privateKeyToAccount(
-      "0x" + this.privateKey1
-    );
-
-    this.web3.eth.accounts.wallet.add(this.account1);
-
+    const local = "http://localhost:7545";
+    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
+    if (address !== undefined) {
+      this.account = address;
+    }
+    // console.log("init: ", this.account);
     this.networkId = await this.web3.eth.net.getId();
     this.Cabi = this.Cartifact.abi;
     this.Caddress = this.Cartifact.networks[this.networkId].address;
     this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
-
+    // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
     this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
-    this.account = await this.web3.eth.getAccounts();
   }
 
   // ChallengeContract
   async getAllChallenge() {
     await this.init();
+
     const challengeList = await this.Ccontract.methods
       .getAllChallenge()
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
 
@@ -66,7 +63,7 @@ class ContractAPI {
     return this.Ccontract.methods
       .joinChallenge(challengeId, userId, today)
       .send({
-        from: this.account1.address,
+        from: this.account,
         gasLimit: 3_000_000,
         value: value * 1e18,
       })
@@ -77,7 +74,7 @@ class ContractAPI {
     return this.Ccontract.methods
       .getMyChallenge(userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
   }
@@ -88,7 +85,7 @@ class ContractAPI {
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
 
@@ -100,7 +97,7 @@ class ContractAPI {
     this.Vcontract.methods
       .addPhoto(challengerId, userId, picURL, today)
       .send({
-        from: this.account1.address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
@@ -116,7 +113,7 @@ class ContractAPI {
         today
       )
       .send({
-        from: this.account1.address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
@@ -127,28 +124,39 @@ class ContractAPI {
     return this.Ccontract.methods
       .getChallengers(challengeId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
   }
   async getChallengersByUserId(userId) {
     await this.init();
-    return this.Ccontract.methods
+
+    const challengers = await this.Ccontract.methods
       .getChallengersByUserId(userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
+    const result = challengers.map((el) => {
+      const challenge = Object.assign({}, el);
+      const size = Object.keys(challenge).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete challenge[i];
+      }
+      return challenge;
+    });
+
+    return result;
   }
 
   // ChallengerContract
-  async refund(address, challengeId, userId) {
+  async refund(challengeId, userId) {
     await this.init();
     // 챌린저 정보 가져오기
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
 
@@ -157,18 +165,18 @@ class ContractAPI {
     return this.Ccontract.methods
       .refund(challengerId)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
-  async usePasscoin(address, challengeId, userId) {
+  async usePasscoin(challengeId, userId) {
     await this.init();
     // 챌린저 정보 가져오기
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
 
@@ -185,18 +193,18 @@ class ContractAPI {
         challengeIdIndex
       )
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
-  async applyVoteResult(address, challengeId, userId) {
+  async applyVoteResult(challengeId, userId) {
     await this.init();
     // 챌린저 정보 가져오기
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
       .call({
-        from: this.account1.address,
+        from: this.account,
       })
       .catch(console.error);
 
@@ -213,17 +221,17 @@ class ContractAPI {
         challengeIdIndex
       )
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
-  async receivePasscoin(address, userIdList) {
+  async receivePasscoin(userIdList) {
     await this.init();
     return this.Ccontract.methods
       .receivePasscoin(userIdList)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
@@ -232,115 +240,130 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
+    if (this.account !== undefined) {
     return this.Ccontract.methods
       .createDailyChallenge(dailyChallenge)
       .send({
-        from: this.account1.address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
+    }
   }
-  async endDailyChallenge(address, challengeId) {
+  
+  async endDailyChallenge(challengeId) {
     await this.init();
     return this.Ccontract.methods
       .endDailyChallenge(challengeId)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
 
   // DonationChallengeContract
-  async createDonationChallenge(address, donationChallenge) {
+  async createDonationChallenge(donationChallenge) {
     await this.init();
     return this.Ccontract.methods
       .createDonationChallenge(donationChallenge)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
         value: donationChallenge.setDonation * 1e18,
       })
       .catch(console.error);
   }
 
-  async endDonationChallenge(address, challengeId) {
+  async endDonationChallenge(challengeId) {
     await this.init();
 
     return this.Ccontract.methods
       .endDonationChallenge(challengeId)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
 
-  async getAllDonation(address) {
+  async getAllDonation() {
     await this.init();
 
     return this.Ccontract.methods
       .getAllDonation()
       .call({
-        from: address,
+        from: this.account,
       })
       .catch(console.error);
   }
 
   // PhotoContract
-  async getChallengerPhoto(address, challengerId) {
+  async getChallengerPhoto(challengerId) {
     await this.init();
 
     return this.Vcontract.methods
       .getChallengerPhoto(challengerId)
       .call({
-        from: address,
+        from: this.account,
       })
       .catch(console.error);
   }
 
-  async report(address, challengeId, photoId, userId) {
+  async report(challengeId, photoId, userId) {
     await this.init();
 
     return this.Vcontract.methods
       .report(challengeId, photoId, userId)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
-  async voting(address, challengeId, userId, voteId, pass) {
+  async voting(challengeId, userId, voteId, pass) {
     await this.init();
 
     return this.Vcontract.methods
       .voting(challengeId, userId, voteId, pass)
       .send({
-        from: address,
+        from: this.account,
         gasLimit: 3_000_000,
       })
       .catch(console.error);
   }
-  async endVote(address, voteId) {
+  async endVote(voteId) {
     await this.init();
 
     return this.Vcontract.methods
       .endVote(voteId)
       .call({
-        from: address,
+        from: this.account,
       })
       .catch(console.error);
   }
-  async getChallengeVote(address, challengeId) {
+  async getChallengeVote(challengeId) {
     await this.init();
 
     return this.Vcontract.methods
       .getChallengeVote(challengeId)
       .call({
-        from: address,
+        from: this.account,
       })
       .catch(console.error);
   }
+
+  async getPasscoin() {
+    await this.init();
+    if (this.account !== undefined) {
+      return this.Ccontract.methods
+        .balanceOf(this.account)
+        .call({
+          from: this.account,
+        })
+        .catch(console.error);
+    }
+  }
 }
 
-export default new ContractAPI();
+export default ContractAPI;

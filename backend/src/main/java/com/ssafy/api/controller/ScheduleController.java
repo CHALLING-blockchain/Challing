@@ -26,10 +26,10 @@ public class ScheduleController {
     public ResponseEntity<?> addChallengeSchedule(@RequestBody ChallengeScheduleRequest challengeScheduleRequest) {
 
         try {
-            scheduleService.addChallengeSchedule(ChallengeJobData.of(challengeScheduleRequest));
+            scheduleService.saveAndScheduleChallengeJob(ChallengeJobData.of(challengeScheduleRequest));
         } catch (Exception e) {
-            log.error("", e);
-            return BaseResponse.fail("스케줄 추가 실패");
+            log.error("챌린지 종료 추가 실패", e);
+            return BaseResponse.fail("챌린지 종료 스케줄 추가 실패");
         }
 
         return BaseResponse.success();
@@ -39,10 +39,10 @@ public class ScheduleController {
     public ResponseEntity<?> addVoteSchedule(@RequestBody VoteScheduleRequest voteScheduleRequest) {
 
         try {
-            scheduleService.addVoteSchedule(VoteJobData.of(voteScheduleRequest));
+            scheduleService.saveAndScheduleVoteJob(VoteJobData.of(voteScheduleRequest));
         } catch (Exception e) {
-            log.error("", e);
-            return BaseResponse.fail("스케줄 추가 실패");
+            log.error("투표 종료 스케줄 추가 실패", e);
+            return BaseResponse.fail("투표 종료 스케줄 추가 실패");
         }
 
         return BaseResponse.success();
@@ -51,7 +51,7 @@ public class ScheduleController {
     @GetMapping("/test")
     public String addScheduleTest() {
         try {
-            scheduleService.addChallengeSchedule(ChallengeJobData.builder()
+            scheduleService.scheduleChallengeJob(ChallengeJobData.builder()
                     .challengeId("테스트")
                     .triggerAt(Instant.now().plusSeconds(10).getEpochSecond())
                     .build());

@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import Web3 from "web3";
-
 // it's convenient to move metamask/web3 connection code to a separate custom hook
 function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
   // web3 instance
   const [provider, setProvider] = useState(null);
   // active account
   const [account, setAccount] = useState("");
-
   useEffect(() => {
     if (exist && provider == null) {
       connect();
@@ -37,50 +35,6 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       // localstorage에 지갑 연결 저장
       localStorage.setItem("myAccount", true);
       setExist(true);
-
-      // send transaction  ---------------------------------
-      // let nonce = 0;
-      // await web3.eth.getTransactionCount(accounts[0]).then(function (result) {
-      //   nonce = result;
-      // });
-      // //console.log("nonce:", nonce);
-
-      // let gasPrice = 0;
-      // await web3.eth.getGasPrice().then(function (result) {
-      //   gasPrice = result;
-      // });
-      // //console.log("gasPrice:", gasPrice);
-
-      // let value = await web3.utils.toWei("0.1", "ether");
-      // //console.log("value:", value);
-
-      // let gasLimit = 0;
-      // await web3.eth
-      //   .estimateGas({
-      //     to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
-      //     from: accounts[0],
-      //     value: value,
-      //   })
-      //   .then(function (result) {
-      //     gasLimit = result;
-      //   });
-
-      // let txObject = {
-      //   nonce: nonce,
-      //   gasPrice: gasPrice,
-      //   gasLimit: 60000,
-      //   to: "0x301E1528bAD61177eF8Ff89bD4ad6760581e5409",
-      //   from: accounts[0],
-      //   value: value,
-      //   data: "ecb18ceba78120ecb0b8ec97ac",
-      // };
-      // console.log("txObject: ", txObject);
-
-      // let hashObject = 0;
-      // await web3.eth.sendTransaction(txObject).then(function (receipt) {
-      //   hashObject = receipt;
-      // });
-      // send transaction end -------------------------------
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
