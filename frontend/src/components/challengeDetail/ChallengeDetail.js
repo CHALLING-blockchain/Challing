@@ -16,6 +16,9 @@ import camera from "../../img/camera.png";
 import symbol from "../../img/symbol-dynamic.png";
 import favbook from "../../img/bookmark.png";
 import Next from "../common/NextButton";
+import * as getDayGap from "../main/Main.js";
+import { selectUser } from "../../app/redux/userSlice";
+import moment from "moment";
 
 function Header(props) {
   const navigate = useNavigate();
@@ -94,9 +97,22 @@ function Header(props) {
 function TopBox(props) {
   console.log("topbox", props);
   const [user, setUser] = useState({});
-  const [challengers, setChallengers] = useState(10);
   const week =
     props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+
+  const period = Number(
+    getDayGap.getDayGapFromDates(
+      props.challenge.startDate,
+      props.challenge.endDate
+    )
+  );
+
+  const weekTimes =
+    Number(props.challenge.authTotalTimes) /
+    (Number(props.challenge.authDayTimes) * period);
+
+  console.log("challengers", props.challengers);
+
   useEffect(() => {
     const getUserInfo = async () => {
       await UserAPI.getUserById(props.challenge.ownerId).then((response) => {
@@ -104,17 +120,8 @@ function TopBox(props) {
         console.log(response.data.body);
       });
     };
-
-    const getChallengers = async () => {
-      await Contract.getChallengers(props.challenge.challengeId).then(
-        (result) => {
-          setChallengers(result.length);
-        }
-      );
-    };
     getUserInfo();
-    getChallengers();
-  }, [props.challenge.ownerId, props.challenge.challengeId]);
+  }, [props.challenge.ownerId]);
 
   return (
     <div>
@@ -129,6 +136,7 @@ function TopBox(props) {
         </span>
         <div className={styles.Tags}>
           <span className={styles.Tag}>{week}주 동안</span>
+          <span className={styles.Tag}>주 {weekTimes}회</span>
           <span className={styles.Tag}>
             하루 {props.challenge.authDayTimes}번
           </span>
@@ -137,7 +145,7 @@ function TopBox(props) {
         <div className={styles.subtext}>
           <div className={styles.imgText}>
             <img src={person} alt="personChar" />
-            <span>현재 {challengers}명</span>
+            <span>현재 {props.challengers}명</span>
           </div>
           <div className={styles.imgText}>
             <img src={dollar} alt="" />
@@ -201,6 +209,18 @@ function RefundPolicy() {
   );
 }
 
+function addDescription(props) {
+  const desc = props.split("\n");
+  console.log("desc", desc);
+  const descList = [];
+  for (let index = 0; index < desc.length; index++) {
+    if (desc[index].length > 0) {
+      descList.push(<p key={index}>👉{desc[index]}</p>);
+    }
+  }
+  return descList;
+}
+
 function Description(props) {
   const week =
     props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
@@ -226,9 +246,10 @@ function Description(props) {
           <p style={{ fontSize: "16px", fontWeight: "bold" }}>
             인증 방법 및 주의사항
           </p>
-          <p>👉 필사한 내용 사진찍기</p>
+          {/* <p>👉 필사한 내용 사진찍기</p>
           <p>👉 다른 챌린지에서 올리신 동일한 인증샷으로 재인증 하시면</p>
-          <p>신고 혹은 불이익이 있을 수 있습니다.</p>
+          <p>신고 혹은 불이익이 있을 수 있습니다.</p> */}
+          {addDescription(props.challenge.desc)}
         </div>
       </div>
     </div>
@@ -250,7 +271,7 @@ function ShotDescription(props) {
             src={props.challenge.goodPicURL}
             alt=""
           />
-          <p>좋은 예시</p>
+          <p>👍 좋은 예시</p>
         </div>
         <div className={styles.shot}>
           <img
@@ -258,17 +279,50 @@ function ShotDescription(props) {
             src={props.challenge.badPicURL}
             alt=""
           />
-          <p>나쁜 예시</p>
+          <p>👎 나쁜 예시</p>
         </div>
       </div>
     </div>
   );
 }
 
+async function joinChallenge(challengeId, userId, today, value) {
+  await Contract.joinChallenge(challengeId, userId, today, value).then(
+    (result) => {
+      console.log("join result", result);
+    }
+  );
+}
+
 function ChallengeDetail() {
   const { id } = useParams();
   const challenge = useSelector(challengeList)[id];
+  const user = useSelector(selectUser);
   console.log("challenge", challenge);
+  const day = getDayGap.getDayGapFromToday(challenge.startDate);
+  let today = new Date();
+  let todayStr =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  const [joinFlag, setJoinFlag] = useState(false);
+  const [challengers, setChallengers] = useState(1);
+
+  useEffect(() => {
+    const getChallengers = async () => {
+      await Contract.getChallengers(challenge.challengeId).then((response) => {
+        setChallengers(response.length);
+      });
+    };
+
+    Contract.findingChallenger(challenge.challengeId, user.id).then(
+      (response) => {
+        console.log("useEffect", response);
+        if (response !== undefined) {
+          setJoinFlag(true);
+          getChallengers();
+        }
+      }
+    );
+  }, [challenge.challengeId, user]);
 
   return (
     <div>
@@ -279,7 +333,7 @@ function ChallengeDetail() {
         alt="challegePhoto"
       />
 
-      <TopBox challenge={challenge}></TopBox>
+      <TopBox challenge={challenge} challengers={challengers}></TopBox>
       <hr className={styles.hrTag} />
       <PeriodBox challenge={challenge}></PeriodBox>
       <hr className={styles.hrTag} />
@@ -289,15 +343,35 @@ function ChallengeDetail() {
       <hr className={styles.hrTag} />
       <ShotDescription challenge={challenge}></ShotDescription>
 
-      {/* <div style={{ width: "100vw", height: "56px" }}></div> */}
-      <div className={styles.btnBox}>
-        <Next
-          type="submit"
-          label="챌린지 신청하기"
-          onClick={() => {}}
-          disabled={false}
-        ></Next>
+      <div>
+        {!joinFlag ? (
+          <Next
+            type="submit"
+            label="챌린지 신청하기"
+            onClick={() => {
+              joinChallenge(
+                challenge.challengeId,
+                user.id,
+                todayStr,
+                challenge.deposit / Math.pow(10, 18)
+              );
+              setChallengers(challengers + 1);
+              setJoinFlag(true);
+            }}
+            flag={true}
+            disabled={false}
+          ></Next>
+        ) : (
+          <Next
+            type="submit"
+            label={"챌린지 시작  " + day + "일 전"}
+            onClick={() => {}}
+            disabled={true}
+          ></Next>
+        )}
       </div>
+
+      <div style={{ width: "100vw", height: "72px" }}></div>
     </div>
   );
 }
