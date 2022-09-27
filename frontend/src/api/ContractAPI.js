@@ -78,16 +78,9 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-    const result=challenges.map(el=>{
-      const challenge = Object.assign({}, el);
-      const size = Object.keys(challenge).length;
-      for (let i = 0; i < size / 2; i++) {
-        delete challenge[i];
-      }
-      return challenge
-    })
 
-    return result
+
+    return challenges
 
   }
   async authenticate(challengeId, userId, today, picURL) {

@@ -30,7 +30,6 @@ function MyPage() {
   useEffect(() => {
     async function load() {
       await Contract.getMyChallenge(user.id).then((result) => {
-        console.log("result", result)
         const join = result[1];
         let ingCount = 0;
         let edCount = 0;
