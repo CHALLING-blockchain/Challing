@@ -12,6 +12,8 @@ pipeline {
     FRONTEND_CONTAINER = 'frontend'
     BACKEND_IMAGE = 'sp7333/backend'
     BACKEND_CONTAINER = 'backend'
+    BACKETH_IMAGE = 'sp7333/backeth'
+    BACKETH_CONTAINER = 'backeth'
 
     // 젠킨스 MM 플러그인, Blue Ocean 플러그인 관련
     MMACCOUNT = '@wp29dud'
@@ -67,7 +69,7 @@ pipeline {
             stage('remove_containers') {
               steps {
                 catchError {
-                  sh "docker rm --force ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER}"
+                  sh "docker rm --force ${BACKEND_CONTAINER} ${FRONTEND_CONTAINER} ${BACKETH_CONTAINER}"
                 }
               }
             }
@@ -129,6 +131,35 @@ pipeline {
                   mattermostSend(
                     color: '#52C606',
                     message: "Deploying backend complete${MSGSUFFIX}"
+                  )
+                }
+              }
+            }
+          }
+        }
+
+        // TODO:
+        //   env 파일 세팅
+        //   APP_NODE_ENDPOINT
+        //   APP_ACCOUNT_PRIVATE_KEY
+        stage('backeth') {
+          stages {
+            stage('backeth_build') {
+              steps {
+                sh "docker build --file backeth/Dockerfile --tag ${BACKETH_IMAGE} ."
+              }
+            }
+
+            stage('backeth_serve') {
+              sh "docker run -d -p 8082:3000 --add-host=host.docker.internal:host-gateway --name ${BACKETH_CONTAINER} ${BACKETH_IMAGE}"
+            }
+
+            stage('mattermost_send_backeth_complete') {
+              steps {
+                catchError {
+                  mattermostSend(
+                    color: '#52C606',
+                    message: "Launching backeth complete${MSGSUFFIX}"
                   )
                 }
               }
