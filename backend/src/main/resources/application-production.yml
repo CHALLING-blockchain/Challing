@@ -1,10 +1,13 @@
-com.ssafy.db.url.host: host.docker.internal
+com.ssafy:
+  db.url.host: host.docker.internal
+  backeth.base_url: http://host.docker.internal:8082/api
 
 spring.output.ansi.enabled: never
 
 logging.file.name: logs/backend.log
 
 com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
+
 # env from production runtime
 #
 #   spring.datasource.username

@@ -25,6 +25,14 @@ public class ChallengeJobData {
         return Date.from(Instant.ofEpochSecond(triggerAt));
     }
 
+    public Schedule toScheduleEntity() {
+        return Schedule.builder()
+                .jobType(ContractJobType.CHALLENGE)
+                .challengeId(challengeId)
+                .triggerAt(triggerAt)
+                .build();
+    }
+
     public static ChallengeJobData of(ChallengeScheduleRequest challengeScheduleRequest) {
         return ChallengeJobData.builder()
                 .challengeId(challengeScheduleRequest.getChallengeId())
