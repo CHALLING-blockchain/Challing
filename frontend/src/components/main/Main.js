@@ -4,7 +4,7 @@ import Nav from "../Nav";
 import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
 import { useSelector, useDispatch } from "react-redux";
-import Contract from "../../api/ContractAPI";
+import ContractAPI from "../../api/ContractAPI";
 import {
   setChallengeList,
   challengeList,
@@ -21,6 +21,7 @@ function Main() {
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
+      const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
         // console.log("result: ", result);
         allChallengeList = result;
