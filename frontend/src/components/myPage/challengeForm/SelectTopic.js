@@ -8,29 +8,52 @@ import paint from "../../../img/paint-kit.png";
 import pencil from "../../../img/pencil.png";
 import plus from "../../../img/plus.png";
 import tea from "../../../img/tea-cup.png";
-import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectTopic({formCnt,setFormCnt,value,setValue}){
   const[topic,setTopic] = useState("");
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      </div>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      </div>
     )
+  }
+  function Header(){
+    return (
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+        <div className={styles.header}>
+          <svg
+            onClick={()=>{setFormCnt(formCnt-1)}}
+            style={{ margin: "16px" }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <div></div>
+        </div>
+      </div>
+    );
   }
   return (
     <div>
-      <div className="BackMyPage">
-        <svg onClick={()=>{setFormCnt(formCnt-1)}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-        </svg>
-        <p>챌린지 개설하기</p>
-      </div>
-      <p className={styles.FormHeader}>어떤 주제의 챌린지인가요?</p>
+      <Header/>
+      <p style={{padding:'16px'}} className={styles.FormHeader}>어떤 주제의 챌린지인가요?</p>
       <div className={categoryStyles.cardBox}>
         <div className={topic === "운동" ? cardStyles.card : cardStyles.cardX} value={value} onClick={()=>{setValue('운동');setTopic('운동');}}>
           <div>
