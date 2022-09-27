@@ -44,13 +44,10 @@ function Header() {
   );
 }
 
-function Inform() {
+function Inform(props) {
   const web3 = new Web3(window.ethereum);
-  const { id } = useParams();
-  const selector = useSelector(challengeList);
-  const element = selector[id];
   const [challengeCntData, setChallengeCntData] = useState("");
-
+  const id = props.challengeId;
   useEffect(() => {
     async function load() {
       await Contract.getChallengers(id).then((result) => {
@@ -79,7 +76,9 @@ function Inform() {
             <span>예치금</span>
           </div>
           <span>
-            {Number(web3.utils.fromWei(element.deposit, "ether")).toFixed(3)}{" "}
+            {Number(
+              web3.utils.fromWei(props.challenge.deposit, "ether")
+            ).toFixed(3)}{" "}
             eth
           </span>
         </div>
@@ -89,18 +88,16 @@ function Inform() {
   );
 }
 
-function Btn() {
+function Btn(props) {
   const web3 = new Web3(window.ethereum);
-  const { id } = useParams();
-  const selector = useSelector(challengeList);
-  const element = selector[id];
   return (
     <div className={styles.btnBox}>
       <Next
         type="submit"
         label={
-          Number(web3.utils.fromWei(element.deposit, "ether")).toFixed(3) +
-          " ETH 지불하기"
+          Number(web3.utils.fromWei(props.challenge.deposit, "ether")).toFixed(
+            3
+          ) + " ETH 지불하기"
         }
         onClick={() => {}}
         disabled={false}
@@ -146,8 +143,10 @@ function ConfirmRegister() {
   const element = selector[id];
 
   let week = Math.floor(
-    getDayGap.getDayGapFromDates(element.startDate, element.endDate)
+    getDayGap.getDayGapFromDates(element.startDate, element.endDate) / 7
   );
+  console.log("week: ", week);
+  console.log(element.authTotalTimes);
   let perWeek = Math.floor(element.authTotalTimes / week);
   return (
     <div>
@@ -159,10 +158,10 @@ function ConfirmRegister() {
         period={element.startDate + "~" + element.endDate}
         img={element.mainPicURL}
       ></RegisterCard>
-      <Inform></Inform>
+      <Inform challenge={element} challengeId={id}></Inform>
       <MyBalance></MyBalance>
       <RefundPolicy></RefundPolicy>
-      <Btn></Btn>
+      <Btn challenge={element}></Btn>
     </div>
   );
 }

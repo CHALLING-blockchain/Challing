@@ -134,12 +134,24 @@ class ContractAPI {
   }
   async getChallengersByUserId(userId) {
     await this.init();
-    return this.Ccontract.methods
+    
+    const challengers=await this.Ccontract.methods
       .getChallengersByUserId(userId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=challengers.map(el=>{
+      const challenge = Object.assign({}, el);
+      const size = Object.keys(challenge).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete challenge[i];
+      }
+      return challenge
+    })
+
+    return result
+    
   }
 
   // ChallengerContract
@@ -342,6 +354,18 @@ class ContractAPI {
       })
       .catch(console.error);
   }
+
+  async getPasscoin() {
+    await this.init();
+    return this.Ccontract.methods
+      .balanceOf(this.account)
+      .call({
+        from: this.account,
+      })
+      .catch(console.error);
+  }
+
+  
 }
 
 export default new ContractAPI();
