@@ -1,0 +1,48 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+.achRateBox{
+    margin: 24px 16px 32px;
+    width: 264px;
+    height: 48px;
+    padding: 16px 32px;
+    border: none; 
+    border-radius: 20px;
+    background: linear-gradient(252.68deg, rgba(146, 114, 255) 27.32%, rgba(133, 150, 255) 93.21%);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+}
+
+.boxLeft p{
+    color: white;
+    font-size: 12px;
+}
+.boxLeft span{
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.boxRight p{
+    color: white;
+    font-size: 12px; 
+}
+.boxRight span{
+    background: linear-gradient(252.68deg, #01F6BD 27.32%, white 93.21%);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+.listBox{
+    margin: 16px 0;
+}
