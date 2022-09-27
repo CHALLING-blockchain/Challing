@@ -109,13 +109,13 @@ function Inform(){
         <div className={styles.informOne}>
           <img src={coin} alt="" />
           <span>
-            총 예치금 <span>{deposit}</span>ETH
+            총 예치금 <span style={{ color: "#755FFF" }}>{deposit}</span>ETH
           </span>
         </div>
         <div className={styles.informOne}>
           <img src={chart} alt="" />
           <span>
-            참가자 평균 달성률 <span>{rate}%</span>
+            참가자 평균 달성률 <span style={{ color: "#755FFF" }}>{rate}%</span>
           </span>
         </div>
       </div>
