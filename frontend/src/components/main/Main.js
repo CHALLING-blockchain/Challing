@@ -54,7 +54,7 @@ function Main() {
       if (selector[index] !== undefined) {
         const element = selector[index];
         // console.log(element);
-        let dayGap = getDayGab(element.startDate, element.startDate, true);
+        let dayGap = getDayGapFromToday(element.startDate);
         let startDay = dayGap + "일 뒤";
         // (시작 전&&관심사 일치&&일상) 챌린지만
         if (
@@ -87,7 +87,7 @@ function Main() {
       if (selector[index] !== undefined) {
         const element = selector[index];
         // console.log(element);
-        let dayGap = getDayGab(element.startDate, element.startDate, true);
+        let dayGap = getDayGapFromToday(element.startDate);
         // (시작 전&&관심사 일치&&기부) 챌린지만
         if (
           dayGap >= 0 &&
@@ -127,34 +127,47 @@ function Main() {
   );
 }
 
-//오늘로부터 챌린지 시작일 날짜 구하기
-export function getDayGab(startDate, endDate, isToday) {
+//현재날짜와 startDate의 날짜 차이를 반환
+export function getDayGapFromToday(startDate) {
   let currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+  // 시작일 str -> Date 형식으로 바꾸기
   let startDateArr = startDate.split("-");
   startDate = new Date(startDateArr[0], startDateArr[1], startDateArr[2]);
-  if (isToday) {
-    // 오늘 날짜 구해서 형식 맞춰주기 (달 + 1) -> 스트링 -> 다시 DATE
-    let today = new Date();
-    let todayStr =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    let todayDateArr = todayStr.split("-");
-    let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
 
-    let gap = todayDate - startDate;
-    let dateGap = -parseInt(gap / currDay);
-    return dateGap;
-  } else {
-    let endDateArr = endDate.split("-");
-    endDate = new Date(endDateArr[0], endDateArr[1], endDateArr[2]);
-    let gap = startDate - endDate;
-    let dateGap = -parseInt(gap / currDay);
-    // console.log("not today, ", dateGap);
-    return dateGap;
-  }
+  // 오늘 날짜 Date -> Str로 바꾸면서 달+1해줌
+  let today = new Date();
+  let todayStr =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
+  // 다시 Date 형식으로 맞춰줌
+  let todayDateArr = todayStr.split("-");
+  let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
+
+  // 차이 구하기
+  let gap = todayDate - startDate;
+  let dateGap = -parseInt(gap / currDay);
+
+  return dateGap;
+}
+
+//startDate와 endDate의 날짜 차이를 반환
+export function getDayGapFromDates(startDate, endDate) {
+  let currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+  //시작일 str -> Date 형식으로 바꾸기
+  let startDateArr = startDate.split("-");
+  startDate = new Date(startDateArr[0], startDateArr[1], startDateArr[2]);
+
+  //끝일 str -> Date 형식으로 바꾸기
+  let endDateArr = endDate.split("-");
+  endDate = new Date(endDateArr[0], endDateArr[1], endDateArr[2]);
+
+  // 차이 구하기
+  let gap = startDate - endDate;
+  let dateGap = -parseInt(gap / currDay);
+
+  return dateGap;
 }
 
 export function interestIdToName(interestId) {

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import { useNavigate } from "react-router-dom";
 import "./ChallengeSearch.css";
-import * as getDayGab from "../main/Main.js";
+import * as getDayGap from "../main/Main.js";
 
 function ChallengeSearch() {
   const [search, setSearch] = useState("");
@@ -22,13 +22,9 @@ function ChallengeSearch() {
         ) {
           const element = selector[index];
           console.log(element);
-          let dayGap = getDayGab.getDayGab(
-            element.startDate,
-            element.startDate,
-            true
-          );
+          let dayGap = getDayGap.getDayGapFromToday(element.startDate);
           let period = Math.floor(
-            getDayGab.getDayGab(element.startDate, element.endDate, false) / 7
+            getDayGap.getDayGapFromDates(element.startDate, element.endDate) / 7
           );
           let startDay = dayGap + "일 뒤";
           // 시작 전 챌린지만
@@ -56,11 +52,7 @@ function ChallengeSearch() {
     } else {
       for (let index = 1; index <= Object.keys(selector).length; index++) {
         const element = selector[index];
-        let dayGap = getDayGab.getDayGab(
-          element.startDate,
-          element.startDate,
-          true
-        );
+        let dayGap = getDayGap.getDayGapFromToday(element.startDate);
         let startDay = dayGap + "일 뒤";
         // 시작 전 챌린지만
         if (dayGap >= 0) {
