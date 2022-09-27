@@ -354,6 +354,18 @@ class ContractAPI {
       })
       .catch(console.error);
   }
+
+  async getPasscoin() {
+    await this.init();
+    return this.Ccontract.methods
+      .balanceOf(this.account)
+      .call({
+        from: this.account,
+      })
+      .catch(console.error);
+  }
+
+  
 }
 
 export default new ContractAPI();
