@@ -109,14 +109,19 @@ function Gather(){
     //     setId(id);
     //     setModalOpen(true);
     // }
-    return(
+    return (
+      <div className={styles.scroll}>
         <div className={styles.gather}>
-            <img src={testphoto} alt=""
-                // onClick={showModal(img, id)} 
-            />
-            {/* {modalOpen && <GatherModal setModalOpen={setModalOpen} />} */}
+          <img src={testphoto} alt="" />
+          <img src={testphoto} alt="" />
+          <img src={testphoto} alt="" />
+          <img src={testphoto} alt="" />
+          <img src={testphoto} alt="" />
+          <img src={testphoto} alt="" />
+          {/* {modalOpen && <GatherModal setModalOpen={setModalOpen} />} */}
         </div>
-    )
+      </div>
+    );
 }
 
 // function GatherModal(setModalOpen){
@@ -141,7 +146,7 @@ function Separately(){
         setOpenModal(true);
     }
     return (
-      <div>
+      <div className={styles.scroll}>
         <div className={styles.separately}>
           <div className={styles.userBox}>
             <div className={styles.user}>
@@ -184,8 +189,6 @@ function CertificationPhotos(){
         <Header></Header>
         <Title></Title>
         <Tabs></Tabs>
-
-        <div style={{ width: "100vw", height: "90px" }}></div>
       </div>
     );
 }
