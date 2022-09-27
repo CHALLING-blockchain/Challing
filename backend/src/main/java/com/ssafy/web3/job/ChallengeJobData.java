@@ -27,6 +27,7 @@ public class ChallengeJobData {
 
     public Schedule toScheduleEntity() {
         return Schedule.builder()
+                .jobType(ContractJobType.CHALLENGE)
                 .challengeId(challengeId)
                 .triggerAt(triggerAt)
                 .build();

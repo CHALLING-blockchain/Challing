@@ -36,6 +36,8 @@ router.get("/endchallenge/:challengeId", async (req, res, next) => {
 
   const challengeId = req.params.challengeId;
 
+  const contract = await getContract("ChallengeContract");
+
   res.json({ result: "DONE" });
 });
 
@@ -59,6 +61,8 @@ router.post("/endvote", async (req, res, next) => {
   const challengeId = req.body.challengeId;
   const voteId = req.body.voteId;
   const challengerId = req.body.challengerId;
+
+  const contract = await getContract("VoteContract");
 
   res.json({ result: "DONE" });
 });

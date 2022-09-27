@@ -27,6 +27,7 @@ public class VoteJobData {
 
     public Schedule toScheduleEntity() {
         return Schedule.builder()
+                .jobType(ContractJobType.VOTE)
                 .challengeId(challengeId)
                 .voteId(voteId)
                 .challengerId(challengerId)
