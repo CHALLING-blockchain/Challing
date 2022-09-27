@@ -28,13 +28,21 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void loadSchedule() throws SchedulerException {
         log.info("초기 스케줄 데이터 로드");
+        // TODO: 초기 스케줄 데이터 로드 구현
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addChallengeSchedule(ChallengeJobData jobData) throws SchedulerException {
+
         JobDetail job = ChallengeJob.newChallengeJob(jobData);
         Trigger trigger = ChallengeJob.newTrigger(jobData);
+
+        log.info("챌린지 종료 스케줄 추가:\nchallengeId: {}\ntriggerAt: {}",
+                jobData.getChallengeId(),
+                jobData.getTriggerAt());
+
+        scheduleRepository.save(jobData.toScheduleEntity());
 
         scheduler.scheduleJob(job, trigger);
     }
@@ -42,8 +50,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addVoteSchedule(VoteJobData jobData) throws SchedulerException {
+
         JobDetail job = VoteJob.newVoteJob(jobData);
         Trigger trigger = VoteJob.newTrigger(jobData);
+
+        log.info("투표 종료 스케줄 추가\nchallengeId: {}\nvoteId: {}\nchallengerId: {}\ntriggerAt: {}",
+                jobData.getChallengeId(),
+                jobData.getVoteId(),
+                jobData.getChallengerId(),
+                jobData.getTriggerAt());
+
+        scheduleRepository.save(jobData.toScheduleEntity());
 
         scheduler.scheduleJob(job, trigger);
     }

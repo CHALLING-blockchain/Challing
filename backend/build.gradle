@@ -33,11 +33,15 @@ dependencies {
 	// scheduling
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 
+	// web client
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'io.projectreactor:reactor-test'
 }
 
 tasks.named('bootRun') {
