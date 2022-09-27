@@ -27,6 +27,8 @@ import VotingHome from "./components/voting/VotingHome";
 import ConfirmRegister from "./components/challengeRegister/ConfirmRegister";
 import SuccessRegister from "./components/challengeRegister/SuccessRegister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
+import OngoingChallenge from "./components/myChallenge/OngoingChallenge";
+import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
 
 function App() {
   return (
@@ -60,6 +62,11 @@ function App() {
         {/* <Route path="/confirm-register" element={<ConfirmRegister />} /> */}
         <Route path="/success-register" element={<SuccessRegister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
+        <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
+        <Route path="/completed-challenge" element={<CompletedChallenge />} />
+        
+        
+
       </Routes>
       <Menu />
     </div>
