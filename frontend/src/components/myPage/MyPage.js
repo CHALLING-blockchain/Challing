@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from "react";
 import "./MyPage.css";
 import UserAPI from "../../api/UserAPI";
+import Web3 from "web3";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
@@ -8,20 +9,47 @@ import tick from "../../img/tick.png"
 import picture from "../../img/picture.png"
 import folder from "../../img/folder.png"
 import bookmark from "../../img/bookmark.png"
+import ContractAPI from "../../api/ContractAPI";
 
 function MyPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
   const fileImage = user.picURL;
-
+  const web3 = new Web3(window.ethereum);
+  const Contract = new ContractAPI();
+  const [ingChal, setIngChal] = useState(0);
+  const [edChal, setEdChal] = useState(0);
+  const [madeChal, setMadeChal] = useState(0);
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
-      console.log("response", response);
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
     });
   }, [user.email, dispatch]);
+  useEffect(() => {
+    async function load() {
+      await Contract.getMyChallenge(user.id).then((result) => {
+        console.log("result", result)
+        const join = result[1];
+        let ingCount = 0;
+        let edCount = 0;
+        if (join.length !== 0) {
+          for (let i=0; i<join.length(); i++) {
+            if (join[i].complete === true){
+              edCount += 1;
+            } else {
+              ingCount += 1;
+            }
+          }
+        }
+        setEdChal(edCount);
+        setIngChal(ingCount);
+        setMadeChal(result[0].length)
+      });
+    }
+    load();
+  }, [user.id]);
 
   return (
     <div>
@@ -69,15 +97,15 @@ function MyPage() {
         </div>
         <div className="ChallengeStatusBar">
           <div>
-            <p>0</p>
+            <p>{ingChal}</p>
             <span>진행중</span>
           </div>
           <div>
-            <p>0</p>
+            <p>{edChal}</p>
             <span>완료</span>
           </div>
           <div>
-            <p>0</p>
+            <p>{madeChal}</p>
             <span>개설</span>
           </div>
           
