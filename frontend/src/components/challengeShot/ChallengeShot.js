@@ -2,10 +2,37 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './ChallengeShot.css';
+import { useSelector, useDispatch } from "react-redux";
+import { challengeList} from "../../app/redux/allChallengeSlice"
+import * as getDayGab from "../main/Main.js";
+import moment from 'moment';
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
+import ContractAPI from "../../api/ContractAPI";
 
-function ChallengeShot(){
+async function ChallengeShot(){
     const [myChallenge,setMyChallenge] = useState("");
     const onChange = (event) => setMyChallenge(event.target.value);
+    const allChallenge=useSelector(challengeList);
+    const user = useSelector(selectUser);
+    const challengers=await ContractAPI.getChallengersByUserId(1)
+      // const authPer
+    console.log(challengers)
+    function ChallengeCard(props){
+      const today =moment(new Date()).format('YYYY-MM-DD');
+      const dayGab=getDayGab.getDayGapFromDates(today,props.challengeInfo.endDate)
+      
+      return(
+        <div>
+          <img src={props.challengeInfo.mainPicURL} height="50" width="50"></img>
+          <p>{props.challengeInfo.name}</p>
+          <button>인증하기</button>
+          <p>{dayGab}일 뒤 종료</p>
+          <p></p>
+          <p>현재{}%달성</p>
+        </div>
+      )
+    }
+
     return (
         <div>
           <h2 className="ShotHeader">
@@ -36,6 +63,12 @@ function ChallengeShot(){
             </svg>
           <div className="NoChallenging">
             <h1>진행중인 챌린지가 없습니다.😢</h1>
+            {
+             Object.values(allChallenge).map((challenge,index)=>{
+              return <ChallengeCard challengeInfo={challenge}></ChallengeCard>
+             })
+            }
+            
             <Link to="/">
                 <button className="AroundButton">챌린지 둘러보기</button>
             </Link>
