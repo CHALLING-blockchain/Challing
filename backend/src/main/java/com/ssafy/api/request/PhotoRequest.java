@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PhotoRequest {
+    private Long userId;
     private String photoUrl;
-    private String email;
 }

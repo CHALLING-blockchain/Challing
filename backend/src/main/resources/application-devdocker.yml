@@ -1,1 +1,1 @@
-com.ssafy.db.url.address: host.docker.internal
+com.ssafy.db.url.host: host.docker.internal
