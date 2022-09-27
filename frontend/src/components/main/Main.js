@@ -59,13 +59,10 @@ function Main() {
         let startDay = dayGap + "일 뒤";
         // (시작 전&&관심사 일치&&일상) 챌린지만
         if (
-          dayGap >= 0 &&
+          dayGap > 0 &&
           interestIdToName(element.interestId) === interest &&
           "donationId" in element === false
         ) {
-          if (dayGap === 0) {
-            startDay = "오늘부터";
-          }
           result.push(
             <span key={index}>
               <br></br>
