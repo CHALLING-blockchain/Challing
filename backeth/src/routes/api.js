@@ -38,7 +38,24 @@ router.get("/endchallenge/:challengeId", async (req, res, next) => {
 
   const contract = await getContract("ChallengeContract");
 
-  res.json({ result: "DONE" });
+  try {
+    // TODO: 일상, 기부 챌린지 구분해야 하는가
+    const r1 = await contract.methods.endDailyChallenge(challengeId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    const r2 = await contract.methods.endDonationChallenge(challengeId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    res.json({ result: "SUCCESS" });
+  } catch (e) {
+    console.log(e);
+
+    res.json({ result: "FAIL" });
+  }
 });
 
 /*
@@ -64,7 +81,19 @@ router.post("/endvote", async (req, res, next) => {
 
   const contract = await getContract("VoteContract");
 
-  res.json({ result: "DONE" });
+  try {
+    // TODO: endVote 인자 하나가 맞는가
+    const r1 = await contract.methods.endVote(voteId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    res.json({ result: "SUCCESS" });
+  } catch (e) {
+    console.log(e);
+
+    res.json({ result: "FAIL" });
+  }
 });
 
 export default router;
