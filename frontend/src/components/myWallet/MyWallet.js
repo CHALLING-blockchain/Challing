@@ -22,6 +22,8 @@ function MyWallet() {
   const [txData, setTxData] = useState("");
   // ETH -> KRW
   const [exData, setExData] = useState("");
+  // passCoin
+  const [passData, setPassData] = useState("");
 
   // get active account and balance data from useWeb3 hook
   const {
@@ -40,19 +42,22 @@ function MyWallet() {
   );
 
   function PassCoin() {
-    console.log("mywallet", activeAccount);
+    // console.log("mywallet: ", activeAccount);
     const Contract = new ContractAPI(activeAccount);
-    let passCnt = 0;
     useEffect(() => {
-      async function load() {
-        await Contract.getPasscoin().then((result) => {
-          result = passCnt;
-        });
+      if (activeAccount !== undefined && activeAccount !== "") {
+        console.log("activeAccount", activeAccount);
+        async function load() {
+          await Contract.getPasscoin().then((result) => {
+            setPassData(result);
+          });
+        }
+        load();
+        console.log("passCoin", passData);
       }
-      load();
-    }, []);
-    console.log("passCoin", passCnt);
-    return <p>나의 패스코인 : {passCnt}</p>;
+    }, [activeAccount]);
+
+    return <p>나의 패스코인 : {passData}</p>;
   }
 
   useEffect(() => {
