@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import UserAPI from "../../api/UserAPI";
 import Contract from "../../api/ContractAPI";
 import styles from "./ChallengeDetail.module.css";
-import back from "../../img/test-back.jpg";
-import profile from "../../img/profile-basic.png";
+// import back from "../../img/test-back.jpg";
+// import profile from "../../img/profile-basic.png";
 import person from "../../img/person.png";
 import dollar from "../../img/dollarCoin.png";
 import eth from "../../img/ethCoin.png";
@@ -18,7 +18,6 @@ import favbook from "../../img/bookmark.png";
 import Next from "../common/NextButton";
 import * as getDayGap from "../main/Main.js";
 import { selectUser } from "../../app/redux/userSlice";
-import moment from "moment";
 
 function Header(props) {
   const navigate = useNavigate();
