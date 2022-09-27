@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./OngoingChallenge.module.css"
 import { useNavigate } from 'react-router-dom';
-import RegisterCard from "../common/RegisterCard";
 import MyChallengeCard from "../common/MyChallengeCard";
 import test from "../../img/test-back.jpg"
 

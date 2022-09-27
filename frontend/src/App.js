@@ -29,6 +29,7 @@ import SuccessRegister from "./components/challengeRegister/SuccessRegister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 import OngoingChallenge from "./components/myChallenge/OngoingChallenge";
 import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
+import CompletedDetail from "./components/myChallenge/CompletedDetail";
 
 function App() {
   return (
@@ -64,6 +65,8 @@ function App() {
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
         <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
+        {/* <Route path="/completed-detail:id" element={<CompletedDetail />} /> */}
+        <Route path="/completed-detail" element={<CompletedDetail />} />
         
         
 
