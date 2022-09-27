@@ -15,7 +15,7 @@ import Next from "../common/NextButton";
 import useWeb3 from "../../hooks/useWeb3";
 import useBalance from "../../hooks/useBalance";
 import Web3 from "web3";
-import * as getDayGab from "../main/Main.js";
+import * as getDayGap from "../main/Main.js";
 
 function Header() {
   const navigate = useNavigate();
@@ -146,7 +146,7 @@ function ConfirmRegister() {
   const element = selector[id];
 
   let week = Math.floor(
-    getDayGab.getDayGab(element.startDate, element.endDate, false)
+    getDayGap.getDayGapFromDates(element.startDate, element.endDate)
   );
   let perWeek = Math.floor(element.authTotalTimes / week);
   return (
