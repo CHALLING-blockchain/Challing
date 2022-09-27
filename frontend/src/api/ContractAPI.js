@@ -240,6 +240,7 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
+    if (this.account !== undefined) {
     return this.Ccontract.methods
       .createDailyChallenge(dailyChallenge)
       .send({
@@ -247,7 +248,9 @@ class ContractAPI {
         gasLimit: 3_000_000,
       })
       .catch(console.error);
+    }
   }
+  
   async endDailyChallenge(challengeId) {
     await this.init();
     return this.Ccontract.methods
