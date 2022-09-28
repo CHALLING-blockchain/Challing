@@ -10,7 +10,7 @@ class ContractAPI {
     const infuraUrl =
       "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
     if (address !== undefined) {
       this.account = address;
     }
@@ -60,28 +60,36 @@ class ContractAPI {
 
   async joinChallenge(challengeId, userId, today, value) {
     await this.init();
-    return this.Ccontract.methods
-      .joinChallenge(challengeId, userId, today)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-        value: value * Number("1e18"),
-      })
-      .catch(console.error);
+
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Ccontract.methods
+                .joinChallenge(challengeId, userId, today)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async getMyChallenge(userId) {
     await this.init();
-    
-    const challenges=await this.Ccontract.methods
+
+    const challenges = await this.Ccontract.methods
       .getMyChallenge(userId)
       .call({
         from: this.account,
       })
       .catch(console.error);
 
-
-    return challenges
-
+    return challenges;
   }
   async findingChallenger(challengeId, userId) {
     await this.init();
@@ -105,50 +113,66 @@ class ContractAPI {
     const userIdIndex = info[1];
     const challengeIdIndex = info[2];
 
-    // 사진 저장
-    this.Vcontract.methods
-      .addPhoto(challengerId, userId, picURL, today)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      // 사진 저장
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              data: this.Vcontract.methods
+                .addPhoto(challengerId, userId, picURL, today)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
 
-    // 인증
-    return this.Ccontract.methods
-      .authenticate(
-        challengeId,
-        userId,
-        challengerId,
-        userIdIndex,
-        challengeIdIndex,
-        today
-      )
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+      //인증
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              data: this.Ccontract.methods
+                .authenticate(
+                  challengeId,
+                  userId,
+                  challengerId,
+                  userIdIndex,
+                  challengeIdIndex,
+                  today
+                )
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
 
   async getChallengers(challengeId) {
     await this.init();
-    const challengers=await this.Ccontract.methods
+    const challengers = await this.Ccontract.methods
       .getChallengers(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
-    const result=challengers.map(el=>{
+    const result = challengers.map((el) => {
       const challenge = Object.assign({}, el);
       const size = Object.keys(challenge).length;
       for (let i = 0; i < size / 2; i++) {
         delete challenge[i];
       }
-      return challenge
-    })
+      return challenge;
+    });
 
-    return result
+    return result;
   }
   async getChallengersByUserId(userId) {
     await this.init();
@@ -184,13 +208,21 @@ class ContractAPI {
 
     const challengerId = info[0];
 
-    return this.Ccontract.methods
-      .refund(challengerId)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Ccontract.methods.refund(challengerId).encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async usePasscoin(challengeId, userId) {
     await this.init();
@@ -206,19 +238,29 @@ class ContractAPI {
     const userIdIndex = info[1];
     const challengeIdIndex = info[2];
 
-    return this.Ccontract.methods
-      .usePasscoin(
-        challengeId,
-        userId,
-        challengerId,
-        userIdIndex,
-        challengeIdIndex
-      )
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Ccontract.methods
+                .usePasscoin(
+                  challengeId,
+                  userId,
+                  challengerId,
+                  userIdIndex,
+                  challengeIdIndex
+                )
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async applyVoteResult(challengeId, userId) {
     await this.init();
@@ -234,150 +276,225 @@ class ContractAPI {
     const userIdIndex = info[1];
     const challengeIdIndex = info[2];
 
-    return this.Ccontract.methods
-      .applyVoteResult(
-        challengeId,
-        userId,
-        challengerId,
-        userIdIndex,
-        challengeIdIndex
-      )
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Ccontract.methods
+                .applyVoteResult(
+                  challengeId,
+                  userId,
+                  challengerId,
+                  userIdIndex,
+                  challengeIdIndex
+                )
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async receivePasscoin(userIdList) {
     await this.init();
-    return this.Ccontract.methods
-      .receivePasscoin(userIdList)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Ccontract.methods
+                .receivePasscoin(userIdList)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
 
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
     if (this.account !== undefined && this.account !== "") {
-      return this.Ccontract.methods
-        .createDailyChallenge(dailyChallenge)
-        .send({
-          from: this.account,
-          gasLimit: 3_000_000,
-          data: "ecb18ceba781",
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              value: this.web3.utils.toHex(
+                this.web3.utils.toWei(dailyChallenge.deposit, "ether")
+              ),
+              data: this.Ccontract.methods
+                .createDailyChallenge(dailyChallenge)
+                .encodeABI(),
+            },
+          ],
         })
-        .catch(console.error);
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
     }
   }
 
   async endDailyChallenge(challengeId) {
     await this.init();
-    return this.Ccontract.methods
-      .endDailyChallenge(challengeId)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              data: this.Ccontract.methods
+                .endDailyChallenge(challengeId)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
 
   // DonationChallengeContract
   async createDonationChallenge(donationChallenge) {
     await this.init();
     if (this.account !== undefined && this.account !== "") {
-      console.log("setDonation", donationChallenge.setDonaion);
-      console.log("숫자: ", donationChallenge.setDonaion * Number("1e18"));
-      return this.Ccontract.methods
-        .createDonationChallenge(donationChallenge)
-        .send({
-          from: this.account,
-          gasLimit: 3_000_000,
-          value: donationChallenge.setDonaion * Number("1e18"),
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              value: this.web3.utils.toHex(this.web3.utils.toWei("1", "ether")),
+              data: this.Ccontract.methods
+                .createDonationChallenge(donationChallenge)
+                .encodeABI(),
+            },
+          ],
         })
-        .catch(console.error);
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
     }
   }
 
   async endDonationChallenge(challengeId) {
     await this.init();
 
-    return this.Ccontract.methods
-      .endDonationChallenge(challengeId)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              data: this.Ccontract.methods
+                .endDonationChallenge(challengeId)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
 
   async getAllDonation() {
     await this.init();
 
-    const donations=await this.Ccontract.methods
+    const donations = await this.Ccontract.methods
       .getAllDonation()
       .call({
         from: this.account,
       })
       .catch(console.error);
-    const result=donations.map(el=>{
+    const result = donations.map((el) => {
       const donation = Object.assign({}, el);
       const size = Object.keys(donation).length;
       for (let i = 0; i < size / 2; i++) {
         delete donation[i];
       }
-      return donation
-    })
+      return donation;
+    });
 
-    return result
+    return result;
   }
 
   // PhotoContract
   async getChallengerPhoto(challengerId) {
     await this.init();
 
-    const photos=await this.Vcontract.methods
+    const photos = await this.Vcontract.methods
       .getChallengerPhoto(challengerId)
       .call({
         from: this.account,
       })
       .catch(console.error);
-    const result=photos.map(el=>{
+    const result = photos.map((el) => {
       const photo = Object.assign({}, el);
       const size = Object.keys(photo).length;
       for (let i = 0; i < size / 2; i++) {
         delete photo[i];
       }
-      return photo
-    })
+      return photo;
+    });
 
-    return result
+    return result;
   }
 
   async report(challengeId, photoId, userId) {
     await this.init();
 
-    return this.Vcontract.methods
-      .report(challengeId, photoId, userId)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Vcontract.methods
+                .report(challengeId, photoId, userId)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async voting(challengeId, userId, voteId, pass) {
     await this.init();
 
-    return this.Vcontract.methods
-      .voting(challengeId, userId, voteId, pass)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: this.account,
+              to: this.Caddress,
+              data: this.Vcontract.methods
+                .voting(challengeId, userId, voteId, pass)
+                .encodeABI(),
+            },
+          ],
+        })
+        .then((txHash) => console.log(txHash))
+        .catch((error) => console.error);
+    }
   }
   async endVote(voteId) {
     await this.init();
@@ -392,22 +509,22 @@ class ContractAPI {
   async getChallengeVote(challengeId) {
     await this.init();
 
-    const votes=await this.Vcontract.methods
+    const votes = await this.Vcontract.methods
       .getChallengeVote(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
-    const result=votes.map(el=>{
+    const result = votes.map((el) => {
       const vote = Object.assign({}, el);
       const size = Object.keys(vote).length;
       for (let i = 0; i < size / 2; i++) {
         delete vote[i];
       }
-      return vote
-    })
+      return vote;
+    });
 
-    return result
+    return result;
   }
 
   async getPasscoin() {
