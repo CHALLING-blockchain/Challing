@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./OngoingChallenge.module.css"
 import { useNavigate } from 'react-router-dom';
 import MyChallengeCard from "../common/MyChallengeCard";
-import test from "../../img/test-back.jpg"
+import ContractAPI from "../../api/ContractAPI";
+import { useSelector } from 'react-redux';
+import { selectUser, setUserInfo } from './../../app/redux/userSlice';
+import UserAPI from "../../api/UserAPI";
+import { useDispatch } from 'react-redux';
+import { challengeList } from './../../app/redux/allChallengeSlice';
+import * as getInterestStr from "../main/Main.js";
+import * as getDayGap from "../main/Main.js";
+
 
 function Header() {
   const navigate = useNavigate();
@@ -32,34 +40,131 @@ function Header() {
 }
 
 function AchieveRateBox(){
-    const [count, setCount] = useState(0);
-    const [achRate, setAchRate] = useState(100);
-    return(
-        <div className={styles.achRateBox}>
-            <div className={styles.boxLeft}>
-                <p>챌린지</p>
-                <p><span>{count}</span>개</p>
-            </div>
-            <div className={styles.boxRight}>
-                <p>평균 달성률</p>
-                <span>{achRate}%</span>
-            </div>
+  const Contract = new ContractAPI();
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
+  const [ingChal, setIngChal] = useState("");
+  const [totalDeposit, setTotalDeposit] = useState("");
+  useEffect(() => {
+     UserAPI.mypage(user.email).then((response) => {
+       dispatch(setUserInfo(response.data.body));
+       setUser(response.data.body);
+     });
+   }, [user.email, dispatch]);
+  useEffect(() => {
+    async function load() {
+      await Contract.getMyChallenge(user.id).then((result) => {
+        const join = result[1];
+        let ingCount = 0;
+        for (let i = 0; i < join.length; i++) {
+          if (join[i].complete !== true) {
+            ingCount += 1;
+
+          }
+        }
+        setIngChal(ingCount);
+      });
+    }
+    load();
+  }, [user.id]);
+  
+  useEffect(() => {
+    async function load() {
+      await Contract.getChallengersByUserId(user.id).then((result) => {
+        let tmpDeposit = 0;
+        const myChallengeInfo = result;
+        for (let i = 0; i < myChallengeInfo.length; i++) {
+          let tmpInfo = myChallengeInfo[i];
+          if (tmpInfo.complete !== true) {
+            tmpDeposit += tmpInfo.userDeposit;
+          }
+        }
+        setTotalDeposit(tmpDeposit);
+      })
+    }
+    load();
+  }, [])
+    
+    return (
+      <div className={styles.achRateBox}>
+        <div className={styles.boxLeft}>
+          <p>챌린지</p>
+          <p>
+            <span>{ingChal}</span> 개
+          </p>
         </div>
-    )
+        <div className={styles.boxRight}>
+          <p>총 예치금</p>
+          <span>
+            {totalDeposit} <span style={{fontSize:'14px'}}>ETH</span>{" "}
+          </span>
+        </div>
+      </div>
+    );
 }
 
 function ChallengeList(){
-    // for문 돌리자
+  const Contract = new ContractAPI();
+  const [user, setUser] = useState(useSelector(selectUser));
+  const [userid, setUserid] = useState("");
+  const infos = []; 
+  const counts = [];
+  const challengeIds = [];
+  const dispatch = useDispatch();
+  const selector = useSelector(challengeList);
+
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+      setUserid(response.data.body.id)
+    });
+  }, [user.email, dispatch]);
+  useEffect(() => {
+    async function load() {
+      await Contract.getMyChallenge(userid).then((result) => {
+        const join = result[1];
+        if (join.length !== 0) {
+          for (let i = 0; i < join.length; i++) {
+            if (join[i].complete !== true) {
+              challengeIds.push(join[i]);
+            }
+          }
+        }
+        for (let i = 0; i < challengeIds.length; i++) {
+          let id = challengeIds[i];
+          let challengers = Contract.getChallengers(id);
+          for (let j = 0; j < challengers.length; j++) {
+            if (challengers[j].id === userid) {
+              counts.push(challengers[j].totalCount)
+            }
+          }
+          infos.push(selector[id])
+        }
+      });
+    }
+    load();
+  }, [user.id]);
+
     return (
       <div className={styles.listBox}>
-        <MyChallengeCard
-          type="학습"
-          title="영어, 외국어 10문장 쓰기"
-          times={3}
-          period="2022.09.05~2022.09.11"
-          img={test}
-          count='5'
-        ></MyChallengeCard>
+          { infos.map(function(info, index){
+            let week = Math.floor(
+              getDayGap.getDayGapFromDates(info.startDate, info.endDate) / 7
+            );
+            let perWeek = Math.floor(info.authTotalTimes / week);
+            return(
+              <MyChallengeCard
+                type={getInterestStr.interestIdToName(info.interestId)}
+                title={info.name}
+                times={perWeek}
+                period={info.startDate + "~" + info.endDate}
+                img={info.mainPicURL}
+                count={counts[index]}
+              ></MyChallengeCard>
+            )
+          })}
+        
       </div>
     );
 }
