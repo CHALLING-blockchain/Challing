@@ -118,6 +118,8 @@ function TopBox(props) {
     )
   );
 
+  console.log("period", period);
+
   const weekTimes =
     Number(props.challenge.authTotalTimes) /
     (Number(props.challenge.authDayTimes) * period);
