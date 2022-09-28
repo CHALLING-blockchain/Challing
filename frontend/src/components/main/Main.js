@@ -172,7 +172,7 @@ export function getDayGapFromDates(startDate, endDate) {
   let gap = startDate - endDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap - 1;
+  return dateGap;
 }
 
 export function interestIdToName(interestId) {
