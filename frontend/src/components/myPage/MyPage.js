@@ -173,7 +173,7 @@ function MyPage() {
       <div
         className="menuItem"
         onClick={() => {
-          navigate("/my-favorite-zip");
+          navigate("/my-favorite");
         }}
       >
         <p>챌린지 즐겨찾기</p>

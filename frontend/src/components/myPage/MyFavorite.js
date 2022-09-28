@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./MyFavorite.css";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../app/redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { setUserInfo, selectUser } from "../../app/redux/userSlice";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import favbook from "../../img/bookmark.png";
 import * as getDayGap from "../main/Main.js";
+import UserAPI from "../../api/UserAPI";
 
 function MyFavorite() {
-  const user = useSelector(selectUser);
+  const [user, setUser] = useState(useSelector(selectUser));
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const challenges = useSelector(challengeList);
+
   console.log("challenges", challenges);
+
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      console.log("response", response);
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+    });
+  }, [user.email, dispatch]);
 
   const favoriteChallenges = () => {
     const favoriteChallenges = [];
