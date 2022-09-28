@@ -21,15 +21,21 @@ function Main() {
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
+      let allDonationList=[]
       const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
         // console.log("result: ", result);
         allChallengeList = result;
       });
+      await Contract.getAllDonation().then((result) => {
+        // console.log("result: ", result);
+        allDonationList = result;
+      });
 
       // 로컬에 챌린지 목록이 없을때 -> redux에 저장
       // if (Object.keys(selector).length === 0) {
       dispatch(setChallengeList(allChallengeList));
+      dispatch(setChallengeList(allDonationList));
       // }
     }
 
