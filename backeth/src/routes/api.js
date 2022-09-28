@@ -32,6 +32,7 @@ const getContract = async (cname) => {
  *   { result: string }
  */
 router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
+  console.log("시간 재보기 start:", new Date());
   console.log(req.params);
 
   // const challengeId = req.params.challengeId;
@@ -47,6 +48,7 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
+    console.log("시간 재보기 end:", new Date());
     console.log("일상 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
