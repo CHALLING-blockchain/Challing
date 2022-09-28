@@ -1,5 +1,6 @@
 package com.ssafy.db.entity;
 
+import com.ssafy.web3.job.ChallengeType;
 import com.ssafy.web3.job.ContractJobType;
 import lombok.*;
 
@@ -22,8 +23,8 @@ public class Schedule {
     private ContractJobType jobType;
     @Column(name = "challenge_id")
     private String challengeId;
-    @Column(name = "challenger_id")
-    private String challengerId;
+    @Column(name = "challenge_type")
+    private ChallengeType challengeType;
     @Column(name = "vote_id")
     private String voteId;
     @Column(name = "trigger_at")

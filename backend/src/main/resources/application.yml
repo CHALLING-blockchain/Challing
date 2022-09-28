@@ -1,6 +1,7 @@
 com.ssafy:
   db.url.host: 127.0.0.1
   backeth.base_url: http://localhost:8082/api
+  save_dummy_job: true
 
 spring:
   datasource:

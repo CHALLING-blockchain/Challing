@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import './ChallengeShot.css';
 import { useSelector, useDispatch } from "react-redux";
 import { challengeList} from "../../app/redux/allChallengeSlice"
@@ -15,6 +15,9 @@ function ChallengeShot(){
     const allChallenge=useSelector(challengeList);
     const user = useSelector(selectUser);
     const [challengers,setChallegers]=useState();
+    const navigate = useNavigate();
+
+
     useEffect(() => {
       async function load() {
         const challengers= await ContractAPI.getChallengersByUserId(1)
@@ -26,7 +29,10 @@ function ChallengeShot(){
     function ChallengeCard(props){
       const today =moment(new Date()).format('YYYY-MM-DD');
       const dayGab=getDayGab.getDayGapFromDates(today,props.challengeInfo.endDate)
+      
       let userCount=0;
+
+      
       if(challengers){
         userCount=challengers.filter(el=>el.challengeId==props.challengeInfo.challengeId)[0].totalCount
       }
@@ -36,7 +42,15 @@ function ChallengeShot(){
         <div>
           <img src={props.challengeInfo.mainPicURL} height="50" width="50"></img>
           <p>{props.challengeInfo.name}</p>
-          <button>인증하기</button>
+            <button onClick={() => {
+              navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
+                state: {
+                  challengeInfo:props.challengeInfo,
+                  percentage:percentage
+                }
+              });
+            }}>인증하기</button>
+          
           <p>{dayGab}일 뒤 종료</p>
           <p></p>
           <p>현재{percentage}%달성</p>
