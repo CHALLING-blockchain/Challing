@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import UserAPI from "../../api/UserAPI";
-import Contract from "../../api/ContractAPI";
+import ContractAPI from "../../api/ContractAPI";
 import styles from "./ChallengeDetail.module.css";
 // import back from "../../img/test-back.jpg";
 // import profile from "../../img/profile-basic.png";
@@ -23,9 +23,21 @@ function Header(props) {
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(false);
 
+  useEffect(() => {
+    console.log("props user", props.user);
+    for (let index = 0; index < props.user.challengeIds.length; index++) {
+      if (
+        props.user.challengeIds[index] === Number(props.challenge.challengeId)
+      ) {
+        setBookmark(true);
+        break;
+      }
+    }
+  }, [props.user.challengeIds, props.challenge.challengeId, props.user]);
+
   const checkmark = async () => {
     const body = {
-      userId: props.challenge.ownerId,
+      userId: props.user.id,
       challengeId: props.challenge.challengeId,
     };
     if (bookmark === true) {
@@ -285,7 +297,7 @@ function ShotDescription(props) {
   );
 }
 
-async function joinChallenge(challengeId, userId, today, value) {
+async function joinChallenge(Contract, challengeId, userId, today, value) {
   await Contract.joinChallenge(challengeId, userId, today, value).then(
     (result) => {
       console.log("join result", result);
@@ -304,6 +316,7 @@ function ChallengeDetail() {
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
   const [joinFlag, setJoinFlag] = useState(false);
   const [challengers, setChallengers] = useState(1);
+  const Contract = new ContractAPI();
 
   useEffect(() => {
     const getChallengers = async () => {
@@ -325,7 +338,7 @@ function ChallengeDetail() {
 
   return (
     <div>
-      <Header challenge={challenge}></Header>
+      <Header challenge={challenge} user={user}></Header>
       <img
         className={styles.backImg}
         src={challenge.mainPicURL}
@@ -349,6 +362,7 @@ function ChallengeDetail() {
             label="챌린지 신청하기"
             onClick={() => {
               joinChallenge(
+                Contract,
                 challenge.challengeId,
                 user.id,
                 todayStr,
