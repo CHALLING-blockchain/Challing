@@ -57,7 +57,7 @@ function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,se
   function NextButtonX(){
     return(
       <div className={styles.buttonBox}>
-        <button className={styles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8 )</button>
+        <button className={styles.NextButtonX}>Next( {formCnt} / 8 )</button>
       </div>
     )
   }
@@ -72,11 +72,11 @@ function SelectPeople({formCnt,setFormCnt,peopleLimit,setPeopleLimit,limitNum,se
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-left"
+            className="bi bi-chevron-left"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
             />
           </svg>
