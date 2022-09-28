@@ -44,7 +44,7 @@ function App() {
         <Route path="/challenge-detail/:id" element={<ChallengeDetail />} />
         <Route path="/challenge-search" element={<ChallengeSearch />} />
         <Route path="/challenge-shot" element={<ChallengeShot />} />
-        <Route path="/challenge-certify" element={<ChallengeCertify />} />
+        <Route path="/challenge-certify/:id" element={<ChallengeCertify />} />
         <Route path="/certification-photos" element={<CertificationPhotos />} />
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/my-profile" element={<MyProfile />} />

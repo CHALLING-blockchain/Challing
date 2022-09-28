@@ -18,3 +18,30 @@
   justify-content: center;
   align-items: center;
   }
+
+.InputSearch{
+  width: 328px;
+  height: 40px;
+  background-color: #FBFBFB;
+  display: flex;
+  align-items: center;
+  /* padding: 8px; */
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+.Input{
+  font-weight: 600;
+  font-size: 16px;
+  /* color: #999999; */
+  background-color: #FBFBFB;
+  height: 32px;
+  width: 248px;
+  padding-left: 8px;
+}
+.Input:focus{
+  outline: none;
+}
+.SearchIcon{
+  margin-left: 16px;
+  margin-right: 8px;
+}
