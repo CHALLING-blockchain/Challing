@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './challengeForm.module.css';
 import Slider from 'rc-slider';
+import tick from '../../../img/tick.png';
 import '../../../../node_modules/rc-slider/assets/index.css';
-import NextButtonStyles from '../../common/NextButton.module.css';
 
 function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthentications,setStartTime,setEndTime}){
   const marks = {
@@ -10,64 +10,97 @@ function SelectCertification({formCnt,setFormCnt,setNTimesAWeek,setAuthenticatio
     6: '06:00',
     12: '12:00',
     18: '18:00',
-    24: {
-      style: {
-        color: 'red',
-      },
-      label: <strong>24:00</strong>,
-    },
+    24: <strong>24:00</strong>
   };
-  const[num,setNum] = useState(0);
+  const[list,setList] = useState({
+    start:null,
+    end:null,
+    joo:null,
+    horu:null
+  });
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+      </div>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButtonX} onClick={()=>{setFormCnt(formCnt+1)}} disabled='false'>Next( {formCnt} / 8)</button>
+      </div>
     )
+  }
+  function Header(){
+    return (
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+        <div className={styles.header}>
+          <svg
+            onClick={()=>{setFormCnt(formCnt-1)}}
+            style={{ margin: "16px" }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <div></div>
+        </div>
+      </div>
+    );
   }
   return (
     <div>
-      <div className="BackMyPage">
-        <svg onClick={()=>{setFormCnt(formCnt-1)}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-        </svg>
-        <p>챌린지 개설하기</p>
-      </div>
-      <div>
+      <Header/>
+      <div style={{padding:'16px'}}>
         <p className={styles.FormHeader}>챌린지 인증의 디테일을 정해주세요.</p>
         <p className={styles.FormEx}>챌린지의 인증 빈도와 인증 가능시간을 정해<br/>
                               챌린지의 성공확률을 높여보세요.<br/>
                               챌린지 개설 후 디테일 설정을 변경할 수 없습니다.<br/> </p>
       </div>
-      <div>
-        <p>인증 빈도</p>
-        <p>주간 참여 횟수와 하루 인증 횟수를 작성해주세요. 숫자만 입력 가능합니다.</p>
-        <label for="week">주</label>
-        <input id="week" type="number" min="1" max="7" onChange={(e)=>{
-          setNTimesAWeek(e.target.value);
-          setNum((current)=>current+1);
-          }}/>회
-        <label for="week">하루</label>
-        <input id="week" type="number" min="1" max="3" onChange={(e)=>{
-          setAuthentications(e.target.value);
-          setNum((current)=>current+1);;
-          }}/>회
+      <div style={{padding:'16px'}}>
+        <p><img src={tick} alt='tick' style={{width:'16px'}}/>인증 빈도</p>
+        <p className={styles.FormEx}>주간 참여 횟수와 하루 인증 횟수를 작성해주세요. 숫자만 입력 가능합니다.</p>
+        <div style={{marginTop:'8px',fontWeight:'bold'}}>
+          <div style={{marginTop:'16px'}}>
+            <label for="week" style={{marginRight:'8px'}}>주</label>
+            <input className={styles.inputN}
+              id="week" type="number" min="1" max="7" onChange={(e)=>{
+              setNTimesAWeek(e.target.value);
+              setList((list)=>({...list,joo:e.target.value}));
+              }}/>회<br/>
+          </div>
+          <div style={{marginTop:'16px'}}>
+            <label for="week" style={{marginRight:'8px'}}>하루</label>
+            <input className={styles.inputN} 
+              id="week" type="number" min="1" max="3" onChange={(e)=>{
+              setAuthentications(e.target.value);
+              setList((list)=>({...list,horu:e.target.value}));
+              }}/>회
+          </div>
+        </div>
       </div>
-      <div>
-        <p>인증 가능시간</p>
-        <div style={{height:'30px'}}>
-        <Slider dots range min={0} max={24} marks={marks} step={1} onChange={(e)=>{
-          setStartTime(e[0]);
-          setEndTime(e[1]);
-          setNum((current)=>current+1);;
-        }} defaultValue={[0, 24]} />
+      <div  style={{padding:'16px'}}>
+        <p style={{marginBottom:'8px'}}><img src={tick} alt='tick' style={{width:'16px'}}/>인증 가능시간 {list.start !== null ? <>( {list.start}:00 ~ {list.end}:00 )</> : null}</p>
+        <div className={styles.Slider} style={{height:'30px',width:'328px'}}>
+          <Slider
+            style={{width:'296px'}}
+            range min={0} max={24} marks={marks} step={1} onChange={(e)=>{
+            setStartTime(e[0]);
+            setEndTime(e[1]);
+            setList((list)=>({...list,start:e[0],end:e[1]}));
+          }} defaultValue={[0, 24]} />
+        </div>
       </div>
-      </div>
-
-      {num >= 3  ? <NextButton/> : <NextButtonX/>}
+      { Object.values(list).includes(null)  ? <NextButtonX/> : <NextButton/> }
     </div>
   );
 }

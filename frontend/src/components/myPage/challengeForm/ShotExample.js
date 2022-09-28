@@ -1,20 +1,30 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import styles from './challengeForm.module.css';
-import NextButtonStyles from '../../common/NextButton.module.css';
 import {uploadImageFile} from '../../../plugins/s3upload';
+import photoUpload from '../../../img/PhotoUpload.png';
 
 function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
+  const goodInput = useRef();
+  const goodClick = () => {
+    goodInput.current.click();
+  };
+  const badInput = useRef();
+  const badClick = () => {
+    badInput.current.click();
+  };
   //파일 미리볼 url을 저장해줄 state
-  const [good,setGood] = useState("");
-  const [bad,setBad] = useState("");
+  const [good,setGood] = useState(photoUpload);
+  const [bad,setBad] = useState(photoUpload);
   const [s3Good,setS3Good] = useState("");
   const [s3Bad,setS3Bad] = useState("");
 
   // 파일 저장
   const saveGoodFileImage = (e) => {
-    setGood(URL.createObjectURL(e.target.files[0]));
-    setS3Good(e.target.files[0])
-    setGoodShotUrl(URL.createObjectURL(e.target.files[0]));
+    if (e.target.files[0] !== undefined){
+      setGood(URL.createObjectURL(e.target.files[0]));
+      setS3Good(e.target.files[0])
+      setGoodShotUrl(URL.createObjectURL(e.target.files[0]));
+    } else { setGood(photoUpload) }
   };
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
@@ -31,9 +41,11 @@ function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
     setGoodShotUrl("");
   };
   const saveBadFileImage = (e) => {
-    setBad(URL.createObjectURL(e.target.files[0]));
-    setS3Bad(e.target.files[0])
-    setBadShotUrl(URL.createObjectURL(e.target.files[0]));
+    if (e.target.files[0] !== undefined){
+      setBad(URL.createObjectURL(e.target.files[0]));
+      setS3Bad(e.target.files[0])
+      setBadShotUrl(URL.createObjectURL(e.target.files[0]));
+    } else { setBad(photoUpload) }
   };
   const deleteBadFileImage = () => {
     URL.revokeObjectURL(bad);
@@ -42,48 +54,89 @@ function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
   };
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
+      </div>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
+      </div>
     )
+  }
+  function Header(){
+    return (
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+        <div className={styles.header}>
+          <svg
+            onClick={()=>{setFormCnt(formCnt-1)}}
+            style={{ margin: "16px" }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <div></div>
+        </div>
+      </div>
+    );
   }
   return (
     <div>
-      <div className="BackMyPage">
-        <svg onClick={()=>{setFormCnt(formCnt-1)}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-        </svg>
-        <p>챌린지 개설하기</p>
-      </div>
-      <div>
+      <Header/>
+      <div style={{padding:'16px'}}>
         <p className={styles.FormHeader}>인증샷 예시를 등록해주세요.</p>
         <p className={styles.FormEx}>챌린지 참여자의 혼란을 방지하고, 참여자의 인증샷이<br/> 
                               올바른지 판단할 수 있는 기준을 마련해주세요.<br/> 
                               챌린지 개설 수 인증샷 예시는 변경할 수 없습니다.<br/> </p>
       </div>
-
-      <div>
-        <div>
-          <p>좋은 인증샹 예시</p>
-          <input type="file" accept="image/*" onChange={saveGoodFileImage}/>
-          {good && (<div>
-            <img alt="sample" src={good} style={{width:"120px",height:"120px"}}/> 
-            <button onClick={() => deleteGoodFileImage()}>X</button>
-          </div>)}
+      <div className={styles.ShotEX}>
+        <div className="PhotoBox">
+          <p style={{marginBottom:'8px'}}>👍 좋은 인증샷 예시</p>
+          <img
+            onClick={goodClick}
+            style={{ width: "160px", height: "160px" }}
+            src={good}
+            alt="sample"
+          />
+          <input
+            type="file"
+            name="imgUpload"
+            accept="image/*"
+            onChange={saveGoodFileImage}
+            style={{ display: "none" }}
+            ref={goodInput}
+          />
         </div>
-        <div>
-        <p>나쁜 인증샹 예시</p>
-          <input type="file" accept="image/*" onChange={saveBadFileImage}/>
-          {bad && (<div>
-            <img alt="sample" src={bad} style={{width:"120px",height:"120px"}}/> 
-            <button onClick={() => deleteBadFileImage()}>X</button>
-          </div>)}
+        <div className="PhotoBox">
+          <p style={{marginBottom:'8px'}}>👎 나쁜 인증샷 예시</p>
+          <img
+            onClick={badClick}
+            style={{ width: "160px", height: "160px" }}
+            src={bad}
+            alt="sample"
+          />
+          <input
+            type="file"
+            name="imgUpload"
+            accept="image/*"
+            onChange={saveBadFileImage}
+            style={{ display: "none" }}
+            ref={badInput}
+          />
         </div>
       </div>
-      {good && bad !== ""   ? <NextButton/> : <NextButtonX/>}
+      {good && bad !== photoUpload   ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }

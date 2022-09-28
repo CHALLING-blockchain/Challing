@@ -1,20 +1,22 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import styles from './challengeForm.module.css';
-import NextButtonStyles from '../../common/NextButton.module.css';
 import {uploadImageFile} from '../../../plugins/s3upload';
+import photoUpload from '../../../img/PhotoUpload.png';
 
 function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUrl,setExPhotoUrl}){
   // aws config
 
   const [length,setLength] = useState(0);
   //파일 미리볼 url을 저장해줄 state
-  const [fileImage, setFileImage] = useState("");
+  const [fileImage, setFileImage] = useState(photoUpload);
   const [s3file, setS3File] = useState("");
   // 파일 선택
   const selectFileImage = async(e) => {
-    setFileImage(URL.createObjectURL(e.target.files[0]))
-    // setExPhotoUrl(URL.createObjectURL(e.target.files[0]))
-    setS3File(e.target.files[0])
+    if (e.target.files[0] !== undefined){
+      setFileImage(URL.createObjectURL(e.target.files[0]))
+      // setExPhotoUrl(URL.createObjectURL(e.target.files[0]))
+      setS3File(e.target.files[0])
+    } else { setFileImage(photoUpload) }
   };
 
   // 파일 s3에 저장
@@ -30,31 +32,59 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
     setFileImage("");
     setExPhotoUrl("");
   };
+  const photoInput = useRef();
+  const handleClick = () => {
+    photoInput.current.click();
+  };
   function NextButton(){
     return(
-      <button className={NextButtonStyles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1);s3SaveFileImage();}}>Next( {formCnt} / 8)</button>
+      </div>
     )
   }
   function NextButtonX(){
     return(
-      <button className={NextButtonStyles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButtonX} disabled='false'>Next( {formCnt} / 8)</button>
+      </div>
     )
+  }
+  function Header(){
+    return (
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+        <div className={styles.header}>
+          <svg
+            onClick={()=>{setFormCnt(formCnt-1)}}
+            style={{ margin: "16px" }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <div></div>
+        </div>
+      </div>
+    );
   }
   const[list,setList] = useState([]);
   return (
     <div>
-      <div className="BackMyPage">
-        <svg onClick={()=>{setFormCnt(formCnt-1)}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-        </svg>
-        <p>챌린지 개설하기</p>
-      </div>
-      <div>
+      <Header/>
+      <div style={{padding:'16px'}}>
         <p className={styles.FormHeader}>챌린지와 인증방법을 설명해주세요.</p>
         <p className={styles.FormEx}>챌린지 참가자가 이해할 수 있도록 챌린지에 대한 자세한 설명과 
                               구체적인 인증방법을 작성해주세요.<br/>
                               개설된 챌린지의 설명은 수정할 수 없습니다.<br/></p>
-        <p>챌린지 설명</p>
+        <p style={{marginTop: '16px'}}>챌린지 설명</p>
         <textarea
           className={styles.InputIntro}
           // value는 텍스트인풋에서 넘겨준 props
@@ -68,15 +98,26 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
             setList(e.target.value);
           }}
         />
-        <p>{length}/1000자 이내</p>
+        <p style={{marginTop: '8px'}}>{length}/1000자 이내</p>
       </div>
-      <div>
-
-        <input className={styles.FileUpload} type="file" accept="image/*" onChange={selectFileImage}/>
-        {fileImage && (<div>
-          <img alt="sample" src={fileImage} style={{width:"120px",height:"120px"}}/> 
-          <button onClick={() => deleteFileImage()}>X</button>
-        </div>)}
+      <div style={{padding:'16px'}}>
+        <div className="PhotoBox">
+          <p style={{marginBottom:'8px'}}>챌린지 대표 사진(선택)</p>
+          <img
+            onClick={handleClick}
+            style={{ width: "120px", height: "120px" }}
+            src={fileImage}
+            alt="sample"
+          />
+          <input
+            type="file"
+            name="imgUpload"
+            accept="image/*"
+            onChange={selectFileImage}
+            style={{ display: "none" }}
+            ref={photoInput}
+          />
+        </div>
       </div>
       {list.length >=1   ? <NextButton/> : <NextButtonX/>}
     </div>

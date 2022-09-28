@@ -1,8 +1,33 @@
 .Input{
+width: 312px;
+height: 40px;
+background: rgba(229, 230, 255, 0.5);
+border-radius: 10px;
+margin-top: 16px;
+margin-bottom: 8px;
+padding-left: 16px;
+}
+.SmallText{
+font-weight: 400;
+font-size: 10px;
+color: #01F6BD;
+}
+
+.Select{
 width: 328px;
 height: 40px;
 background: rgba(229, 230, 255, 0.5);
 border-radius: 10px;
+border: 0;
+padding: 8px;
+}
+.header{
+  background-color: white;
+  width: 100vw;
+  height: 54px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 4fr 1fr;
 }
 
 .SelectChallenge{
@@ -20,6 +45,8 @@ border-radius: 10px;
   background: rgba(229, 230, 255, 0.5);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .FormHeader{
@@ -46,26 +73,17 @@ border-radius: 10px;
 font-weight: 400;
 font-size: 10px;
 letter-spacing: -0.01em;
-
+margin-top: 8px;
 color: #6A6A6A;
-}
-.NextButton{
-  /* Rectangle 145 */
-width: 328px;
-height: 48px;
-background: linear-gradient(252.68deg, #9272FF 27.32%, #8596FF 93.21%);
-border-radius: 10px;
-text-align: center;
-display: flex;
-justify-content: center;
-align-items: center;
 }
 
 .InputIntro{
-width: 328px;
-height: 160px;
+width: 312px;
+height: 144px;
 background: rgba(229, 230, 255, 0.5);
 border-radius: 10px;
+margin-top: 8px;
+padding: 8px;
 }
 .FileUpload{
 width: 120px;
@@ -74,6 +92,19 @@ height: 120px;
 background: #D9D9D9;
 border-radius: 5px;
 
+}
+.Slider{
+  display: flex;
+  justify-content: center;
+}
+.inputN{
+  border-bottom:black 1px solid;
+  margin-right:8px;
+  text-align:center;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+  color: #755FFF;
 }
 .SelectWeekX{
 width: 100px;
@@ -113,13 +144,20 @@ margin-top: 8px;
 }
 .DatePicker{
   border-bottom: solid 1px black;
-  width: 140px;
+  width: 108px;
   height: 30px;
   font-size: 18px;
+  text-align: center;
 }
 .SelectDate{
+  width: 152px;
   display: flex;
   justify-content: flex-start;
+}
+.Periods{
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
 }
 .Limit{
   display: flex;
@@ -151,7 +189,11 @@ text-align: center;
 .False{
   margin-top: 8px;
   margin-bottom: 8px;
-
+  opacity: 0.5;
+}
+.True{
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 .LimitTF{
 width: 328px;
@@ -173,18 +215,25 @@ font-size: 18px;
 }
 .CreateReview{
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-wrap: wrap;
   text-align: center;
   align-items: center;
+  padding: 12px;
 }
+
 .Card1{
   width: 104px;
   height: 96px;
   background: rgba(229, 230, 255, 0.5);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 4px;
+  margin-bottom: 8px;
 }
 .Card2{
   width: 160px;
@@ -192,4 +241,49 @@ font-size: 18px;
   background: rgba(229, 230, 255, 0.5);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  margin: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.buttonBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.NextButton{
+  width: 328px;
+  height: 48px;
+  /* margin: 16px; */
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  position: fixed;
+  bottom: 72px;
+}
+
+.NextButtonX{
+  width: 328px;
+  height: 48px;
+  /* margin: 16px; */
+  background: linear-gradient(252.68deg, rgba(146, 114, 255, 0.5) 27.32%, rgba(133, 150, 255, 0.5) 93.21%);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  position: fixed;
+  bottom: 72px;
+  }
+
+.ShotEX{
+  display: flex;
+  justify-content: space-evenly;
 }
