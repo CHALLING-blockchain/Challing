@@ -128,7 +128,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         <button
           className={CreateButtonStyles.NextButton}
           onClick={async () => {
-            await ContractAPI.createDonationChallenge(donationChallenge).then(
+            await Contract.createDonationChallenge(daliyChallenge).then(
               console.log
             );
             await Contract.getAllChallenge().then((result) => {
