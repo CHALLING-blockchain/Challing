@@ -13,7 +13,6 @@ import ContractAPI from "../../api/ContractAPI";
 
 function Header(){
     const navigate = useNavigate();
-
     return (
       <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
         <div className={styles.header}>
@@ -24,11 +23,11 @@ function Header(){
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-left"
+            className="bi bi-chevron-left"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
             />
           </svg>
@@ -97,19 +96,21 @@ function Btn(){
 
 function OtherShot({challengers}){
     const [photoList,setPhotoList]=useState([]);
+    const Contract = new ContractAPI();
     useEffect(() => {
       async function load() {
-        challengers.forEach(async (challenger)=>{
-          
-          const photo= await ContractAPI.getChallengerPhoto(challenger.id)     
-          console.log(photo)    
-          setPhotoList([...photoList,...photo]);
-        })
-      }
-      load()
+        if (challengers){
+          challengers.forEach(async (challenger)=>{
+            const photo= await Contract.getChallengerPhoto(challenger.id)     
+            // console.log(photo)    
+            setPhotoList([...photoList,...photo]);
+          })
+        }
+        load()
+        }
     }, []);
 
-    console.log(photoList)
+    console.log(challengers)
     return (
       <div className={styles.otherShot}>
         <div className={styles.shotTitle}>
@@ -125,8 +126,6 @@ function OtherShot({challengers}){
               
             })
           }
-          
-            
             <img src={backdrop} alt="" />
             <img src={backdrop} alt="" />
             <img src={backdrop} alt="" />
@@ -150,11 +149,11 @@ function Voting(){
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-right"
+            className="bi bi-chevron-right"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
             />
           </svg>
@@ -163,13 +162,14 @@ function Voting(){
     );
 }
 
-function ChallengeCertify(){
+function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
   const percentage=useLocation().state.percentage;
   const [challengers,setChallegers]=useState();
+  const Contract = new ContractAPI();
   useEffect(() => {
     async function load() {
-      const challengers= await ContractAPI.getChallengers(challenge.challengeId)
+      const challengers= await Contract.getChallengers(challenge.challengeId)
       setChallegers(challengers);
     }
     load()
