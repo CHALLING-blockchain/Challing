@@ -149,13 +149,11 @@ export function getDayGapFromToday(startDate) {
   let todayDateArr = todayStr.split("-");
   let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
 
-  // console.log("todayDate", todayDate + " " + startDate);
-
   // 차이 구하기
   let gap = todayDate - startDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap - 1;
+  return dateGap;
 }
 
 //startDate와 endDate의 날짜 차이를 반환
@@ -174,7 +172,7 @@ export function getDayGapFromDates(startDate, endDate) {
   let gap = startDate - endDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap - 1;
+  return dateGap;
 }
 
 export function interestIdToName(interestId) {

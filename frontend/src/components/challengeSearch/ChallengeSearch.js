@@ -40,25 +40,22 @@ function ChallengeSearch() {
           );
           let startDay = dayGap + "일 뒤";
           // 시작 전 챌린지만
-          // if (dayGap >= 0) {
-          if (dayGap === 0) {
-            startDay = "오늘부터";
+          if (dayGap > 0) {
+            result.push(
+              <span
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <br></br>
+                <p>{element.mainPicURL}</p>
+                <p>{element.name}</p>
+                <p>{startDay} 시작</p>
+                <p>{period}주 동안</p>
+              </span>
+            );
           }
-          result.push(
-            <span
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <p>{element.mainPicURL}</p>
-              <p>{element.name}</p>
-              <p>{startDay} 시작</p>
-              <p>{period}주 동안</p>
-            </span>
-          );
-          // }
         }
       }
     } else {
@@ -67,10 +64,7 @@ function ChallengeSearch() {
         let dayGap = getDayGap.getDayGapFromToday(element.startDate);
         let startDay = dayGap + "일 뒤";
         // 시작 전 챌린지만
-        if (dayGap >= 0) {
-          if (dayGap === 0) {
-            startDay = "오늘부터";
-          }
+        if (dayGap > 0) {
           result.push(
             <span
               key={index}
