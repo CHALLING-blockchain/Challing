@@ -120,7 +120,9 @@ pipeline {
             }
 
             stage('backeth_serve') {
-              sh "docker run -d -p 8082:3000 --add-host=host.docker.internal:host-gateway --name ${BACKETH_CONTAINER} ${BACKETH_IMAGE}"
+              steps {
+                sh "docker run -d -p 8082:3000 --add-host=host.docker.internal:host-gateway --name ${BACKETH_CONTAINER} ${BACKETH_IMAGE}"
+              }
             }
 
             stage('mattermost_send_backeth_complete') {
