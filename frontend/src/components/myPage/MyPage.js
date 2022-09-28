@@ -34,7 +34,7 @@ function MyPage() {
         let ingCount = 0;
         let edCount = 0;
         if (join.length !== 0) {
-          for (let i = 0; i < join.length(); i++) {
+          for (let i = 0; i < join.length; i++) {
             if (join[i].complete === true) {
               edCount += 1;
             } else {
