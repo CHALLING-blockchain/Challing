@@ -55,8 +55,8 @@ contract DailyChallengeContract is ChallengerContract{
     // 챌린지 생성
     function createDailyChallenge(DailyChallenge memory dailyChallenge) public payable {
         dailyChallenge.challengeId=challengeSequence;
-        dailyChallenge.deposit*=1e18;
-        dailyChallenge.totalDeposit*=1e18;
+        dailyChallenge.deposit=msg.value;
+        dailyChallenge.totalDeposit=msg.value;
         dailyChallengeMap[challengeSequence++]=dailyChallenge ;
         
         /* 챌린지 생성자 챌린저에 추가 */

@@ -48,8 +48,8 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
     function createDonationChallenge(DonationChallenge memory donationChallenge) public payable
     {
         donationChallenge.challengeId=challengeSequence;
-        donationChallenge.setDonaion*=1e18;
-        donationChallenge.totalDonation*=1e18;
+        donationChallenge.setDonaion=msg.value;
+        donationChallenge.totalDonation=msg.value;
         donationChallengeMap[challengeSequence++]=donationChallenge ;
 
         /* 챌린지 생성자 챌린저에 추가 */
