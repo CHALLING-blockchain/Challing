@@ -23,48 +23,109 @@ const getContract = async (cname) => {
 };
 
 /*
- * 챌린지 끝내기
+ * 일상 챌린지 끝내기
  *
  * Request
- *   /api/endchallenge/:challengeId
+ *   /api/enddailychallenge/:challengeId
  *
  * Response
  *   { result: string }
  */
-router.get("/endchallenge/:challengeId", async (req, res, next) => {
+router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
   console.log(req.params);
 
-  const challengeId = req.params.challengeId;
+  // const challengeId = req.params.challengeId;
+
+  // test용
+  const challengeId = 0;
 
   const contract = await getContract("ChallengeContract");
 
-  res.json({ result: "DONE" });
+  try {
+    // TODO: 일상, 기부 챌린지 구분해야 하는가
+    const r1 = await contract.methods.endDailyChallenge(challengeId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    console.log(r1);
+
+    res.json({ result: "SUCCESS" });
+  } catch (e) {
+    console.log(e);
+
+    res.json({ result: "FAIL" });
+  }
+});
+
+/*
+ * 기부 챌린지 끝내기
+ *
+ * Request
+ *   /api/enddonationchallenge/:challengeId
+ *
+ * Response
+ *   { result: string }
+ */
+router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
+  console.log(req.params);
+
+  // const challengeId = req.params.challengeId;
+
+  // test용
+  const challengeId = 0;
+
+  const contract = await getContract("ChallengeContract");
+
+  try {
+    const r1 = await contract.methods.endDonationChallenge(challengeId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    console.log(r1);
+
+    res.json({ result: "SUCCESS" });
+  } catch (e) {
+    console.log(e);
+
+    res.json({ result: "FAIL" });
+  }
 });
 
 /*
  * 투표 끝내기
  *
  * Request
- *   /api/endvate
- *   body: {
- *     challengeId: string,
- *     voteId: string,
- *     challengerId: string
- *   }
+ *   /api/endvate/:voteId
  *
  * Response
  *   { result: string }
  */
-router.post("/endvote", async (req, res, next) => {
-  console.log(req.body);
+router.get("/endvote/:voteId", async (req, res, next) => {
+  console.log(req.params);
 
-  const challengeId = req.body.challengeId;
-  const voteId = req.body.voteId;
-  const challengerId = req.body.challengerId;
+  // const voteId = req.params.voteId;
+
+  // test용
+  const voteId = 0;
 
   const contract = await getContract("VoteContract");
 
-  res.json({ result: "DONE" });
+  try {
+    const r1 = await contract.methods.endVote(voteId).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    console.log(r1);
+
+    res.json({ result: "SUCCESS" });
+  } catch (e) {
+    console.log(e);
+
+    res.json({ result: "FAIL" });
+  }
 });
 
 export default router;

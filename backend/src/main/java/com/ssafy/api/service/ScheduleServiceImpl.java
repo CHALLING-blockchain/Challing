@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +23,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final Scheduler scheduler;
+    @Value("${com.ssafy.save_dummy_job}")
+    private Boolean SAVE_DUMMY_JOB;
 
     @PostConstruct
     @Transactional(rollbackFor = Exception.class)
     public void initSchedule() throws SchedulerException {
 
-        //saveDummyJob();
+        if (SAVE_DUMMY_JOB) {
+            saveDummyJob();
+        } else {
+            log.info("더미 스케줄 저장 건너 뜀: com.ssafy.save_dummy_job: {}", SAVE_DUMMY_JOB);
+        }
 
         log.info("초기 스케줄 데이터 로드");
 
@@ -50,13 +57,26 @@ public class ScheduleServiceImpl implements ScheduleService {
         log.info("더미 스케줄 저장");
 
         long now = Instant.now().getEpochSecond();
-        IntStream.of(10, 15, 20).forEach(s -> {
-            scheduleRepository.save(ChallengeJobData.builder()
-                    .challengeId("dummy" + (now + s))
-                    .triggerAt(now + s)
-                    .build()
-                    .toScheduleEntity());
-        });
+
+        scheduleRepository.save(ChallengeJobData.builder()
+                .challengeId("dummyDay" + (now + 5))
+                .challengeType(ChallengeType.DAILY)
+                .triggerAt(now + 5)
+                .build()
+                .toScheduleEntity());
+
+        scheduleRepository.save(ChallengeJobData.builder()
+                .challengeId("dummyDon" + (now + 8))
+                .challengeType(ChallengeType.DONATION)
+                .triggerAt(now + 8)
+                .build()
+                .toScheduleEntity());
+
+        scheduleRepository.save(VoteJobData.builder()
+                .voteId("dummyVot" + (now + 11))
+                .triggerAt(now + 11)
+                .build()
+                .toScheduleEntity());
     }
 
     @Override
@@ -77,8 +97,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void saveChallengeJob(ChallengeJobData jobData) {
 
-        log.info("챌린지 종료 스케줄 저장\nchallengeId: {}\ntriggerAt: {}",
+        log.info("챌린지 종료 스케줄 저장\nchallengeId: {}\nchallengeType: {}\ntriggerAt: {}",
                 jobData.getChallengeId(),
+                jobData.getChallengeType(),
                 jobData.getTriggerAt());
 
         scheduleRepository.save(jobData.toScheduleEntity());
@@ -88,10 +109,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void saveVoteJob(VoteJobData jobData) {
 
-        log.info("투표 종료 스케줄 저장\nchallengeId: {}\nvoteId: {}\nchallengerId: {}\ntriggerAt: {}",
-                jobData.getChallengeId(),
+        log.info("투표 종료 스케줄 저장\nvoteId: {}\ntriggerAt: {}",
                 jobData.getVoteId(),
-                jobData.getChallengerId(),
                 jobData.getTriggerAt());
 
         scheduleRepository.save(jobData.toScheduleEntity());
@@ -101,8 +120,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void scheduleChallengeJob(ChallengeJobData jobData) throws SchedulerException {
 
-        log.info("챌린지 종료 스케줄링\nchallengeId: {}\ntriggerAt: {}",
+        log.info("챌린지 종료 스케줄링\nchallengeId: {}\nchallengeType: {}\ntriggerAt: {}",
                 jobData.getChallengeId(),
+                jobData.getChallengeType(),
                 jobData.getTriggerAt());
 
         scheduler.scheduleJob(ChallengeJob.newChallengeJob(jobData), ChallengeJob.newTrigger(jobData));
@@ -112,10 +132,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void scheduleVoteJob(VoteJobData jobData) throws SchedulerException {
 
-        log.info("투표 종료 스케줄링\nchallengeId: {}\nvoteId: {}\nchallengerId: {}\ntriggerAt: {}",
-                jobData.getChallengeId(),
+        log.info("투표 종료 스케줄링\nvoteId: {}\ntriggerAt: {}",
                 jobData.getVoteId(),
-                jobData.getChallengerId(),
                 jobData.getTriggerAt());
 
         scheduler.scheduleJob(VoteJob.newVoteJob(jobData), VoteJob.newTrigger(jobData));

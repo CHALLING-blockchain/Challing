@@ -14,6 +14,6 @@ export const allDonationSlice = createSlice({
 });
 
 export const { setDonationList } = allDonationSlice.actions;
-export const challengeList = (state) => state.donationList.donationList;
+export const donationList = (state) => state.donationList.donationList;
 
 export default allDonationSlice.reducer;
