@@ -18,7 +18,10 @@
   justify-content: center;
   align-items: center;
   }
-
+.Header{
+  position: fixed;
+  top:0;
+}
 .InputSearch{
   width: 328px;
   height: 40px;
@@ -44,4 +47,8 @@
 .SearchIcon{
   margin-left: 16px;
   margin-right: 8px;
+}
+.Contents{
+  height: 544px;
+  overflow: scroll;
 }
