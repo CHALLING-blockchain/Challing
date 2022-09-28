@@ -70,7 +70,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   const donationChallenge = {
     challengeId: 1,
     interestId: topic2id[selects.topic],
-    ownerId: useSelector(selectUser),
+    ownerId: userId,
     donationId: 1,
     name: selects.title,
     desc: selects.explanation,
