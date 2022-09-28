@@ -17,9 +17,17 @@ import { selectUser } from "../../../app/redux/userSlice";
 import{useSelector} from 'react'
 
 function CreateFinal({selects,formCnt,setFormCnt}){
+  const topic2id={
+    "운동" :0,
+    "생황" :1,
+    "취미" :2,
+    "식생활":3,
+    "학습" :4,
+    "그 외":5,
+  }
   const daliyChallenge = {
     challengeId: 0,
-    interestId: 1,
+    interestId: topic2id[selects.topic],
     ownerId: useSelector(selectUser),
     name: selects.title,
     desc: selects.explanation,
@@ -41,7 +49,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
   };
   const donationChallenge = {
     challengeId: 1,
-    interestId: 0,
+    interestId: topic2id[selects.topic],
     ownerId: useSelector(selectUser),
     donationId: 1,
     name: selects.title,

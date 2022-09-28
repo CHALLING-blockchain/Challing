@@ -25,6 +25,16 @@ public class VoteJobData {
         return jobData;
     }
 
+    public Schedule toScheduleEntity() {
+        return Schedule.builder()
+                .jobType(ContractJobType.VOTE)
+                .challengeId(challengeId)
+                .voteId(voteId)
+                .challengerId(challengerId)
+                .triggerAt(triggerAt)
+                .build();
+    }
+
     public Date toDate() {
         return Date.from(Instant.ofEpochSecond(triggerAt));
     }

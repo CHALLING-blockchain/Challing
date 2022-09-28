@@ -27,6 +27,9 @@ import VotingHome from "./components/voting/VotingHome";
 import ConfirmRegister from "./components/challengeRegister/ConfirmRegister";
 import SuccessRegister from "./components/challengeRegister/SuccessRegister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
+import OngoingChallenge from "./components/myChallenge/OngoingChallenge";
+import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
+import CompletedDetail from "./components/myChallenge/CompletedDetail";
 
 function App() {
   return (
@@ -53,13 +56,18 @@ function App() {
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/votinghome" element={<VotingHome />} />
-        {/* <Route path="/voting:id" element={<Voting />} /> */}
+        {/* <Route path="/voting/:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />
         <Route path="/confirm-register/:id" element={<ConfirmRegister />} />
-        {/* <Route path="/success-register/:id" element={<SuccessRegister />} /> */}
-        {/* <Route path="/confirm-register" element={<ConfirmRegister />} /> */}
-        <Route path="/success-register" element={<SuccessRegister />} />
+        <Route path="/success-register/:id" element={<SuccessRegister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
+        <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
+        <Route path="/completed-challenge" element={<CompletedChallenge />} />
+        {/* <Route path="/completed-detail:id" element={<CompletedDetail />} /> */}
+        <Route path="/completed-detail" element={<CompletedDetail />} />
+        
+        
+
       </Routes>
       <Menu />
     </div>

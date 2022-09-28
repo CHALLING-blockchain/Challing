@@ -92,11 +92,12 @@
   font-size: 14px;
 }
 
-.btnBox {
-  width: 100vw;
+.detailBtnBox {
+  /* width: 100vw;
   height: 64px;
   display: fixed;
-  bottom: 0;
+  bottom: 0; */
+  margin-bottom: 10px;
 }
 
 .shots {

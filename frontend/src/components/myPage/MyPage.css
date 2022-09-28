@@ -1,7 +1,7 @@
 .MyPageHeader {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 700;
+  font-weight: bold;
   font-size: 24px;
   line-height: 100%;
   /* identical to box height, or 24px */
@@ -13,7 +13,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   /* text-fill-color: transparent; */
-  height: 56px;
+  height: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,14 +22,17 @@
   width: 328px;
   margin: 16px;
   display: flex;
-  /* justify-content: flex-start; */
+  justify-content: space-between;
   align-items: center;
 }
-.UserProfile > img {
-  margin-right: 5px;
+.UserProfile img {
+  margin-right: 16px;
 }
 .UserProfile > p {
-  margin-right: 5px;
+  margin-right: 16px;
+}
+.StatusBox{
+  margin: 32px 0;
 }
 .ChallengeStatus {
   width: 328px;
@@ -39,21 +42,25 @@
   align-items: center;
 }
 .ChallengeStatusBar {
-  /* Rectangle 145 */
-
   width: 328px;
-  height: 40px;
-  margin: 16px 8px 8px 16px;
+  height: 60px;
+  margin: 8px 16px;
   background: linear-gradient(252.68deg, #9272ff 27.32%, #8596ff 93.21%);
-  border-radius: 20px;
+  border-radius: 30px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   text-align: center;
-
-  font-size: 10px;
+}
+.ChallengeStatusBar span{
+  font-size: 12px;
   color: white;
-  font-weight: 600;
+  font-weight: 10;
+}
+.ChallengeStatusBar p{
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
 }
 
 /* .MyShotZip {
@@ -75,6 +82,17 @@
 .menuItem {
   display: flex;
   width: 328px;
-  margin: 20px 8px 20px 16px;
+  margin: 20px 16px 28px 16px;
   justify-content: space-between;
+  align-items: center;
+}
+.menuTitle{
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.menuTitle img{
+  width: 20px;
+  height: 20px;
+  margin: 0 8px;
 }

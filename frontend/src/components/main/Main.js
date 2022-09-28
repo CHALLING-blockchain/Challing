@@ -4,7 +4,7 @@ import Nav from "../Nav";
 import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
 import { useSelector, useDispatch } from "react-redux";
-import Contract from "../../api/ContractAPI";
+import ContractAPI from "../../api/ContractAPI";
 import {
   setChallengeList,
   challengeList,
@@ -21,6 +21,7 @@ function Main() {
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
+      const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
         // console.log("result: ", result);
         allChallengeList = result;
@@ -58,13 +59,10 @@ function Main() {
         let startDay = dayGap + "일 뒤";
         // (시작 전&&관심사 일치&&일상) 챌린지만
         if (
-          dayGap >= 0 &&
+          dayGap > 0 &&
           interestIdToName(element.interestId) === interest &&
           "donationId" in element === false
         ) {
-          if (dayGap === 0) {
-            startDay = "오늘부터";
-          }
           result.push(
             <span key={index}>
               <br></br>
@@ -148,7 +146,7 @@ export function getDayGapFromToday(startDate) {
   let gap = todayDate - startDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap;
+  return dateGap - 1;
 }
 
 //startDate와 endDate의 날짜 차이를 반환
@@ -167,7 +165,7 @@ export function getDayGapFromDates(startDate, endDate) {
   let gap = startDate - endDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap;
+  return dateGap - 1;
 }
 
 export function interestIdToName(interestId) {

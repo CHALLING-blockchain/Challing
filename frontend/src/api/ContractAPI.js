@@ -1,38 +1,34 @@
 import Web3 from "web3";
 
 class ContractAPI {
-  constructor() {
-    this.init();
+  constructor(address) {
+    this.init(address);
   }
-  async init() {
+  async init(address) {
     this.Cartifact = require("../contracts/ChallengeContract.json");
     this.Vartifact = require("../contracts/VoteContract.json");
     const infuraUrl =
       "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
-    this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-    this.privateKey1 = process.env.REACT_APP_METAMASK_PRIVATE_KEY;
-
-    this.account1 = this.web3.eth.accounts.privateKeyToAccount(
-      "0x" + this.privateKey1
-    );
-
-    this.web3.eth.accounts.wallet.add(this.account1);
-
+    const local = "http://localhost:7545";
+    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
+    if (address !== undefined) {
+      this.account = address;
+    }
+    // console.log("init: ", this.account);
     this.networkId = await this.web3.eth.net.getId();
     this.Cabi = this.Cartifact.abi;
     this.Caddress = this.Cartifact.networks[this.networkId].address;
     this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
-
+    // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
     this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
-    this.accounts = await this.web3.eth.getAccounts();
-    this.account=this.accounts[0]
   }
 
   // ChallengeContract
   async getAllChallenge() {
     await this.init();
+
     const challengeList = await this.Ccontract.methods
       .getAllChallenge()
       .call({
@@ -69,7 +65,7 @@ class ContractAPI {
       .send({
         from: this.account,
         gasLimit: 3_000_000,
-        value: value * 1e18,
+        value: value * Number("1e18"),
       })
       .catch(console.error);
   }
@@ -82,17 +78,17 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-    const result=challenges.map(el=>{
-      const challenge = Object.assign({}, el);
-      const size = Object.keys(challenge).length;
-      for (let i = 0; i < size / 2; i++) {
-        delete challenge[i];
-      }
-      return challenge
-    })
 
-    return result
 
+    return challenges
+
+  }
+  async findingChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .findingChallenger(challengeId, userId)
+      .call({ from: this.account })
+      .catch(console.error);
   }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
@@ -156,24 +152,23 @@ class ContractAPI {
   }
   async getChallengersByUserId(userId) {
     await this.init();
-    
-    const challengers=await this.Ccontract.methods
+
+    const challengers = await this.Ccontract.methods
       .getChallengersByUserId(userId)
       .call({
         from: this.account,
       })
       .catch(console.error);
-    const result=challengers.map(el=>{
+    const result = challengers.map((el) => {
       const challenge = Object.assign({}, el);
       const size = Object.keys(challenge).length;
       for (let i = 0; i < size / 2; i++) {
         delete challenge[i];
       }
-      return challenge
-    })
+      return challenge;
+    });
 
-    return result
-    
+    return result;
   }
 
   // ChallengerContract
@@ -253,7 +248,7 @@ class ContractAPI {
       })
       .catch(console.error);
   }
-  async receivePasscoin( userIdList) {
+  async receivePasscoin(userIdList) {
     await this.init();
     return this.Ccontract.methods
       .receivePasscoin(userIdList)
@@ -267,15 +262,19 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
-    return this.Ccontract.methods
-      .createDailyChallenge(dailyChallenge)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      return this.Ccontract.methods
+        .createDailyChallenge(dailyChallenge)
+        .send({
+          from: this.account,
+          gasLimit: 3_000_000,
+          data: "ecb18ceba781",
+        })
+        .catch(console.error);
+    }
   }
-  async endDailyChallenge( challengeId) {
+
+  async endDailyChallenge(challengeId) {
     await this.init();
     return this.Ccontract.methods
       .endDailyChallenge(challengeId)
@@ -287,19 +286,23 @@ class ContractAPI {
   }
 
   // DonationChallengeContract
-  async createDonationChallenge( donationChallenge) {
+  async createDonationChallenge(donationChallenge) {
     await this.init();
-    return this.Ccontract.methods
-      .createDonationChallenge(donationChallenge)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-        value: donationChallenge.setDonation * 1e18,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      console.log("setDonation", donationChallenge.setDonaion);
+      console.log("숫자: ", donationChallenge.setDonaion * Number("1e18"));
+      return this.Ccontract.methods
+        .createDonationChallenge(donationChallenge)
+        .send({
+          from: this.account,
+          gasLimit: 3_000_000,
+          value: donationChallenge.setDonaion * Number("1e18"),
+        })
+        .catch(console.error);
+    }
   }
 
-  async endDonationChallenge( challengeId) {
+  async endDonationChallenge(challengeId) {
     await this.init();
 
     return this.Ccontract.methods
@@ -333,7 +336,7 @@ class ContractAPI {
   }
 
   // PhotoContract
-  async getChallengerPhoto( challengerId) {
+  async getChallengerPhoto(challengerId) {
     await this.init();
 
     const photos=await this.Vcontract.methods
@@ -354,7 +357,7 @@ class ContractAPI {
     return result
   }
 
-  async report( challengeId, photoId, userId) {
+  async report(challengeId, photoId, userId) {
     await this.init();
 
     return this.Vcontract.methods
@@ -365,7 +368,7 @@ class ContractAPI {
       })
       .catch(console.error);
   }
-  async voting( challengeId, userId, voteId, pass) {
+  async voting(challengeId, userId, voteId, pass) {
     await this.init();
 
     return this.Vcontract.methods
@@ -376,7 +379,7 @@ class ContractAPI {
       })
       .catch(console.error);
   }
-  async endVote( voteId) {
+  async endVote(voteId) {
     await this.init();
 
     return this.Vcontract.methods
@@ -386,7 +389,7 @@ class ContractAPI {
       })
       .catch(console.error);
   }
-  async getChallengeVote( challengeId) {
+  async getChallengeVote(challengeId) {
     await this.init();
 
     const votes=await this.Vcontract.methods
@@ -409,15 +412,15 @@ class ContractAPI {
 
   async getPasscoin() {
     await this.init();
-    return this.Ccontract.methods
-      .balanceOf(this.account)
-      .call({
-        from: this.account,
-      })
-      .catch(console.error);
+    if (this.account !== undefined) {
+      return this.Ccontract.methods
+        .balanceOf(this.account)
+        .call({
+          from: this.account,
+        })
+        .catch(console.error);
+    }
   }
-
-  
 }
 
-export default new ContractAPI();
+export default ContractAPI;
