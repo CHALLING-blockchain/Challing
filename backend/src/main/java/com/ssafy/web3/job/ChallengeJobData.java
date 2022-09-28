@@ -13,11 +13,13 @@ import java.util.Date;
 public class ChallengeJobData {
 
     private String challengeId;
+    private ChallengeType challengeType;
     private Long triggerAt;
 
     public JobDataMap toJobData() {
         JobDataMap jobData = new JobDataMap();
         jobData.put("challengeId", challengeId);
+        jobData.put("challengeType", challengeType);
         return jobData;
     }
 
@@ -29,6 +31,7 @@ public class ChallengeJobData {
         return Schedule.builder()
                 .jobType(ContractJobType.CHALLENGE)
                 .challengeId(challengeId)
+                .challengeType(challengeType)
                 .triggerAt(triggerAt)
                 .build();
     }
@@ -36,6 +39,7 @@ public class ChallengeJobData {
     public static ChallengeJobData of(ChallengeScheduleRequest challengeScheduleRequest) {
         return ChallengeJobData.builder()
                 .challengeId(challengeScheduleRequest.getChallengeId())
+                .challengeType(challengeScheduleRequest.getChallengeType())
                 .triggerAt(challengeScheduleRequest.getTriggerAt())
                 .build();
     }
@@ -43,6 +47,7 @@ public class ChallengeJobData {
     public static ChallengeJobData of(Schedule schedule) {
         return ChallengeJobData.builder()
                 .challengeId(schedule.getChallengeId())
+                .challengeType(schedule.getChallengeType())
                 .triggerAt(schedule.getTriggerAt())
                 .build();
     }
@@ -50,6 +55,7 @@ public class ChallengeJobData {
     public static ChallengeJobData of(JobDataMap jobData) {
         return ChallengeJobData.builder()
                 .challengeId(jobData.getString("challengeId"))
+                .challengeType((ChallengeType) jobData.get("challengeType"))
                 .build();
     }
 }
