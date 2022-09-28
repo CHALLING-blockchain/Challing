@@ -6,10 +6,6 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +27,25 @@ public class Web3ServiceImpl implements Web3Service {
     public void endChallenge(ChallengeJobData challengeJobData) {
         log.info("** Fire endChallenge job **");
 
+        String basePath;
+        switch (challengeJobData.getChallengeType()) {
+            case DAILY:
+                basePath = "enddailychallenge";
+                break;
+            case DONATION:
+                basePath = "enddonationchallenge";
+                break;
+            default:
+                log.info("NOTHING TO DO: no challenge type");
+                return;
+        }
+
         String challengeId = challengeJobData.getChallengeId();
 
-        log.info("Request to backeth: /api/endchallenge/{}", challengeId);
+        log.info("Request to backeth: /api/{}/{}", basePath, challengeId);
 
         ResponseBody responseBody = webClient.get()
-                .uri("/endchallenge/" + challengeId)
+                .uri("/" + basePath + "/" + challengeId)
                 .retrieve()
                 .bodyToMono(ResponseBody.class)
                 .blockOptional()
@@ -49,16 +58,12 @@ public class Web3ServiceImpl implements Web3Service {
     public void endVote(VoteJobData voteJobData) {
         log.info("** Fire endVote job **");
 
-        Map<String, String> map = new HashMap<>();
-        map.put("challengeId", voteJobData.getChallengeId());
-        map.put("voteId", voteJobData.getVoteId());
-        map.put("challengerId", voteJobData.getChallengerId());
+        String voteId = voteJobData.getVoteId();
 
-        log.info("Request to backeth: /api/endvote body: {}", map);
+        log.info("Request to backeth: /api/endvote/{}", voteId);
 
-        ResponseBody responseBody = webClient.post()
-                .uri("/endvote")
-                .body(Mono.just(map), Map.class)
+        ResponseBody responseBody = webClient.get()
+                .uri("/endvote/" + voteId)
                 .retrieve()
                 .bodyToMono(ResponseBody.class)
                 .blockOptional()
