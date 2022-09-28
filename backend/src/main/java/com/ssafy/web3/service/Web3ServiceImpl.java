@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/*
+ * TODO: FAIL 응답이 왔을 때 잠시 후 재시도하는 로직 추가
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
