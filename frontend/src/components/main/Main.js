@@ -9,6 +9,7 @@ import {
   setChallengeList,
   challengeList,
 } from "../../app/redux/allChallengeSlice";
+import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
 
 function Main() {
@@ -21,21 +22,21 @@ function Main() {
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
-      let allDonationList=[]
+      let allDonationList = [];
       const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
-        // console.log("result: ", result);
+        console.log("challenge result: ", result);
         allChallengeList = result;
       });
       await Contract.getAllDonation().then((result) => {
-        // console.log("result: ", result);
+        console.log("donation result: ", result);
         allDonationList = result;
       });
 
       // 로컬에 챌린지 목록이 없을때 -> redux에 저장
       // if (Object.keys(selector).length === 0) {
       dispatch(setChallengeList(allChallengeList));
-      dispatch(setChallengeList(allDonationList));
+      dispatch(setDonationList(allDonationList));
       // }
     }
 
@@ -147,6 +148,8 @@ export function getDayGapFromToday(startDate) {
   // 다시 Date 형식으로 맞춰줌
   let todayDateArr = todayStr.split("-");
   let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
+
+  // console.log("todayDate", todayDate + " " + startDate);
 
   // 차이 구하기
   let gap = todayDate - startDate;
