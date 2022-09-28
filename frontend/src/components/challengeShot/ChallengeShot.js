@@ -30,7 +30,7 @@ function ChallengeShot(){
       }
       load()
     },[])
-    
+
     useEffect(() => {
       async function load() {
         const challengers= await Contract.getChallengersByUserId(1)
@@ -42,21 +42,37 @@ function ChallengeShot(){
     function ChallengeCard(props){
       const today =moment(new Date()).format('YYYY-MM-DD');
       const dayGab=getDayGab.getDayGapFromDates(today,props.challengeInfo.endDate)
+      
       let userCount=0;
+
+      
       if(challengers){
         userCount=challengers.filter(el=>el.challengeId==props.challengeInfo.challengeId)[0].totalCount
       }
       const percentage=(1/props.challengeInfo.authTotalTimes*100).toFixed(2)
 
       return(
-        <div onClick={()=>{navigate(`/challenge-certify/${props.challengeInfo.challengeId}`)}}>
+        <div onClick={()=>{navigate(`/challenge-certify/${props.challengeInfo.challengeId}`,{
+          state: {
+            challengeInfo:props.challengeInfo,
+            percentage:percentage
+          }
+        })}}>
           <img src={props.challengeInfo.mainPicURL} height="50" width="50" alt=""></img>
           <p>{props.challengeInfo.name}</p>
-          <button>인증하기</button>
+            <button onClick={() => {
+              navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
+                state: {
+                  challengeInfo:props.challengeInfo,
+                  percentage:percentage
+                }
+              });
+            }}>인증하기</button>
+          
           <p>{dayGab}일 뒤 종료</p>
           <p></p>
           <p>현재{percentage}%달성</p>
-          {console.log(props.challengeInfo)}
+          {/* {console.log(props.challengeInfo)} */}
         </div>
       )
     }

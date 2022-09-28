@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./ChallengeCertify.module.css"
 import backdrop from "../../img/test-back.jpg"
 import chart from "../../img/chart.png"
 import heart from "../../img/heart.png"
 import calender from "../../img/calender.png"
 import chat from "../../img/chat.png"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useParams,useLocation } from "react-router-dom";
+import moment from 'moment';
+import * as getDayGab from "../main/Main.js";
+
+import ContractAPI from "../../api/ContractAPI";
 
 function Header(){
     const navigate = useNavigate();
@@ -19,11 +23,11 @@ function Header(){
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-left"
+            className="bi bi-chevron-left"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
             />
           </svg>
@@ -34,35 +38,36 @@ function Header(){
     );
 }
 
-function BackDrop(){
+function BackDrop({picURL}){
     const [back, setBack] = useState(backdrop)
     return(
-        <img className={styles.backdrop} src={back} alt="" />
+        <img className={styles.backdrop} src={picURL} alt="" />
     )
 }
 
-function Description(){
-    const [title, setTitle] = useState('영어, 외국어 10문장 쓰기')
+function Description({info,percentage}){
+  const today =moment(new Date()).format('YYYY-MM-DD');
+  const dayGab=getDayGab.getDayGapFromDates(info.startDate,today)
     return (
       <div className={styles.desBox}>
-        <p className={styles.title}>{title}</p>
+        <p className={styles.title}>{info.name}</p>
         <div className={styles.subBox}>
           <div className={styles.oneline}>
             <img src={heart} alt="" />
             <span>
-              챌린지 <span style={{color:'#755FFF'}}>3일</span> 째
+              챌린지 <span style={{color:'#755FFF'}}>{dayGab}</span> 일째
             </span>
           </div>
           <div className={styles.oneline}>
             <img src={calender} alt="" />
             <span>
-              2022/09/05 ~ 2022/09/11
+              {info.startDate} ~ {info.endDate}
             </span>
           </div>
           <div className={styles.oneline}>
             <img src={chart} alt="" />
             <span>
-                현재 <span style={{color:'#755FFF'}}>85%</span> 달성
+                현재 <span style={{color:'#755FFF'}}>{percentage}</span>% 달성
             </span>
           </div>
         </div>
@@ -89,8 +94,23 @@ function Btn(){
     );
 }
 
-function OtherShot(){
-    const [shots, setShots] = useState();
+function OtherShot({challengers}){
+    const [photoList,setPhotoList]=useState([]);
+    const Contract = new ContractAPI();
+    useEffect(() => {
+      async function load() {
+        if (challengers){
+          challengers.forEach(async (challenger)=>{
+            const photo= await Contract.getChallengerPhoto(challenger.id)     
+            // console.log(photo)    
+            setPhotoList([...photoList,...photo]);
+          })
+        }
+        load()
+        }
+    }, []);
+
+    console.log(challengers)
     return (
       <div className={styles.otherShot}>
         <div className={styles.shotTitle}>
@@ -100,7 +120,12 @@ function OtherShot(){
           </Link>
         </div>
         <div className={styles.shots}>
-            <img src={backdrop} alt="" />
+          {
+            photoList.map(photo=>{
+              return (<img src={photo.picURL} alt="" />)
+              
+            })
+          }
             <img src={backdrop} alt="" />
             <img src={backdrop} alt="" />
             <img src={backdrop} alt="" />
@@ -124,11 +149,11 @@ function Voting(){
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-chevron-right"
+            className="bi bi-chevron-right"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
             />
           </svg>
@@ -137,15 +162,27 @@ function Voting(){
     );
 }
 
-function ChallengeCertify(){
+function ChallengeCertify() {
+  const challenge = useLocation().state.challengeInfo;
+  const percentage=useLocation().state.percentage;
+  const [challengers,setChallegers]=useState();
+  const Contract = new ContractAPI();
+  useEffect(() => {
+    async function load() {
+      const challengers= await Contract.getChallengers(challenge.challengeId)
+      setChallegers(challengers);
+    }
+    load()
+  }, []);
+
     return (
       <div>
         <Header></Header>
-        <BackDrop></BackDrop>
-        <Description></Description>
+        <BackDrop picURL={challenge.mainPicURL}></BackDrop>
+        <Description info={challenge} percentage={percentage}></Description>
         <Btn></Btn>
         <hr className={styles.hrTag} />
-        <OtherShot></OtherShot>
+        <OtherShot challengers={challengers}></OtherShot>
         <Voting></Voting>
         <div style={{ width: "100vw", height: "90px" }}></div>
       </div>

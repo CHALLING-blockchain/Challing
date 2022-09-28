@@ -33,16 +33,9 @@ function WebcamCapture() {
             />
           </svg>
           <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 인증</p>
-          <svg 
-            onClick={handleClick}
-            style={{ margin: "auto" }}
-            width="16" 
-            height="16" 
-            viewBox="0 0 100 100" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M83.3334 16.6666H70.125L64.9584 11.0416C63.4167 9.33325 61.1667 8.33325 58.8334 8.33325H41.1667C38.8334 8.33325 36.5834 9.33325 35 11.0416L29.875 16.6666H16.6667C12.0834 16.6666 8.33337 20.4166 8.33337 24.9999V74.9999C8.33337 79.5832 12.0834 83.3332 16.6667 83.3332H83.3334C87.9167 83.3332 91.6667 79.5832 91.6667 74.9999V24.9999C91.6667 20.4166 87.9167 16.6666 83.3334 16.6666ZM62.5 64.5832V54.1666H37.5V64.5832L24.375 51.4583C23.5417 50.6249 23.5417 49.3333 24.375 48.4999L37.5 35.4166V45.8333H62.5V35.4166L75.625 48.5416C76.4584 49.3749 76.4584 50.6666 75.625 51.4999L62.5 64.5832Z" fill="black"/>
+          <svg onClick={handleClick}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={styles.bi} viewBox="0 0 16 16">
+            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+            <path fillRule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
           </svg>
         </div>
       </div>
@@ -101,16 +94,13 @@ function WebcamCapture() {
               facingMode
             }}
           />
-          <svg 
-            onClick={()=>{handleCapture();capture();}}
-            width="100" 
-            height="100" 
-            viewBox="0 0 241 240" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M120.236 227.846C179.83 227.846 228.14 179.535 228.14 119.941C228.14 60.3475 179.83 12.0371 120.236 12.0371C60.6422 12.0371 12.3318 60.3475 12.3318 119.941C12.3318 179.535 60.6422 227.846 120.236 227.846Z" stroke="black" strokeWidth="23.9787"/>
-          </svg>
+          <div className={styles.Shot}>
+            <svg
+              onClick={()=>{handleCapture();capture();}} 
+              xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={styles.ShotIcon} viewBox="0 0 16 16">
+              <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z"/>
+            </svg>
+          </div>
         </div>
       : null}
       {imgSrc !== null ? 
