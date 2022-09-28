@@ -52,29 +52,44 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    private static class NumGen {
+        private long num;
+        private final long interval = 15L;
+        NumGen(long initNum) {
+            num = initNum - interval;
+        }
+        long next() {
+            return num += interval;
+        }
+        long get() {
+            return num;
+        }
+    }
+
     private void saveDummyJob() {
 
         log.info("더미 스케줄 저장");
 
         long now = Instant.now().getEpochSecond();
+        NumGen numGen = new NumGen(5L);
 
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDay" + (now + 5))
+                .challengeId("dummyDay" + (now + numGen.next()))
                 .challengeType(ChallengeType.DAILY)
-                .triggerAt(now + 5)
+                .triggerAt(now + numGen.get())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDon" + (now + 8))
+                .challengeId("dummyDon" + (now + numGen.next()))
                 .challengeType(ChallengeType.DONATION)
-                .triggerAt(now + 8)
+                .triggerAt(now + numGen.get())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(VoteJobData.builder()
-                .voteId("dummyVot" + (now + 11))
-                .triggerAt(now + 11)
+                .voteId("dummyVot" + (now + numGen.next()))
+                .triggerAt(now + numGen.get())
                 .build()
                 .toScheduleEntity());
     }

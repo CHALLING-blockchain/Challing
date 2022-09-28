@@ -1,3 +1,11 @@
+/*
+ * 해결되지 않은 문제:
+ *   unmined transaction 이 있는데 또 send 하면 거부됨
+ *
+ * 임시 조치:
+ *   충분한 시간(30 초 이상) 간격을 두고 요청
+ */
+
 import { Router } from "express";
 import Web3 from "web3";
 import config from "../util/config.js";
@@ -32,27 +40,28 @@ const getContract = async (cname) => {
  *   { result: string }
  */
 router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 일상 챌린지 종료", req.params);
 
+  // 찐
   // const challengeId = req.params.challengeId;
 
   // test용
-  const challengeId = 0;
+  const challengeId = 987654321;
+  console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
   try {
-    // TODO: 일상, 기부 챌린지 구분해야 하는가
     const r1 = await contract.methods.endDailyChallenge(challengeId).send({
       from: appAccount.address,
       gasLimit: 3_000_000,
     });
 
-    console.log(r1);
+    console.log("<== 일상 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log(e);
+    console.log("<== 일상 챌린지 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
@@ -68,12 +77,14 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
  *   { result: string }
  */
 router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 기부 챌린지 종료", req.params);
 
+  // 찐
   // const challengeId = req.params.challengeId;
 
   // test용
-  const challengeId = 0;
+  const challengeId = 987654321;
+  console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
@@ -83,11 +94,11 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log(r1);
+    console.log("<== 기부 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log(e);
+    console.log("<== 기부 챌린지 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
@@ -103,12 +114,14 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
  *   { result: string }
  */
 router.get("/endvote/:voteId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 투표 종료", req.params);
 
+  // 찐
   // const voteId = req.params.voteId;
 
   // test용
-  const voteId = 0;
+  const voteId = 987654321;
+  console.log("[WARNING] voteId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("VoteContract");
 
@@ -118,11 +131,11 @@ router.get("/endvote/:voteId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log(r1);
+    console.log("<== 투표 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log(e);
+    console.log("<== 투표 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
