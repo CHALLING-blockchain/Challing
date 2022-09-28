@@ -127,3 +127,34 @@
     height: 24px;
     margin-right: 4px;
 }
+.passCoinBox{
+    margin: 16px;
+}
+
+.passCoinDes{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 4px;
+    font-size: 18px;
+}
+
+.passCoinBottom{
+    margin: 12px 4px 16px;
+    display: flex;
+    align-items: center;
+}
+.passCoinBottom img{
+    width: 32px;
+    height: 32px;
+    margin: 0 4px;
+}
+.passCoinBottom svg{
+    margin: 0 4px;
+}
+.passCoinBottom span{
+    font-size: 28px;
+    font-weight: bold;
+    color: #755FFF;
+    margin: 0 8px;
+}
