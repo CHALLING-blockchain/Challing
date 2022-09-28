@@ -16,11 +16,12 @@ function ChallengeShot(){
     const user = useSelector(selectUser);
     const [challengers,setChallegers]=useState();
     const navigate = useNavigate();
-
+    const Contract=new ContractAPI();
 
     useEffect(() => {
       async function load() {
-        const challengers= await ContractAPI.getChallengersByUserId(1)
+        console.log(user.id)
+        const challengers= await Contract.getChallengersByUserId(user.id)
         setChallegers(challengers);
       }
       load()
@@ -32,11 +33,10 @@ function ChallengeShot(){
       
       let userCount=0;
 
-      
       if(challengers){
         userCount=challengers.filter(el=>el.challengeId==props.challengeInfo.challengeId)[0].totalCount
       }
-      const percentage=(1/props.challengeInfo.authTotalTimes*100).toFixed(2)
+      const percentage=(userCount/props.challengeInfo.authTotalTimes*100).toFixed(2)
 
       return(
         <div>
