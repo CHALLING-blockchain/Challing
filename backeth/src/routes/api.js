@@ -1,3 +1,11 @@
+/*
+ * 해결되지 않은 문제:
+ *   unmined transaction 이 있는데 또 send 하면 거부됨
+ *
+ * 임시 조치:
+ *   충분한 시간(30 초 이상) 간격을 두고 요청
+ */
+
 import { Router } from "express";
 import Web3 from "web3";
 import config from "../util/config.js";
@@ -32,7 +40,6 @@ const getContract = async (cname) => {
  *   { result: string }
  */
 router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
-  console.log("시간 재보기 start:", new Date());
   console.log(req.params);
 
   // const challengeId = req.params.challengeId;
@@ -48,7 +55,6 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("시간 재보기 end:", new Date());
     console.log("일상 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
