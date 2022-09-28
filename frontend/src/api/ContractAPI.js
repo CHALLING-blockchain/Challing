@@ -65,7 +65,7 @@ class ContractAPI {
       .send({
         from: this.account,
         gasLimit: 3_000_000,
-        value: value * 1e18,
+        value: value * Number("1e18"),
       })
       .catch(console.error);
   }
@@ -255,13 +255,13 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
-    console.log("생성할때 계정", this.account);
     if (this.account !== undefined && this.account !== "") {
       return this.Ccontract.methods
         .createDailyChallenge(dailyChallenge)
         .send({
           from: this.account,
           gasLimit: 3_000_000,
+          data: "ecb18ceba781",
         })
         .catch(console.error);
     }
@@ -282,14 +282,14 @@ class ContractAPI {
   async createDonationChallenge(donationChallenge) {
     await this.init();
     if (this.account !== undefined && this.account !== "") {
-      console.log("donationChallenge", donationChallenge);
-
+      console.log("setDonation", donationChallenge.setDonaion);
+      console.log("숫자: ", donationChallenge.setDonaion * Number("1e18"));
       return this.Ccontract.methods
         .createDonationChallenge(donationChallenge)
         .send({
           from: this.account,
           gasLimit: 3_000_000,
-          value: donationChallenge.setDonation, // * 1e18 이자식 문자열이었어....
+          value: donationChallenge.setDonaion * Number("1e18"),
         })
         .catch(console.error);
     }
