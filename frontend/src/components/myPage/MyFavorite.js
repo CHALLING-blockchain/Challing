@@ -33,7 +33,7 @@ function MyFavorite() {
       console.log(index, element);
 
       let dayGap = getDayGap.getDayGapFromToday(element.startDate);
-      if (dayGap >= 0) {
+      if (dayGap > 0) {
         let week = element.authTotalTimes / (element.authDayTimes * 7);
         let period = Number(
           getDayGap.getDayGapFromDates(element.startDate, element.endDate)
