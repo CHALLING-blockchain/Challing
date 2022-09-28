@@ -328,7 +328,7 @@ class ContractAPI {
     const deposit=dailyChallenge.deposit.toString();
     dailyChallenge.deposit=1;
     dailyChallenge.totalDeposit=1;
-    console.log(dailyChallenge)
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -377,8 +377,11 @@ class ContractAPI {
   // DonationChallengeContract
   async createDonationChallenge(donationChallenge) {
     await this.init();
-    const donationMoney=donationChallenge.donationMoney.toString();
-    donationChallenge.donationMoney=1;
+
+    const setDonation=donationChallenge.setDonation.toString();
+    donationChallenge.setDonation=1;
+    donationChallenge.totalDonation=1;
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -389,7 +392,7 @@ class ContractAPI {
               to: this.Caddress,
               value: this.web3.utils.toHex(
                 this.web3.utils.toWei(
-                  donationMoney,
+                  setDonation,
                   "ether"
                 )
               ),

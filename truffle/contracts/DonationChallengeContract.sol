@@ -19,7 +19,7 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
         string desc;
         
         // 기부금 설정
-        uint setDonaion;
+        uint setDonation;
         // 메인이랑 인증샷 예시
         string mainPicURL;
         string goodPicURL;
@@ -48,7 +48,7 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
     function createDonationChallenge(DonationChallenge memory donationChallenge) public payable
     {
         donationChallenge.challengeId=challengeSequence;
-        donationChallenge.setDonaion=msg.value;
+        donationChallenge.setDonation=msg.value;
         donationChallenge.totalDonation=msg.value;
         donationChallengeMap[challengeSequence++]=donationChallenge ;
 
