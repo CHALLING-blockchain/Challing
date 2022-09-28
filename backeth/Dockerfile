@@ -7,6 +7,7 @@ COPY backeth/ ./
 RUN npm install
 COPY frontend/src/contracts/ src/artifacts/
 ENV runscript=prod \
+  PORT=3000 \
   APP_CONTRACT_ARTIFACT_DIR=./src/artifacts
-EXPOSE 3000
+EXPOSE ${PORT}
 ENTRYPOINT npm run ${runscript}
