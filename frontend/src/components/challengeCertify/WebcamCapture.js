@@ -128,7 +128,7 @@ function WebcamCapture() {
           </div>
             <img src={imgSrc} alt="shot"/>
             <div className={styles.btnBox}>
-              <button className={styles.btn}>인증하기</button>
+              <button className={styles.ShotBtn}>인증하기</button>
             </div>
         </div>
       : null}

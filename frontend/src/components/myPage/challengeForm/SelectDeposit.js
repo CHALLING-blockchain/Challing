@@ -12,7 +12,9 @@ function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
   }
   function NextButtonX(){
     return(
-      <button className={styles.NextButtonX}>Next( {formCnt} / 8)</button>
+      <div className={styles.buttonBox}>
+        <button className={styles.NextButtonX}>Next( {formCnt} / 8)</button>
+      </div>
     )
   }
   function Header(){

@@ -73,6 +73,18 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
+}
+
+.ShotBtn{
+  width: 328px;
+  height: 40px;
+  margin: 0 auto 16px;
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
   position: fixed;
   bottom: 72px;
 }

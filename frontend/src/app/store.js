@@ -5,10 +5,12 @@ import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userReducer from "./redux/userSlice";
 import allChallengeReducer from "./redux/allChallengeSlice";
+import donationListReducer from "./redux/DonationListSlice";
 
 const reducers = combineReducers({
   user: userReducer,
   challengeList: allChallengeReducer,
+  donationList: donationListReducer,
 });
 
 const persistConfig = {

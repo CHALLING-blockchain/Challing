@@ -9,8 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class VoteScheduleRequest {
 
-    private String challengeId;
     private String voteId;
-    private String challengerId;
     private Long triggerAt;
 }
