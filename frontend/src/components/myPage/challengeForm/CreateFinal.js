@@ -13,12 +13,14 @@ import CreateButtonStyles from '../../common/NextButton.module.css';
 import styles from './challengeForm.module.css';
 import ContractAPI from '../../../api/ContractAPI';
 import moment from 'moment';
+import { selectUser } from "../../../app/redux/userSlice";
+import{useSelector} from 'react'
 
 function CreateFinal({selects,formCnt,setFormCnt}){
   const daliyChallenge = {
     challengeId: 0,
     interestId: 1,
-    ownerId: 1,
+    ownerId: useSelector(selectUser),
     name: selects.title,
     desc: selects.explanation,
     mainPicURL: selects.exPhotoUrl,
@@ -40,7 +42,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
   const donationChallenge = {
     challengeId: 1,
     interestId: 0,
-    ownerId: 1,
+    ownerId: useSelector(selectUser),
     donationId: 1,
     name: selects.title,
     desc: selects.explanation,
@@ -55,7 +57,7 @@ function CreateFinal({selects,formCnt,setFormCnt}){
     startDate: selects.challengeStart,
     endDate: selects.challengeEnd,
     personnel: selects.limitNum,
-    totalDonation: 10,
+    totalDonation: selects.donationMoney,
 
     complet: false,
     success: false,
