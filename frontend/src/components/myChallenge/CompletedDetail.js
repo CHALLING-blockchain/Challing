@@ -8,6 +8,9 @@ import person from "../../img/person.png";
 import coin from "../../img/ethCoin.png";
 import chart from "../../img/chart.png";
 import styled, { keyframes } from "styled-components";
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { challengeList } from './../../app/redux/allChallengeSlice';
 
 
 function Header() {
@@ -37,16 +40,14 @@ function Header() {
   );
 }
 
-function BackDrop() {
-  const [back, setBack] = useState(backdrop);
-  return <img className={styles.backdrop} src={back} alt="" />;
+function BackDrop(props) {
+  return <img className={styles.backdrop} src={props.url} alt="" />;
 }
 
-function Description() {
-  const [title, setTitle] = useState("영어, 외국어 10문장 쓰기");
+function Description(props) {
   return (
     <div className={styles.desBox}>
-      <p className={styles.title}>{title}</p>
+      <p className={styles.title}>{props.title}</p>
       <div className={styles.subBox}>
         <div className={styles.oneline}>
           <img src={heart} alt="" />
@@ -56,7 +57,7 @@ function Description() {
         </div>
         <div className={styles.oneline}>
           <img src={calender} alt="" />
-          <span>2022/09/05 ~ 2022/09/11</span>
+          <span>{props.period}</span>
         </div>
       </div>
       <hr className={styles.hrTag} />
@@ -64,7 +65,8 @@ function Description() {
   );
 }
 
-function MyAchRate(){
+function MyAchRate(props){
+  const challengeId = props.challengeId;
     const [ach, setAch] = useState(50);
     const [deposit, setDeposit] = useState(0.98);
     const [prize, setPrize] = useState(0.04);
@@ -93,7 +95,7 @@ function MyAchRate(){
     );
 }
 
-function Inform(){
+function Inform(props){
     const [people, setPeople] = useState(0);
     const [deposit, setDeposit] = useState(0.1);
     const [rate, setRate] = useState(100);
@@ -123,15 +125,21 @@ function Inform(){
 }
 
 function CompletedDetail(){
-    return(
-        <div>
-            <Header></Header>
-            <BackDrop></BackDrop>
-            <Description></Description>
-            <MyAchRate></MyAchRate>
-            <Inform></Inform>
-        </div>
-    )
+  const { id } = useParams();
+  const selector = useSelector(challengeList);
+  const element = selector[id];
+    return (
+      <div>
+        <Header></Header>
+        <BackDrop url={element.mainPicURL}></BackDrop>
+        <Description
+          title = {element.name}
+          period={element.startDate + "~" + element.endDate}
+        ></Description>
+        <MyAchRate challengeId={id}></MyAchRate>
+        <Inform challenge={element} challengeId={id}></Inform>
+      </div>
+    );
 }
 
 export default CompletedDetail;
