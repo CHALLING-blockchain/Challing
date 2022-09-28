@@ -83,6 +83,13 @@ class ContractAPI {
     return challenges
 
   }
+  async findingChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .findingChallenger(challengeId, userId)
+      .call({ from: this.account })
+      .catch(console.error);
+  }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
 

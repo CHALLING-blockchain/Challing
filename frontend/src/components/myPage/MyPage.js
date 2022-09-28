@@ -5,10 +5,10 @@ import Web3 from "web3";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
-import tick from "../../img/tick.png"
-import picture from "../../img/picture.png"
-import folder from "../../img/folder.png"
-import bookmark from "../../img/bookmark.png"
+import tick from "../../img/tick.png";
+import picture from "../../img/picture.png";
+import folder from "../../img/folder.png";
+import bookmark from "../../img/bookmark.png";
 import ContractAPI from "../../api/ContractAPI";
 
 function MyPage() {
@@ -34,8 +34,8 @@ function MyPage() {
         let ingCount = 0;
         let edCount = 0;
         if (join.length !== 0) {
-          for (let i=0; i<join.length(); i++) {
-            if (join[i].complete === true){
+          for (let i = 0; i < join.length; i++) {
+            if (join[i].complete === true) {
               edCount += 1;
             } else {
               ingCount += 1;
@@ -44,7 +44,7 @@ function MyPage() {
         }
         setEdChal(edCount);
         setIngChal(ingCount);
-        setMadeChal(result[0].length)
+        setMadeChal(result[0].length);
       });
     }
     load();
@@ -107,7 +107,6 @@ function MyPage() {
             <p>{madeChal}</p>
             <span>개설</span>
           </div>
-          
         </div>
       </div>
       <div className="MenuListBox">
