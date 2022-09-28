@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./MyFavorite.css";
+import styles from "./MyFavorite.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo, selectUser } from "../../app/redux/userSlice";
 import { challengeList } from "../../app/redux/allChallengeSlice";
@@ -27,12 +27,13 @@ function MyFavorite() {
   const favoriteChallenges = () => {
     const favoriteChallenges = [];
     console.log("function");
+
     for (let index = 0; index < user.challengeIds.length; index++) {
       const element = challenges[user.challengeIds[index]];
       console.log(index, element);
 
       let dayGap = getDayGap.getDayGapFromToday(element.startDate);
-      if (dayGap > 0) {
+      if (dayGap >= 0) {
         let week = element.authTotalTimes / (element.authDayTimes * 7);
         let period = Number(
           getDayGap.getDayGapFromDates(element.startDate, element.endDate)
@@ -40,21 +41,26 @@ function MyFavorite() {
         let weekTimes =
           Number(element.authTotalTimes) /
           (Number(element.authDayTimes) * period);
+
         favoriteChallenges.push(
           <div
+            className={styles.challengeBox}
             onClick={() => {
               toChallengeDetail(element.challengeId);
             }}
           >
             <img
-              style={{ width: "80px" }}
+              className={styles.infoItemImg}
+              style={{ width: "150px", height: "120px", borderRadius: "10px" }}
               src={element.mainPicURL}
               alt=""
             ></img>
             <p>{element.name}</p>
-            <p>{dayGap}일 뒤 시작</p>
-            <p>주 {weekTimes}회</p>
-            <p>{week}주 동안</p>
+            <div>
+              <span className={styles.infoItem}>{dayGap}일 뒤 시작</span>
+            </div>
+            <span className={styles.infoItem}>주 {weekTimes}회</span>
+            <span className={styles.infoItem}>{week}주 동안</span>
           </div>
         );
       }
@@ -100,7 +106,7 @@ function MyFavorite() {
           </p>
         </div>
       ) : (
-        <div>{favoriteChallenges()}</div>
+        <div className={styles.outsideBox}>{favoriteChallenges()}</div>
       )}
     </div>
   );

@@ -167,7 +167,7 @@ function MyPage() {
         <div
           className="menuItem"
           onClick={() => {
-            navigate("/my-favorite-zip");
+            navigate("/my-favorite");
           }}
         >
           <div className="menuTitle">
