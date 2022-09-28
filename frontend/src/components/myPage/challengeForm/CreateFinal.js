@@ -14,11 +14,19 @@ import styles from "./challengeForm.module.css";
 import ContractAPI from "../../../api/ContractAPI";
 import moment from "moment";
 import { selectUser } from "../../../app/redux/userSlice";
-import { useSelector } from "react-redux";
+import {
+  setChallengeList,
+  challengeList,
+} from "../../../app/redux/allChallengeSlice";
+import { useSelector, useDispatch } from "react-redux";
 import useWeb3 from "../../../hooks/useWeb3";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateFinal({ selects, formCnt, setFormCnt }) {
+  const challengeId = Object.keys(useSelector(challengeList)).length + 1;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
@@ -98,8 +106,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
       return (
         <button
           className={CreateButtonStyles.NextButton}
-          onClick={() => {
-            Contract.createDailyChallenge(daliyChallenge).then(console.log);
+          onClick={async () => {
+            await Contract.createDailyChallenge(daliyChallenge).then(
+              console.log
+            );
+            await Contract.getAllChallenge().then((result) => {
+              dispatch(setChallengeList(result));
+            });
+            navigate(`/challenge-detail/${challengeId}`);
           }}
         >
           챌린지 발행하기
@@ -108,18 +122,25 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     }
   }
   function DonationCreateButton() {
-    return (
-      <button
-        className={CreateButtonStyles.NextButton}
-        onClick={() => {
-          ContractAPI.createDonationChallenge(donationChallenge).then(
-            console.log
-          );
-        }}
-      >
-        챌린지 발행하기
-      </button>
-    );
+    if (activeAccount !== undefined && activeAccount !== "") {
+      const Contract = new ContractAPI(activeAccount);
+      return (
+        <button
+          className={CreateButtonStyles.NextButton}
+          onClick={async () => {
+            await ContractAPI.createDonationChallenge(donationChallenge).then(
+              console.log
+            );
+            await Contract.getAllChallenge().then((result) => {
+              dispatch(setChallengeList(result));
+            });
+            navigate(`/challenge-detail/${challengeId}`);
+          }}
+        >
+          챌린지 발행하기
+        </button>
+      );
+    }
   }
   function DonationChallenge() {
     return (

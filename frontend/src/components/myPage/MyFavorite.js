@@ -18,7 +18,7 @@ function MyFavorite() {
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
-      console.log("response", response);
+      // console.log("response", response);
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
     });
@@ -26,11 +26,10 @@ function MyFavorite() {
 
   const favoriteChallenges = () => {
     const favoriteChallenges = [];
-    console.log("function");
 
     for (let index = 0; index < user.challengeIds.length; index++) {
       const element = challenges[user.challengeIds[index]];
-      console.log(index, element);
+      // console.log(index, element);
 
       let dayGap = getDayGap.getDayGapFromToday(element.startDate);
       if (dayGap > 0) {
@@ -44,6 +43,7 @@ function MyFavorite() {
 
         favoriteChallenges.push(
           <div
+            key={index}
             className={styles.challengeBox}
             onClick={() => {
               toChallengeDetail(element.challengeId);
@@ -69,7 +69,7 @@ function MyFavorite() {
   };
 
   function toChallengeDetail(id) {
-    console.log("toChallengeDetail", id);
+    // console.log("toChallengeDetail", id);
     navigate(`/challenge-detail/${id}`);
   }
 
