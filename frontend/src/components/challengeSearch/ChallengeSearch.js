@@ -1,8 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import { useNavigate } from "react-router-dom";
+import UserAPI from "../../api/UserAPI";
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import "./ChallengeSearch.css";
 import * as getDayGap from "../main/Main.js";
 
@@ -10,7 +11,18 @@ function ChallengeSearch() {
   const [search, setSearch] = useState("");
   const onChange = (event) => setSearch(event.target.value);
   const selector = useSelector(challengeList);
+  const [user, setUser] = useState(useSelector(selectUser));
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      console.log("response", response);
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+    });
+  }, [user.email, dispatch]);
+
   //챌린지 검색
   function challengeSearchRendering() {
     const result = [];

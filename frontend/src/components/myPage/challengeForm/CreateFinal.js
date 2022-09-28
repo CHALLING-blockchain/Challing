@@ -4,17 +4,34 @@ import paint from "../../../img/paint-kit.png";
 import pencil from "../../../img/pencil.png";
 import plus from "../../../img/plus.png";
 import tea from "../../../img/tea-cup.png";
-import donationIcon from '../../../img/donation-challenge-hand.png';
-import dailyIcon from '../../../img/daily-challenge-hand.png';
-import ethCoin from '../../../img/ethCoin.png';
-import camera from '../../../img/camera.png';
-import profile from '../../../img/profile-basic.png';
-import CreateButtonStyles from '../../common/NextButton.module.css';
-import styles from './challengeForm.module.css';
-import ContractAPI from '../../../api/ContractAPI';
-import moment from 'moment';
+import donationIcon from "../../../img/donation-challenge-hand.png";
+import dailyIcon from "../../../img/daily-challenge-hand.png";
+import ethCoin from "../../../img/ethCoin.png";
+import camera from "../../../img/camera.png";
+import person from "../../../img/person.png";
+import clock from "../../../img/clock-front-color.png";
+import text from "../../../img/text-front-color.png";
+import styles from "./challengeForm.module.css";
+import ContractAPI from "../../../api/ContractAPI";
+import moment from "moment";
+import useWeb3 from "../../../hooks/useWeb3";
+import { useState } from "react";
 
-function CreateFinal({selects,formCnt,setFormCnt}){
+function CreateFinal({ selects, formCnt, setFormCnt }) {
+  // localstorage에 wallet 연결 확인
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+  // loading status
+  const [isLoading, setIsLoading] = useState(false);
+  // error messages
+  const [errorMessage, setErrorMessage] = useState("");
+  // get active account and balance data from useWeb3 hook
+  const {
+    connect,
+    disconnect,
+    provider,
+    account: activeAccount,
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+
   const daliyChallenge = {
     challengeId: 0,
     interestId: 1,
@@ -24,7 +41,8 @@ function CreateFinal({selects,formCnt,setFormCnt}){
     mainPicURL: selects.exPhotoUrl,
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
-    authTotalTimes: (selects.nTimesAWeek*selects.authentications*selects.period),
+    authTotalTimes:
+      selects.nTimesAWeek * selects.authentications * selects.period,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -48,7 +66,8 @@ function CreateFinal({selects,formCnt,setFormCnt}){
     mainPicURL: selects.exPhotoUrl,
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
-    authTotalTimes: (selects.nTimesAWeek*selects.authentications*selects.period),
+    authTotalTimes:
+      selects.nTimesAWeek * selects.authentications * selects.period,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -60,118 +79,535 @@ function CreateFinal({selects,formCnt,setFormCnt}){
     complet: false,
     success: false,
   };
-  function DailyCreateButton(){
-    return(
-      <button className={CreateButtonStyles.NextButton} onClick={()=>{ContractAPI.createDailyChallenge(daliyChallenge).then(console.log);}}>챌린지 발행하기</button>
-    )
+  function DailyCreateButton() {
+    const Contract = new ContractAPI(activeAccount);
+    return (
+      <div className={styles.buttonBox}>
+        <button
+          className={styles.NextButton}
+          onClick={() => {
+            if (activeAccount !== undefined && activeAccount !== "") {
+              Contract.createDailyChallenge(daliyChallenge).then(console.log);
+            }
+          }}
+        >
+          챌린지 발행하기
+        </button>
+      </div>
+    );
   }
-  function DonationCreateButton(){
-    return(
-      <button className={CreateButtonStyles.NextButton} onClick={()=>{ContractAPI.createDonationChallenge(donationChallenge).then(console.log);}}>챌린지 발행하기</button>
-    )
+  function DonationCreateButton() {
+    const Contract = new ContractAPI(activeAccount);
+    return (
+      <div className={styles.buttonBox}>
+        <button
+          className={styles.NextButton}
+          onClick={() => {
+            if (activeAccount !== undefined && activeAccount !== "") {
+              Contract.createDonationChallenge(donationChallenge).then(
+                console.log
+              );
+            }
+          }}
+        >
+          챌린지 발행하기
+        </button>
+      </div>
+    );
   }
-  function DonationChallenge(){
-    return(
+  function Header() {
+    return (
+      <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+        <div className={styles.header}>
+          <svg
+            onClick={() => {
+              setFormCnt(formCnt - 1);
+            }}
+            style={{ margin: "16px" }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
+  function DonationChallenge() {
+    return (
       <div className={styles.CreateReview}>
         <div className={styles.Card1}>
-          <img src={donationIcon} alt="donationIcon" style={{width:'52px'}}/>
+          <img
+            src={donationIcon}
+            alt="donationIcon"
+            style={{ width: "52px" }}
+          />
+          <svg
+            width="80"
+            height="1"
+            viewBox="0 0 80 1"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V1H0V0Z" fill="white" />
+          </svg>
           <p>{selects.challenge}</p>
         </div>
-        <div className={styles.Card1}>
-          {selects.topic === "운동" ? <div><img src={gym} alt="gym" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "생황" ? <div><img src={calender} alt="calender" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "취미" ? <div><img src={paint} alt="paint" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "식생활" ? <div><img src={tea} alt="tea" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "학습" ? <div><img src={pencil} alt="pencil" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "그 외" ? <div><img src={plus} alt="plus" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
+        <div>
+          {selects.topic === "운동" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={gym}
+                alt="gym"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "생활" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={calender}
+                alt="calender"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "취미" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={paint}
+                alt="paint"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "식생활" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={tea}
+                alt="tea"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "학습" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={pencil}
+                alt="pencil"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "그 외" ? (
+            <div className={styles.Card1}>
+              <img
+                className={styles.imgTag}
+                src={plus}
+                alt="plus"
+                style={{ width: "45px" }}
+              />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
         </div>
         <div className={styles.Card1}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
-          <p>{selects.donationMoney}</p>
-          <p>{selects.donation}</p>
+          <img src={ethCoin} alt="ethCoin" style={{ width: "45px" }} />
+          <svg
+            width="80"
+            height="1"
+            viewBox="0 0 80 1"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V1H0V0Z" fill="white" />
+          </svg>
+          <p style={{ fontSize: "10px" }}>
+            {selects.donationMoney}ETH / {selects.donation}
+          </p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
+          <img src={text} alt="ethCoin" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
           <p>챌린지 설명 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={camera} alt="camera" style={{width:'40px'}}/>
+          <img src={camera} alt="camera" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
           <p>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
-          <p>주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회</p>
-          <p>{selects.startTime}:00 ~ {selects.endTime}:00</p>
+          <img src={clock} alt="ethCoin" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>
+              주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회
+            </p>
+            <p>
+              {selects.startTime}:00 ~ {selects.endTime}:00
+            </p>
+          </div>
         </div>
         <div className={styles.Card2}>
-          <img src={calender} alt="calender" style={{width:'40px'}}/>
-          <p>{selects.period/7}주동안</p>
-          <p>{moment(selects.challengeStart).format('YYYY-MM-DD')}부터</p>
+          <img src={calender} alt="calender" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>{selects.period / 7}주동안</p>
+            <p>{moment(selects.challengeStart).format("YYYY-MM-DD")}부터</p>
+          </div>
         </div>
         <div className={styles.Card2}>
-          <img src={profile} alt="profile" style={{width:'40px'}}/>
-          <p>{selects.peopleLimit === false ? <p>인원 제한 없음</p> : <p>인원 제한 있음</p>}</p>
-          <p>{selects.limitNum}명</p>
+          <img src={person} alt="profile" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>
+              {selects.peopleLimit === false ? (
+                <p>인원 제한 없음</p>
+              ) : (
+                <p>인원 제한 있음</p>
+              )}
+            </p>
+            <p>{selects.limitNum}명</p>
+          </div>
         </div>
       </div>
-    )
+    );
   }
-  function DailyChallenge(){
-    return(
+  function DailyChallenge() {
+    return (
       <div className={styles.CreateReview}>
         <div className={styles.Card1}>
-          <img src={dailyIcon} alt="dailyIcon" style={{height:'50px'}}/>
+          <img src={dailyIcon} alt="dailyIcon" style={{ height: "50px" }} />
+          <svg
+            width="80"
+            height="1"
+            viewBox="0 0 80 1"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V1H0V0Z" fill="white" />
+          </svg>
           <p>{selects.challenge}</p>
         </div>
-        <div className={styles.Card1}>
-          {selects.topic === "운동" ? <div><img src={gym} alt="gym" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "생황" ? <div><img src={calender} alt="calender" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "취미" ? <div><img src={paint} alt="paint" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "식생활" ? <div><img src={tea} alt="tea" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "학습" ? <div><img src={pencil} alt="pencil" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
-          {selects.topic === "그 외" ? <div><img src={plus} alt="plus" style={{width:'48px'}}/><p>{selects.topic}</p></div> : null}
+        <div>
+          {selects.topic === "운동" ? (
+            <div className={styles.Card1}>
+              <img src={gym} alt="gym" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "생활" ? (
+            <div className={styles.Card1}>
+              <img src={calender} alt="calender" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "취미" ? (
+            <div className={styles.Card1}>
+              <img src={paint} alt="paint" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "식생활" ? (
+            <div className={styles.Card1}>
+              <img src={tea} alt="tea" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "학습" ? (
+            <div className={styles.Card1}>
+              <img src={pencil} alt="pencil" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
+          {selects.topic === "그 외" ? (
+            <div className={styles.Card1}>
+              <img src={plus} alt="plus" style={{ height: "50px" }} />
+              <svg
+                width="80"
+                height="1"
+                viewBox="0 0 80 1"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V1H0V0Z" fill="white" />
+              </svg>
+              <p>{selects.topic}</p>
+            </div>
+          ) : null}
         </div>
         <div className={styles.Card1}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
-          <p>{selects.dailyMoney}</p>
+          <img src={ethCoin} alt="ethCoin" style={{ height: "50px" }} />
+          <svg
+            width="80"
+            height="1"
+            viewBox="0 0 80 1"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V1H0V0Z" fill="white" />
+          </svg>
+          <p>{selects.dailyMoney} ETH</p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
+          <img src={text} alt="ethCoin" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
           <p>챌린지 설명 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={camera} alt="camera" style={{width:'40px'}}/>
+          <img src={camera} alt="camera" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
           <p>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{width:'40px'}}/>
-          <p>주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회</p>
-          <p>{selects.startTime}:00 ~ {selects.endTime}:00</p>
+          <img src={clock} alt="ethCoin" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>
+              주 {selects.nTimesAWeek}일 / 하루 {selects.authentications}회
+            </p>
+            <p>
+              {selects.startTime}:00 ~ {selects.endTime}:00
+            </p>
+          </div>
         </div>
         <div className={styles.Card2}>
-          <img src={calender} alt="calender" style={{width:'40px'}}/>
-          <p>{selects.period/7}주동안</p>
-          <p>{moment(selects.challengeStart).format('YYYY-MM-DD')}부터</p>
+          <img src={calender} alt="calender" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>{selects.period / 7}주동안</p>
+            <p>{moment(selects.challengeStart).format("YYYY-MM-DD")}부터</p>
+          </div>
         </div>
         <div className={styles.Card2}>
-          <img src={profile} alt="profile" style={{width:'40px'}}/>
-          <p>{selects.peopleLimit === false ? <p>인원 제한 없음</p> : <p>인원 제한 있음</p>}</p>
-          <p>{selects.limitNum}명</p>
+          <img src={person} alt="profile" style={{ width: "40px" }} />
+          <svg
+            width="1"
+            height="80"
+            viewBox="0 0 1 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H1V80H0V0Z" fill="white" />
+          </svg>
+          <div>
+            <p>
+              {selects.peopleLimit === "false" ? (
+                <p>인원 제한 없음</p>
+              ) : (
+                <p>인원 제한 있음</p>
+              )}
+            </p>
+            <p>{selects.limitNum}명</p>
+          </div>
         </div>
       </div>
-    )
+    );
   }
-  return(
+  return (
     <div>
-      <div className="BackMyPage">
-        <svg onClick={()=>{setFormCnt(formCnt-1)}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z" fill="#444444"/>
-        </svg>
-        <p>챌린지 개설하기</p>
-      </div>
-      {selects.challenge === "기부챌린지" ? <DonationChallenge/> :<DailyChallenge/>}
-      {selects.challenge === "기부챌린지" ? <DonationCreateButton/> :<DailyCreateButton/>}
+      <Header />
+      {selects.challenge === "기부챌린지" ? (
+        <DonationChallenge />
+      ) : (
+        <DailyChallenge />
+      )}
+      {selects.challenge === "기부챌린지" ? (
+        <DonationCreateButton />
+      ) : (
+        <DailyCreateButton />
+      )}
     </div>
-  )
+  );
 }
 export default CreateFinal;

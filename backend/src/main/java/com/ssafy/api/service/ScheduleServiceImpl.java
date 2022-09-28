@@ -27,7 +27,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void initSchedule() throws SchedulerException {
 
-        saveDummyJob();
+        //saveDummyJob();
 
         log.info("초기 스케줄 데이터 로드");
 

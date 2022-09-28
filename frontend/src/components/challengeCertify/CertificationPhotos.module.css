@@ -115,3 +115,8 @@ input[name="tab_item"] {
     width: 100vw;
     height: auto;
 }
+
+.scroll{
+    height: 530px;
+    overflow: scroll;
+}

@@ -89,7 +89,10 @@ public class UserController {
         }
         User user = optionalUser.get();
         favoriteService.addFavorite(challengeId, user);
-        return BaseResponse.success();
+        user.setUserInterest(interestService.getInterest(user));
+        user.setFavorites(favoriteService.getFavoriteList(user));
+        user.setPhotos(photoService.getPhotoList(user));
+        return BaseResponse.success(UserResponse.of(user));
     }
 
     @Transactional
@@ -103,7 +106,10 @@ public class UserController {
         }
         User user = optionalUser.get();
         if(favoriteService.deleteFavorite(challengeId, user)){
-            return BaseResponse.success();
+            user.setUserInterest(interestService.getInterest(user));
+            user.setFavorites(favoriteService.getFavoriteList(user));
+            user.setPhotos(photoService.getPhotoList(user));
+            return BaseResponse.success(UserResponse.of(user));
         }
 
         return BaseResponse.fail("즐겨찾기 삭제 실패");
@@ -119,7 +125,10 @@ public class UserController {
 
         User user = optionalUser.get();
         photoService.addPhoto(photoRequest.getPhotoUrl(), user);
-        return BaseResponse.success();
+        user.setUserInterest(interestService.getInterest(user));
+        user.setFavorites(favoriteService.getFavoriteList(user));
+        user.setPhotos(photoService.getPhotoList(user));
+        return BaseResponse.success(UserResponse.of(user));
     }
 
     @Transactional
@@ -132,7 +141,10 @@ public class UserController {
 
         User user = optionalUser.get();
         if(photoService.deletePhoto(photoRequest.getPhotoUrl(), user)){
-            return BaseResponse.success();
+            user.setUserInterest(interestService.getInterest(user));
+            user.setFavorites(favoriteService.getFavoriteList(user));
+            user.setPhotos(photoService.getPhotoList(user));
+            return BaseResponse.success(UserResponse.of(user));
         }
 
         return BaseResponse.fail("인증사진 삭제 실패");

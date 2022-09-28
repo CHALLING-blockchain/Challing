@@ -65,17 +65,29 @@ class ContractAPI {
       .send({
         from: this.account,
         gasLimit: 3_000_000,
-        value: value * 1e18,
+        value: value * Number("1e18"),
       })
       .catch(console.error);
   }
   async getMyChallenge(userId) {
     await this.init();
-    return this.Ccontract.methods
+    
+    const challenges=await this.Ccontract.methods
       .getMyChallenge(userId)
       .call({
         from: this.account,
       })
+      .catch(console.error);
+
+
+    return challenges
+
+  }
+  async findingChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .findingChallenger(challengeId, userId)
+      .call({ from: this.account })
       .catch(console.error);
   }
   async authenticate(challengeId, userId, today, picURL) {
@@ -121,12 +133,22 @@ class ContractAPI {
 
   async getChallengers(challengeId) {
     await this.init();
-    return this.Ccontract.methods
+    const challengers=await this.Ccontract.methods
       .getChallengers(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=challengers.map(el=>{
+      const challenge = Object.assign({}, el);
+      const size = Object.keys(challenge).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete challenge[i];
+      }
+      return challenge
+    })
+
+    return result
   }
   async getChallengersByUserId(userId) {
     await this.init();
@@ -240,14 +262,18 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
-    return this.Ccontract.methods
-      .createDailyChallenge(dailyChallenge)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      return this.Ccontract.methods
+        .createDailyChallenge(dailyChallenge)
+        .send({
+          from: this.account,
+          gasLimit: 3_000_000,
+          data: "ecb18ceba781",
+        })
+        .catch(console.error);
+    }
   }
+
   async endDailyChallenge(challengeId) {
     await this.init();
     return this.Ccontract.methods
@@ -262,14 +288,18 @@ class ContractAPI {
   // DonationChallengeContract
   async createDonationChallenge(donationChallenge) {
     await this.init();
-    return this.Ccontract.methods
-      .createDonationChallenge(donationChallenge)
-      .send({
-        from: this.account,
-        gasLimit: 3_000_000,
-        value: donationChallenge.setDonation * 1e18,
-      })
-      .catch(console.error);
+    if (this.account !== undefined && this.account !== "") {
+      console.log("setDonation", donationChallenge.setDonaion);
+      console.log("숫자: ", donationChallenge.setDonaion * Number("1e18"));
+      return this.Ccontract.methods
+        .createDonationChallenge(donationChallenge)
+        .send({
+          from: this.account,
+          gasLimit: 3_000_000,
+          value: donationChallenge.setDonaion * Number("1e18"),
+        })
+        .catch(console.error);
+    }
   }
 
   async endDonationChallenge(challengeId) {
@@ -287,24 +317,44 @@ class ContractAPI {
   async getAllDonation() {
     await this.init();
 
-    return this.Ccontract.methods
+    const donations=await this.Ccontract.methods
       .getAllDonation()
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=donations.map(el=>{
+      const donation = Object.assign({}, el);
+      const size = Object.keys(donation).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete donation[i];
+      }
+      return donation
+    })
+
+    return result
   }
 
   // PhotoContract
   async getChallengerPhoto(challengerId) {
     await this.init();
 
-    return this.Vcontract.methods
+    const photos=await this.Vcontract.methods
       .getChallengerPhoto(challengerId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=photos.map(el=>{
+      const photo = Object.assign({}, el);
+      const size = Object.keys(photo).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete photo[i];
+      }
+      return photo
+    })
+
+    return result
   }
 
   async report(challengeId, photoId, userId) {
@@ -342,12 +392,22 @@ class ContractAPI {
   async getChallengeVote(challengeId) {
     await this.init();
 
-    return this.Vcontract.methods
+    const votes=await this.Vcontract.methods
       .getChallengeVote(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=votes.map(el=>{
+      const vote = Object.assign({}, el);
+      const size = Object.keys(vote).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete vote[i];
+      }
+      return vote
+    })
+
+    return result
   }
 
   async getPasscoin() {

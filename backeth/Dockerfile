@@ -7,7 +7,7 @@ COPY backeth/ ./
 RUN npm install
 COPY frontend/src/contracts/ src/artifacts/
 ENV runscript=prod \
-  APP_NODE_ENDPOINT=http://host.docker.internal:7545 \
+  PORT=3000 \
   APP_CONTRACT_ARTIFACT_DIR=./src/artifacts
-EXPOSE 3000
+EXPOSE ${PORT}
 ENTRYPOINT npm run ${runscript}
