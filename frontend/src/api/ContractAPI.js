@@ -22,7 +22,7 @@ class ContractAPI {
     // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
-    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
+    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
   }
 
   // ChallengeContract
