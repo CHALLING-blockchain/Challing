@@ -22,7 +22,7 @@ class ContractAPI {
     // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
-    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
+    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
   }
 
   // ChallengeContract
@@ -325,6 +325,10 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
+    const deposit=dailyChallenge.deposit.toString();
+    dailyChallenge.deposit=1;
+    dailyChallenge.totalDeposit=1;
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -334,7 +338,10 @@ class ContractAPI {
               from: this.account,
               to: this.Caddress,
               value: this.web3.utils.toHex(
-                this.web3.utils.toWei(dailyChallenge.deposit, "ether")
+                this.web3.utils.toWei(
+                  deposit,
+                  "ether"
+                )
               ),
               data: this.Ccontract.methods
                 .createDailyChallenge(dailyChallenge)
@@ -370,6 +377,11 @@ class ContractAPI {
   // DonationChallengeContract
   async createDonationChallenge(donationChallenge) {
     await this.init();
+
+    const setDonation=donationChallenge.setDonation.toString();
+    donationChallenge.setDonation=1;
+    donationChallenge.totalDonation=1;
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -378,7 +390,12 @@ class ContractAPI {
             {
               from: this.account,
               to: this.Caddress,
-              value: this.web3.utils.toHex(this.web3.utils.toWei("1", "ether")),
+              value: this.web3.utils.toHex(
+                this.web3.utils.toWei(
+                  setDonation,
+                  "ether"
+                )
+              ),
               data: this.Ccontract.methods
                 .createDonationChallenge(donationChallenge)
                 .encodeABI(),

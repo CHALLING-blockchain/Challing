@@ -74,7 +74,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
 
     totalDeposit: selects.dailyMoney,
 
-    complet: false,
+    complete: false,
   };
   const donationChallenge = {
     challengeId: 1,
@@ -83,7 +83,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     donationId: 1,
     name: selects.title,
     desc: selects.explanation,
-    setDonaion: selects.donationMoney,
+    setDonation: selects.donationMoney,
     mainPicURL: selects.exPhotoUrl,
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
@@ -97,7 +97,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     personnel: selects.limitNum,
     totalDonation: selects.donationMoney,
 
-    complet: false,
+    complete: false,
     success: false,
   };
   function DailyCreateButton() {
@@ -129,10 +129,10 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           <button
             className={styles.NextButton}
             onClick={async () => {
-              await Contract.createDonationChallenge(daliyChallenge).then(
+              await Contract.createDonationChallenge(donationChallenge).then(
                 console.log
               );
-              navigate(`/oading/${challengeId}`);
+              navigate(`/loading/${challengeId}`);
             }}
           >
             챌린지 발행하기

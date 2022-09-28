@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import styles from "./CertificationPhotos.module.css"
 import camera from "../../img/camera.png"
 import megaphone from "../../img/megaphone.png"
@@ -8,6 +8,7 @@ import profile from "../../img/profile-basic.png"
 
 function Header() {
   const navigate = useNavigate();
+  
   return (
     <div style={{ position: "sticky", top: "0px", backgroundColor:'white' }}>
       <div className={styles.header}>
@@ -101,6 +102,7 @@ function Tabs(){
 }
 
 function Gather(){
+    const photoList = useLocation().state.photoList;
     // const [img, setImg] = useState(testphoto);
     // const [id, setId] = useState(1);
     // const [modalOpen, setModalOpen] = useState(false);
@@ -112,12 +114,13 @@ function Gather(){
     return (
       <div className={styles.scroll}>
         <div className={styles.gather}>
-          <img src={testphoto} alt="" />
-          <img src={testphoto} alt="" />
-          <img src={testphoto} alt="" />
-          <img src={testphoto} alt="" />
-          <img src={testphoto} alt="" />
-          <img src={testphoto} alt="" />
+          {
+            photoList.map(photo=>{
+              return (
+                <img src={photo.picURL} alt="" />
+              )
+            })
+          }
           {/* {modalOpen && <GatherModal setModalOpen={setModalOpen} />} */}
         </div>
       </div>
@@ -141,42 +144,33 @@ function Separately(){
     const [userimg, setUserimg] = useState(profile);
     const [user, setUser] = useState('커다란 솜사탕');
     const [openModal, setOpenModal] = useState(false);
+    const photoList = useLocation().state.photoList;
     const showModal = () => {
         console.log('modal 열려야돼')
         setOpenModal(true);
     }
     return (
       <div className={styles.scroll}>
-        <div className={styles.separately}>
-          <div className={styles.userBox}>
-            <div className={styles.user}>
-              <img src={userimg} alt="" />
-              <span>{user}</span>
-            </div>
-            <div className={styles.report}>
-              <img src={megaphone} alt="" onClick={showModal} />
-            </div>
-          </div>
-          <div className={styles.shotBox}>
-            <img src={testphoto} alt="" />
-          </div>
-        </div>
-
-        <div className={styles.separately}>
-          <div className={styles.userBox}>
-            <div className={styles.user}>
-              <img src={userimg} alt="" />
-              <span>{user}</span>
-            </div>
-            <div className={styles.report}>
-              <img src={megaphone} alt="" onClick={showModal} />
-            </div>
-          </div>
-          <div className={styles.shotBox}>
-            <img src={testphoto} alt="" />
-          </div>
-        </div>
-        
+        {
+          photoList.map(photo=>{
+            return(
+              <div className={styles.separately}>
+                <div className={styles.userBox}>
+                  <div className={styles.user}>
+                    <img src={userimg} alt="" />
+                    <span>{user}</span>
+                  </div>
+                  <div className={styles.report}>
+                    <img src={megaphone} alt="" onClick={showModal} />
+                  </div>
+                </div>
+                <div className={styles.shotBox}>
+                  <img src={photo.picURL} alt="" />
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
     );
 }
