@@ -40,12 +40,13 @@ const getContract = async (cname) => {
  *   { result: string }
  */
 router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 일상 챌린지 종료", req.params);
 
   // const challengeId = req.params.challengeId;
 
   // test용
-  const challengeId = 0;
+  const challengeId = 987654321;
+  console.log("[WARNING] challengeId 987654321으로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
@@ -55,11 +56,11 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("일상 챌린지 종료 SUCCESS", r1);
+    console.log("<== 일상 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log("일상 챌린지 종료 FAIL", e);
+    console.log("<== 일상 챌린지 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
@@ -75,12 +76,13 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
  *   { result: string }
  */
 router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 기부 챌린지 종료", req.params);
 
   // const challengeId = req.params.challengeId;
 
   // test용
-  const challengeId = 0;
+  const challengeId = 987654321;
+  console.log("[WARNING] challengeId 987654321으로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
@@ -90,11 +92,11 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("기부 챌린지 종료 SUCCESS", r1);
+    console.log("<== 기부 챌린지 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log("기부 챌린지 종료 FAIL", e);
+    console.log("<== 기부 챌린지 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
@@ -110,12 +112,13 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
  *   { result: string }
  */
 router.get("/endvote/:voteId", async (req, res, next) => {
-  console.log(req.params);
+  console.log("==> 투표 종료", req.params);
 
   // const voteId = req.params.voteId;
 
   // test용
-  const voteId = 0;
+  const voteId = 987654321;
+  console.log("[WARNING] voteId 987654321로 하드코딩 돼 있음");
 
   const contract = await getContract("VoteContract");
 
@@ -125,11 +128,11 @@ router.get("/endvote/:voteId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("투표 종료 SUCCESS", r1);
+    console.log("<== 투표 종료 SUCCESS", r1);
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
-    console.log("투표 종료 FAIL", e);
+    console.log("<== 투표 종료 FAIL", e);
 
     res.json({ result: "FAIL" });
   }
