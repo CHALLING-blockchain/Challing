@@ -71,12 +71,17 @@ class ContractAPI {
   }
   async getMyChallenge(userId) {
     await this.init();
-    return this.Ccontract.methods
+    
+    const challenges=await this.Ccontract.methods
       .getMyChallenge(userId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+
+
+    return challenges
+
   }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
@@ -121,12 +126,22 @@ class ContractAPI {
 
   async getChallengers(challengeId) {
     await this.init();
-    return this.Ccontract.methods
+    const challengers=await this.Ccontract.methods
       .getChallengers(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=challengers.map(el=>{
+      const challenge = Object.assign({}, el);
+      const size = Object.keys(challenge).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete challenge[i];
+      }
+      return challenge
+    })
+
+    return result
   }
   async getChallengersByUserId(userId) {
     await this.init();
@@ -295,24 +310,44 @@ class ContractAPI {
   async getAllDonation() {
     await this.init();
 
-    return this.Ccontract.methods
+    const donations=await this.Ccontract.methods
       .getAllDonation()
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=donations.map(el=>{
+      const donation = Object.assign({}, el);
+      const size = Object.keys(donation).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete donation[i];
+      }
+      return donation
+    })
+
+    return result
   }
 
   // PhotoContract
   async getChallengerPhoto(challengerId) {
     await this.init();
 
-    return this.Vcontract.methods
+    const photos=await this.Vcontract.methods
       .getChallengerPhoto(challengerId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=photos.map(el=>{
+      const photo = Object.assign({}, el);
+      const size = Object.keys(photo).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete photo[i];
+      }
+      return photo
+    })
+
+    return result
   }
 
   async report(challengeId, photoId, userId) {
@@ -350,12 +385,22 @@ class ContractAPI {
   async getChallengeVote(challengeId) {
     await this.init();
 
-    return this.Vcontract.methods
+    const votes=await this.Vcontract.methods
       .getChallengeVote(challengeId)
       .call({
         from: this.account,
       })
       .catch(console.error);
+    const result=votes.map(el=>{
+      const vote = Object.assign({}, el);
+      const size = Object.keys(vote).length;
+      for (let i = 0; i < size / 2; i++) {
+        delete vote[i];
+      }
+      return vote
+    })
+
+    return result
   }
 
   async getPasscoin() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ChallengeShot.css';
 import { useSelector, useDispatch } from "react-redux";
@@ -9,18 +9,29 @@ import moment from 'moment';
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import ContractAPI from "../../api/ContractAPI";
 
-async function ChallengeShot(){
+function ChallengeShot(){
     const [myChallenge,setMyChallenge] = useState("");
     const onChange = (event) => setMyChallenge(event.target.value);
     const allChallenge=useSelector(challengeList);
     const user = useSelector(selectUser);
-    const challengers=await ContractAPI.getChallengersByUserId(1)
-      // const authPer
-    console.log(challengers)
+    const [challengers,setChallegers]=useState();
+    useEffect(() => {
+      async function load() {
+        const challengers= await ContractAPI.getChallengersByUserId(1)
+        setChallegers(challengers);
+      }
+      load()
+    }, []);
+
     function ChallengeCard(props){
       const today =moment(new Date()).format('YYYY-MM-DD');
       const dayGab=getDayGab.getDayGapFromDates(today,props.challengeInfo.endDate)
-      
+      let userCount=0;
+      if(challengers){
+        userCount=challengers.filter(el=>el.challengeId==props.challengeInfo.challengeId)[0].totalCount
+      }
+      const percentage=(1/props.challengeInfo.authTotalTimes*100).toFixed(2)
+
       return(
         <div>
           <img src={props.challengeInfo.mainPicURL} height="50" width="50"></img>
@@ -28,7 +39,7 @@ async function ChallengeShot(){
           <button>인증하기</button>
           <p>{dayGab}일 뒤 종료</p>
           <p></p>
-          <p>현재{}%달성</p>
+          <p>현재{percentage}%달성</p>
         </div>
       )
     }
