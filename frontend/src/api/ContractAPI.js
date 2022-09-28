@@ -334,7 +334,10 @@ class ContractAPI {
               from: this.account,
               to: this.Caddress,
               value: this.web3.utils.toHex(
-                this.web3.utils.toWei(dailyChallenge.deposit, "ether")
+                this.web3.utils.toWei(
+                  dailyChallenge.deposit.toString(),
+                  "ether"
+                )
               ),
               data: this.Ccontract.methods
                 .createDailyChallenge(dailyChallenge)
@@ -378,7 +381,12 @@ class ContractAPI {
             {
               from: this.account,
               to: this.Caddress,
-              value: this.web3.utils.toHex(this.web3.utils.toWei("1", "ether")),
+              value: this.web3.utils.toHex(
+                this.web3.utils.toWei(
+                  donationChallenge.donationMoney.toString(),
+                  "ether"
+                )
+              ),
               data: this.Ccontract.methods
                 .createDonationChallenge(donationChallenge)
                 .encodeABI(),
