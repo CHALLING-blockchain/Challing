@@ -36,6 +36,7 @@ function Header(props) {
   }, [props.user.challengeIds, props.challenge.challengeId, props.user]);
 
   const checkmark = async () => {
+    console.log("check navigate", navigate(-1));
     const body = {
       userId: props.user.id,
       challengeId: props.challenge.challengeId,
