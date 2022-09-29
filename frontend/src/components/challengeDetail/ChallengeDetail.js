@@ -160,7 +160,11 @@ function TopBox(props) {
           </div>
           <div className={styles.imgText}>
             <img src={dollar} alt="" />
-            <span>{props.challenge.deposit / Math.pow(10, 18)} eth</span>
+            <span>
+              {(props.challenge.deposit || props.challenge.setDonation) /
+                Math.pow(10, 18)}{" "}
+              eth
+            </span>
           </div>
         </div>
       </div>
@@ -226,7 +230,11 @@ function addDescription(props) {
   const descList = [];
   for (let index = 0; index < desc.length; index++) {
     if (desc[index].length > 0) {
-      descList.push(<p className={styles.Text} key={index}>👉{desc[index]}</p>);
+      descList.push(
+        <p className={styles.Text} key={index}>
+          👉{desc[index]}
+        </p>
+      );
     }
   }
   return descList;
