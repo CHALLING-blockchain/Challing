@@ -176,7 +176,7 @@ function MyWallet() {
               input: data[index].input,
               etherValue: Number(
                 web3.utils.fromWei(data[index].value, "ether")
-              ).toFixed(3),
+              ),
               sendOrReceive: "",
               timeStamp: timeConverter(data[index].timeStamp),
             };

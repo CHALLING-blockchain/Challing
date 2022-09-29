@@ -79,7 +79,10 @@ function Inform(props) {
           </div>
           <span>
             {Number(
-              web3.utils.fromWei(props.challenge.deposit, "ether")
+              web3.utils.fromWei(
+                props.challenge.deposit || props.challenge.setDonation,
+                "ether"
+              )
             ).toFixed(3)}{" "}
             eth
           </span>
@@ -112,9 +115,12 @@ function Btn(props) {
       <Next
         type="submit"
         label={
-          Number(web3.utils.fromWei(props.challenge.deposit, "ether")).toFixed(
-            3
-          ) + " ETH 지불하기"
+          Number(
+            web3.utils.fromWei(
+              props.challenge.deposit || props.challenge.setDonation,
+              "ether"
+            )
+          ).toFixed(3) + " ETH 지불하기"
         }
         onClick={() => {
           joinChallenge(
@@ -122,7 +128,10 @@ function Btn(props) {
             props.challenge.challengeId,
             user.id,
             todayStr,
-            web3.utils.fromWei(props.challenge.deposit, "ether")
+            web3.utils.fromWei(
+              props.challenge.deposit || props.challenge.setDonation,
+              "ether"
+            )
           );
           navigate(`/join-loading/${props.challenge.challengeId}`);
         }}
