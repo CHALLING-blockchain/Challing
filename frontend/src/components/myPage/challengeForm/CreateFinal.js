@@ -134,7 +134,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   console.log("userId: ", useSelector(selectUser).id);
   const topic2id = {
     운동: 0,
-    생황: 1,
+    생활: 1,
     취미: 2,
     식생활: 3,
     학습: 4,
