@@ -141,13 +141,11 @@ function ConfirmRegister() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
-
-  let week = Math.floor(
-    getDayGap.getDayGapFromDates(element.startDate, element.endDate) / 7
+  let period = Number(
+    getDayGap.getDayGapFromDates(element.startDate, element.endDate)
   );
-  console.log("week: ", week);
-  console.log(element.authTotalTimes);
-  let perWeek = Math.floor(element.authTotalTimes / week);
+  let perWeek =
+    Number(element.authTotalTimes) / (Number(element.authDayTimes) * period);
   return (
     <div>
       <Header></Header>

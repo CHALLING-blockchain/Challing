@@ -11,6 +11,7 @@ import {
 } from "../../app/redux/allChallengeSlice";
 import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
   const selector = useSelector(challengeList);
@@ -18,6 +19,7 @@ function Main() {
   const dispatch = useDispatch();
   //주제 이름 저장
   const [interest, setInterest] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function load() {
@@ -40,9 +42,13 @@ function Main() {
       // }
     }
 
-    //로그인한 유저의 관심사 가져와서  저장
-    let topicName = pickATopic(Object.keys(user.interests).length);
-    setInterest(topicName);
+    if (user.interests !== undefined) {
+      //로그인한 유저의 관심사 가져와서  저장
+      let topicName = pickATopic(Object.keys(user.interests).length);
+      setInterest(topicName);
+    } else {
+      navigate("/auth");
+    }
 
     load();
   }, []);
@@ -172,7 +178,7 @@ export function getDayGapFromDates(startDate, endDate) {
   let gap = startDate - endDate;
   let dateGap = -parseInt(gap / currDay);
 
-  return dateGap - 1;
+  return dateGap;
 }
 
 export function interestIdToName(interestId) {

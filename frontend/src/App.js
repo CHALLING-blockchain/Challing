@@ -30,6 +30,7 @@ import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 import OngoingChallenge from "./components/myChallenge/OngoingChallenge";
 import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
 import CompletedDetail from "./components/myChallenge/CompletedDetail";
+import Loading from "./components/myPage/Loading";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/my-shot-zip" element={<MyShotZip />} />
         <Route path="/my-shot-detail/:id" element={<MyShotDetail />} />
         <Route path="/create-challenge" element={<CreateChallenge />} />
+        <Route path="/loading/:id" element={<Loading />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/alarm" element={<Alarm />} />
@@ -65,9 +67,6 @@ function App() {
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
         {/* <Route path="/completed-detail:id" element={<CompletedDetail />} /> */}
         <Route path="/completed-detail" element={<CompletedDetail />} />
-        
-        
-
       </Routes>
       <Menu />
     </div>
