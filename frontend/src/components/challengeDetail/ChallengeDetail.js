@@ -22,6 +22,7 @@ import { selectUser } from "../../app/redux/userSlice";
 function Header(props) {
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(false);
+  //console.log("check navigate", navigate(-1));
 
   useEffect(() => {
     console.log("props user", props.user);
@@ -36,7 +37,6 @@ function Header(props) {
   }, [props.user.challengeIds, props.challenge.challengeId, props.user]);
 
   const checkmark = async () => {
-    console.log("check navigate", navigate(-1));
     const body = {
       userId: props.user.id,
       challengeId: props.challenge.challengeId,

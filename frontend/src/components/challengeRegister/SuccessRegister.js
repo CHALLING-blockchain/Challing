@@ -6,14 +6,12 @@ import styles from "./SuccessRegister.module.css";
 import RegisterCard from "../common/RegisterCard";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
-import test from "../../img/test-back.jpg";
 import { Link } from "react-router-dom";
 import Next from "../common/NextButton";
 import * as getInterestStr from "../main/Main.js";
 import * as getDayGap from "../main/Main.js";
 import Web3 from "web3";
 import ContractAPI from "../../api/ContractAPI";
-import Contract from "../../api/ContractAPI";
 
 function Header() {
   return (
