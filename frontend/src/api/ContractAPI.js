@@ -1,5 +1,4 @@
 import Web3 from "web3";
-
 class ContractAPI {
   constructor(address) {
     this.init(address);
@@ -8,7 +7,7 @@ class ContractAPI {
     this.Cartifact = require("../contracts/ChallengeContract.json");
     this.Vartifact = require("../contracts/VoteContract.json");
     const infuraUrl =
-      "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
+      "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
     this.web3 = new Web3(new Web3.providers.HttpProvider(local));
     if (address !== undefined) {
@@ -95,6 +94,13 @@ class ContractAPI {
     await this.init();
     return this.Ccontract.methods
       .findingChallenger(challengeId, userId)
+      .call({ from: this.account })
+      .catch(console.error);
+  }
+  async checkChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .checkChallenger(challengeId, userId)
       .call({ from: this.account })
       .catch(console.error);
   }

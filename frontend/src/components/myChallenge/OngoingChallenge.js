@@ -75,8 +75,10 @@ function AchieveRateBox(){
         const myChallengeInfo = result;
         for (let i = 0; i < myChallengeInfo.length; i++) {
           let tmpInfo = myChallengeInfo[i];
-          if (tmpInfo.complete !== true) {
-            tmpDeposit += tmpInfo.userDeposit;
+          if ("deposit" in tmpInfo){
+            if (tmpInfo.complete !== true) {
+              tmpDeposit += (tmpInfo.deposit);
+          }
           }
         }
         setTotalDeposit(tmpDeposit);
@@ -126,7 +128,7 @@ function ChallengeList(){
         const join = result[1];
         if (join.length !== 0) {
           for (let i = 0; i < join.length; i++) {
-            if (join[i].complete !== true) {
+            if (selector[join[i]].complete !== true) {
               challengeIds.push(join[i]);
             }
           }
