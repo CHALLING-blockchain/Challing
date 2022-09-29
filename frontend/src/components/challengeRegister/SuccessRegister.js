@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import styles from "./SuccessRegister.module.css";
@@ -12,6 +12,7 @@ import Next from "../common/NextButton";
 import * as getInterestStr from "../main/Main.js";
 import * as getDayGap from "../main/Main.js";
 import Web3 from "web3";
+import ContractAPI from "../../api/ContractAPI";
 import Contract from "../../api/ContractAPI";
 
 function Header() {
@@ -35,9 +36,9 @@ function Inform(props) {
 
   useEffect(() => {
     async function load() {
+      const Contract = new ContractAPI();
       await Contract.getChallengers(id).then((result) => {
-        let challengeCnt = 0;
-        challengeCnt = result.length;
+        let challengeCnt = result.length;
         setChallengeCntData(challengeCnt);
       });
     }
@@ -78,13 +79,16 @@ function Inform(props) {
 
 function Btn() {
   // const [deposit, setDeposit] = useState(0);
+  const navigate = useNavigate();
   return (
     <div className={styles.btnBox}>
       <Link to="/">
         <Next
           type="submit"
           label="홈으로"
-          onClick={() => {}}
+          onClick={() => {
+            navigate("/");
+          }}
           disabled={false}
           flag={true}
         ></Next>

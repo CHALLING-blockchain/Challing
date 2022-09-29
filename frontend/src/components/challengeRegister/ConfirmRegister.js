@@ -143,26 +143,6 @@ function Btn(props) {
 }
 
 function MyBalance(props) {
-  // // localstorage에 wallet 연결 확인
-  // const [exist, setExist] = useState(localStorage.getItem("myAccount"));
-  // // loading status
-  // const [isLoading, setIsLoading] = useState(false);
-  // // error messages
-  // const [errorMessage, setErrorMessage] = useState("");
-  // // get active account and balance data from useWeb3 hook
-  // const { provider, account: activeAccount } = useWeb3(
-  //   setIsLoading,
-  //   setErrorMessage,
-  //   exist,
-  //   setExist
-  // );
-  // // get active account balance from useBalance hook
-  // const activeBalance = useBalance(
-  //   provider,
-  //   activeAccount,
-  //   setIsLoading,
-  //   setErrorMessage
-  // );
   return (
     <div className={styles.balanceBox}>
       <span style={{ fontWeight: "bold" }}>나의 잔액</span>
