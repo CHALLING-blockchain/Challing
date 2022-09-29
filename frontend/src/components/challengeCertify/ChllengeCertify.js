@@ -73,16 +73,22 @@ function Description({info,percentage}){
     );
 }
 
-function Btn(){
+function Btn({challengeId}){
     const [state, setState] = useState(false);
+    const navigate = useNavigate();
+
     return (
       <div>
         { state === false ? 
-        <Link to="/web-cam-capture">
-          <div className={styles.btnBox}>
-            <button className={styles.btn} >📸 인증하기</button>
-          </div> 
-        </Link>
+        <div className={styles.btnBox}>
+          <button className={styles.btn} onClick={() => {
+            navigate(`/web-cam-capture`, {
+              state: {
+                challengeId:challengeId,
+              }
+            });
+          }}>📸 인증하기</button>
+        </div>
         :
         <div className={styles.btnBox}>
           <button className={styles.btn} disabled='true'>📸 인증완료</button>
@@ -100,17 +106,14 @@ function OtherShot({photoList}){
       <div className={styles.otherShot}>
         <div className={styles.shotTitle}>
           <span>다른 챌린저의 인증샷</span>
-          <button onClick={() => {
+          <div style={{ color: "#755FFF" }} onClick={() => {
               navigate(`/certification-photos`, {
                 state: {
                   photoList:photoList
                 }
               });
-            }}>더보기</button>
+            }}>더보기</div>
 
-          <Link style={{ color: "#755FFF" }} to="/certification-photos">
-            더보기
-          </Link>
         </div>
         <div className={styles.shots}>
           {
@@ -129,16 +132,13 @@ function Voting({voteList}){
   const navigate = useNavigate();
   
     return (
-      <div>
-        <button onClick={() => {
-          navigate(`/votinghome`, {
-            state: {
-              voteList:voteList
-            }
-          });
-        }}>인증하기</button>
-        <Link to="/votinghome" className={styles.voting}>
-          <div className={styles.votingSub}>
+      <div className={styles.voting} onClick={() => {
+        navigate(`/votinghome`, {
+          state: {
+            voteList:voteList
+          }})}
+        }>
+        <div className={styles.votingSub}>
             <img style={{ width: "32px", height: "32px" }} src={chat} alt="" />
             <span style={{margin:'0 4px', fontSize:'16px'}}>투표</span>
           </div>
@@ -155,7 +155,7 @@ function Voting({voteList}){
               d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
             />
           </svg>
-        </Link>
+        
       </div>
     );
 }
@@ -190,7 +190,7 @@ function ChallengeCertify() {
         <Header></Header>
         <BackDrop picURL={challenge.mainPicURL}></BackDrop>
         <Description info={challenge} percentage={percentage}></Description>
-        <Btn></Btn>
+        <Btn challengeId={challenge.challengeId}></Btn>
         <hr className={styles.hrTag} />
         <OtherShot photoList={photoList}></OtherShot>
         <Voting voteList={voteList}></Voting>
