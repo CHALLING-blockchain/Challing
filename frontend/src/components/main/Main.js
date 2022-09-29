@@ -84,7 +84,7 @@ function Main() {
               }}
             >
               <br></br>
-              <p>{element.mainPicURL}</p>
+              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
               <p>{element.name}</p>
               <p>{startDay} 시작</p>
             </span>
@@ -124,7 +124,7 @@ function Main() {
               }}
             >
               <br></br>
-              <p>{element.mainPicURL}</p>
+              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
               <p>{element.name}</p>
               <p>{dayGap}일 뒤 시작</p>
             </span>
