@@ -118,6 +118,8 @@ function TopBox(props) {
     )
   );
 
+  console.log("period", period);
+
   const weekTimes =
     Number(props.challenge.authTotalTimes) /
     (Number(props.challenge.authDayTimes) * period);
@@ -339,52 +341,54 @@ function ChallengeDetail() {
   return (
     <div>
       <Header challenge={challenge} user={user}></Header>
-      <img
-        className={styles.backImg}
-        src={challenge.mainPicURL}
-        alt="challegePhoto"
-      />
+      <div className={styles.Content}>
+        <img
+          className={styles.backImg}
+          src={challenge.mainPicURL}
+          alt="challegePhoto"
+        />
 
-      <TopBox challenge={challenge} challengers={challengers}></TopBox>
-      <hr className={styles.hrTag} />
-      <PeriodBox challenge={challenge}></PeriodBox>
-      <hr className={styles.hrTag} />
-      <RefundPolicy></RefundPolicy>
-      <hr className={styles.hrTag} />
-      <Description challenge={challenge}></Description>
-      <hr className={styles.hrTag} />
-      <ShotDescription challenge={challenge}></ShotDescription>
+        <TopBox challenge={challenge} challengers={challengers}></TopBox>
+        <hr className={styles.hrTag} />
+        <PeriodBox challenge={challenge}></PeriodBox>
+        <hr className={styles.hrTag} />
+        <RefundPolicy></RefundPolicy>
+        <hr className={styles.hrTag} />
+        <Description challenge={challenge}></Description>
+        <hr className={styles.hrTag} />
+        <ShotDescription challenge={challenge}></ShotDescription>
 
-      <div>
-        {!joinFlag ? (
-          <Next
-            type="submit"
-            label="챌린지 신청하기"
-            onClick={() => {
-              joinChallenge(
-                Contract,
-                challenge.challengeId,
-                user.id,
-                todayStr,
-                challenge.deposit / Math.pow(10, 18)
-              );
-              setChallengers(challengers + 1);
-              setJoinFlag(true);
-            }}
-            flag={true}
-            disabled={false}
-          ></Next>
-        ) : (
-          <Next
-            type="submit"
-            label={"챌린지 시작  " + day + "일 전"}
-            onClick={() => {}}
-            disabled={true}
-          ></Next>
-        )}
+        <div>
+          {!joinFlag ? (
+            <Next
+              type="submit"
+              label="챌린지 신청하기"
+              onClick={() => {
+                joinChallenge(
+                  Contract,
+                  challenge.challengeId,
+                  user.id,
+                  todayStr,
+                  challenge.deposit / Math.pow(10, 18)
+                );
+                setChallengers(challengers + 1);
+                setJoinFlag(true);
+              }}
+              flag={true}
+              disabled={false}
+            ></Next>
+          ) : (
+            <Next
+              type="submit"
+              label={"챌린지 시작  " + day + "일 전"}
+              onClick={() => {}}
+              disabled={true}
+            ></Next>
+          )}
+        </div>
+
+        <div style={{ width: "100vw", height: "72px" }}></div>
       </div>
-
-      <div style={{ width: "100vw", height: "72px" }}></div>
     </div>
   );
 }
