@@ -69,15 +69,15 @@ function ChallengeShot(){
           <p></p>
           <p>현재{percentage}%달성</p>
           {/* {console.log(props.challengeInfo)} */}
-        </div>
+        </div>  
       )
     }
     function NoChallenging(){
       return (
-        <div className="NoChallenging">
-          <h1>진행중인 챌린지가 없습니다.😢</h1>
+        <div className={styles.NoContents}>
+          <p className={styles.NoContent}>진행중인 챌린지가 없습니다.😢</p>
           <Link to="/">
-              <button className="AroundButton">챌린지 둘러보기</button>
+              <button className={styles.AroundButton}>챌린지 둘러보기</button>
           </Link>
         </div>
       )
