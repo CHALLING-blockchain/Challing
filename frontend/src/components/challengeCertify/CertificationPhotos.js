@@ -5,7 +5,10 @@ import camera from "../../img/camera.png"
 import megaphone from "../../img/megaphone.png"
 import testphoto from "../../img/test-back.jpg"
 import profile from "../../img/profile-basic.png"
-
+import ContractAPI from "../../api/ContractAPI";
+import useWeb3 from "../../hooks/useWeb3";
+import { selectUser } from "../../app/redux/userSlice";
+import { useSelector } from "react-redux";
 function Header() {
   const navigate = useNavigate();
   
@@ -139,9 +142,34 @@ function Gather(){
 //     )
 // }
 
-function Modal({onClose}){
+function Modal({onClose,photoId}){
+  const challengeId = useLocation().state.challengeId;
+  const userId = useSelector(selectUser).id;
+  
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+  // loading status
+  const [isLoading, setIsLoading] = useState(false);
+  // error messages
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // get active account and balance data from useWeb3 hook
+  const {
+    connect,
+    disconnect,
+    provider,
+    account: activeAccount,
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+
+  
   function handleClose(){
     onClose ?.();
+  };
+  function report (){
+    if (activeAccount !== undefined && activeAccount !== "") {
+      const Contract = new ContractAPI(activeAccount);
+      console.log(challengeId, photoId, userId)
+      Contract.report(challengeId, photoId, userId)
+    }
   };
   return (
     <div className={styles.Modal} onClick={handleClose}>
@@ -163,7 +191,7 @@ function Modal({onClose}){
           <p className={styles.ModalText}>❗ 투표결과와 본인의 선택이 같을 시 패스코인이 <br/><span style={{paddingLeft:'10px'}}/>발급됩니다.</p>
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.NextButton}>🚨 인증샷 신고하기</button>
+          <button className={styles.NextButton} onClick={report}>🚨 인증샷 신고하기</button>
         </div>
       </div>
     </div>
@@ -176,6 +204,7 @@ function Separately(){
     const [user, setUser] = useState('커다란 솜사탕');
     const [openModal, setOpenModal] = useState(false);
     const photoList = useLocation().state.photoList;
+    const [photoId,setPhotoId]=useState();
     const showModal = () => {
         setOpenModal(true);
     }
@@ -191,7 +220,7 @@ function Separately(){
                     <span>{user}</span>
                   </div>
                   <div className={styles.report}>
-                    <img src={megaphone} alt="" onClick={showModal} />
+                    <img src={megaphone} alt="" onClick={()=>{showModal();setPhotoId(photo.id)}} />
                   </div>
                 </div>
                 <div className={styles.shotBox}>
@@ -202,6 +231,7 @@ function Separately(){
           })
         }
         {openModal && (<Modal 
+          photoId={photoId}
           open={openModal} 
           onClose={()=>{setOpenModal(false);}}/>)}
       </div>
