@@ -12,7 +12,38 @@ import plus from "../../img/plus.png";
 import Coin from "../../img/dollarCoin.png";
 import ContractAPI from "../../api/ContractAPI";
 
+function Modal({onClose}){
+  function handleClose(){
+    onClose ?.();
+  };
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.ModalBody} onClick={(e)=>e.stopPropagation()}>
+        <div>
+          <svg className={styles.modalCloseBtn} onClick={handleClose} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
+            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>신고하기</p>
+        <div style={{position:'absolute',left:'32px',top:'88px'}}>
+          <p className={styles.ModalText}>패스코인을 쓰면 챌린지 인증 하루 실패가 인증완료로 변경됩니다.<br/>
+                                          패스코인은 사용 후 취소가 불가하며, 챌린지 결과 발표 1시간 전까지 사용 가능합니다.<br/>
+                                          다른 챌린저의 챌린지 성공여부 투표에 참여하여 결과와 같은 선택을 하였을 시 얻을 수 있습니다.</p>
+        </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.NextButton} onClick={handleClose}>확인</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function MyWallet() {
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => {
+    setOpenModal(true);
+}
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
@@ -25,6 +56,10 @@ function MyWallet() {
   const [exData, setExData] = useState("");
   // passCoin
   const [passData, setPassData] = useState("");
+
+  // 컨트랙트 주소들
+  const Caddress = window.localStorage.getItem("Caddress");
+  const Vaddress = window.localStorage.getItem("Vaddress");
 
   // get active account and balance data from useWeb3 hook
   const {
@@ -63,6 +98,7 @@ function MyWallet() {
         <div className={styles.passCoinDes}>
           <p>Pass Coin</p>
           <svg
+            onClick={showModal}
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -88,6 +124,9 @@ function MyWallet() {
           </svg>
           <span>{passData}</span>
         </div>
+        {openModal && (<Modal 
+          open={openModal} 
+          onClose={()=>{setOpenModal(false);}}/>)}
       </div>
     );
   }
@@ -173,56 +212,6 @@ function MyWallet() {
     getAccount();
   }, [activeAccount]);
 
-  // 16진수(UTF8) -> 한글 변환-------------------------------------------------
-  // UTF8 16 진수 문자열을 문자열로 변환
-  function utf8_hex_string_to_string(hex_str1) {
-    let bytes2 = hex_string_to_bytes(hex_str1);
-    let str2 = utf8_bytes_to_string(bytes2);
-    return str2;
-  }
-
-  // 바이트 배열을 16 진수 문자열로 변환
-
-  function hex_string_to_bytes(hex_str) {
-    let result = [];
-    for (let i = 0; i < hex_str.length; i += 2) {
-      result.push(hex_to_byte(hex_str.substr(i, 2)));
-    }
-    return result;
-  }
-
-  // 16 진수 문자열을 바이트 값으로 변환
-  function hex_to_byte(hex_str) {
-    return parseInt(hex_str, 16);
-  }
-
-  // UTF8 바이트 배열을 문자열로 변환
-  function utf8_bytes_to_string(arr) {
-    if (arr == null) return null;
-    let result = "";
-    let i;
-    while ((i = arr.shift())) {
-      if (i <= 0x7f) {
-        result += String.fromCharCode(i);
-      } else if (i <= 0xdf) {
-        let c1 = (i & 0x1f) << 6;
-        c1 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c1);
-      } else if (i <= 0xe0) {
-        let c2 = ((arr.shift() & 0x1f) << 6) | 0x0800;
-        c2 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c2);
-      } else {
-        let c3 = (i & 0x0f) << 12;
-        c3 += (arr.shift() & 0x3f) << 6;
-        c3 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c3);
-      }
-    }
-    return result;
-  }
-  // 16진수(UTF8) -> 한글 변환 끝 ----------------------------------------------
-
   // Unix timestamp to date
   function timeConverter(UNIX_timestamp) {
     let a = new Date(UNIX_timestamp * 1000);
@@ -254,7 +243,9 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      // if (txData[index].input.includes("ecb18ceba781")) {
+      // 거래내역 종류
+      let txType = "";
+      // 트랜젝션 발생 시간
       let date = txData[index].timeStamp;
       // 날짜별로 모아서 보여주기
       if (
@@ -264,24 +255,31 @@ function MyWallet() {
       ) {
         date = "";
       }
-      // {utf8_hex_string_to_string(txData[index].input.substr(2))}
-      result.push(
-        <div key={index} className={styles.historyContent}>
-          <p> {date} </p>
-          <div className={styles.content}>
-            <div className={styles.titleContent}>
-              {/* 여기에 거래내역 data 있었는데 지움 */}
-            </div>
-            <div></div>
-            <div className={styles.ethcontent}>
-              <p>
-                {txData[index].etherValue}ETH {txData[index].sendOrReceive}
-              </p>
+      // 거래내역 확인하기
+      if (
+        txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Vaddress.toLowerCase()
+      ) {
+        txType = "챌링";
+        result.push(
+          <div key={index} className={styles.historyContent}>
+            <p> {date} </p>
+            <div className={styles.content}>
+              <div className={styles.titleContent}>
+                <p>{txType}</p>
+              </div>
+              <div></div>
+              <div className={styles.ethcontent}>
+                <p>
+                  {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      );
-      // }
+        );
+      }
     }
     return result;
   }

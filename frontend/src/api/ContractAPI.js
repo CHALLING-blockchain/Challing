@@ -11,8 +11,7 @@ class ContractAPI {
     const goerliUrl =
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-
-    this.web3 = new Web3(new Web3.providers.HttpProvider(ropstenUrl));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
 
     if (address !== undefined) {
       this.account = address;
@@ -21,17 +20,18 @@ class ContractAPI {
     this.networkId = await this.web3.eth.net.getId();
     this.Cabi = this.Cartifact.abi;
     this.Caddress = this.Cartifact.networks[this.networkId].address;
+    //로컬에 저장
+    window.localStorage.setItem("Caddress", this.Caddress);
     this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
-    // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
+    window.localStorage.setItem("Vaddress", this.Caddress);
     this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
   }
 
   // ChallengeContract
   async getAllChallenge() {
     await this.init();
-
     const challengeList = await this.Ccontract.methods
       .getAllChallenge()
       .call({
