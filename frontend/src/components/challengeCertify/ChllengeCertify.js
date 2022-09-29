@@ -7,7 +7,6 @@ import chat from "../../img/chat.png"
 import { Link, useNavigate,useLocation } from "react-router-dom";
 import moment from 'moment';
 import * as getDayGab from "../main/Main.js";
-
 import ContractAPI from "../../api/ContractAPI";
 
 function Header(){
@@ -99,7 +98,7 @@ function Btn({challengeId}){
 }
 
 
-function OtherShot({photoList}){
+function OtherShot({photoList,challengeId}){
     const navigate = useNavigate();
 
     return (
@@ -109,7 +108,8 @@ function OtherShot({photoList}){
           <div style={{ color: "#755FFF" }} onClick={() => {
               navigate(`/certification-photos`, {
                 state: {
-                  photoList:photoList
+                  photoList:photoList,
+                  challengeId:challengeId
                 }
               });
             }}>더보기</div>
@@ -192,7 +192,7 @@ function ChallengeCertify() {
         <Description info={challenge} percentage={percentage}></Description>
         <Btn challengeId={challenge.challengeId}></Btn>
         <hr className={styles.hrTag} />
-        <OtherShot photoList={photoList}></OtherShot>
+        <OtherShot photoList={photoList} challengeId={challenge.challengeId}></OtherShot>
         <Voting voteList={voteList}></Voting>
         <div style={{ width: "100vw", height: "90px" }}></div>
       </div>
