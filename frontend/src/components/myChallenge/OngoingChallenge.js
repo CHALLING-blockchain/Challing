@@ -45,6 +45,7 @@ function AchieveRateBox(){
   const [user, setUser] = useState(useSelector(selectUser));
   const [ingChal, setIngChal] = useState("");
   const [totalDeposit, setTotalDeposit] = useState("");
+  const selector = useSelector(challengeList);
   useEffect(() => {
      UserAPI.mypage(user.email).then((response) => {
        dispatch(setUserInfo(response.data.body));
@@ -74,14 +75,15 @@ function AchieveRateBox(){
         let tmpDeposit = 0;
         const myChallengeInfo = result;
         for (let i = 0; i < myChallengeInfo.length; i++) {
+          // challenger struct
           let tmpInfo = myChallengeInfo[i];
-          if ("deposit" in tmpInfo){
-            if (tmpInfo.complete !== true) {
-              tmpDeposit += (tmpInfo.deposit);
-          }
+          if ("userDeposit" in tmpInfo){
+            if (selector[tmpInfo.challengeId].complete !== true) {
+              tmpDeposit += tmpInfo.userDeposit;
+            }
           }
         }
-        setTotalDeposit(tmpDeposit);
+        setTotalDeposit(tmpDeposit/1e18);
       })
     }
     load();
@@ -107,11 +109,9 @@ function AchieveRateBox(){
 
 function ChallengeList(){
   const Contract = new ContractAPI();
+  const [infos,setInfos] = useState([]); 
+  const [counts,setCounts] = useState([]);
   const [user, setUser] = useState(useSelector(selectUser));
-  const [userid, setUserid] = useState("");
-  const infos = []; 
-  const counts = [];
-  const challengeIds = [];
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
 
@@ -119,34 +119,56 @@ function ChallengeList(){
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
-      setUserid(response.data.body.id)
     });
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getMyChallenge(userid).then((result) => {
-        const join = result[1];
-        if (join.length !== 0) {
-          for (let i = 0; i < join.length; i++) {
-            if (selector[join[i]].complete !== true) {
-              challengeIds.push(join[i]);
-            }
-          }
+      console.log(user.id);
+      const ids = await Contract.getMyChallenge(user.id);
+      console.log(ids);
+
+      const filterIds = ids[1].filter((id) => selector[id].complete !== true);
+      // const cnts = [];
+      // const infos = [];
+      filterIds.forEach(async (id) => {
+        const challengers = await Contract.getChallengers(id);
+        challengers.forEach((challenger) => {
+          setCounts([...counts, challenger.totalCount]);
+          // cnts.push(challenger.totalCount);
         }
-        for (let i = 0; i < challengeIds.length; i++) {
-          let id = challengeIds[i];
-          let challengers = Contract.getChallengers(id);
-          for (let j = 0; j < challengers.length; j++) {
-            if (challengers[j].id === userid) {
-              counts.push(challengers[j].totalCount)
-            }
-          }
-          infos.push(selector[id])
-        }
+        );
+        setInfos([...infos, selector[id]]);
       });
+
+  //     await Contract.getMyChallenge(user.id).then((result) => {
+  //       const join = result[1];
+  //       if (join.length !== 0) {
+  //         for (let i = 0; i < join.length; i++) {
+  //           if (selector[join[i]].complete !== true) {
+  //             setChallengeIds([...challengeIds, join[i]])
+  //           }
+  //         }
+  //       }
+  //       for (let i = 0; i < challengeIds.length; i++) {
+  //         let id = challengeIds[i];
+  //         console.log(id);
+  //         async function loadIn() {
+  //           const challengers = await Contract.getChallengers(id)
+  //           console.log(challengers);
+
+  //           for (let j = 0; j < challengers.length; j++) {
+  //               if (challengers[j].userId == user.id) {
+  //                 setCounts([...counts, challengers[j].totalCount]);
+  //               }
+  //             }
+  //             setInfos([...infos, selector[id]])
+  //         }
+  //         loadIn();
+  //       }
+  //     });
     }
     load();
-  }, [user.id]);
+  }, []);
 
     return (
       <div className={styles.listBox}>
