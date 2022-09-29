@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
-import "./MyShotZip.css";
+import styles from "./MyShotZip.module.css";
 
 function MyShotZip() {
   const user = useSelector(selectUser);
@@ -33,8 +33,8 @@ function MyShotZip() {
   };
 
   return (
-    <div className="MyShotZip">
-      <div className="BackMyPage">
+    <div className={styles.MyShotZip}>
+      <div className={styles.BackMyPage}>
         <Link to="/my-page">
           <svg
             width="16"
@@ -52,7 +52,7 @@ function MyShotZip() {
         <p>나의 인증샷 모아보기</p>
         <p></p>
       </div>
-      <div className="PhotoList">{getPhotoList()}</div>
+      <div className={styles.PhotoList}>{getPhotoList()}</div>
     </div>
   );
 }
