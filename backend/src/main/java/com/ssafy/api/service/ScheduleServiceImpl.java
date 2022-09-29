@@ -70,26 +70,25 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         log.info("더미 스케줄 저장");
 
-        long now = Instant.now().getEpochSecond();
-        NumGen numGen = new NumGen(5L);
+        NumGen numGen = new NumGen(Instant.now().getEpochSecond() + 5L);
 
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDay" + (now + numGen.next()))
+                .challengeId("dummyDay" + numGen.next())
                 .challengeType(ChallengeType.DAILY)
-                .triggerAt(now + numGen.get())
+                .triggerAt(numGen.get())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDon" + (now + numGen.next()))
+                .challengeId("dummyDon" + numGen.next())
                 .challengeType(ChallengeType.DONATION)
-                .triggerAt(now + numGen.get())
+                .triggerAt(numGen.get())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(VoteJobData.builder()
-                .voteId("dummyVot" + (now + numGen.next()))
-                .triggerAt(now + numGen.get())
+                .voteId("dummyVot" + numGen.next())
+                .triggerAt(numGen.get())
                 .build()
                 .toScheduleEntity());
     }

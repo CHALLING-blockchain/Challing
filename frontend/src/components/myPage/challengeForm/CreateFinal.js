@@ -112,10 +112,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               await Contract.createDailyChallenge(daliyChallenge).then(
                 console.log
               );
-              await Contract.getAllChallenge().then((result) => {
-                dispatch(setChallengeList(result));
-              });
-              navigate(`/challenge-detail/${challengeId}`);
+              navigate(`/loading/${challengeId}`);
             }}
           >
             챌린지 발행하기
@@ -129,24 +126,21 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
       const Contract = new ContractAPI(activeAccount);
       return (
         <div className={styles.buttonBox}>
-        <button
-          className={styles.NextButton}
-          onClick={async () => {
-            await Contract.createDonationChallenge(donationChallenge).then(
-              console.log
-            );
-            await Contract.getAllChallenge().then((result) => {
-              dispatch(setChallengeList(result));
-            });
-            navigate(`/challenge-detail/${challengeId}`);
-          }}
-        >
-          챌린지 발행하기
-        </button>
-      </div>
-    );
+          <button
+            className={styles.NextButton}
+            onClick={async () => {
+              await Contract.createDonationChallenge(donationChallenge).then(
+                console.log
+              );
+              navigate(`/loading/${challengeId}`);
+            }}
+          >
+            챌린지 발행하기
+          </button>
+        </div>
+      );
+    }
   }
-}
   function Header() {
     return (
       <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
@@ -173,8 +167,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
       </div>
     );
-
-    }
+  }
 
   function DonationChallenge() {
     return (
@@ -185,62 +178,128 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             alt="donationIcon"
             style={{ width: "52px" }}
           />
-          <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H80V2H0V0Z" fill="white"/>
+          <svg
+            width="80"
+            height="2"
+            viewBox="0 0 80 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V2H0V0Z" fill="white" />
           </svg>
           <p>{selects.challenge}</p>
         </div>
-        <div >
+        <div>
           {selects.topic === "운동" ? (
             <div className={styles.Card1}>
-              <img src={gym} alt="gym" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <img
+                src={gym}
+                alt="gym"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
           ) : null}
           {selects.topic === "생활" ? (
             <div className={styles.Card1}>
-              <img src={calender} alt="calender" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <img
+                src={calender}
+                alt="calender"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
           ) : null}
           {selects.topic === "취미" ? (
-            <div className={styles.Card1}> 
-              <img src={paint} alt="paint" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+            <div className={styles.Card1}>
+              <img
+                src={paint}
+                alt="paint"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
           ) : null}
           {selects.topic === "식생활" ? (
             <div className={styles.Card1}>
-              <img src={tea} alt="tea" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <img
+                src={tea}
+                alt="tea"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
           ) : null}
           {selects.topic === "학습" ? (
             <div className={styles.Card1}>
-              <img src={pencil} alt="pencil" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <img
+                src={pencil}
+                alt="pencil"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
           ) : null}
           {selects.topic === "그 외" ? (
             <div className={styles.Card1}>
-              <img src={plus} alt="plus" style={{ width: "48px",height:"40px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <img
+                src={plus}
+                alt="plus"
+                style={{ width: "48px", height: "40px" }}
+              />
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -248,29 +307,55 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card1}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H80V2H0V0Z" fill="white"/>
+          <svg
+            width="80"
+            height="2"
+            viewBox="0 0 80 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V2H0V0Z" fill="white" />
           </svg>
-          <p className={styles.Card1text}>{selects.donationMoney} ETH / {selects.donation}</p>
+          <p className={styles.Card1text}>
+            {selects.donationMoney} ETH / {selects.donation}
+          </p>
         </div>
         <div className={styles.Card2}>
           <img src={text} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>챌린지 설명 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={camera} alt="camera" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <div className={styles.CardText}>
             <p>
@@ -283,8 +368,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card2}>
           <img src={clock} alt="calender" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <div className={styles.CardText}>
             <p>{selects.period / 7}주동안</p>
@@ -293,8 +384,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card2}>
           <img src={profile} alt="profile" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>
             {selects.peopleLimit === false ? (
@@ -318,17 +415,29 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
       <div className={styles.CreateReview}>
         <div className={styles.Card1}>
           <img src={dailyIcon} alt="dailyIcon" style={{ height: "50px" }} />
-          <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H80V2H0V0Z" fill="white"/>
+          <svg
+            width="80"
+            height="2"
+            viewBox="0 0 80 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V2H0V0Z" fill="white" />
           </svg>
           <p>{selects.challenge}</p>
         </div>
-        <div >
+        <div>
           {selects.topic === "운동" ? (
             <div className={styles.Card1}>
               <img src={gym} alt="gym" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -336,8 +445,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           {selects.topic === "생활" ? (
             <div className={styles.Card1}>
               <img src={calender} alt="calender" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -345,8 +460,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           {selects.topic === "취미" ? (
             <div className={styles.Card1}>
               <img src={paint} alt="paint" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -354,8 +475,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           {selects.topic === "식생활" ? (
             <div className={styles.Card1}>
               <img src={tea} alt="tea" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -363,8 +490,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           {selects.topic === "학습" ? (
             <div className={styles.Card1}>
               <img src={pencil} alt="pencil" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -372,8 +505,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           {selects.topic === "그 외" ? (
             <div className={styles.Card1}>
               <img src={plus} alt="plus" style={{ width: "48px" }} />
-              <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H80V2H0V0Z" fill="white"/>
+              <svg
+                width="80"
+                height="2"
+                viewBox="0 0 80 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0H80V2H0V0Z" fill="white" />
               </svg>
               <p>{selects.topic}</p>
             </div>
@@ -381,29 +520,53 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card1}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="80" height="2" viewBox="0 0 80 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H80V2H0V0Z" fill="white"/>
+          <svg
+            width="80"
+            height="2"
+            viewBox="0 0 80 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H80V2H0V0Z" fill="white" />
           </svg>
           <p>{selects.dailyMoney} ETH</p>
         </div>
         <div className={styles.Card2}>
           <img src={text} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>챌린지 설명 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={camera} alt="camera" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <div className={styles.CardText}>
             <p>
@@ -416,8 +579,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card2}>
           <img src={clock} alt="calender" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <div className={styles.CardText}>
             <p>{selects.period / 7}주동안</p>
@@ -426,8 +595,14 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
         </div>
         <div className={styles.Card2}>
           <img src={profile} alt="profile" style={{ width: "40px" }} />
-          <svg width="2" height="80" viewBox="0 0 2 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H2V80H0V0Z" fill="white"/>
+          <svg
+            width="2"
+            height="80"
+            viewBox="0 0 2 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>
             {selects.peopleLimit === false ? (
@@ -448,7 +623,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   }
   return (
     <div>
-      <Header/>
+      <Header />
       {selects.challenge === "기부챌린지" ? (
         <DonationChallenge />
       ) : (
