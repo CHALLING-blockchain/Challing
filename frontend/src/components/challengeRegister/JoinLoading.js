@@ -17,7 +17,7 @@ function JoinLoading() {
       await Contract.checkChallenger(Number(id), user.id).then((response) => {
         setCheck(check + 1);
         if (response) {
-          navigate(`/challenge-detail/${id}`);
+          navigate(`/success-register/${id}`);
         }
       });
     }

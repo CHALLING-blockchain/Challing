@@ -5,8 +5,6 @@ import { challengeList } from "../../app/redux/allChallengeSlice";
 import UserAPI from "../../api/UserAPI";
 import ContractAPI from "../../api/ContractAPI";
 import styles from "./ChallengeDetail.module.css";
-// import back from "../../img/test-back.jpg";
-// import profile from "../../img/profile-basic.png";
 import person from "../../img/person.png";
 import dollar from "../../img/dollarCoin.png";
 import eth from "../../img/ethCoin.png";
@@ -24,7 +22,6 @@ function Header(props) {
   const [bookmark, setBookmark] = useState(false);
 
   useEffect(() => {
-    console.log("props user", props.user);
     for (let index = 0; index < props.user.challengeIds.length; index++) {
       if (
         props.user.challengeIds[index] === Number(props.challenge.challengeId)
@@ -63,7 +60,13 @@ function Header(props) {
             borderRadius: "50px",
             padding: "4px",
           }}
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            navigate(-1, {
+              state: {
+                state: true,
+              },
+            });
+          }}
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -106,7 +109,6 @@ function Header(props) {
 }
 
 function TopBox(props) {
-  console.log("topbox", props);
   const [user, setUser] = useState({});
 
   const period = Number(
@@ -116,19 +118,14 @@ function TopBox(props) {
     )
   );
 
-  console.log("period", period);
-
   const weekTimes =
     Number(props.challenge.authTotalTimes) /
     (Number(props.challenge.authDayTimes) * period);
-
-  console.log("challengers", props.challengers);
 
   useEffect(() => {
     const getUserInfo = async () => {
       await UserAPI.getUserById(props.challenge.ownerId).then((response) => {
         setUser(response.data.body);
-        console.log(response.data.body);
       });
     };
     getUserInfo();
@@ -226,7 +223,6 @@ function RefundPolicy() {
 
 function addDescription(props) {
   const desc = props.split("\n");
-  console.log("desc", desc);
   const descList = [];
   for (let index = 0; index < desc.length; index++) {
     if (desc[index].length > 0) {
@@ -277,7 +273,6 @@ function Description(props) {
 }
 
 function ShotDescription(props) {
-  console.log("shot", props);
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -311,11 +306,7 @@ function ChallengeDetail() {
   const navigate = useNavigate();
   const challenge = useSelector(challengeList)[id];
   const user = useSelector(selectUser);
-  console.log("challenge", challenge);
   const day = getDayGap.getDayGapFromToday(challenge.startDate);
-  // let today = new Date();
-  // let todayStr =
-  //   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
   const [joinFlag, setJoinFlag] = useState(false);
   const [challengers, setChallengers] = useState();
 
@@ -324,7 +315,6 @@ function ChallengeDetail() {
     const getChallengers = async () => {
       await Contract.getChallengers(challenge.challengeId).then((response) => {
         setChallengers(response.length);
-        console.log("challengers", response.length);
       });
     };
 
@@ -332,7 +322,6 @@ function ChallengeDetail() {
 
     Contract.checkChallenger(challenge.challengeId, user.id).then(
       (response) => {
-        console.log("useEffect", response);
         if (response) {
           setJoinFlag(true);
         }
