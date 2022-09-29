@@ -1,8 +1,15 @@
-import React,{useRef,useState,useCallback} from "react";
+import React,{useEffect,useRef,useState,useCallback} from "react";
 import Webcam from "react-webcam";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import styles from "./ChallengeCertify.module.css"
+import UserAPI from "../../api/UserAPI";
+import ContractAPI from "../../api/ContractAPI";
 import {uploadImageFile} from '../../plugins/s3upload';
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
+import moment from 'moment';
+import useWeb3 from "../../hooks/useWeb3";
+
 const FACING_MODE_USER = "user";
 const FACING_MODE_ENVIRONMENT = "environment";
 
@@ -12,6 +19,19 @@ const videoConstraints = {
 
 function WebcamCapture() {
 
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+    // loading status
+  const [isLoading, setIsLoading] = useState(false);
+  // error messages
+  const [errorMessage, setErrorMessage] = useState("");
+  // get active account and balance data from useWeb3 hook
+  const {
+    connect,
+    disconnect,
+    provider,
+    account: activeAccount,
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+  const Contract=new ContractAPI(activeAccount);
   function Header(){
     const navigate = useNavigate();
     return (
@@ -61,25 +81,49 @@ function WebcamCapture() {
 
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] =useState(null);
-
-  function handleCapture(){
+  const [s3File, setS3File] =useState();
+  // 사진찍을때
+  async function handleCapture(){
     let URL = webcamRef.current.getScreenshot();
-    var blobBin = atob(URL.split(',')[1]);	// base64 데이터 디코딩
-    var array = [];
+    const blobBin = atob(URL.split(',')[1]);    // base64 데이터 디코딩
+    const array = [];
     for (var i = 0; i < blobBin.length; i++) {
         array.push(blobBin.charCodeAt(i));
     }
-    var file = new Blob([new Uint8Array(array)], {type: 'image/jpg'});
-    uploadImageFile(file);
+    
+    const file = new Blob([new Uint8Array(array)], {type: 'image/jpg'});
+    setS3File(file);
+    // const url=await uploadImageFile(file);
+    // setImgSrc(url);
   }
+  async function authenticate(){
+    const url=await uploadImageFile(s3File);
+    setImgSrc(url);
+    if (activeAccount !== undefined && activeAccount !== "") {
+      const Contract = new ContractAPI(activeAccount);
 
+      Contract.authenticate(challengeId, user.id, today, url)
+    }
+  }
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
   }, [webcamRef, setImgSrc]);
 
+  const challengeId = useLocation().state.challengeId;
+  const today = moment(new Date()).format('YYYY-MM-DD');
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+    });
+  }, [user.email, dispatch]);
+
   return (
     <div>
+      {/* {console.log(user.id,challengeId,today,imgSrc)} */}
       {imgSrc === null ? 
         <div>
           <Header></Header>
@@ -128,7 +172,7 @@ function WebcamCapture() {
           </div>
             <img src={imgSrc} alt="shot"/>
             <div className={styles.btnBox}>
-              <button className={styles.ShotBtn}>인증하기</button>
+              <button onClick={()=>{authenticate();}} className={styles.ShotBtn}>인증하기</button>
             </div>
         </div>
       : null}

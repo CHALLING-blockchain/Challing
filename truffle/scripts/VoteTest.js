@@ -77,14 +77,14 @@ const simulation = async () => {
   // console.log("유저 참여 완료");
 
   // // //유저 2 인증
-  const findingChallenger = await Ccontract.methods
-    .findingChallenger( 1,1)
-    .call({
-      from: accounts[0],
-    })
-    .catch(console.error);
+  // const findingChallenger = await Ccontract.methods
+  //   .findingChallenger( 1,17)
+  //   .call({
+  //     from: accounts[0],
+  //   })
+  //   .catch(console.error);
   // const authenticate = await Ccontract.methods
-  //   .authenticate(1, 1,findingChallenger[0],findingChallenger[1],findingChallenger[2], `220921` )
+  //   .authenticate(1, 17,findingChallenger[0],findingChallenger[1],findingChallenger[2], `220921` )
   //   .send({
   //     from: accounts[0],
   //     gasLimit: 3_000_000,
@@ -93,22 +93,22 @@ const simulation = async () => {
   // console.log("유저 인증 완료");
 
   // const addPhotoTest = await Vcontract.methods
-  // .addPhoto(findingChallenger[0], 1,"picurl", `today`)
+  // .addPhoto(findingChallenger[0], 17,"picurl", `today`)
   // .send({
   //   from: accounts[0],
   //   gasLimit: 3_000_000,
   // })
   // .catch(console.error);
 
-  // // 인증사진 신고 (유저 3번이 2번의 사진 신고)
-  // const reportTest = await Vcontract.methods
-  //   .report(1, 1, 2)
-  //   .send({
-  //     from: accounts[0],
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log("신고완료");
+  // 인증사진 신고 (유저 3번이 2번의 사진 신고)
+  const reportTest = await Vcontract.methods
+    .report(1, 1, 17)
+    .send({
+      from: accounts[0],
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+  console.log("신고완료");
 
   // // 유저 3번부터 6번까지 fail 투표(간헐적으로 한명만 투표가 안돼?)
   // for (let i = 3; i <= 7; i++) {
@@ -152,14 +152,14 @@ const simulation = async () => {
   
 
   //패스코인사용
-  const applyVoteResult = await Ccontract.methods
-    .applyVoteResult(1,1,findingChallenger[0],findingChallenger[1],findingChallenger[2])
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log(applyVoteResult);
+  // const applyVoteResult = await Ccontract.methods
+  //   .applyVoteResult(1,1,findingChallenger[0],findingChallenger[1],findingChallenger[2])
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log(applyVoteResult);
 
   // const usePasscoinTest = await Ccontract.methods
   //   .usePasscoin(1,2,findingChallenger[0],findingChallenger[1],findingChallenger[2])
@@ -191,13 +191,13 @@ const simulation = async () => {
   // console.log(getChallengeVote);
 
   // 상세 정보 조회
-  const getChallenger = await Ccontract.methods
-    .getChallenger(1)
-    .call({
-      from: accounts[0],
-    })
-    .catch(console.error);
-  console.log(getChallenger)
+  // const getChallenger = await Ccontract.methods
+  //   .getChallenger(1)
+  //   .call({
+  //     from: accounts[0],
+  //   })
+  //   .catch(console.error);
+  // console.log(getChallenger)
 };
 
 simulation();
