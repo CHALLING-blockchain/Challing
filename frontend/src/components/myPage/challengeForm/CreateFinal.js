@@ -199,7 +199,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               await Contract.createDailyChallenge(daliyChallenge).then(
                 console.log
               );
-              navigate(`/create-loading/${challengeId}`);
+              navigate(`/create-loading/${challengeId}`, {
+                state: { state: false },
+              });
             }}
           >
             챌린지 발행하기
@@ -219,7 +221,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               await Contract.createDonationChallenge(donationChallenge).then(
                 console.log
               );
-              navigate(`/create-loading/${challengeId}`);
+              navigate(`/create-loading/${challengeId}`, {
+                state: { state: false },
+              });
             }}
           >
             챌린지 발행하기

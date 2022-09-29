@@ -172,7 +172,7 @@ export function getDayGapFromToday(startDate) {
 
   // 차이 구하기
   let gap = todayDate - startDate;
-  let dateGap = parseInt(gap / currDay);
+  let dateGap = -parseInt(gap / currDay);
 
   return dateGap;
 }
