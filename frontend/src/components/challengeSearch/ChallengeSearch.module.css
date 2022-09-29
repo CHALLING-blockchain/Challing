@@ -21,6 +21,7 @@
 .Header{
   position: fixed;
   top:0;
+  /* height: 240px; */
 }
 .InputSearch{
   width: 328px;
@@ -48,7 +49,7 @@
   margin-left: 16px;
   margin-right: 8px;
 }
-.Contents{
+.SearchContents{
   height: 544px;
   overflow: scroll;
 }

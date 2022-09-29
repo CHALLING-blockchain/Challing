@@ -42,7 +42,7 @@ function ChallengeSearch() {
           // 시작 전 챌린지만
           if (dayGap > 0) {
             result.push(
-              <span
+              <div
                 key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
@@ -53,7 +53,7 @@ function ChallengeSearch() {
                 <p>{element.name}</p>
                 <p>{startDay} 시작</p>
                 <p>{period}주 동안</p>
-              </span>
+              </div>
             );
           }
         }
@@ -66,7 +66,7 @@ function ChallengeSearch() {
         // 시작 전 챌린지만
         if (dayGap > 0) {
           result.push(
-            <span
+            <div
               key={index}
               onClick={() => {
                 toChallengeDetail(element.challengeId);
@@ -76,7 +76,7 @@ function ChallengeSearch() {
               <p>{element.mainPicURL}</p>
               <p>{element.name}</p>
               <p>{startDay} 시작</p>
-            </span>
+            </div>
           );
         }
       }
@@ -119,7 +119,10 @@ function ChallengeSearch() {
           </form>
         </div>
       </div>
-      {challengeSearchRendering()}
+      <div className={styles.SearchContents}>
+        {/* <ChallengeSearch/> */}
+        {challengeSearchRendering()}
+      </div>
     </div>
   );
 }
