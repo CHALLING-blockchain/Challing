@@ -120,3 +120,81 @@ input[name="tab_item"] {
     height: 530px;
     overflow: scroll;
 }
+
+/* modal창 외부화면 */
+.Modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+.ModalTitle{
+  position: absolute;
+  left: 35px;
+  top: 39px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #54595E;
+}
+.ModalText{
+  /* position: absolute;
+  left: 35px;
+  top: 76px; */
+  text-align: start;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4F4F4F;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+/* modal창 */
+.ModalBody {
+  position: absolute;
+  width: 328px;
+  height: 390px;
+  padding: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
+   
+.modalCloseBtn {
+position: absolute;
+right: 22px;
+top: 18px;
+  }
+
+.buttonBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.NextButton{
+  width: 248px;
+  height: 40px;
+  position: absolute;
+  left: 48px;
+  top: 313px;
+  /* margin: 16px; */
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}

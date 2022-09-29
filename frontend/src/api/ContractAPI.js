@@ -9,7 +9,7 @@ class ContractAPI {
     const infuraUrl =
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-    this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
     if (address !== undefined) {
       this.account = address;
     }
