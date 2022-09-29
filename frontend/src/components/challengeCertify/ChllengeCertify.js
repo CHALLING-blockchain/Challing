@@ -1,11 +1,10 @@
 import React, { useState,useEffect } from "react";
 import styles from "./ChallengeCertify.module.css"
-import backdrop from "../../img/test-back.jpg"
 import chart from "../../img/chart.png"
 import heart from "../../img/heart.png"
 import calender from "../../img/calender.png"
 import chat from "../../img/chat.png"
-import { Link, useNavigate,useParams,useLocation } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import moment from 'moment';
 import * as getDayGab from "../main/Main.js";
 
@@ -39,7 +38,6 @@ function Header(){
 }
 
 function BackDrop({picURL}){
-    const [back, setBack] = useState(backdrop)
     return(
         <img className={styles.backdrop} src={picURL} alt="" />
     )
@@ -75,16 +73,22 @@ function Description({info,percentage}){
     );
 }
 
-function Btn(){
+function Btn({challengeId}){
     const [state, setState] = useState(false);
+    const navigate = useNavigate();
+
     return (
       <div>
         { state === false ? 
-        <Link to="/web-cam-capture">
-          <div className={styles.btnBox}>
-            <button className={styles.btn} >📸 인증하기</button>
-          </div> 
-        </Link>
+        <div className={styles.btnBox}>
+          <button className={styles.btn} onClick={() => {
+            navigate(`/web-cam-capture`, {
+              state: {
+                challengeId:challengeId,
+              }
+            });
+          }}>📸 인증하기</button>
+        </div>
         :
         <div className={styles.btnBox}>
           <button className={styles.btn} disabled='true'>📸 인증완료</button>
@@ -94,30 +98,22 @@ function Btn(){
     );
 }
 
-function OtherShot({challengers}){
-    const [photoList,setPhotoList]=useState([]);
-    const Contract = new ContractAPI();
-    useEffect(() => {
-      async function load() {
-        if (challengers){
-          challengers.forEach(async (challenger)=>{
-            const photo= await Contract.getChallengerPhoto(challenger.id)     
-            // console.log(photo)    
-            setPhotoList([...photoList,...photo]);
-          })
-        }
-        load()
-        }
-    }, []);
 
-    console.log(challengers)
+function OtherShot({photoList}){
+    const navigate = useNavigate();
+
     return (
       <div className={styles.otherShot}>
         <div className={styles.shotTitle}>
           <span>다른 챌린저의 인증샷</span>
-          <Link style={{ color: "#755FFF" }} to="/certification-photos">
-            더보기
-          </Link>
+          <div style={{ color: "#755FFF" }} onClick={() => {
+              navigate(`/certification-photos`, {
+                state: {
+                  photoList:photoList
+                }
+              });
+            }}>더보기</div>
+
         </div>
         <div className={styles.shots}>
           {
@@ -126,21 +122,23 @@ function OtherShot({challengers}){
               
             })
           }
-            <img src={backdrop} alt="" />
-            <img src={backdrop} alt="" />
-            <img src={backdrop} alt="" />
-            <img src={backdrop} alt="" />
-            <img src={backdrop} alt="" />
+
         </div>
       </div>
     );
 }
 
-function Voting(){
+function Voting({voteList}){
+  const navigate = useNavigate();
+  
     return (
-      <div>
-        <Link to="/votinghome" className={styles.voting}>
-          <div className={styles.votingSub}>
+      <div className={styles.voting} onClick={() => {
+        navigate(`/votinghome`, {
+          state: {
+            voteList:voteList
+          }})}
+        }>
+        <div className={styles.votingSub}>
             <img style={{ width: "32px", height: "32px" }} src={chat} alt="" />
             <span style={{margin:'0 4px', fontSize:'16px'}}>투표</span>
           </div>
@@ -157,7 +155,7 @@ function Voting(){
               d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
             />
           </svg>
-        </Link>
+        
       </div>
     );
 }
@@ -166,11 +164,23 @@ function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
   const percentage=useLocation().state.percentage;
   const [challengers,setChallegers]=useState();
-  const Contract = new ContractAPI();
+  const [voteList,setVoteList]=useState([]);    
+  const [photoList,setPhotoList]=useState([]);
+
+  const Contract = new ContractAPI();   
+      
   useEffect(() => {
     async function load() {
       const challengers= await Contract.getChallengers(challenge.challengeId)
       setChallegers(challengers);
+
+      const vote= await Contract.getChallengeVote(challenge.challengeId);
+      setVoteList(vote);
+
+      challengers.forEach(async challenger => {
+        const photo= await Contract.getChallengerPhoto(challenger.id)        
+        setPhotoList([...photoList,...photo]);
+      });
     }
     load()
   }, []);
@@ -180,10 +190,10 @@ function ChallengeCertify() {
         <Header></Header>
         <BackDrop picURL={challenge.mainPicURL}></BackDrop>
         <Description info={challenge} percentage={percentage}></Description>
-        <Btn></Btn>
+        <Btn challengeId={challenge.challengeId}></Btn>
         <hr className={styles.hrTag} />
-        <OtherShot challengers={challengers}></OtherShot>
-        <Voting></Voting>
+        <OtherShot photoList={photoList}></OtherShot>
+        <Voting voteList={voteList}></Voting>
         <div style={{ width: "100vw", height: "90px" }}></div>
       </div>
     );
