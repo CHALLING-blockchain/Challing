@@ -21,7 +21,68 @@ import useWeb3 from "../../../hooks/useWeb3";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+function Modal({onClose,src,desc}){
+  function handleClose(){
+    onClose ?.();
+  };
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.ModalBody} onClick={(e)=>e.stopPropagation()}>
+        <div>
+          <svg className={styles.modalCloseBtn} onClick={handleClose}width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
+            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>챌린지 설명</p>
+        <div style={{position:'absolute',left:'28px',top:'76px'}}>
+          <p className={styles.ModalText}>{desc}</p>
+        </div>
+        <div className={styles.ModalImg}>
+          <img style={{width:'72px',height:'72px'}} src={src} alt=""/>
+        </div>
+      </div>
+    </div>
+  )
+}
+function ShotEXModal({onClose,good,bad}){
+  function handleClose(){
+    onClose ?.();
+  };
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.EXModalBody} onClick={(e)=>e.stopPropagation()}>
+        <div>
+          <svg className={styles.modalCloseBtn} onClick={handleClose}width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
+            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>챌린지 설명</p>
+        <div className={styles.ImgBox}>
+          <div className={styles.EXModalImg}>
+            <p style={{paddingBottom:'8px'}}>👍 좋은 인증샷 예시</p>
+            <img style={{width:'144px',height:'144px',borderRadius:'5px'}} src={good} alt=""/>
+          </div>
+          <div className={styles.EXModalImg}>
+            <p style={{paddingBottom:'8px'}}>👎 나쁜 인증샷 예시</p>
+            <img style={{width:'144px',height:'144px',borderRadius:'5px'}} src={bad} alt=""/>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function CreateFinal({ selects, formCnt, setFormCnt }) {
+  const [openModal, setOpenModal] = useState(false);
+  const showModal = () => {
+    setOpenModal(true);
+  }
+  const [exModal, setExModal] = useState(false);
+  const exShowModal = () => {
+    setExModal(true);
+  }
   const challengeId = Object.keys(useSelector(challengeList)).length + 1;
   const navigate = useNavigate();
   // localstorage에 wallet 연결 확인
@@ -316,7 +377,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             {selects.donationMoney} ETH / {selects.donation}
           </p>
         </div>
-        <div className={styles.Card2}>
+        <div className={styles.Card2} onClick={showModal}>
           <img src={text} alt="ethCoin" style={{ width: "40px" }} />
           <svg
             width="2"
@@ -327,9 +388,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          <p>챌린지 설명 보기</p>
+          <p className={styles.OpenModal}>챌린지 설명 보기</p>
         </div>
-        <div className={styles.Card2}>
+        <div className={styles.Card2} onClick={exShowModal}>
           <img src={camera} alt="camera" style={{ width: "40px" }} />
           <svg
             width="2"
@@ -340,7 +401,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          <p>인증샷 예시 보기</p>
+          <p className={styles.OpenModal}>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
@@ -403,6 +464,16 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             )}
           </p>
         </div>
+        {openModal && (<Modal 
+          open={openModal} 
+          onClose={()=>{setOpenModal(false);}}
+          src={donationChallenge.mainPicURL}
+          desc={donationChallenge.desc}/>)}
+        {exModal && (<ShotEXModal 
+          open={exModal} 
+          onClose={()=>{setExModal(false);}}
+          good={donationChallenge.goodPicURL}
+          bad={donationChallenge.badPicURL}/>)}
       </div>
     );
   }
@@ -527,7 +598,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           </svg>
           <p>{selects.dailyMoney} ETH</p>
         </div>
-        <div className={styles.Card2}>
+        <div className={styles.Card2} onClick={showModal}>
           <img src={text} alt="ethCoin" style={{ width: "40px" }} />
           <svg
             width="2"
@@ -538,9 +609,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          <p>챌린지 설명 보기</p>
+          <p className={styles.OpenModal}>챌린지 설명 보기</p>
         </div>
-        <div className={styles.Card2}>
+        <div className={styles.Card2} onClick={exShowModal}>
           <img src={camera} alt="camera" style={{ width: "40px" }} />
           <svg
             width="2"
@@ -551,7 +622,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          <p>인증샷 예시 보기</p>
+          <p className={styles.OpenModal}>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
           <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
@@ -614,12 +685,27 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             )}
           </p>
         </div>
+        {openModal && (<Modal 
+          open={openModal} 
+          onClose={()=>{setOpenModal(false);}}
+          src={daliyChallenge.mainPicURL}
+          desc={daliyChallenge.desc}/>)}
+        {exModal && (<ShotEXModal 
+        open={exModal} 
+        onClose={()=>{setExModal(false);}}
+        good={daliyChallenge.goodPicURL}
+        bad={daliyChallenge.badPicURL}/>)}
       </div>
     );
   }
   return (
     <div>
       <Header />
+      <div style={{padding:'16px'}}>
+        <p className={styles.FormHeader}>챌린지 설정을 확인해주세요.</p>
+        <p className={styles.FormEx}>챌린지 설정을 확인하고 챌린지를 시작해보세요!</p>
+      </div>
+      <p className={styles.ChallengTitle}>{selects.title}</p>
       {selects.challenge === "기부챌린지" ? (
         <DonationChallenge />
       ) : (

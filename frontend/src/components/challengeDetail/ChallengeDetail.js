@@ -63,7 +63,7 @@ function Header(props) {
             borderRadius: "50px",
             padding: "4px",
           }}
-          onClick={() => navigate("/challenge-search")}
+          onClick={() => navigate(-1)}
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
