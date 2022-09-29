@@ -213,12 +213,27 @@ font-size: 18px;
   justify-content: space-around;
   width: 200px;
 }
+.ChallengTitle{
+  padding: 16px;
+  padding-bottom: 0;
+font-weight: 700;
+font-size: 20px;
+line-height: 100%;
+/* identical to box height, or 16px */
+letter-spacing: -0.01em;
+
+background: linear-gradient(180deg, #9270FF 0%, #8696FF 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
 .CreateReview{
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   text-align: center;
   align-items: center;
+  padding-top: 0px;
   padding: 12px;
 }
 
@@ -275,7 +290,7 @@ font-size: 18px;
   font-weight: bold;
   color: white;
   position: fixed;
-  bottom: 72px;
+  bottom: 80px;
 }
 
 .NextButtonX{
@@ -289,10 +304,98 @@ font-size: 18px;
   font-weight: bold;
   color: white;
   position: fixed;
-  bottom: 72px;
+  bottom: 80px;
   }
 
 .ShotEX{
   display: flex;
   justify-content: space-evenly;
+}
+
+/* modal창 외부화면 */
+.Modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+.ModalTitle{
+  position: absolute;
+  left: 28px;
+  top: 39px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  /* color: #54595E; */
+}
+.ModalText{
+  /* position: absolute;
+  left: 35px;
+  top: 76px; */
+  width: 288px;
+  height: 196px;
+  text-align: start;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* color: #4F4F4F; */
+  letter-spacing: 0.5px;
+  overflow-wrap: break-word;
+  overflow: scroll;
+}
+/* modal창 */
+.ModalBody {
+  position: absolute;
+  width: 328px;
+  height: 390px;
+  padding: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
+.EXModalBody {
+  position: absolute;
+  width: 328px;
+  height: 268px;
+  padding: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  }
+   
+.modalCloseBtn {
+position: absolute;
+right: 22px;
+top: 18px;
+  }
+.ModalImg{
+  display: flex;
+  justify-content: start;
+  padding: 32px;
+}
+.ImgBox{
+  display: flex;
+  justify-content: space-around;
+}
+.OpenModal{
+color: #755FFF;
 }
