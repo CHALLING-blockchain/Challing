@@ -63,7 +63,7 @@ function Header(props) {
             borderRadius: "50px",
             padding: "4px",
           }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/challenge-search")}
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -108,8 +108,6 @@ function Header(props) {
 function TopBox(props) {
   console.log("topbox", props);
   const [user, setUser] = useState({});
-  const week =
-    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
 
   const period = Number(
     getDayGap.getDayGapFromDates(
@@ -148,7 +146,7 @@ function TopBox(props) {
           {props.challenge.name}
         </span>
         <div className={styles.Tags}>
-          <span className={styles.Tag}>{week}주 동안</span>
+          <span className={styles.Tag}>{period / 7}주 동안</span>
           <span className={styles.Tag}>주 {weekTimes}회</span>
           <span className={styles.Tag}>
             하루 {props.challenge.authDayTimes}번
@@ -235,8 +233,12 @@ function addDescription(props) {
 }
 
 function Description(props) {
-  const week =
-    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+  const period = Number(
+    getDayGap.getDayGapFromDates(
+      props.challenge.startDate,
+      props.challenge.endDate
+    )
+  );
 
   return (
     <div className={styles.paddingBox}>
@@ -250,8 +252,8 @@ function Description(props) {
             챌린지 진행 시 꼭 알아주세요!
           </p>
           <p>
-            ☝ {week}주 동안, 하루에 {props.challenge.authDayTimes}번 인증샷을
-            촬영하셔야 합니다.
+            ☝ {period / 7}주 동안, 하루에 {props.challenge.authDayTimes}번
+            인증샷을 촬영하셔야 합니다.
           </p>
           <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
         </div>
@@ -299,40 +301,35 @@ function ShotDescription(props) {
   );
 }
 
-async function joinChallenge(Contract, challengeId, userId, today, value) {
-  await Contract.joinChallenge(challengeId, userId, today, value).then(
-    (result) => {
-      console.log("join result", result);
-    }
-  );
-}
-
 function ChallengeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const challenge = useSelector(challengeList)[id];
   const user = useSelector(selectUser);
   console.log("challenge", challenge);
   const day = getDayGap.getDayGapFromToday(challenge.startDate);
-  let today = new Date();
-  let todayStr =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  // let today = new Date();
+  // let todayStr =
+  //   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
   const [joinFlag, setJoinFlag] = useState(false);
-  const [challengers, setChallengers] = useState(1);
-  const Contract = new ContractAPI();
+  const [challengers, setChallengers] = useState();
 
   useEffect(() => {
+    const Contract = new ContractAPI();
     const getChallengers = async () => {
       await Contract.getChallengers(challenge.challengeId).then((response) => {
         setChallengers(response.length);
+        console.log("challengers", response.length);
       });
     };
 
-    Contract.findingChallenger(challenge.challengeId, user.id).then(
+    getChallengers();
+
+    Contract.checkChallenger(challenge.challengeId, user.id).then(
       (response) => {
         console.log("useEffect", response);
-        if (response !== undefined) {
+        if (response) {
           setJoinFlag(true);
-          getChallengers();
         }
       }
     );
@@ -364,15 +361,7 @@ function ChallengeDetail() {
               type="submit"
               label="챌린지 신청하기"
               onClick={() => {
-                joinChallenge(
-                  Contract,
-                  challenge.challengeId,
-                  user.id,
-                  todayStr,
-                  challenge.deposit / Math.pow(10, 18)
-                );
-                setChallengers(challengers + 1);
-                setJoinFlag(true);
+                navigate(`/confirm-register/${id}`);
               }}
               flag={true}
               disabled={false}
@@ -386,8 +375,6 @@ function ChallengeDetail() {
             ></Next>
           )}
         </div>
-
-        <div style={{ width: "100vw", height: "72px" }}></div>
       </div>
     </div>
   );
