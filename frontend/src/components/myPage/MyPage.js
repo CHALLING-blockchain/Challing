@@ -10,6 +10,7 @@ import picture from "../../img/picture.png";
 import folder from "../../img/folder.png";
 import bookmark from "../../img/bookmark.png";
 import ContractAPI from "../../api/ContractAPI";
+import { challengeList } from './../../app/redux/allChallengeSlice';
 
 function MyPage() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function MyPage() {
   const [ingChal, setIngChal] = useState(0);
   const [edChal, setEdChal] = useState(0);
   const [madeChal, setMadeChal] = useState(0);
+  const selector = useSelector(challengeList);
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
@@ -35,7 +37,7 @@ function MyPage() {
         let edCount = 0;
         if (join.length !== 0) {
           for (let i = 0; i < join.length; i++) {
-            if (join[i].complete === true) {
+            if (selector[join[i]].complete === true) {
               edCount += 1;
             } else {
               ingCount += 1;

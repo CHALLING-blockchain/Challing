@@ -11,9 +11,13 @@ import SelectPeriod from './challengeForm/SelectPeriod';
 import SelectPeople from './challengeForm/SelectPeople';
 import SelectDeposit from './challengeForm/SelectDeposit';
 import CreateFinal from './challengeForm/CreateFinal';
+import { donationList } from "../../app/redux/DonationListSlice";
+import { useSelector } from "react-redux";
 
-const donations = ["국경없는 의사회","세이브더 칠드런","초록우산","월드비전","유니세프"]
 function CreateChallenge() {
+  // const donations = useSelector(donationList).map(donation=>donation.name)
+  const donations = ["국경없는 의사회","세이브더 칠드런","초록우산","월드비전","유니세프"]
+
   const [selects,setSelects] = useState({
     challengeId:"0",
     challenge:"",

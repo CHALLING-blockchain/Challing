@@ -91,10 +91,18 @@ contract ChallengeContract is DonationChallengeContract{
         uint userIdIndex=0;
         uint challengeIdIndex=0;
         // 챌린저 찾기
-        while(findByChallengeIdChallenger[challengeId][challengeIdIndex].userId!=userId) challengeIdIndex++;
-        while(findByUserIdChallenger[userId][userIdIndex].challengeId!=challengeId) userIdIndex++;
+        while(findByChallengeIdChallenger[challengeId].length>challengeIdIndex&&
+            findByChallengeIdChallenger[challengeId][challengeIdIndex].userId!=userId) challengeIdIndex++;
+        while(findByUserIdChallenger[userId].length>userIdIndex&&
+        findByUserIdChallenger[userId][userIdIndex].challengeId!=challengeId) userIdIndex++;
         
         return(findByUserIdChallenger[userId][userIdIndex].id,userIdIndex,challengeIdIndex);
+    }
+    function checkChallenger(uint challengeId,uint userId)public view returns(bool){       
+        for(uint challengeIdIndex=0;challengeIdIndex<findByChallengeIdChallenger[challengeId].length;challengeIdIndex++){
+            if(findByChallengeIdChallenger[challengeId][challengeIdIndex].userId==userId) return true;
+        }
+        return false;
     }
 
     // 사진으로 유저 챌린지 인증

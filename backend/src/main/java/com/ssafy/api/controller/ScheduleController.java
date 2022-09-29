@@ -28,7 +28,7 @@ public class ScheduleController {
         try {
             scheduleService.saveAndScheduleChallengeJob(ChallengeJobData.of(challengeScheduleRequest));
         } catch (Exception e) {
-            log.error("챌린지 종료 추가 실패", e);
+            log.error("챌린지 종료 스케줄 추가 실패", e);
             return BaseResponse.fail("챌린지 종료 스케줄 추가 실패");
         }
 

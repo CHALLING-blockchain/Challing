@@ -21,7 +21,7 @@ class ContractAPI {
     // this.accounts = await this.web3.eth.getAccounts();
     this.Vabi = this.Vartifact.abi;
     this.Vaddress = this.Vartifact.networks[this.networkId].address;
-    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.aVddress);
+    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
   }
 
   // ChallengeContract
@@ -97,6 +97,13 @@ class ContractAPI {
       .call({ from: this.account })
       .catch(console.error);
   }
+  async checkChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .checkChallenger(challengeId, userId)
+      .call({ from: this.account })
+      .catch(console.error);
+  }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
 
@@ -120,6 +127,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .addPhoto(challengerId, userId, picURL, today)
                 .encodeABI(),
@@ -136,6 +144,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
+              to: this.Caddress,
               data: this.Ccontract.methods
                 .authenticate(
                   challengeId,
@@ -324,6 +333,10 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
+    const deposit=dailyChallenge.deposit.toString();
+    dailyChallenge.deposit=1;
+    dailyChallenge.totalDeposit=1;
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -334,7 +347,7 @@ class ContractAPI {
               to: this.Caddress,
               value: this.web3.utils.toHex(
                 this.web3.utils.toWei(
-                  dailyChallenge.deposit.toString(),
+                  deposit,
                   "ether"
                 )
               ),
@@ -372,6 +385,11 @@ class ContractAPI {
   // DonationChallengeContract
   async createDonationChallenge(donationChallenge) {
     await this.init();
+
+    const setDonation=donationChallenge.setDonation.toString();
+    donationChallenge.setDonation=1;
+    donationChallenge.totalDonation=1;
+
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -382,7 +400,7 @@ class ContractAPI {
               to: this.Caddress,
               value: this.web3.utils.toHex(
                 this.web3.utils.toWei(
-                  donationChallenge.donationMoney.toString(),
+                  setDonation,
                   "ether"
                 )
               ),

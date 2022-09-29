@@ -20,20 +20,17 @@ function ChallengeShot(){
     const Contract = new ContractAPI();
     const navigate = useNavigate();
 
-    useEffect(()=>{
-      async function load(){
+    useEffect(() => {
+      async function load() {
+
         let allChallengeList = {};
         await Contract.getAllChallenge().then((result)=>{
           allChallengeList = result;
         });
         dispatch(setChallengeList(allChallengeList));
-      }
-      load()
-    },[])
+        console.log(user.id)
+        const challengers= await Contract.getChallengersByUserId(user.id)
 
-    useEffect(() => {
-      async function load() {
-        const challengers= await Contract.getChallengersByUserId(1)
         setChallegers(challengers);
       }
       load()
@@ -45,11 +42,10 @@ function ChallengeShot(){
       
       let userCount=0;
 
-      
       if(challengers){
         userCount=challengers.filter(el=>el.challengeId==props.challengeInfo.challengeId)[0].totalCount
       }
-      const percentage=(1/props.challengeInfo.authTotalTimes*100).toFixed(2)
+      const percentage=(userCount/props.challengeInfo.authTotalTimes*100).toFixed(2)
 
       return(
         <div onClick={()=>{navigate(`/challenge-certify/${props.challengeInfo.challengeId}`,{

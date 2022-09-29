@@ -60,69 +60,69 @@ const test = async () => {
   };
 
   // 챌린지 생성
-  const createDaliyChallenge = await contract.methods
-    .createDailyChallenge(daliyChallenge)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-      value: 1e18,
-    })
-    .catch(console.error);
-  console.log(createDaliyChallenge);
+  // const createDaliyChallenge = await contract.methods
+  //   .createDailyChallenge(daliyChallenge)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //     value: 1e18,
+  //   })
+  //   .catch(console.error);
+  // console.log(createDaliyChallenge);
 
-  // 유저 10명 참가
-  accounts.slice(1).forEach(async (account, index) => {
-    const joinChallenge = await contract.methods
-      .joinChallenge(1, index + 2, "220919")
-      .send({
-        from: account,
-        gasLimit: 3_000_000,
-        value: 1e18,
-      })
-      .catch(console.error);
-  });
-  console.log("유저 참여 완료");
+  // // 유저 10명 참가
+  // accounts.slice(1).forEach(async (account, index) => {
+  //   const joinChallenge = await contract.methods
+  //     .joinChallenge(1, index + 2, "220919")
+  //     .send({
+  //       from: account,
+  //       gasLimit: 3_000_000,
+  //       value: 1e18,
+  //     })
+  //     .catch(console.error);
+  // });
+  // console.log("유저 참여 완료");
 
-  // 유저 인증(1은 3개 인증, 2,3은 1개 인증)
-  const authenticate1 = await contract.methods
-    .authenticate(1, 1, `220921`, "picURL")
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
+  // // 유저 인증(1은 3개 인증, 2,3은 1개 인증)
+  // const authenticate1 = await contract.methods
+  //   .authenticate(1, 1, `220921`, "picURL")
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
 
-  const authenticate2 = await contract.methods
-    .authenticate(1, 1, `220922`, "picURL")
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
+  // const authenticate2 = await contract.methods
+  //   .authenticate(1, 1, `220922`, "picURL")
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
 
-  const authenticate3 = await contract.methods
-    .authenticate(1, 1, `220923`, "picURL")
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
+  // const authenticate3 = await contract.methods
+  //   .authenticate(1, 1, `220923`, "picURL")
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
 
-  const authenticate4 = await contract.methods
-    .authenticate(1, 2, `220921`, "picURL")
-    .send({
-      from: accounts[1],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
+  // const authenticate4 = await contract.methods
+  //   .authenticate(1, 2, `220921`, "picURL")
+  //   .send({
+  //     from: accounts[1],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
 
-  const authenticate5 = await contract.methods
-    .authenticate(1, 3, `220921`, "picURL")
-    .send({
-      from: accounts[2],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
+  // const authenticate5 = await contract.methods
+  //   .authenticate(1, 3, `220921`, "picURL")
+  //   .send({
+  //     from: accounts[2],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
 
   // 모든 챌린지 조회
   const getAllChallenge = await contract.methods
@@ -155,18 +155,18 @@ const test = async () => {
   });
   console.log(challenges);
 
-  // 내가 생성한 챌린지, 내가 참여한 챌린지 조회
-  const getMyChallenge = await contract.methods
-    .getMyChallenge(1)
-    .call({ from: accounts[0] })
-    .catch(console.error);
-  console.log(getMyChallenge);
+  // // 내가 생성한 챌린지, 내가 참여한 챌린지 조회
+  // const getMyChallenge = await contract.methods
+  //   .getMyChallenge(1)
+  //   .call({ from: accounts[0] })
+  //   .catch(console.error);
+  // console.log(getMyChallenge);
 
-  // 나의 모든 인증 사진들 조회
-  const getMyAllPhoto = await contract.methods
-    .getMyAllPhoto(1)
-    .call({ from: accounts[0] })
-    .catch(console.error);
-  console.log(getMyAllPhoto);
+  // // 나의 모든 인증 사진들 조회
+  // const getMyAllPhoto = await contract.methods
+  //   .getMyAllPhoto(1)
+  //   .call({ from: accounts[0] })
+  //   .catch(console.error);
+  // console.log(getMyAllPhoto);
 };
 test();
