@@ -270,7 +270,7 @@ function MyWallet() {
           <p> {date} </p>
           <div className={styles.content}>
             <div className={styles.titleContent}>
-              {/* <p>{txData[index].input.substr(2)}</p> */}
+              {/* 여기에 거래내역 data 있었는데 지움 */}
             </div>
             <div></div>
             <div className={styles.ethcontent}>
@@ -336,7 +336,7 @@ function MyWallet() {
               <div className={styles.scroll}>{txRendering()}</div>
               <a
                 className={styles.ethscan}
-                href={"https://ropsten.etherscan.io/address/" + activeAccount}
+                href={"https://goerli.etherscan.io/address/" + activeAccount}
               >
                 <img src={plus} alt="" />
                 <p>
