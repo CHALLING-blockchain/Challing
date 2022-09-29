@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setChallengeList } from "../../app/redux/allChallengeSlice";
 import ContractAPI from "../../api/ContractAPI";
 
-function Loading() {
+function CreateLoading() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,4 +34,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default CreateLoading;

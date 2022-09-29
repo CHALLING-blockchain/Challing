@@ -70,6 +70,9 @@ class ContractAPI {
             {
               from: this.account,
               to: this.Caddress,
+              value: this.web3.utils.toHex(
+                this.web3.utils.toWei(value, "ether")
+              ),
               data: this.Ccontract.methods
                 .joinChallenge(challengeId, userId, today)
                 .encodeABI(),
@@ -335,9 +338,11 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
-    const deposit=dailyChallenge.deposit.toString();
-    dailyChallenge.deposit=1;
-    dailyChallenge.totalDeposit=1;
+    console.log("daily - 111", dailyChallenge);
+    const deposit = dailyChallenge.deposit.toString();
+    dailyChallenge.deposit = 1;
+    dailyChallenge.totalDeposit = 1;
+    console.log("daily - 222", dailyChallenge);
 
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
@@ -348,10 +353,7 @@ class ContractAPI {
               from: this.account,
               to: this.Caddress,
               value: this.web3.utils.toHex(
-                this.web3.utils.toWei(
-                  deposit,
-                  "ether"
-                )
+                this.web3.utils.toWei(deposit, "ether")
               ),
               data: this.Ccontract.methods
                 .createDailyChallenge(dailyChallenge)
@@ -388,9 +390,9 @@ class ContractAPI {
   async createDonationChallenge(donationChallenge) {
     await this.init();
 
-    const setDonation=donationChallenge.setDonation.toString();
-    donationChallenge.setDonation=1;
-    donationChallenge.totalDonation=1;
+    const setDonation = donationChallenge.setDonation.toString();
+    donationChallenge.setDonation = 1;
+    donationChallenge.totalDonation = 1;
 
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
@@ -401,10 +403,7 @@ class ContractAPI {
               from: this.account,
               to: this.Caddress,
               value: this.web3.utils.toHex(
-                this.web3.utils.toWei(
-                  setDonation,
-                  "ether"
-                )
+                this.web3.utils.toWei(setDonation, "ether")
               ),
               data: this.Ccontract.methods
                 .createDonationChallenge(donationChallenge)
