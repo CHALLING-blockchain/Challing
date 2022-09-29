@@ -75,8 +75,10 @@ function AchieveRateBox(){
         const myChallengeInfo = result;
         for (let i = 0; i < myChallengeInfo.length; i++) {
           let tmpInfo = myChallengeInfo[i];
-          if (tmpInfo.complete !== true) {
-            tmpDeposit += (tmpInfo.userDeposit / 1e18);
+          if ("deposit" in tmpInfo){
+            if (tmpInfo.complete !== true) {
+              tmpDeposit += (tmpInfo.deposit);
+          }
           }
         }
         setTotalDeposit(tmpDeposit);
