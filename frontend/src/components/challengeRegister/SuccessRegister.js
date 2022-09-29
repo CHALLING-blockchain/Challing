@@ -43,7 +43,6 @@ function Inform(props) {
     }
     load();
   }, [id]);
-
   return (
     <div className={styles.informBox}>
       <p>챌린지 정보</p>
@@ -63,7 +62,10 @@ function Inform(props) {
           <span>
             {" "}
             {Number(
-              web3.utils.fromWei(props.challenge.deposit, "ether")
+              web3.utils.fromWei(
+                props.challenge.deposit || props.challenge.setDonation,
+                "ether"
+              )
             ).toFixed(3)}{" "}
             eth
           </span>
