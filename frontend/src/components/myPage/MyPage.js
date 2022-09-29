@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import "./MyPage.css";
+import styles from "./MyPage.module.css";
 import UserAPI from "../../api/UserAPI";
 import Web3 from "web3";
 import { Link, useNavigate } from "react-router-dom";
@@ -54,9 +54,9 @@ function MyPage() {
 
   return (
     <div>
-      <h2 className="MyPageHeader">마이페이지</h2>
+      <h2 className={styles.MyPageHeader}>마이페이지</h2>
       <div
-        className="UserProfile"
+        className={styles.UserProfile}
         onClick={() => {
           navigate("/my-profile");
         }}
@@ -87,8 +87,8 @@ function MyPage() {
           </svg>
         </Link>
       </div>
-      <div className="StatusBox">
-        <div className="ChallengeStatus">
+      <div className={styles.StatusBox}>
+        <div className={styles.ChallengeStatus}>
           <img
             style={{ width: "20px", height: "24px", marginRight: "8px" }}
             src={tick}
@@ -96,7 +96,7 @@ function MyPage() {
           />
           <p>챌린지 현황</p>
         </div>
-        <div className="ChallengeStatusBar">
+        <div className={styles.ChallengeStatusBar}>
           <div>
             <p>{ingChal}</p>
             <span>진행중</span>
@@ -111,14 +111,14 @@ function MyPage() {
           </div>
         </div>
       </div>
-      <div className="MenuListBox">
+      <div className={styles.MenuListBox}>
         <div
-          className="menuItem"
+          className={styles.menuItem}
           onClick={() => {
             navigate("/my-shot-zip");
           }}
         >
-          <div className="menuTitle">
+          <div className={styles.menuTitle}>
             <img src={picture} alt="" />
             <p>나의 인증샷 모아보기</p>
           </div>
@@ -140,12 +140,12 @@ function MyPage() {
           </svg>
         </div>
         <div
-          className="menuItem"
+          className={styles.menuItem}
           onClick={() => {
             navigate("/create-challenge");
           }}
         >
-          <div className="menuTitle">
+          <div className={styles.menuTitle}>
             <img src={folder} alt="" />
             <p>챌린지 개설하기</p>
           </div>
@@ -167,12 +167,12 @@ function MyPage() {
           </svg>
         </div>
         <div
-          className="menuItem"
+          className={styles.menuItem}
           onClick={() => {
             navigate("/my-favorite");
           }}
         >
-          <div className="menuTitle">
+          <div className={styles.menuTitle}>
             <img src={bookmark} alt="" />
             <p>챌린지 즐겨찾기</p>
           </div>

@@ -2,7 +2,7 @@ import { React } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
-import "./MyProfile.css";
+import styles from "./MyProfile.module.css";
 
 function MyProfile() {
   const user = useSelector(selectUser);
@@ -15,7 +15,7 @@ function MyProfile() {
     for (let index = 0; index < totalInterests.length; index++) {
       if (user.interests.includes(totalInterests[index])) {
         items.push(
-          <span key={index} className="selectItem">
+          <span key={index} className={styles.selectItem}>
             {totalInterests[index]}
           </span>
         );
@@ -25,8 +25,8 @@ function MyProfile() {
   };
 
   return (
-    <div className="MyProfile">
-      <div className="BackMyPage">
+    <div className={styles.MyProfile}>
+      <div className={styles.BackMyPage}>
         <Link to="/my-page">
           <svg
             width="16"
@@ -46,15 +46,15 @@ function MyProfile() {
           <p>편집</p>
         </Link>
       </div>
-      <div className="Profile">
+      <div className={styles.Profile}>
         <img
           style={{ width: "80px", height: "80px", borderRadius: "100px" }}
           src={fileImage}
           alt="sample"
         />
-        <p className="UserName">{user.nickname}</p>
+        <p className={styles.UserName}>{user.nickname}</p>
       </div>
-      <div className="Box">
+      <div className={styles.Box}>
         <p>한줄소개</p>
         {user.description == null ? (
           <p>입력하신 소개 내용이 없습니다.</p>
@@ -71,11 +71,11 @@ function MyProfile() {
       >
         <rect width="360" height="8" fill="#E5E6FF" fillOpacity="0.5" />
       </svg>
-      <div className="Box">
+      <div className={styles.Box}>
         <span>이메일</span>
         <span>{user.email}</span>
       </div>
-      <div className="Box">
+      <div className={styles.Box}>
         <span>관심사</span>
         <span>{getInterest()}</span>
       </div>
