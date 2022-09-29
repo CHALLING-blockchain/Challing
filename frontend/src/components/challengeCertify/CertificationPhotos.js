@@ -139,6 +139,37 @@ function Gather(){
 //     )
 // }
 
+function Modal({onClose}){
+  function handleClose(){
+    onClose ?.();
+  };
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.ModalBody} onClick={(e)=>e.stopPropagation()}>
+        <div>
+          <svg className={styles.modalCloseBtn} onClick={handleClose}width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
+            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>신고하기</p>
+        <div style={{position:'absolute',left:'28px',top:'76px'}}>
+          <p className={styles.ModalText}>☝ 인증샷이 해당 챌린지와 연관이 없을 때</p>
+          <p className={styles.ModalText}>☝ 해당 인증샷이 불쾌감을 줄 때</p>
+          <p className={styles.ModalText}>☝ 해당 인증샷이 인증의 기능을 못할 때</p>
+          <br/>
+          <p className={styles.ModalText}>❗ 해당 인증샷이 위와 같을 경우 신고하기 기능을 <br/><span style={{paddingLeft:'10px'}}/>이용할 수 있습니다.</p>
+          <p className={styles.ModalText}>❗ 신고를 할 경우 해당 챌린지의 챌린저들이 투표를 <br/><span style={{paddingLeft:'10px'}}/>통해 성공여부를 판단하게 됩니다.</p>
+          <p className={styles.ModalText}>❗ 투표결과와 본인의 선택이 같을 시 패스코인이 <br/><span style={{paddingLeft:'10px'}}/>발급됩니다.</p>
+        </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.NextButton}>🚨 인증샷 신고하기</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Separately(){
     // for 문 돌려서
     const [userimg, setUserimg] = useState(profile);
@@ -146,7 +177,6 @@ function Separately(){
     const [openModal, setOpenModal] = useState(false);
     const photoList = useLocation().state.photoList;
     const showModal = () => {
-        console.log('modal 열려야돼')
         setOpenModal(true);
     }
     return (
@@ -171,6 +201,9 @@ function Separately(){
             )
           })
         }
+        {openModal && (<Modal 
+          open={openModal} 
+          onClose={()=>{setOpenModal(false);}}/>)}
       </div>
     );
 }
