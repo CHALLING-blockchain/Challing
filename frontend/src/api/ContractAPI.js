@@ -492,7 +492,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
-              to: this.Caddress,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .report(challengeId, photoId, userId)
                 .encodeABI(),
@@ -513,7 +513,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
-              to: this.Caddress,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .voting(challengeId, userId, voteId, pass)
                 .encodeABI(),
