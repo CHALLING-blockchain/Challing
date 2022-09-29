@@ -6,10 +6,13 @@ class ContractAPI {
   async init(address) {
     this.Cartifact = require("../contracts/ChallengeContract.json");
     this.Vartifact = require("../contracts/VoteContract.json");
-    const infuraUrl =
+    const ropstenUrl =
+      "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
+    const goerliUrl =
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-    this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(goerliUrl));
+
     if (address !== undefined) {
       this.account = address;
     }

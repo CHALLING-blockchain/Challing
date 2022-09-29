@@ -3,6 +3,7 @@ import styles from './challengeForm.module.css';
 import Calender from "../../../img/calender.png";
 import DatePicker from "react-datepicker";
 import addMonths from 'date-fns/addMonths';
+import addDays from 'date-fns/addDays';
 import { ko } from '../../../../node_modules/date-fns/esm/locale';
 import  '../../../../node_modules/react-datepicker/dist/react-datepicker.css'
 import tick from '../../../img/tick.png';
@@ -16,7 +17,7 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
   })
   const[day,setDay] = useState(0);
   const[endDate,setEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(addDays(new Date(),1));
   useEffect(()=>{setChallengeEnd(moment(endDate).format('YYYY-MM-DD'))},[endDate])
   useEffect(()=>{
     const ddate = new Date(startDate)
@@ -128,7 +129,7 @@ function SelectPeriod({formCnt,setFormCnt,period,setPeriod,setChallengeStart,set
                       setChallengeStart(startData);
                       setEndDate(new Date(date.setDate(date.getDate()+day)));
                       setList((list)=>({...list,startD:start,endD:start}));}}
-          minDate={new Date()}
+          minDate={addDays(new Date(),1)}
           maxDate={addMonths(new Date(), 5)}
           showDisabledMonthNavigation
           />
