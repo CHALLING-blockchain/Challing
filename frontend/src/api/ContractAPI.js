@@ -11,7 +11,7 @@ class ContractAPI {
     const goerliUrl =
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(ropstenUrl));
 
     if (address !== undefined) {
       this.account = address;
@@ -492,7 +492,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
-              to: this.Caddress,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .report(challengeId, photoId, userId)
                 .encodeABI(),
@@ -513,7 +513,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
-              to: this.Caddress,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .voting(challengeId, userId, voteId, pass)
                 .encodeABI(),

@@ -1,15 +1,11 @@
 import React from "react";
-import './Nav.css';
-import Logo from "../img/logo.png";
-import { Link } from "react-router-dom";
+import styles from'./Nav.module.css';
+import Logo from "../img/logo-color.png";
 
 function Nav(){
   return(
-      <div className="Navbar">
-        <img className="LogoImg" src={Logo} alt="logo"/>Challing
-        <Link to="/alarm">
-          <img className="Alarm" src={Logo} alt="logo"/>
-        </Link>
+      <div className={styles.Navbar}>
+        <img className={styles.LogoImg} src={Logo} alt="logo"/>
       </div>
   );
 };

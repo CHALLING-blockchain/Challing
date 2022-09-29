@@ -21,7 +21,6 @@ import CreateChallenge from "./components/myPage/CreateChallenge";
 import MyFavorite from "./components/myPage/MyFavorite";
 import MyWallet from "./components/myWallet/MyWallet";
 import Menu from "./components/Menu";
-import Alarm from "./components/alarm/Alarm";
 import Voting from "./components/voting/Voting";
 import VotingHome from "./components/voting/VotingHome";
 import ConfirmRegister from "./components/challengeRegister/ConfirmRegister";
@@ -56,7 +55,6 @@ function App() {
         <Route path="/create-loading/:id" element={<CreateLoading />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
-        <Route path="/alarm" element={<Alarm />} />
         <Route path="/votinghome" element={<VotingHome />} />
         {/* <Route path="/voting/:id" element={<Voting />} /> */}
         <Route path="/voting" element={<Voting />} />

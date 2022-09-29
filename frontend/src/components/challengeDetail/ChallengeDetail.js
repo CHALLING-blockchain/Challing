@@ -161,7 +161,11 @@ function TopBox(props) {
           </div>
           <div className={styles.imgText}>
             <img src={dollar} alt="" />
-            <span>{props.challenge.deposit / Math.pow(10, 18)} eth</span>
+            <span>
+              {(props.challenge.deposit || props.challenge.setDonation) /
+                Math.pow(10, 18)}{" "}
+              eth
+            </span>
           </div>
         </div>
       </div>
@@ -227,7 +231,11 @@ function addDescription(props) {
   const descList = [];
   for (let index = 0; index < desc.length; index++) {
     if (desc[index].length > 0) {
-      descList.push(<p key={index}>👉{desc[index]}</p>);
+      descList.push(
+        <p className={styles.Text} key={index}>
+          👉{desc[index]}
+        </p>
+      );
     }
   }
   return descList;
@@ -262,9 +270,6 @@ function Description(props) {
           <p style={{ fontSize: "16px", fontWeight: "bold" }}>
             인증 방법 및 주의사항
           </p>
-          {/* <p>👉 필사한 내용 사진찍기</p>
-          <p>👉 다른 챌린지에서 올리신 동일한 인증샷으로 재인증 하시면</p>
-          <p>신고 혹은 불이익이 있을 수 있습니다.</p> */}
           {addDescription(props.challenge.desc)}
         </div>
       </div>

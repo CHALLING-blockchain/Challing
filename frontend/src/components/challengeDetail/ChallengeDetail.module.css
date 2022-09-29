@@ -112,3 +112,7 @@
   margin: 5px;
   text-align: center;
 }
+.Text{
+  width: 328px;
+  overflow-wrap: break-word;
+}
