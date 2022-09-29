@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import './CreateChallenge.css';
+import styles from './CreateChallenge.module.css';
 import SelectChallenge from './challengeForm/SelectChallenge';
 import SelectTopic from './challengeForm/SelectTopic';
 import InputTitle from './challengeForm/InputTitle';
@@ -46,7 +46,7 @@ function CreateChallenge() {
   console.log(selects,formCnt);
 
   return(
-    <div className="CreateChallenge">
+    <div className={styles.CreateChallenge}>
       
       <div>
         {/* 일상 & 기부 공통 폼 */}
