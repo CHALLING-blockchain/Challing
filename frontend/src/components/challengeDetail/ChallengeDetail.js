@@ -299,31 +299,25 @@ function ShotDescription(props) {
   );
 }
 
-async function joinChallenge(Contract, challengeId, userId, today, value) {
-  await Contract.joinChallenge(challengeId, userId, today, value).then(
-    (result) => {
-      console.log("join result", result);
-    }
-  );
-}
-
 function ChallengeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const challenge = useSelector(challengeList)[id];
   const user = useSelector(selectUser);
   console.log("challenge", challenge);
   const day = getDayGap.getDayGapFromToday(challenge.startDate);
-  let today = new Date();
-  let todayStr =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  // let today = new Date();
+  // let todayStr =
+  //   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
   const [joinFlag, setJoinFlag] = useState(false);
-  const [challengers, setChallengers] = useState(1);
-  const Contract = new ContractAPI();
+  const [challengers, setChallengers] = useState();
 
   useEffect(() => {
+    const Contract = new ContractAPI();
     const getChallengers = async () => {
       await Contract.getChallengers(challenge.challengeId).then((response) => {
         setChallengers(response.length);
+        console.log("challengers", response.length);
       });
     };
 
@@ -336,6 +330,8 @@ function ChallengeDetail() {
         }
       }
     );
+
+    getChallengers();
   }, [challenge.challengeId, user]);
 
   return (
@@ -364,15 +360,7 @@ function ChallengeDetail() {
               type="submit"
               label="챌린지 신청하기"
               onClick={() => {
-                joinChallenge(
-                  Contract,
-                  challenge.challengeId,
-                  user.id,
-                  todayStr,
-                  challenge.deposit / Math.pow(10, 18)
-                );
-                setChallengers(challengers + 1);
-                setJoinFlag(true);
+                navigate(`/confirm-register/${id}`);
               }}
               flag={true}
               disabled={false}
@@ -386,8 +374,6 @@ function ChallengeDetail() {
             ></Next>
           )}
         </div>
-
-        <div style={{ width: "100vw", height: "72px" }}></div>
       </div>
     </div>
   );
