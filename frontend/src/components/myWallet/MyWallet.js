@@ -142,21 +142,17 @@ function MyWallet() {
             //undefined 예외처리
             if (element.input !== undefined) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-              if (element.input.includes("ecb18ceba781")) {
-                // 트렌젝션을 보냈을때
-                // console.log(
-                //   "input=",
-                //   utf8_hex_string_to_string(element.input.substr(2))
-                // );
-                if (element.from.toLowerCase() === accounts.toLowerCase()) {
-                  element.sendOrReceive = "↓";
-                }
-                // 트렌젝션을 받았을때
-                else {
-                  element.sendOrReceive = "↑";
-                }
-                tmpData.push(element);
+              // if (element.input.includes("ecb18ceba781")) {
+              // console.log(element);
+              if (element.from.toLowerCase() === accounts.toLowerCase()) {
+                element.sendOrReceive = "↓";
               }
+              // 트렌젝션을 받았을때
+              else {
+                element.sendOrReceive = "↑";
+              }
+              tmpData.push(element);
+              // }
             }
           }
           setTxData(tmpData);
@@ -255,35 +251,33 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      if (txData[index].input.includes("ecb18ceba781")) {
-        let date = txData[index].timeStamp;
-        // 날짜별로 모아서 보여주기
-        if (
-          index >= 1 &&
-          index < txData.length &&
-          txData[index].timeStamp === txData[index - 1].timeStamp
-        ) {
-          date = "";
-        }
-        result.push(
-          <div key={index} className={styles.historyContent}>
-            <p> {date} </p>
-            <div className={styles.content}>
-              <div className={styles.titleContent}>
-                <p>
-                  {utf8_hex_string_to_string(txData[index].input.substr(2))}
-                </p>
-              </div>
-              <div></div>
-              <div className={styles.ethcontent}>
-                <p>
-                  {txData[index].etherValue}ETH {txData[index].sendOrReceive}
-                </p>
-              </div>
+      // if (txData[index].input.includes("ecb18ceba781")) {
+      let date = txData[index].timeStamp;
+      // 날짜별로 모아서 보여주기
+      if (
+        index >= 1 &&
+        index < txData.length &&
+        txData[index].timeStamp === txData[index - 1].timeStamp
+      ) {
+        date = "";
+      }
+      result.push(
+        <div key={index} className={styles.historyContent}>
+          <p> {date} </p>
+          <div className={styles.content}>
+            <div className={styles.titleContent}>
+              <p>{utf8_hex_string_to_string(txData[index].input.substr(2))}</p>
+            </div>
+            <div></div>
+            <div className={styles.ethcontent}>
+              <p>
+                {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+              </p>
             </div>
           </div>
-        );
-      }
+        </div>
+      );
+      // }
     }
     return result;
   }
@@ -327,9 +321,9 @@ function MyWallet() {
               </p>
               <p style={{ fontSize: "12px" }}>
                 <span>≒ </span>
-                {Math.floor(exData * activeBalance)
+                {/* {Math.floor(exData * activeBalance)
                   .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} */}
                 ₩
               </p>
             </div>
