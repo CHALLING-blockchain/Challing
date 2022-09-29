@@ -10,7 +10,7 @@ class ContractAPI {
     const infuraUrl =
       "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
-    this.web3 = new Web3(new Web3.providers.HttpProvider(local));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
     if (address !== undefined) {
       this.account = address;
     }
@@ -101,6 +101,13 @@ class ContractAPI {
       .call({ from: this.account })
       .catch(console.error);
   }
+  async checkChallenger(challengeId, userId) {
+    await this.init();
+    return this.Ccontract.methods
+      .checkChallenger(challengeId, userId)
+      .call({ from: this.account })
+      .catch(console.error);
+  }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
 
@@ -124,6 +131,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
+              to: this.Vaddress,
               data: this.Vcontract.methods
                 .addPhoto(challengerId, userId, picURL, today)
                 .encodeABI(),
@@ -140,6 +148,7 @@ class ContractAPI {
           params: [
             {
               from: this.account,
+              to: this.Caddress,
               data: this.Ccontract.methods
                 .authenticate(
                   challengeId,

@@ -66,8 +66,7 @@ function App() {
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
         <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
-        {/* <Route path="/completed-detail:id" element={<CompletedDetail />} /> */}
-        <Route path="/completed-detail" element={<CompletedDetail />} />
+        <Route path="/completed-detail/:id" element={<CompletedDetail />} />
       </Routes>
       <Menu />
     </div>
