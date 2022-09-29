@@ -20,7 +20,6 @@ function ChallengeShot(){
     const Contract = new ContractAPI();
     const navigate = useNavigate();
 
-
     useEffect(() => {
       async function load() {
 
