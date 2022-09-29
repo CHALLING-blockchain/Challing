@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CompletedDetail.module.css";
 import { useNavigate } from 'react-router-dom';
 import backdrop from "../../img/test-back.jpg";
@@ -11,6 +11,10 @@ import styled, { keyframes } from "styled-components";
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { challengeList } from './../../app/redux/allChallengeSlice';
+import { selectUser, setUserInfo } from "../../app/redux/userSlice";
+import UserAPI from "../../api/UserAPI";
+import { useDispatch } from 'react-redux';
+import ContractAPI from './../../api/ContractAPI';
 
 
 function Header() {
@@ -67,38 +71,115 @@ function Description(props) {
 
 function MyAchRate(props){
   const challengeId = props.challengeId;
-    const [ach, setAch] = useState(50);
-    const [deposit, setDeposit] = useState(0.98);
-    const [prize, setPrize] = useState(0.04);
+  const Contract = new ContractAPI();
+  const challenge = props.challenge;
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
+  const [deposit, setDeposit] = useState("");
+  const [reward, setReward] = useState("");
+  const [contributions, setContribution] = useState("");
+  const [myCount, setMyCount] = useState("");
+  const selector = useSelector(challengeList);
+  const totalCount = selector[challengeId].authTotalTimes;
+
+  let type = "";
+  if ("deposit" in challenge) {
+    type = "daily"
+  } else {
+    type = "donation"
+  }
+  useEffect(() => {
+    UserAPI.mypage(user.email).then((response) => {
+      dispatch(setUserInfo(response.data.body));
+      setUser(response.data.body);
+    });
+  }, [user.email, dispatch]);
+  useEffect(() => {
+    async function load() {
+      await Contract.getChallengers(challengeId).then((result) => {
+        let challengers = result;
+        console.log(challengers);
+        for (let i = 0; i < challengers.length; i++) {
+          if (challengers[i].userId == user.id){
+            if (type === "daily") {
+              setDeposit(challengers[i].userDeposit);
+              setReward(challengers[i].reward);
+            } else if (type === "donation"){
+              setContribution(challengers[i].setDonation)
+            }
+            setMyCount(challengers[i].totalCount);
+          }
+          
+        }
+      })
+    }
+    load();
+  }, [])
+  
     return (
       <div className={styles.MyAchRate}>
         <div className={styles.rateText}>
           <span>나의 달성률</span>
-          <span style={{ color: "#755FFF" }}>{ach}%</span>
+          <span style={{ color: "#755FFF" }}>
+            {(myCount * 100) / (totalCount + myCount)}%
+          </span>
         </div>
         <Container>
-          <Progress width={ach + "%"} />
+          <Progress width={(myCount * 100) / (totalCount + myCount) + "%"} />
         </Container>
-        <div className={styles.rewardBox}>
-          <div>
-            <p style={{ fontSize: "14px" }}>{deposit + prize} ETH 환급</p>
-            <p style={{ fontSize: "10px", color: "#6A6A6A" }}>
-              예치금 {deposit} ETH
-            </p>
+        {type === "daily" ? (
+          <div className={styles.rewardBox}>
+            <div>
+              <p style={{ fontSize: "14px" }}>{(deposit + reward)} ETH 환급</p>
+              <p style={{ fontSize: "10px", color: "#6A6A6A" }}>
+                예치금 {deposit} ETH
+              </p>
+            </div>
+            <div className={styles.reward}>
+              <span>상금 {reward}ETH</span>
+            </div>
           </div>
-          <div className={styles.reward}>
-            <span>상금 {prize}ETH</span>
+        ) : (
+          <div className={styles.rewardBox}>
+            <div>
+              <p style={{ fontSize: "14px" }}>기부금 {contributions}</p>
+            </div>
           </div>
-        </div>
+        )}
         <hr className={styles.hrTag} />
       </div>
     );
 }
 
 function Inform(props){
-    const [people, setPeople] = useState(0);
-    const [deposit, setDeposit] = useState(0.1);
-    const [rate, setRate] = useState(100);
+  const challengeId = props.challengeId
+  const challenge = props.element
+  const [people, setPeople] = useState("");
+  const Contract = new ContractAPI();
+  const [deposit, setDeposit] = useState("");
+  const [contribution, setContribution] = useState("");
+
+  let type = "";
+  if ("deposit" in challenge) {
+    type = "daily";
+  } else {
+    type = "donation";
+  }
+  useEffect(() => {
+    async function load() {
+      await Contract.getChallengers(challengeId).then((result) => {
+        setPeople(result.length);
+        if (type === "daily") {
+          setDeposit(people * challenge.deposit)
+        } else if (type === "donation") {
+          setContribution(challenge.setDonation)
+        }
+      })
+    }
+    load();
+  },[])
+
+  
 
     return (
       <div className={styles.informBox}>
@@ -108,18 +189,27 @@ function Inform(props){
             총 <span style={{ color: "#755FFF" }}>{people}</span>명 참가
           </span>
         </div>
-        <div className={styles.informOne}>
-          <img src={coin} alt="" />
-          <span>
-            총 예치금 <span style={{ color: "#755FFF" }}>{deposit}</span>ETH
-          </span>
-        </div>
-        <div className={styles.informOne}>
+        {type === "daily" ? (
+          <div className={styles.informOne}>
+            <img src={coin} alt="" />
+            <span>
+              총 예치금 <span style={{ color: "#755FFF" }}>{deposit}</span>ETH
+            </span>
+          </div>
+        ) : (
+          <div className={styles.informOne}>
+            <img src={coin} alt="" />
+            <span>
+              기부금 <span style={{ color: "#755FFF" }}>{contribution}</span>ETH
+            </span>
+          </div>
+        )}
+        {/* <div className={styles.informOne}>
           <img src={chart} alt="" />
           <span>
             참가자 평균 달성률 <span style={{ color: "#755FFF" }}>{rate}%</span>
           </span>
-        </div>
+        </div> */}
       </div>
     );
 }
@@ -134,10 +224,10 @@ function CompletedDetail(){
         <BackDrop url={element.mainPicURL}></BackDrop>
         <Description
           title = {element.name}
-          period={element.startDate + "~" + element.endDate}
+          period={element.startDate + " ~ " + element.endDate}
         ></Description>
-        <MyAchRate challengeId={id}></MyAchRate>
-        <Inform challenge={element} challengeId={id}></Inform>
+        <MyAchRate challengeId={id} challenge={element}></MyAchRate>
+        <Inform element={element} challengeId={id}></Inform>
       </div>
     );
 }

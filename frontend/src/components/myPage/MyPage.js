@@ -37,14 +37,11 @@ function MyPage() {
         let edCount = 0;
         if (join.length !== 0) {
           for (let i = 0; i < join.length; i++) {
-            console.log(join[i]);
-            console.log(selector[join[i]])
-            console.log(selector)
-            // if (selector[join[i]].complete === true) {
-            //   edCount += 1;
-            // } else {
-            //   ingCount += 1;
-            // }
+            if (selector[join[i]].complete === true) {
+              edCount += 1;
+            } else {
+              ingCount += 1;
+            }
           }
         }
         setEdChal(edCount);

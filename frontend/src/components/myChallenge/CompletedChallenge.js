@@ -45,6 +45,7 @@ function AchieveRateBox() {
   const [user, setUser] = useState(useSelector(selectUser));
   const [edChal, setEdChal] = useState("");
   const [totalReward, setTotalReward] = useState("");
+  const selector = useSelector(challengeList);
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
@@ -55,13 +56,13 @@ function AchieveRateBox() {
     async function load() {
       await Contract.getMyChallenge(user.id).then((result) => {
         const join = result[1];
-        let ingCount = 0;
+        let edCount = 0;
         for (let i = 0; i < join.length; i++) {
-          if (join[i].complete === true) {
-            ingCount += 1;
+          if (selector[join[i]].complete ===true) {
+            edCount += 1;
           }
         }
-        setEdChal(ingCount);
+        setEdChal(edCount);
       });
     }
     load();
@@ -75,7 +76,7 @@ function AchieveRateBox() {
         for (let i = 0; i < myChallengeInfo.length; i++) {
           let tmpInfo = myChallengeInfo[i];
           if (tmpInfo.complete !== true) {
-            tmpReward += tmpInfo.reward;
+            tmpReward += (tmpInfo.reward / 1e18);
           }
         }
         setTotalReward(tmpReward);
