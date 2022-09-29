@@ -77,7 +77,12 @@ function Main() {
           "donationId" in element === false
         ) {
           result.push(
-            <span key={index}>
+            <span
+              key={index}
+              onClick={() => {
+                toChallengeDetail(element.challengeId);
+              }}
+            >
               <br></br>
               <p>{element.mainPicURL}</p>
               <p>{element.name}</p>
@@ -89,6 +94,12 @@ function Main() {
     }
 
     return result;
+  }
+
+  //챌린지 디테일로 넘기기
+  function toChallengeDetail(index) {
+    console.log("toChallengeDetail", index);
+    navigate(`/challenge-detail/${index}`);
   }
 
   //추천 챌린지(기부)
@@ -106,7 +117,12 @@ function Main() {
           "donationId" in element === true
         ) {
           result.push(
-            <span key={index}>
+            <span
+              key={index}
+              onClick={() => {
+                toChallengeDetail(element.challengeId);
+              }}
+            >
               <br></br>
               <p>{element.mainPicURL}</p>
               <p>{element.name}</p>
@@ -150,7 +166,6 @@ export function getDayGapFromToday(startDate) {
   let today = new Date();
   let todayStr =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-
   // 다시 Date 형식으로 맞춰줌
   let todayDateArr = todayStr.split("-");
   let todayDate = new Date(todayDateArr[0], todayDateArr[1], todayDateArr[2]);
@@ -168,17 +183,17 @@ export function getDayGapFromDates(startDate, endDate) {
 
   //시작일 str -> Date 형식으로 바꾸기
   let startDateArr = startDate.split("-");
-  startDate = new Date(startDateArr[0], startDateArr[1], startDateArr[2]);
+  startDate = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2]);
 
   //끝일 str -> Date 형식으로 바꾸기
   let endDateArr = endDate.split("-");
-  endDate = new Date(endDateArr[0], endDateArr[1], endDateArr[2]);
+  endDate = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2]);
 
   // 차이 구하기
-  let gap = startDate - endDate;
-  let dateGap = -parseInt(gap / currDay);
+  let gap = endDate - startDate;
+  let dateGap = parseInt(gap / currDay);
 
-  return dateGap > 30 ? dateGap : dateGap - 1;
+  return dateGap;
 }
 
 export function interestIdToName(interestId) {
