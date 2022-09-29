@@ -1,5 +1,4 @@
 import Web3 from "web3";
-
 class ContractAPI {
   constructor(address) {
     this.init(address);
@@ -8,7 +7,7 @@ class ContractAPI {
     this.Cartifact = require("../contracts/ChallengeContract.json");
     this.Vartifact = require("../contracts/VoteContract.json");
     const infuraUrl =
-      "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
+      "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
     this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
     if (address !== undefined) {
