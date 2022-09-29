@@ -1,7 +1,7 @@
 com.ssafy:
   db.url.host: host.docker.internal
   backeth.base_url: http://host.docker.internal:8082/api
-  save_dummy_job: true
+  save_dummy_job: false
 
 spring.output.ansi.enabled: never
 
