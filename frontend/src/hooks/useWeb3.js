@@ -19,7 +19,9 @@ function useWeb3(setIsLoading, setErrorMessage, exist, setExist) {
       setIsLoading(true);
       setErrorMessage("");
       // ensure Metamask is installed
-      if (!window.ethereum) throw new Error("You should enable Metamask");
+      if (!window.ethereum) {
+        window.open("https://metamask.io/download.html");
+      }
       // show Metamask prompt
       await window.ethereum.request({ method: "eth_requestAccounts" });
       // connect Metamask to web3.js and get a web3 provider instance

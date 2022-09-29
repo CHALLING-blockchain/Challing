@@ -15,7 +15,9 @@ import Next from "../common/NextButton";
 import useWeb3 from "../../hooks/useWeb3";
 import useBalance from "../../hooks/useBalance";
 import Web3 from "web3";
+import ContractAPI from "../../api/ContractAPI";
 import * as getDayGap from "../main/Main.js";
+import { selectUser } from "../../app/redux/userSlice";
 
 function Header() {
   const navigate = useNavigate();
@@ -46,13 +48,13 @@ function Header() {
 
 function Inform(props) {
   const web3 = new Web3(window.ethereum);
-  const [challengeCntData, setChallengeCntData] = useState("");
+  const [challengeCntData, setChallengeCntData] = useState();
   const id = props.challengeId;
   useEffect(() => {
     async function load() {
+      const Contract = new ContractAPI();
       await Contract.getChallengers(id).then((result) => {
-        let challengeCnt = 0;
-        challengeCnt = result.length;
+        let challengeCnt = result.length;
         setChallengeCntData(challengeCnt);
       });
     }
@@ -88,8 +90,23 @@ function Inform(props) {
   );
 }
 
+async function joinChallenge(activeAccount, challengeId, userId, today, value) {
+  const Contract = new ContractAPI(activeAccount);
+  await Contract.joinChallenge(challengeId, userId, today, value).then(
+    (result) => {
+      console.log("join result", result);
+    }
+  );
+}
+
 function Btn(props) {
   const web3 = new Web3(window.ethereum);
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  let today = new Date();
+  let todayStr =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+
   return (
     <div className={styles.btnBox}>
       <Next
@@ -99,7 +116,16 @@ function Btn(props) {
             3
           ) + " ETH 지불하기"
         }
-        onClick={() => {}}
+        onClick={() => {
+          joinChallenge(
+            props.activeAccount,
+            props.challenge.challengeId,
+            user.id,
+            todayStr,
+            web3.utils.fromWei(props.challenge.deposit, "ether")
+          );
+          navigate(`/join-loading/${props.challenge.challengeId}`);
+        }}
         disabled={false}
         flag={true}
       ></Next>
@@ -107,7 +133,41 @@ function Btn(props) {
   );
 }
 
-function MyBalance() {
+function MyBalance(props) {
+  // // localstorage에 wallet 연결 확인
+  // const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+  // // loading status
+  // const [isLoading, setIsLoading] = useState(false);
+  // // error messages
+  // const [errorMessage, setErrorMessage] = useState("");
+  // // get active account and balance data from useWeb3 hook
+  // const { provider, account: activeAccount } = useWeb3(
+  //   setIsLoading,
+  //   setErrorMessage,
+  //   exist,
+  //   setExist
+  // );
+  // // get active account balance from useBalance hook
+  // const activeBalance = useBalance(
+  //   provider,
+  //   activeAccount,
+  //   setIsLoading,
+  //   setErrorMessage
+  // );
+  return (
+    <div className={styles.balanceBox}>
+      <span style={{ fontWeight: "bold" }}>나의 잔액</span>
+      <span>{props.activeBalance} ETH</span>
+    </div>
+  );
+}
+
+function ConfirmRegister() {
+  //챌린지 아이디
+  const { id } = useParams();
+  const selector = useSelector(challengeList);
+  const element = selector[id];
+
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
@@ -128,24 +188,13 @@ function MyBalance() {
     setIsLoading,
     setErrorMessage
   );
-  return (
-    <div className={styles.balanceBox}>
-      <span style={{ fontWeight: "bold" }}>나의 잔액</span>
-      <span>{activeBalance} ETH</span>
-    </div>
-  );
-}
 
-function ConfirmRegister() {
-  //챌린지 아이디
-  const { id } = useParams();
-  const selector = useSelector(challengeList);
-  const element = selector[id];
   let period = Number(
     getDayGap.getDayGapFromDates(element.startDate, element.endDate)
   );
   let perWeek =
     Number(element.authTotalTimes) / (Number(element.authDayTimes) * period);
+
   return (
     <div>
       <Header></Header>
@@ -157,9 +206,9 @@ function ConfirmRegister() {
         img={element.mainPicURL}
       ></RegisterCard>
       <Inform challenge={element} challengeId={id}></Inform>
-      <MyBalance></MyBalance>
+      <MyBalance activeBalance={activeBalance}></MyBalance>
       <RefundPolicy></RefundPolicy>
-      <Btn challenge={element}></Btn>
+      <Btn challenge={element} activeAccount={activeAccount}></Btn>
     </div>
   );
 }

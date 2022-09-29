@@ -26,6 +26,10 @@ function MyWallet() {
   // passCoin
   const [passData, setPassData] = useState("");
 
+  // 컨트랙트 주소들
+  const Caddress = window.localStorage.getItem("Caddress");
+  const Vaddress = window.localStorage.getItem("Vaddress");
+
   // get active account and balance data from useWeb3 hook
   const {
     connect,
@@ -94,6 +98,9 @@ function MyWallet() {
 
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
+    if (!window.ethereum) {
+      window.open("https://metamask.io/download.html");
+    }
     let accounts = "";
     async function getAccount() {
       const account = await web3.eth.getAccounts();
@@ -142,21 +149,17 @@ function MyWallet() {
             //undefined 예외처리
             if (element.input !== undefined) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-              if (element.input.includes("ecb18ceba781")) {
-                // 트렌젝션을 보냈을때
-                // console.log(
-                //   "input=",
-                //   utf8_hex_string_to_string(element.input.substr(2))
-                // );
-                if (element.from.toLowerCase() === accounts.toLowerCase()) {
-                  element.sendOrReceive = "↓";
-                }
-                // 트렌젝션을 받았을때
-                else {
-                  element.sendOrReceive = "↑";
-                }
-                tmpData.push(element);
+              // if (element.input.includes("ecb18ceba781")) {
+              // console.log(element);
+              if (element.from.toLowerCase() === accounts.toLowerCase()) {
+                element.sendOrReceive = "↓";
               }
+              // 트렌젝션을 받았을때
+              else {
+                element.sendOrReceive = "↑";
+              }
+              tmpData.push(element);
+              // }
             }
           }
           setTxData(tmpData);
@@ -173,56 +176,6 @@ function MyWallet() {
     }
     getAccount();
   }, [activeAccount]);
-
-  // 16진수(UTF8) -> 한글 변환-------------------------------------------------
-  // UTF8 16 진수 문자열을 문자열로 변환
-  function utf8_hex_string_to_string(hex_str1) {
-    let bytes2 = hex_string_to_bytes(hex_str1);
-    let str2 = utf8_bytes_to_string(bytes2);
-    return str2;
-  }
-
-  // 바이트 배열을 16 진수 문자열로 변환
-
-  function hex_string_to_bytes(hex_str) {
-    let result = [];
-    for (let i = 0; i < hex_str.length; i += 2) {
-      result.push(hex_to_byte(hex_str.substr(i, 2)));
-    }
-    return result;
-  }
-
-  // 16 진수 문자열을 바이트 값으로 변환
-  function hex_to_byte(hex_str) {
-    return parseInt(hex_str, 16);
-  }
-
-  // UTF8 바이트 배열을 문자열로 변환
-  function utf8_bytes_to_string(arr) {
-    if (arr == null) return null;
-    let result = "";
-    let i;
-    while ((i = arr.shift())) {
-      if (i <= 0x7f) {
-        result += String.fromCharCode(i);
-      } else if (i <= 0xdf) {
-        let c1 = (i & 0x1f) << 6;
-        c1 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c1);
-      } else if (i <= 0xe0) {
-        let c2 = ((arr.shift() & 0x1f) << 6) | 0x0800;
-        c2 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c2);
-      } else {
-        let c3 = (i & 0x0f) << 12;
-        c3 += (arr.shift() & 0x3f) << 6;
-        c3 += arr.shift() & 0x3f;
-        result += String.fromCharCode(c3);
-      }
-    }
-    return result;
-  }
-  // 16진수(UTF8) -> 한글 변환 끝 ----------------------------------------------
 
   // Unix timestamp to date
   function timeConverter(UNIX_timestamp) {
@@ -255,24 +208,32 @@ function MyWallet() {
   function txRendering() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      if (txData[index].input.includes("ecb18ceba781")) {
-        let date = txData[index].timeStamp;
-        // 날짜별로 모아서 보여주기
-        if (
-          index >= 1 &&
-          index < txData.length &&
-          txData[index].timeStamp === txData[index - 1].timeStamp
-        ) {
-          date = "";
-        }
+      // 거래내역 종류
+      let txType = "";
+      // 트랜젝션 발생 시간
+      let date = txData[index].timeStamp;
+      // 날짜별로 모아서 보여주기
+      if (
+        index >= 1 &&
+        index < txData.length &&
+        txData[index].timeStamp === txData[index - 1].timeStamp
+      ) {
+        date = "";
+      }
+      // 거래내역 확인하기
+      if (
+        txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Vaddress.toLowerCase()
+      ) {
+        txType = "챌링";
         result.push(
           <div key={index} className={styles.historyContent}>
             <p> {date} </p>
             <div className={styles.content}>
               <div className={styles.titleContent}>
-                <p>
-                  {utf8_hex_string_to_string(txData[index].input.substr(2))}
-                </p>
+                <p>{txType}</p>
               </div>
               <div></div>
               <div className={styles.ethcontent}>
@@ -327,10 +288,7 @@ function MyWallet() {
               </p>
               <p style={{ fontSize: "12px" }}>
                 <span>≒ </span>
-                {Math.floor(exData * activeBalance)
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                ₩
+                {Math.floor(exData * activeBalance).toLocaleString("ko-KR")}₩
               </p>
             </div>
             <PassCoin></PassCoin>
@@ -341,7 +299,7 @@ function MyWallet() {
               <div className={styles.scroll}>{txRendering()}</div>
               <a
                 className={styles.ethscan}
-                href={"https://ropsten.etherscan.io/address/" + activeAccount}
+                href={"https://goerli.etherscan.io/address/" + activeAccount}
               >
                 <img src={plus} alt="" />
                 <p>
