@@ -326,33 +326,31 @@ background-clip: text;
 }
 .ModalTitle{
   position: absolute;
-  left: 28px;
-  top: 39px;
+  left: 32px;
+  top: 40px;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  /* color: #54595E; */
+  color: #54595E;
 }
 .ModalText{
   /* position: absolute;
   left: 35px;
   top: 76px; */
-  width: 288px;
-  height: 196px;
   text-align: start;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  /* color: #4F4F4F; */
+  color: #4F4F4F;
+  margin-top: 3px;
   letter-spacing: 0.5px;
-  overflow-wrap: break-word;
-  overflow: scroll;
+  width: 288px;
 }
 /* modal창 */
 .ModalBody {
   position: absolute;
   width: 328px;
-  height: 390px;
+  height: 336px;
   padding: 8px;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
@@ -365,37 +363,24 @@ background-clip: text;
   flex-direction: column;
   justify-content: space-between;
   }
-.EXModalBody {
-  position: absolute;
-  width: 328px;
-  height: 268px;
-  padding: 8px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  top:50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  text-align: center;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  }
    
 .modalCloseBtn {
 position: absolute;
 right: 22px;
-top: 18px;
+top: 24px;
   }
-.ModalImg{
-  display: flex;
-  justify-content: start;
-  padding: 32px;
-}
-.ImgBox{
-  display: flex;
-  justify-content: space-around;
-}
-.OpenModal{
-color: #755FFF;
+
+.MdNextButton{
+  width: 248px;
+  height: 40px;
+  position: absolute;
+  left: 48px;
+  top: 284px;
+  /* margin: 16px; */
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
 }
