@@ -94,6 +94,9 @@ function MyWallet() {
 
   useEffect(() => {
     const web3 = new Web3(window.ethereum);
+    if (!window.ethereum) {
+      window.open("https://metamask.io/download.html");
+    }
     let accounts = "";
     async function getAccount() {
       const account = await web3.eth.getAccounts();
@@ -261,12 +264,13 @@ function MyWallet() {
       ) {
         date = "";
       }
+      // {utf8_hex_string_to_string(txData[index].input.substr(2))}
       result.push(
         <div key={index} className={styles.historyContent}>
           <p> {date} </p>
           <div className={styles.content}>
             <div className={styles.titleContent}>
-              <p>{utf8_hex_string_to_string(txData[index].input.substr(2))}</p>
+              {/* <p>{txData[index].input.substr(2)}</p> */}
             </div>
             <div></div>
             <div className={styles.ethcontent}>
@@ -321,10 +325,7 @@ function MyWallet() {
               </p>
               <p style={{ fontSize: "12px" }}>
                 <span>≒ </span>
-                {/* {Math.floor(exData * activeBalance)
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} */}
-                ₩
+                {Math.floor(exData * activeBalance).toLocaleString("ko-KR")}₩
               </p>
             </div>
             <PassCoin></PassCoin>
