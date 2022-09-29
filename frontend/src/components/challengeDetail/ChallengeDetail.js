@@ -63,7 +63,7 @@ function Header(props) {
             borderRadius: "50px",
             padding: "4px",
           }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/challenge-search")}
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -108,8 +108,6 @@ function Header(props) {
 function TopBox(props) {
   console.log("topbox", props);
   const [user, setUser] = useState({});
-  const week =
-    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
 
   const period = Number(
     getDayGap.getDayGapFromDates(
@@ -148,7 +146,7 @@ function TopBox(props) {
           {props.challenge.name}
         </span>
         <div className={styles.Tags}>
-          <span className={styles.Tag}>{week}주 동안</span>
+          <span className={styles.Tag}>{period / 7}주 동안</span>
           <span className={styles.Tag}>주 {weekTimes}회</span>
           <span className={styles.Tag}>
             하루 {props.challenge.authDayTimes}번
@@ -235,8 +233,12 @@ function addDescription(props) {
 }
 
 function Description(props) {
-  const week =
-    props.challenge.authTotalTimes / (props.challenge.authDayTimes * 7);
+  const period = Number(
+    getDayGap.getDayGapFromDates(
+      props.challenge.startDate,
+      props.challenge.endDate
+    )
+  );
 
   return (
     <div className={styles.paddingBox}>
@@ -250,8 +252,8 @@ function Description(props) {
             챌린지 진행 시 꼭 알아주세요!
           </p>
           <p>
-            ☝ {week}주 동안, 하루에 {props.challenge.authDayTimes}번 인증샷을
-            촬영하셔야 합니다.
+            ☝ {period / 7}주 동안, 하루에 {props.challenge.authDayTimes}번
+            인증샷을 촬영하셔야 합니다.
           </p>
           <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
         </div>
@@ -321,17 +323,16 @@ function ChallengeDetail() {
       });
     };
 
-    Contract.findingChallenger(challenge.challengeId, user.id).then(
+    getChallengers();
+
+    Contract.checkChallenger(challenge.challengeId, user.id).then(
       (response) => {
         console.log("useEffect", response);
-        if (response !== undefined) {
+        if (response) {
           setJoinFlag(true);
-          getChallengers();
         }
       }
     );
-
-    getChallengers();
   }, [challenge.challengeId, user]);
 
   return (

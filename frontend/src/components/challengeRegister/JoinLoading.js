@@ -14,12 +14,11 @@ function JoinLoading() {
     async function load() {
       const Contract = new ContractAPI();
 
-      await Contract.findingChallenger(Number(id), user.id).then((response) => {
+      await Contract.checkChallenger(Number(id), user.id).then((response) => {
         setCheck(check + 1);
-
-        //   if (response !== undefined) {
-        //     navigate(`/challenge-detail/${id}`);
-        //   }
+        if (response) {
+          navigate(`/challenge-detail/${id}`);
+        }
       });
     }
     load();
