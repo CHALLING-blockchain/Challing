@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { challengeList } from "../../app/redux/allChallengeSlice";
 import styles from "./SuccessRegister.module.css";
 import RegisterCard from "../common/RegisterCard";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
-import test from "../../img/test-back.jpg";
 import { Link } from "react-router-dom";
 import Next from "../common/NextButton";
 import * as getInterestStr from "../main/Main.js";
 import * as getDayGap from "../main/Main.js";
 import Web3 from "web3";
-import Contract from "../../api/ContractAPI";
+import ContractAPI from "../../api/ContractAPI";
 
 function Header() {
   return (
@@ -35,15 +34,14 @@ function Inform(props) {
 
   useEffect(() => {
     async function load() {
+      const Contract = new ContractAPI();
       await Contract.getChallengers(id).then((result) => {
-        let challengeCnt = 0;
-        challengeCnt = result.length;
+        let challengeCnt = result.length;
         setChallengeCntData(challengeCnt);
       });
     }
     load();
   }, [id]);
-
   return (
     <div className={styles.informBox}>
       <p>챌린지 정보</p>
@@ -63,7 +61,10 @@ function Inform(props) {
           <span>
             {" "}
             {Number(
-              web3.utils.fromWei(props.challenge.deposit, "ether")
+              web3.utils.fromWei(
+                props.challenge.deposit || props.challenge.setDonation,
+                "ether"
+              )
             ).toFixed(3)}{" "}
             eth
           </span>
@@ -76,13 +77,16 @@ function Inform(props) {
 
 function Btn() {
   // const [deposit, setDeposit] = useState(0);
+  const navigate = useNavigate();
   return (
     <div className={styles.btnBox}>
       <Link to="/">
         <Next
           type="submit"
           label="홈으로"
-          onClick={() => {}}
+          onClick={() => {
+            navigate("/");
+          }}
           disabled={false}
           flag={true}
         ></Next>

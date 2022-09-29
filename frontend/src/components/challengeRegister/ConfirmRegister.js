@@ -4,10 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as getInterestStr from "../main/Main.js";
 import { challengeList } from "../../app/redux/allChallengeSlice";
-import Contract from "../../api/ContractAPI";
 import { useEffect, useState } from "react";
 import RegisterCard from "../common/RegisterCard";
-import test from "../../img/test-back.jpg";
 import person from "../../img/person.png";
 import eth from "../../img/ethCoin.png";
 import RefundPolicy from "../common/RefundPolicy";
@@ -79,7 +77,10 @@ function Inform(props) {
           </div>
           <span>
             {Number(
-              web3.utils.fromWei(props.challenge.deposit, "ether")
+              web3.utils.fromWei(
+                props.challenge.deposit || props.challenge.setDonation,
+                "ether"
+              )
             ).toFixed(3)}{" "}
             eth
           </span>
@@ -112,9 +113,12 @@ function Btn(props) {
       <Next
         type="submit"
         label={
-          Number(web3.utils.fromWei(props.challenge.deposit, "ether")).toFixed(
-            3
-          ) + " ETH 지불하기"
+          Number(
+            web3.utils.fromWei(
+              props.challenge.deposit || props.challenge.setDonation,
+              "ether"
+            )
+          ).toFixed(3) + " ETH 지불하기"
         }
         onClick={() => {
           joinChallenge(
@@ -122,7 +126,10 @@ function Btn(props) {
             props.challenge.challengeId,
             user.id,
             todayStr,
-            web3.utils.fromWei(props.challenge.deposit, "ether")
+            web3.utils.fromWei(
+              props.challenge.deposit || props.challenge.setDonation,
+              "ether"
+            )
           );
           navigate(`/join-loading/${props.challenge.challengeId}`);
         }}
@@ -134,26 +141,6 @@ function Btn(props) {
 }
 
 function MyBalance(props) {
-  // // localstorage에 wallet 연결 확인
-  // const [exist, setExist] = useState(localStorage.getItem("myAccount"));
-  // // loading status
-  // const [isLoading, setIsLoading] = useState(false);
-  // // error messages
-  // const [errorMessage, setErrorMessage] = useState("");
-  // // get active account and balance data from useWeb3 hook
-  // const { provider, account: activeAccount } = useWeb3(
-  //   setIsLoading,
-  //   setErrorMessage,
-  //   exist,
-  //   setExist
-  // );
-  // // get active account balance from useBalance hook
-  // const activeBalance = useBalance(
-  //   provider,
-  //   activeAccount,
-  //   setIsLoading,
-  //   setErrorMessage
-  // );
   return (
     <div className={styles.balanceBox}>
       <span style={{ fontWeight: "bold" }}>나의 잔액</span>
