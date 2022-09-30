@@ -98,7 +98,6 @@ function MyAchRate(props){
     async function load() {
       await Contract.getChallengers(challengeId).then((result) => {
         let challengers = result;
-        console.log(challengers);
         for (let i = 0; i < challengers.length; i++) {
           if (challengers[i].userId == user.id){
             if (type === "daily") {

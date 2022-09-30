@@ -132,12 +132,16 @@ function MyPage() {
         </div>
         <div className={styles.ChallengeStatusBar}>
           <div>
-            <p>{ingChal}</p>
-            <span>진행중</span>
+            <Link to="/ongoing-challenge">
+              <p>{ingChal}</p>
+              <span>진행중</span>
+            </Link>
           </div>
           <div>
-            <p>{edChal}</p>
-            <span>완료</span>
+            <Link to="/completed-challenge">
+              <p>{edChal}</p>
+              <span>완료</span>
+            </Link>
           </div>
           <div>
             <p>{madeChal}</p>
