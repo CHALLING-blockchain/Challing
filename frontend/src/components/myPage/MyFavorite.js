@@ -72,18 +72,24 @@ function MyFavorite() {
               toChallengeDetail(element.challengeId);
             }}
           >
-            <img
-              className={styles.infoItemImg}
-              style={{ width: "150px", height: "120px", borderRadius: "10px" }}
-              src={element.mainPicURL}
-              alt=""
-            ></img>
-            <p>{element.name}</p>
             <div>
-              <span className={styles.infoItem}>{dayGap}일 뒤 시작</span>
+              <img
+                className={styles.infoItemImg}
+                style={{ width: "150px", height: "120px", borderRadius: "10px" }}
+                src={element.mainPicURL}
+                alt=""
+              ></img>
+              <div className={styles.infoBox}>
+                <p>{element.name}</p>
+                <div>
+                  <span className={styles.infoItem}>{dayGap}일 뒤 시작</span>
+                </div>
+                <span className={styles.infoItem}>주 {weekTimes}회</span>
+                <span className={styles.infoItem}>{period / 7}주 동안</span>
+                
+              </div>
+              
             </div>
-            <span className={styles.infoItem}>주 {weekTimes}회</span>
-            <span className={styles.infoItem}>{period / 7}주 동안</span>
           </div>
         );
       }

@@ -1,3 +1,13 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+
 .MyShotZip {
   height: 680px;
 }
