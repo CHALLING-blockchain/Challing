@@ -42,7 +42,7 @@ function Main() {
       // }
     }
 
-    if (user.interests !== undefined) {
+    if (user.interests !== undefined || user.userInfo === null) {
       //로그인한 유저의 관심사 가져와서  저장
       let topicName = pickATopic(Object.keys(user.interests).length);
       setInterest(topicName);
