@@ -12,9 +12,7 @@ class ContractAPI {
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
 
-    this.web3 = new Web3(
-      new Web3.providers.HttpProvider(process.env.REACT_APP_DEMO_URL)
-    );
+    this.web3 = new Web3(new Web3.providers.HttpProvider(ropstenUrl));
 
 
     if (address !== undefined) {
