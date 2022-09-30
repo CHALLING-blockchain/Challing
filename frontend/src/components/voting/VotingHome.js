@@ -1,7 +1,9 @@
 import React from "react";
 import styles from './VotingHome.module.css'
 import { useNavigate,useLocation } from "react-router-dom";
-import test from "../../img/test-back.jpg"
+import pass from "../../img/passBubble.png"
+import fail from "../../img/failBubble.png"
+
 
 function Header() {
   const navigate = useNavigate();
@@ -31,22 +33,42 @@ function Header() {
 }
 
 function Shots({voteList}){
+  const navigate = useNavigate();
   console.log(voteList)
-  const moveDetail = () => {
-    console.log('디테일 페이지로 이동')
+  const moveDetail = (vote) => {
+    navigate(`/voting/${vote.id}`, {
+      state: { vote
+      }
+    });
   }
   return(
     <div className={styles.shots}>
       {
         voteList.map(vote=>{
           return (
-            <img onClick={moveDetail} src={vote.photo.picURL} alt="" />
+            <img onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
           )
         })
       }
       
     </div>
   )
+}
+
+function NoVoting(){
+  return (
+    <div className={styles.noVoting}>
+      <div className={styles.bookImgs}>
+        <img className={styles.fav} src={pass} alt="" />
+        <img className={styles.com} src={fail} alt="" />
+      </div>
+
+      <div className={styles.bookText}>
+        <p>진행중인 투표가 없습니다.</p>
+        
+      </div>
+    </div>
+  );
 }
 
 function VotingHome() {

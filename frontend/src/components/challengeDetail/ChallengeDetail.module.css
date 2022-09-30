@@ -26,25 +26,28 @@
 }
 
 .paddingBox {
-  width: 100vw;
-  padding: 16px;
+  width: 338;
+  padding: 12px;
+}
+.paddingBox2{
+  padding: 4px;
 }
 
 .imgText {
   display: flex;
   align-items: center;
-  margin: auto 4px 0;
+  margin: auto 2px 0;
 }
 
 .imgText img {
   margin: 4px;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 20px;
 }
 
 .imgText span {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .Tag {
@@ -53,11 +56,12 @@
   color: #3f3f3f;
   border-radius: 3px;
   margin: 4px;
-  padding: 2px;
+  padding: 3px;
 }
 
 .subtext {
   display: flex;
+  margin: 4px 0 0;
 }
 
 .hrTag {
@@ -106,6 +110,7 @@
 
 .shots {
   display: flex;
+  margin: 4px;
 }
 
 .shot {

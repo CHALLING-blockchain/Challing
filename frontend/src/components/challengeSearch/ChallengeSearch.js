@@ -98,7 +98,7 @@ function ChallengeSearch() {
     <div>
       <div className={styles.Header}>
         <p className={styles.SearchHeader}>챌린지 검색</p>
-        <div style={{padding:'16px',paddingTop:'0px'}}>
+        <div style={{ padding: "16px", paddingTop: "0px" }}>
           <form className={styles.InputSearch}>
             <svg
               className={styles.SearchIcon}

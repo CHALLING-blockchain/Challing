@@ -4,6 +4,34 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
 import styles from "./MyShotZip.module.css";
 
+function Header() {
+  const navigate = useNavigate();
+  return (
+    <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
+      <div className={styles.header}>
+        <svg
+          style={{ margin: "auto" }}
+          onClick={() => navigate(-1)}
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-chevron-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+          />
+        </svg>
+        <p style={{ fontSize: "20px", margin: "auto" }}>나의 인증샷 모아보기</p>
+        <div></div>
+      </div>
+    </div>
+  );
+}
+
+
 function MyShotZip() {
   const user = useSelector(selectUser);
   const navigate = useNavigate();
@@ -34,24 +62,7 @@ function MyShotZip() {
 
   return (
     <div className={styles.MyShotZip}>
-      <div className={styles.BackMyPage}>
-        <Link to="/my-page">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.08 1.99341C10.7534 1.66675 10.2267 1.66675 9.90004 1.99341L4.36004 7.53341C4.10004 7.79341 4.10004 8.21341 4.36004 8.47341L9.90004 14.0134C10.2267 14.3401 10.7534 14.3401 11.08 14.0134C11.4067 13.6867 11.4067 13.1601 11.08 12.8334L6.25337 8.00008L11.0867 3.16675C11.4067 2.84675 11.4067 2.31341 11.08 1.99341Z"
-              fill="#444444"
-            />
-          </svg>
-        </Link>
-        <p>나의 인증샷 모아보기</p>
-        <p></p>
-      </div>
+      <Header></Header>
       <div className={styles.PhotoList}>{getPhotoList()}</div>
     </div>
   );

@@ -9,7 +9,6 @@ import book from "../../img/bookmark-common.png";
 import * as getDayGap from "../main/Main.js";
 import UserAPI from "../../api/UserAPI";
 
-
 function Header() {
   const navigate = useNavigate();
   return (
@@ -58,7 +57,6 @@ function MyFavorite() {
 
       let dayGap = getDayGap.getDayGapFromToday(element.startDate);
       if (dayGap > 0) {
-        let week = element.authTotalTimes / (element.authDayTimes * 7);
         let period = Number(
           getDayGap.getDayGapFromDates(element.startDate, element.endDate)
         );
@@ -74,23 +72,35 @@ function MyFavorite() {
               toChallengeDetail(element.challengeId);
             }}
           >
-            <img
-              className={styles.infoItemImg}
-              style={{ width: "150px", height: "120px", borderRadius: "10px" }}
-              src={element.mainPicURL}
-              alt=""
-            ></img>
-            <p>{element.name}</p>
             <div>
-              <span className={styles.infoItem}>{dayGap}일 뒤 시작</span>
+              <img
+                className={styles.infoItemImg}
+                style={{ width: "150px", height: "120px", borderRadius: "10px" }}
+                src={element.mainPicURL}
+                alt=""
+              ></img>
+              <div className={styles.infoBox}>
+                <p>{element.name}</p>
+                <div>
+                  <span className={styles.infoItem}>{dayGap}일 뒤 시작</span>
+                </div>
+                <span className={styles.infoItem}>주 {weekTimes}회</span>
+                <span className={styles.infoItem}>{period / 7}주 동안</span>
+                
+              </div>
+              
             </div>
-            <span className={styles.infoItem}>주 {weekTimes}회</span>
-            <span className={styles.infoItem}>{week}주 동안</span>
           </div>
         );
       }
     }
-    return favoriteChallenges;
+
+    const result = [];
+    result.push(
+      <div className={styles.outsideBox}> {favoriteChallenges} </div>
+    );
+
+    return favoriteChallenges.length === 0 ? NoBookmark() : result;
   };
 
   function toChallengeDetail(id) {
@@ -98,19 +108,19 @@ function MyFavorite() {
   }
 
   function NoBookmark() {
-    return(
+    return (
       <div className={styles.noBookmark}>
         <div className={styles.bookImgs}>
           <img className={styles.fav} src={favbook} alt="" />
           <img className={styles.com} src={book} alt="" />
         </div>
-        
+
         <div className={styles.bookText}>
           <p>현재 저장된 챌린지가 없습니다.</p>
           <span>탐색 메뉴에서 필요한 챌린지를 저장해보세요.</span>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -119,7 +129,7 @@ function MyFavorite() {
       {user.challengeIds.length === 0 ? (
         <NoBookmark></NoBookmark>
       ) : (
-        <div className={styles.outsideBox}>{favoriteChallenges()}</div>
+        <div>{favoriteChallenges()}</div>
       )}
     </div>
   );
