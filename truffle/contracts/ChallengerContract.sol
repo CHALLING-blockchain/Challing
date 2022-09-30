@@ -16,10 +16,11 @@ contract ChallengerContract is PassCoinContract{
         address userAddress;
 
         // 하루 성공횟수 구분을 위한 오늘 날짜 
-        string today;
+        uint today;
 
         // 전체 성공횟수, 하루 성공횟수
         uint totalCount;
+        uint weekCount;
         uint dailyCount;
 
         // 실제 예치금
