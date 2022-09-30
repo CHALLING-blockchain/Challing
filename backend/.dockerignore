@@ -1,2 +1,6 @@
-/.*
-/.*/
+/.git/
+/.gitignore
+/.idea/
+/.gradle/
+/bin/
+/build/
