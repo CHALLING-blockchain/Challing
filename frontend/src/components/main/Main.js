@@ -12,12 +12,14 @@ import {
 import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import MainCategory from "./MainCategory";
 
 function Main() {
   const selector = useSelector(challengeList);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   //주제 이름 저장
+  const [category,setCategory] = useState("");
   const [interest, setInterest] = useState("");
   const navigate = useNavigate();
 
@@ -139,6 +141,41 @@ function Main() {
 
     return result;
   }
+  //카테고리별 챌린지
+  function categoryChallengeRendering() {
+    const result = [];
+    for (let index = 1; index <= Object.keys(selector).length; index++) {
+      if (selector[index] !== undefined) {
+        const element = selector[index];
+        // console.log(element);
+        let dayGap = getDayGapFromToday(element.startDate);
+        let startDay = dayGap + "일 뒤";
+        // (시작 전&&관심사 일치&&일상) 챌린지만
+        if (
+          dayGap > 0 &&
+          interestIdToName(element.interestId) === category
+        ) {
+          result.push(
+            <div style={{padding:'8px 4px'}}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img className={styles.Img} src={element.mainPicURL} alt=""></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{startDay} 시작</span>
+              </div>
+            </div>
+          );
+        }
+      }
+    }
+
+    return result;
+  }
 
   return (
     <div>
@@ -146,7 +183,20 @@ function Main() {
       <div className={styles.Main}>
         <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
         <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
-        <hr className={styles.Hr}/>
+        <MainCategory setCategory={(category)=>setCategory(category)}/>
+        {category === "" ? null : <div className={styles.Hr}/>}
+        {category === "" ? null : 
+          <div style={{padding:'16px'}}>
+            <p className={styles.Category}>
+              {interest} 챌린지 목록
+            </p>
+            <div className={styles.Rendering}>
+              {categoryChallengeRendering()}
+            </div>
+            {console.log(category)}
+          </div>
+        }
+        <div className={styles.Hr}/>
         <div style={{padding:'16px'}}>
           <p className={styles.Category}>
             {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
@@ -155,7 +205,7 @@ function Main() {
             {dailyChallengeRendering()}
           </div>
         </div>
-        <hr className={styles.Hr}/>
+        <div className={styles.Hr}/>
         <div style={{padding:'16px'}}>
           <p className={styles.Category}>
             {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
