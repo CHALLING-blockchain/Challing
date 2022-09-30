@@ -51,7 +51,7 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
         donationChallenge.setDonation=msg.value;
         donationChallenge.totalDonation=msg.value;
         donationChallengeMap[challengeSequence++]=donationChallenge ;
-
+        emit returnChallengeId(donationChallenge.challengeId);
         /* 챌린지 생성자 챌린저에 추가 */
         // 챌린저 생성
         Challenger storage challenger=challengerMap[challengerSequence];
