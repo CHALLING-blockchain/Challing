@@ -13,7 +13,7 @@ class ContractAPI {
     const local = "http://localhost:7545";
 
     this.web3 = new Web3(
-      new Web3.providers.HttpProvider(local)
+      new Web3.providers.HttpProvider(process.env.REACT_APP_DEMO_URL)
     );
 
     if (address !== undefined) {
@@ -112,6 +112,15 @@ class ContractAPI {
     return this.Ccontract.methods
       .checkChallenger(challengeId, userId)
       .call({ from: this.account })
+      .catch(console.error);
+  }
+  async findByChallengerId(challengerId) {
+    await this.init();
+    return this.Ccontract.methods
+      .findByChallengerId(challengerId)
+      .call({
+        from: this.account,
+      })
       .catch(console.error);
   }
   async authenticate(challengeId, userId, today, picURL) {
