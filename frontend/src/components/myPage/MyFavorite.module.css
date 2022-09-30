@@ -1,7 +1,12 @@
-.content {
-  text-align: center;
-  margin-top: 30px;
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
 }
+
 
 .outsideBox {
   display: grid;
@@ -30,3 +35,37 @@
   margin-top: 5px;
   margin-right: 5px;
 }
+
+.noBookmark{
+  margin: 64px 16px;
+
+}
+
+.bookImgs{
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+  align-items: baseline;
+}
+
+.fav{
+  width: 120px;
+  height: 120px;
+}
+.com{
+  width: 36px;
+  height: 60px;
+}
+
+.bookText{
+  margin: 32px 0;
+  text-align: center;
+}
+.bookText p{
+  font-size: 20px;
+  margin: 8px 0;
+}
+.bookText span{
+  font-size: 14px;
+}
+
