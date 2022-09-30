@@ -8,6 +8,10 @@ import * as getDayGab from "../main/Main.js";
 import moment from 'moment';
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import ContractAPI from "../../api/ContractAPI";
+import tick from '../../img/tick.png';
+import calender from '../../img/calender.png';
+import clock from '../../img/clock-front-color.png';
+import megaphone from '../../img/megaphone.png';
 // import useWeb3 from "../../../hooks/useWeb3";
 
 function ChallengeShot(){
@@ -47,26 +51,39 @@ function ChallengeShot(){
       const percentage=(userCount/props.challengeInfo.authTotalTimes*100).toFixed(2)
 
       return(
-        <div onClick={()=>{navigate(`/challenge-certify/${props.challengeInfo.challengeId}`,{
+        <div
+          className={styles.CardBox}
+          onClick={()=>{navigate(`/challenge-certify/${props.challengeInfo.challengeId}`,{
           state: {
             challengeInfo:props.challengeInfo,
             percentage:percentage
           }
         })}}>
-          <img src={props.challengeInfo.mainPicURL} height="50" width="50" alt=""></img>
-          <p>{props.challengeInfo.name}</p>
-            <button onClick={() => {
+          <img
+           style={{borderRadius:'5px'}} 
+           src={props.challengeInfo.mainPicURL} height="120" width="160" alt=""></img>
+           <div className={styles.CardHeader}>
+            <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+            <div 
+              className={styles.GoShotBtn}
+              onClick={() => {
               navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
                 state: {
                   challengeInfo:props.challengeInfo,
                   percentage:percentage
                 }
               });
-            }}>인증하기</button>
-          
-          <p>{dayGab}일 뒤 종료</p>
-          <p></p>
-          <p>현재{percentage}%달성</p>
+              }}><img style={{width:'10px',marginRight:'2px',marginLeft:'2px'}} src={tick} alt=""/>인증하기
+            </div>
+           </div>
+          <div className={styles.CardBody}>
+            <p style={{fontSize:'10px'}}>
+              <img src={megaphone} height="12" width="12" alt=""/>현재{percentage}%달성
+            </p>
+            <p style={{fontSize:'10px'}}>
+              <img src={calender} height="12" width="12" alt=""/>{dayGab}일 뒤 종료
+            </p>
+          </div>
           {/* {console.log(props.challengeInfo)} */}
         </div>  
       )
