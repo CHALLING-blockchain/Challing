@@ -118,6 +118,15 @@ class ContractAPI {
       .call({ from: this.account })
       .catch(console.error);
   }
+  async findByChallengerId(challengerId) {
+    await this.init();
+    return this.Ccontract.methods
+      .findByChallengerId(challengerId)
+      .call({
+        from: this.account,
+      })
+      .catch(console.error);
+  }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
 
