@@ -7,7 +7,8 @@ spring.output.ansi.enabled: never
 
 logging.file.name: logs/backend.log
 
-com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
+# com.ssafy.kakao.redirect_uri: https://j7b106.p.ssafy.io/loginresult
+com.ssafy.kakao.redirect_uri: http://localhost:3000/loginresult
 
 # env from production runtime
 #
