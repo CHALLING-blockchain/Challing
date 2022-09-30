@@ -67,15 +67,17 @@ function ChallengeSearch() {
         if (dayGap > 0) {
           result.push(
             <div
+              className={styles.SearchBeforeBox}
               key={index}
               onClick={() => {
                 toChallengeDetail(element.challengeId);
               }}
             >
               <br></br>
-              <p>{element.mainPicURL}</p>
-              <p>{element.name}</p>
-              <p>{startDay} 시작</p>
+              <img className={styles.SearchBeforeImg} src={element.mainPicURL} alt=""/>
+              {/* <p>{element.mainPicURL}</p> */}
+              <p className={styles.SearchBeforeTitle}>{element.name}</p>
+              <span className={styles.SearchBeforeTag}>{startDay} 시작</span>
             </div>
           );
         }

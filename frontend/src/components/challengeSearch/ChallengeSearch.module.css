@@ -50,6 +50,27 @@
   margin-right: 8px;
 }
 .SearchContents{
+  padding: 16px;
+  position: absolute;
+  top:100px;
   height: 544px;
   overflow: scroll;
+}
+.SearchBeforeBox{
+  width: 96px;
+  height: 140px;
+}
+.SearchBeforeImg{
+  width: 96px;
+  height: 76px;
+  border-radius: 5px;
+}
+.SearchBeforeTitle{
+  font-size: 16px;
+}
+.SearchBeforeTag{
+font-size: 6px;
+background: #EBEBEB;
+border-radius: 3px;
+/* height: 15px; */
 }
