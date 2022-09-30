@@ -79,7 +79,7 @@ function AchieveRateBox(){
           let tmpInfo = myChallengeInfo[i];
           if ("userDeposit" in tmpInfo){
             if (selector[tmpInfo.challengeId].complete !== true) {
-              tmpDeposit += tmpInfo.userDeposit;
+              tmpDeposit += Number(tmpInfo.userDeposit);
             }
           }
         }
@@ -114,6 +114,8 @@ function ChallengeList(){
   const [user, setUser] = useState(useSelector(selectUser));
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
+  const tmp = [];
+  const tmpp = [];
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
@@ -123,49 +125,19 @@ function ChallengeList(){
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      console.log(user.id);
       const ids = await Contract.getMyChallenge(user.id);
-      console.log(ids);
 
       const filterIds = ids[1].filter((id) => selector[id].complete !== true);
-      // const cnts = [];
-      // const infos = [];
-      filterIds.forEach(async (id) => {
-        const challengers = await Contract.getChallengers(id);
+      for (const id of filterIds) {
+        let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          setCounts([...counts, challenger.totalCount]);
-          // cnts.push(challenger.totalCount);
-        }
-        );
-        setInfos([...infos, selector[id]]);
-      });
+          tmpp.push(challenger.totalCount)
+        });
+        tmp.push(selector[id])
+      }
+      setCounts(tmpp)
+      setInfos(tmp);
 
-  //     await Contract.getMyChallenge(user.id).then((result) => {
-  //       const join = result[1];
-  //       if (join.length !== 0) {
-  //         for (let i = 0; i < join.length; i++) {
-  //           if (selector[join[i]].complete !== true) {
-  //             setChallengeIds([...challengeIds, join[i]])
-  //           }
-  //         }
-  //       }
-  //       for (let i = 0; i < challengeIds.length; i++) {
-  //         let id = challengeIds[i];
-  //         console.log(id);
-  //         async function loadIn() {
-  //           const challengers = await Contract.getChallengers(id)
-  //           console.log(challengers);
-
-  //           for (let j = 0; j < challengers.length; j++) {
-  //               if (challengers[j].userId == user.id) {
-  //                 setCounts([...counts, challengers[j].totalCount]);
-  //               }
-  //             }
-  //             setInfos([...infos, selector[id]])
-  //         }
-  //         loadIn();
-  //       }
-  //     });
     }
     load();
   }, []);

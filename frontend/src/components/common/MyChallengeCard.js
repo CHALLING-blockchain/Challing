@@ -9,7 +9,6 @@ import paint from "../../img/paint-kit.png";
 import chart from "../../img/chart.png"
 
 function MyChallengeCard({ type, title, times, period, img, count }) {
-  console.log(type);
   let typeImg = pencil;
   if (type === "운동") {
     typeImg = gym;
