@@ -43,7 +43,15 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
   console.log("==> 일상 챌린지 종료", req.params);
 
   // 찐
-  const challengeId = Number(req.params.challengeId);
+  const challengeId = Number.parseInt(req.params.challengeId);
+  console.log("challengeId:", challengeId);
+
+  if (Number.isNaN(challengeId) || challengeId < 0) {
+    console.log("<== 일상 챌린지 종료 FAIL", "Illegal argument:", challengeId);
+
+    res.json({ result: "FAIL" });
+    return;
+  }
 
   // test용
   // const challengeId = 987654321;
@@ -80,7 +88,15 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
   console.log("==> 기부 챌린지 종료", req.params);
 
   // 찐
-  const challengeId = Number(req.params.challengeId);
+  const challengeId = Number.parseInt(req.params.challengeId);
+  console.log("challengeId:", challengeId);
+
+  if (Number.isNaN(challengeId) || challengeId < 0) {
+    console.log("<== 기부 챌린지 종료 FAIL", "Illegal argument:", challengeId);
+
+    res.json({ result: "FAIL" });
+    return;
+  }
 
   // test용
   // const challengeId = 987654321;
@@ -117,7 +133,15 @@ router.get("/endvote/:voteId", async (req, res, next) => {
   console.log("==> 투표 종료", req.params);
 
   // 찐
-  const voteId = Number(req.params.voteId);
+  const voteId = Number.parseInt(req.params.voteId);
+  console.log(`voteId: ${challengeId}`);
+
+  if (Number.isNaN(challengeId) || challengeId < 0) {
+    console.log("<== 투표 종료 FAIL", "Illegal argument:", voteId);
+
+    res.json({ result: "FAIL" });
+    return;
+  }
 
   // test용
   // const voteId = 987654321;
@@ -126,7 +150,7 @@ router.get("/endvote/:voteId", async (req, res, next) => {
   const contract = await getContract("VoteContract");
 
   try {
-    const r1 = await contract.methods.endVote(voteId).send({
+    const r1 = await contract.methods.endVote(voteId).call({
       from: appAccount.address,
       gasLimit: 3_000_000,
     });
