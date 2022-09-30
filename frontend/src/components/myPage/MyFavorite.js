@@ -9,7 +9,6 @@ import book from "../../img/bookmark-common.png";
 import * as getDayGap from "../main/Main.js";
 import UserAPI from "../../api/UserAPI";
 
-
 function Header() {
   const navigate = useNavigate();
   return (
@@ -89,7 +88,13 @@ function MyFavorite() {
         );
       }
     }
-    return favoriteChallenges;
+
+    const result = [];
+    result.push(
+      <div className={styles.outsideBox}> {favoriteChallenges} </div>
+    );
+
+    return favoriteChallenges.length === 0 ? NoBookmark() : result;
   };
 
   function toChallengeDetail(id) {
@@ -97,19 +102,19 @@ function MyFavorite() {
   }
 
   function NoBookmark() {
-    return(
+    return (
       <div className={styles.noBookmark}>
         <div className={styles.bookImgs}>
           <img className={styles.fav} src={favbook} alt="" />
           <img className={styles.com} src={book} alt="" />
         </div>
-        
+
         <div className={styles.bookText}>
           <p>현재 저장된 챌린지가 없습니다.</p>
           <span>탐색 메뉴에서 필요한 챌린지를 저장해보세요.</span>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -118,7 +123,7 @@ function MyFavorite() {
       {user.challengeIds.length === 0 ? (
         <NoBookmark></NoBookmark>
       ) : (
-        <div className={styles.outsideBox}>{favoriteChallenges()}</div>
+        <div>{favoriteChallenges()}</div>
       )}
     </div>
   );
