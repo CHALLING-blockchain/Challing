@@ -26,6 +26,7 @@ contract DailyChallengeContract is ChallengerContract{
         
         // 인증 빈도 이걸 전체 인증횟수로 쓰자
         uint authTotalTimes;
+        uint authWeekTimes;
         uint authDayTimes;
 
         // 인증가능시간
@@ -68,7 +69,6 @@ contract DailyChallengeContract is ChallengerContract{
         challenger.userId=dailyChallenge.ownerId;
         challenger.challengeId=dailyChallenge.challengeId;
         challenger.userAddress=msg.sender;
-        challenger.today=dailyChallenge.startDate;
         challenger.userDeposit=msg.value;
 
         // 챌린저 유저아이디 검색챌린저에 추가

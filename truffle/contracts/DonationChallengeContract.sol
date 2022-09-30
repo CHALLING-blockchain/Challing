@@ -26,6 +26,7 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
         string badPicURL;
         // 인증 빈도
         uint authTotalTimes;
+        uint authWeekTimes;
         uint authDayTimes;
         // 인증가능시간
         uint startTime;
@@ -59,7 +60,6 @@ contract DonationChallengeContract is DailyChallengeContract,DonationContract{
         challenger.userId=donationChallenge.ownerId;
         challenger.challengeId=donationChallenge.challengeId;
         challenger.userAddress=msg.sender;
-        challenger.today=donationChallenge.startDate;
         challenger.userDeposit=msg.value;
 
         // 챌린저 유저아이디 검색챌린저에 추가

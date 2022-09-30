@@ -35,7 +35,7 @@ contract ChallengeContract is DonationChallengeContract{
     }
 
     // 유저가 챌린지에 참가
-    function joinChallenge(uint challengeId,uint userId,string memory today) public payable{
+    function joinChallenge(uint challengeId,uint userId,uint today) public payable{
     
         // 챌린저 생성
         Challenger storage challenger=challengerMap[challengerSequence];
@@ -106,7 +106,7 @@ contract ChallengeContract is DonationChallengeContract{
     }
 
     // 사진으로 유저 챌린지 인증
-    function authenticate(uint challengeId,uint userId, uint challengerId,uint userIdIndex,uint challengeIdIndex, string memory today) public {
+    function authenticate(uint challengeId,uint userId, uint challengerId,uint userIdIndex,uint challengeIdIndex, uint today) public {
         Challenger memory findChallenger=challengerMap[challengerId];
         
         uint authDayTimes;
@@ -114,11 +114,16 @@ contract ChallengeContract is DonationChallengeContract{
         else if(isDonationChallenge(challengeId)) authDayTimes=donationChallengeMap[challengeId].authDayTimes;
         
         // 다른날짜라면 하루 인증횟수 초기화
-        if(keccak256(abi.encodePacked(findChallenger.today)) != keccak256(abi.encodePacked(today))){
+        if(findChallenger.today != today){
             findChallenger.dailyCount=0;
             findChallenger.today=today;
         }
+        if(findChallenger.today%7!=today%7){
+            findChallenger.weekCount=0;
+            findChallenger.today=today;
+        }
         findChallenger.dailyCount+=1;
+        findChallenger.weekCount+=1;
         findChallenger.totalCount+=1;
         
         // 챌린저 업데이트
