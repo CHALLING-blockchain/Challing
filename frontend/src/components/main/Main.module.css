@@ -1,3 +1,7 @@
+.Main{
+  height: 620px;
+  overflow: scroll;
+}
 .Banner1{
   width: 360px;
   height: auto;
@@ -5,4 +9,54 @@
 .Banner2{
   width: 360px;
   height: auto;
+}
+.Rendering{
+  display: flex;
+  align-items: center;
+  width: 328px;
+  height: 132px;
+  margin: 4px auto;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+.Img{
+  width: 96px;
+  height: 76px;
+  border-radius: 5px;
+}
+.Box{
+  width: 96px;
+  height: 116px;
+}
+.Tag{
+  padding: 2px;
+  font-size: 6px;
+  background: #EBEBEB;
+  border-radius: 3px;
+}
+
+.Title{
+  font-size: 16px;
+  width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Hr{
+
+width: 360px;
+height: 8px;
+
+background: rgba(229, 230, 255, 0.5);
+
+}
+.Category{
+
+font-weight: 700;
+font-size: 16px;
+line-height: 100%;
+display: flex;
+align-items: center;
+
+color: #000000;
 }
