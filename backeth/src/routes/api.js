@@ -183,10 +183,12 @@ router.post("/endvote", async (req, res, next) => {
       console.log("r2:", r2);
     }
 
-    const r3 = await challengeContract.methods.receivePasscoin(r1["1"]).send({
-      from: appAccount.address,
-      gasLimit: 3_000_000,
-    });
+    const r3 = await challengeContract.methods
+      .receivePasscoin(r1["1"], challengeId)
+      .send({
+        from: appAccount.address,
+        gasLimit: 3_000_000,
+      });
 
     console.log("r3:", r3);
 
