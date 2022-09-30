@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 16px;
+    margin: 32px 16px 16px;
 }
 
 .Logo{
@@ -21,7 +21,7 @@
 }
 
 .textBox{
-    padding: 16px;
+    padding: 8px 16px 16px;
 }
 
 .text{
@@ -35,7 +35,8 @@
 
 .loginButton{
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
+    align-items: center;
     margin: 16px;
     width: 328px;
     height: 64px;
@@ -43,5 +44,7 @@
     background-color: #FFCD00;
     border: none;
     font-size: 20px;
-    
+    padding: 18px;
+    font-weight: bold;
+    color: #471A00;
 }
