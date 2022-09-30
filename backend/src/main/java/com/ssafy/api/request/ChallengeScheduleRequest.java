@@ -3,6 +3,8 @@ package com.ssafy.api.request;
 import com.ssafy.web3.job.ChallengeType;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @Builder
@@ -10,7 +12,10 @@ import lombok.*;
 @AllArgsConstructor
 public class ChallengeScheduleRequest {
 
-    private String challengeId;
+    @NotNull
+    private Long challengeId;
+    @NotNull
     private ChallengeType challengeType;
+    @NotNull
     private Long triggerAt;
 }

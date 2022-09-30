@@ -10,9 +10,10 @@ import java.util.Date;
 
 @Data
 @Builder
+@ToString
 public class ChallengeJobData {
 
-    private String challengeId;
+    private Long challengeId;
     private ChallengeType challengeType;
     private Long triggerAt;
 
@@ -54,7 +55,7 @@ public class ChallengeJobData {
 
     public static ChallengeJobData of(JobDataMap jobData) {
         return ChallengeJobData.builder()
-                .challengeId(jobData.getString("challengeId"))
+                .challengeId(jobData.getLong("challengeId"))
                 .challengeType((ChallengeType) jobData.get("challengeType"))
                 .build();
     }
