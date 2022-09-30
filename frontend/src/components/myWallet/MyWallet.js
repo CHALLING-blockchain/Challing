@@ -12,38 +12,57 @@ import plus from "../../img/plus.png";
 import Coin from "../../img/dollarCoin.png";
 import ContractAPI from "../../api/ContractAPI";
 
-function Modal({onClose}){
-  function handleClose(){
-    onClose ?.();
-  };
+function Modal({ onClose }) {
+  function handleClose() {
+    onClose?.();
+  }
   return (
     <div className={styles.Modal} onClick={handleClose}>
-      <div className={styles.ModalBody} onClick={(e)=>e.stopPropagation()}>
+      <div className={styles.ModalBody} onClick={(e) => e.stopPropagation()}>
         <div>
-          <svg className={styles.modalCloseBtn} onClick={handleClose} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
-            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          <svg
+            className={styles.modalCloseBtn}
+            onClick={handleClose}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="24" height="24" rx="12" fill="#E5E5E5" />
+            <path
+              d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z"
+              fill="#4F4F4F"
+            />
           </svg>
         </div>
         <p className={styles.ModalTitle}>신고하기</p>
-        <div style={{position:'absolute',left:'32px',top:'88px'}}>
-          <p className={styles.ModalText}>패스코인을 쓰면 챌린지 인증 하루 실패가 인증완료로 변경됩니다.<br/>
-                                          패스코인은 사용 후 취소가 불가하며, 챌린지 결과 발표 1시간 전까지 사용 가능합니다.<br/>
-                                          다른 챌린저의 챌린지 성공여부 투표에 참여하여 결과와 같은 선택을 하였을 시 얻을 수 있습니다.</p>
+        <div style={{ position: "absolute", left: "32px", top: "88px" }}>
+          <p className={styles.ModalText}>
+            패스코인을 쓰면 챌린지 인증 하루 실패가 인증완료로 변경됩니다.
+            <br />
+            패스코인은 사용 후 취소가 불가하며, 챌린지 결과 발표 1시간 전까지
+            사용 가능합니다.
+            <br />
+            다른 챌린저의 챌린지 성공여부 투표에 참여하여 결과와 같은 선택을
+            하였을 시 얻을 수 있습니다.
+          </p>
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.NextButton} onClick={handleClose}>확인</button>
+          <button className={styles.NextButton} onClick={handleClose}>
+            확인
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function MyWallet() {
   const [openModal, setOpenModal] = useState(false);
   const showModal = () => {
     setOpenModal(true);
-}
+  };
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
@@ -124,9 +143,14 @@ function MyWallet() {
           </svg>
           <span>{passData}</span>
         </div>
-        {openModal && (<Modal 
-          open={openModal} 
-          onClose={()=>{setOpenModal(false);}}/>)}
+        {openModal && (
+          <Modal
+            open={openModal}
+            onClose={() => {
+              setOpenModal(false);
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -179,6 +203,7 @@ function MyWallet() {
               ),
               sendOrReceive: "",
               timeStamp: timeConverter(data[index].timeStamp),
+              filter: data[index].methodId,
             };
 
             //undefined 예외처리
@@ -239,6 +264,16 @@ function MyWallet() {
     return time;
   }
 
+  function filter(methodId) {
+    if (methodId === "0x9d4e1c1c") {
+      return "챌린지 인증";
+    } else if (methodId === "0x6a5e4c9e") {
+      return "챌린지 생성";
+    } else {
+      console.log(methodId);
+      return "챌린지" + methodId;
+    }
+  }
   // 거래내역 for문
   function txRendering() {
     const result = [];
@@ -262,13 +297,13 @@ function MyWallet() {
         txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
         txData[index].from.toLowerCase() === Vaddress.toLowerCase()
       ) {
-        txType = "챌링";
+        // console.log("txData[index].filter", txData[index].filter);
         result.push(
           <div key={index} className={styles.historyContent}>
             <p> {date} </p>
             <div className={styles.content}>
               <div className={styles.titleContent}>
-                <p>{txType}</p>
+                <p>{filter(txData[index].filter)}</p>
               </div>
               <div></div>
               <div className={styles.ethcontent}>
