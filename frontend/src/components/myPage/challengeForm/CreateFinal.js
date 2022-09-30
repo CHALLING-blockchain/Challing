@@ -151,6 +151,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     badPicURL: selects.badShotUrl,
     authTotalTimes:
       selects.nTimesAWeek * selects.authentications * selects.period,
+    authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -176,6 +177,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     badPicURL: selects.badShotUrl,
     authTotalTimes:
       selects.nTimesAWeek * selects.authentications * selects.period,
+    authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
