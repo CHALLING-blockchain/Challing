@@ -43,11 +43,11 @@ router.get("/enddailychallenge/:challengeId", async (req, res, next) => {
   console.log("==> 일상 챌린지 종료", req.params);
 
   // 찐
-  // const challengeId = req.params.challengeId;
+  const challengeId = Number(req.params.challengeId);
 
   // test용
-  const challengeId = 987654321;
-  console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
+  // const challengeId = 987654321;
+  // console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
@@ -80,11 +80,11 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
   console.log("==> 기부 챌린지 종료", req.params);
 
   // 찐
-  // const challengeId = req.params.challengeId;
+  const challengeId = Number(req.params.challengeId);
 
   // test용
-  const challengeId = 987654321;
-  console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
+  // const challengeId = 987654321;
+  // console.log("[WARNING] challengeId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("ChallengeContract");
 
@@ -117,11 +117,11 @@ router.get("/endvote/:voteId", async (req, res, next) => {
   console.log("==> 투표 종료", req.params);
 
   // 찐
-  // const voteId = req.params.voteId;
+  const voteId = Number(req.params.voteId);
 
   // test용
-  const voteId = 987654321;
-  console.log("[WARNING] voteId 987654321 로 하드코딩 돼 있음");
+  // const voteId = 987654321;
+  // console.log("[WARNING] voteId 987654321 로 하드코딩 돼 있음");
 
   const contract = await getContract("VoteContract");
 
