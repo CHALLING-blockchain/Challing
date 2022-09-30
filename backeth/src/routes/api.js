@@ -160,9 +160,9 @@ router.post("/endvote", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("r1", r1);
-
     // r1 =  { '0': false, '1': [ '50', '1', '50' ] };
+
+    console.log("r1:", r1);
 
     if (!r1["0"]) {
       const r2 = await challengeContract.methods
@@ -177,6 +177,8 @@ router.post("/endvote", async (req, res, next) => {
           from: appAccount.address,
           gasLimit: 3_000_000,
         });
+
+      // r2 = { '0': false, '1': [ '50', '1', '50' ] };
 
       console.log("r2:", r2);
     }
