@@ -109,6 +109,7 @@
 .SearchBeforeTitle{
   font-size: 16px;
   width: 96px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
