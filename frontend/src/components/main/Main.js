@@ -77,17 +77,19 @@ function Main() {
           "donationId" in element === false
         ) {
           result.push(
-            <span
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
-              <p>{element.name}</p>
-              <p>{startDay} 시작</p>
-            </span>
+            <div style={{padding:'8px 4px'}}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img className={styles.Img} src={element.mainPicURL} alt=""></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{startDay} 시작</span>
+              </div>
+            </div>
           );
         }
       }
@@ -117,17 +119,19 @@ function Main() {
           "donationId" in element === true
         ) {
           result.push(
-            <span
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
-              <p>{element.name}</p>
-              <p>{dayGap}일 뒤 시작</p>
-            </span>
+            <div style={{padding:'8px 4px'}}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img className={styles.Img} src={element.mainPicURL} alt=""></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{dayGap}일 뒤 시작</span>
+              </div>
+            </div>
           );
         }
       }
@@ -137,19 +141,30 @@ function Main() {
   }
 
   return (
-    <div className="Main">
+    <div>
       <Nav />
-      <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
-      <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
-      <p>
-        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
-      </p>
-      {dailyChallengeRendering()}
-      <p>
-        <br></br>
-        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
-      </p>
-      {donateChallengeRendering()}
+      <div className={styles.Main}>
+        <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
+        <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
+        <hr className={styles.Hr}/>
+        <div style={{padding:'16px'}}>
+          <p className={styles.Category}>
+            {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
+          </p>
+          <div className={styles.Rendering}>
+            {dailyChallengeRendering()}
+          </div>
+        </div>
+        <hr className={styles.Hr}/>
+        <div style={{padding:'16px'}}>
+          <p className={styles.Category}>
+            {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
+          </p>
+          <div className={styles.Rendering}>
+            {donateChallengeRendering()}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
