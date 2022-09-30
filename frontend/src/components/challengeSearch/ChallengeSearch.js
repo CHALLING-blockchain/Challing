@@ -129,9 +129,9 @@ function ChallengeSearch() {
         {challengeSearchRendering()}
       </div> :
       <div className={styles.SearchBefore}>
-      {/* <ChallengeSearch/> */}
-      {challengeSearchRendering()}
-    </div>}
+        {/* <ChallengeSearch/> */}
+        {challengeSearchRendering()}
+      </div>}
       
     </div>
   );
