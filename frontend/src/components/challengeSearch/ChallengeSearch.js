@@ -43,16 +43,18 @@ function ChallengeSearch() {
           if (dayGap > 0) {
             result.push(
               <div
+                className={styles.SearchAfterBox}
                 key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
                 }}
               >
-                <br></br>
-                <p>{element.mainPicURL}</p>
-                <p>{element.name}</p>
-                <p>{startDay} 시작</p>
-                <p>{period}주 동안</p>
+                <img className={styles.SearchAfterImg} src={element.mainPicURL} alt=""/>
+                <div style={{paddingLeft:'8px'}}>
+                  <p className={styles.SearchAfterTitle}>{element.name}</p>
+                  <span className={styles.SearchAfterTag}>{startDay} 시작</span><br/>
+                  <span className={styles.SearchAfterTag}>{period}주 동안</span>
+                </div>
               </div>
             );
           }
@@ -66,16 +68,18 @@ function ChallengeSearch() {
         // 시작 전 챌린지만
         if (dayGap > 0) {
           result.push(
-            <div
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <p>{element.mainPicURL}</p>
-              <p>{element.name}</p>
-              <p>{startDay} 시작</p>
+            <div style={{padding:'8px 4px'}}>
+              <div
+                className={styles.SearchBeforeBox}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img className={styles.SearchBeforeImg} src={element.mainPicURL} alt=""/>
+                <p className={styles.SearchBeforeTitle}>{element.name}</p>
+                <span className={styles.SearchBeforeTag}>{startDay} 시작</span>
+              </div>
             </div>
           );
         }
@@ -94,7 +98,7 @@ function ChallengeSearch() {
     <div>
       <div className={styles.Header}>
         <p className={styles.SearchHeader}>챌린지 검색</p>
-        <div style={{padding:'16px',paddingTop:'0px'}}>
+        <div style={{ padding: "16px", paddingTop: "0px" }}>
           <form className={styles.InputSearch}>
             <svg
               className={styles.SearchIcon}
@@ -119,10 +123,16 @@ function ChallengeSearch() {
           </form>
         </div>
       </div>
+      {search !== "" ?
       <div className={styles.SearchContents}>
         {/* <ChallengeSearch/> */}
         {challengeSearchRendering()}
-      </div>
+      </div> :
+      <div className={styles.SearchBefore}>
+        {/* <ChallengeSearch/> */}
+        {challengeSearchRendering()}
+      </div>}
+      
     </div>
   );
 }

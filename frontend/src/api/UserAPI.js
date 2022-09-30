@@ -45,20 +45,12 @@ class UserAPI {
     return axios.delete(`${base.baseUrl}/user/favorite`, { data: body });
   }
 
-  addPhoto(userId, photoUrl) {
-    const body = {
-      userId: userId,
-      photoUrl: photoUrl,
-    };
+  addPhoto(body) {
     return axios.post(`${base.baseUrl}/user/photo`, body);
   }
 
-  deletePhoto(userId, photoUrl) {
-    const body = {
-      userId: userId,
-      photoUrl: photoUrl,
-    };
-    return axios.delete(`${base.baseUrl}/user/photo`, body);
+  deletePhoto(body) {
+    return axios.delete(`${base.baseUrl}/user/photo`, { daya: body });
   }
 }
 
