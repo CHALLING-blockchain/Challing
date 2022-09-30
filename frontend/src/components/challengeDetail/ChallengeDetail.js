@@ -135,19 +135,22 @@ function TopBox(props) {
     <div>
       {/* 유저닉네임, 타이틀, 해시태그 */}
       <div className={styles.paddingBox}>
-        <div className={styles.imgText}>
-          <img src={user.picURL} alt="" />
-          <span>{user.nickname}</span>
-        </div>
-        <span style={{ fontSize: "16px", fontWeight: "bold", margin: "4px" }}>
-          {props.challenge.name}
-        </span>
-        <div className={styles.Tags}>
-          <span className={styles.Tag}>{period / 7}주 동안</span>
-          <span className={styles.Tag}>주 {weekTimes}회</span>
-          <span className={styles.Tag}>
-            하루 {props.challenge.authDayTimes}번
+        <div className={styles.paddingBox2}>
+          <div className={styles.imgText}>
+            <img src={user.picURL} alt="" />
+            <span>{user.nickname}</span>
+          </div>
+          <span style={{ fontSize: "18px", fontWeight: "bold", margin: "4px" }}>
+            {props.challenge.name}
           </span>
+          <div className={styles.Tags}>
+            <span className={styles.Tag}>{period / 7}주 동안</span>
+            <span className={styles.Tag}>주 {weekTimes}회</span>
+            <span className={styles.Tag}>
+              하루 {props.challenge.authDayTimes}번
+            </span>
+          </div>
+
         </div>
         {/* 참가인원수, 예치금 */}
         <div className={styles.subtext}>
@@ -247,25 +250,41 @@ function Description(props) {
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
-        <img src={bulb} alt="" />
+        <img style={{width:"14px"}} src={bulb} alt="" />
         <span style={{ fontSize: "16px" }}>챌린지 설명</span>
       </div>
       <div className={styles.description}>
-        <div style={{ margin: "8px 0" }}>
-          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+        <div style={{ margin: "8px 4px" }}>
+          <p
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              margin: "0 0 4px 0",
+            }}
+          >
             챌린지 진행 시 꼭 알아주세요!
           </p>
-          <p>
-            ☝ {period / 7}주 동안, 하루에 {props.challenge.authDayTimes}번
-            인증샷을 촬영하셔야 합니다.
-          </p>
-          <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
+          <div style={{ margin: "0 4px" }}>
+            <p>
+              ☝ {period / 7}주 동안, 하루에 {props.challenge.authDayTimes}번
+              인증샷을 촬영하셔야 합니다.
+            </p>
+            <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
+          </div>
         </div>
-        <div style={{ margin: "8px 0" }}>
-          <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+        <div style={{ margin: "8px 4px" }}>
+          <p
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              margin: "0 0 4px 0",
+            }}
+          >
             인증 방법 및 주의사항
           </p>
-          {addDescription(props.challenge.desc)}
+          <p style={{ margin: "8px 4px" }}>
+            {addDescription(props.challenge.desc)}
+          </p>
         </div>
       </div>
     </div>
@@ -277,7 +296,7 @@ function ShotDescription(props) {
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
         <img src={camera} alt="" />
-        <span style={{ fontSize: "16px" }}>인증샷 이렇게 찍어주세요!</span>
+        <span style={{ fontSize: "16px"}}>인증샷 이렇게 찍어주세요!</span>
       </div>
       <div className={styles.shots}>
         <div className={styles.shot}>
@@ -340,15 +359,6 @@ function ChallengeDetail() {
         />
 
         <TopBox challenge={challenge} challengers={challengers}></TopBox>
-        <hr className={styles.hrTag} />
-        <PeriodBox challenge={challenge}></PeriodBox>
-        <hr className={styles.hrTag} />
-        <RefundPolicy></RefundPolicy>
-        <hr className={styles.hrTag} />
-        <Description challenge={challenge}></Description>
-        <hr className={styles.hrTag} />
-        <ShotDescription challenge={challenge}></ShotDescription>
-
         <div>
           {!joinFlag ? (
             <Next
@@ -369,6 +379,15 @@ function ChallengeDetail() {
             ></Next>
           )}
         </div>
+        <hr className={styles.hrTag} />
+        <PeriodBox challenge={challenge}></PeriodBox>
+        <hr className={styles.hrTag} />
+        <RefundPolicy></RefundPolicy>
+        <hr className={styles.hrTag} />
+        <Description challenge={challenge}></Description>
+        <hr className={styles.hrTag} />
+        <ShotDescription challenge={challenge}></ShotDescription>
+
       </div>
     </div>
   );

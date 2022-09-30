@@ -10,30 +10,34 @@
 
 .outsideBox {
   display: grid;
-  margin-left: 25px;
   grid-template-columns: 160px 160px;
   grid-template-rows: 200px;
   justify-content: flex-start;
   flex-wrap: wrap;
   height: 600px;
   overflow-y: scroll;
+  margin: 16px;
 }
 
 .challengeBox {
-  width: 160px;
   height: 200px;
-  display: inline-block;
-  /* margin-left: 16px; */
+  display: flex;
+  justify-content: center;
+
+}
+
+.infoBox{
+  padding: 4px;
 }
 
 .infoItem {
-  padding: 2px;
+  padding: 3px;
   border-radius: 5px;
   background: #e5e6ff;
   color: black;
   font-size: 11px;
-  margin-top: 5px;
-  margin-right: 5px;
+  margin-top: 8px;
+  margin-right: 8px;
 }
 
 .noBookmark{
