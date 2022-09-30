@@ -108,46 +108,39 @@ function AchieveRateBox() {
 
 function ChallengeList() {
   const Contract = new ContractAPI();
+  const [infos, setInfos] = useState([]);
+  const [counts, setCounts] = useState([]);
   const [user, setUser] = useState(useSelector(selectUser));
-  const [userid, setUserid] = useState("");
-  const infos = [];
-  const counts = [];
-  const challengeIds = [];
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
+  const tmp = [];
+  const tmpp = [];
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
-      setUserid(response.data.body.id);
     });
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getMyChallenge(userid).then((result) => {
-        const join = result[1];
-        if (join.length !== 0) {
-          for (let i = 0; i < join.length; i++) {
-            if (join[i].complete === true) {
-              challengeIds.push(join[i]);
-            }
-          }
-        }
-        for (let i = 0; i < challengeIds.length; i++) {
-          let id = challengeIds[i];
-          let challengers = Contract.getChallengers(id);
-          for (let j = 0; j < challengers.length; j++) {
-            if (challengers[j].id === userid) {
-              counts.push(challengers[j].totalCount);
-            }
-          }
-          infos.push(selector[id]);
-        }
-      });
+      console.log(user.id);
+      const ids = await Contract.getMyChallenge(user.id);
+      console.log(ids);
+
+      const filterIds = ids[1].filter((id) => selector[id].complete === true);
+      for (const id of filterIds) {
+        let challengers = await Contract.getChallengers(id);
+        challengers.forEach((challenger) => {
+          tmpp.push(challenger.totalCount);
+        });
+        tmp.push(selector[id]);
+      }
+      setCounts(tmpp);
+      setInfos(tmp);
     }
     load();
-  }, [user.id]);
+  }, []);
 
   return (
     <div className={styles.listBox}>
