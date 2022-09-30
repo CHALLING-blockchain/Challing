@@ -6,6 +6,7 @@ pipeline {
     FRONTEND_DEFAULT = credentials('frontend_default')
     FRONTEND_PRODUCTION = credentials('frontend_production')
     BACKEND_PRODUCTION = credentials('backend_production')
+    BACKEND_PRODUCTION_DEMO = credentials('backend_production_demo')
     BACKETH_PRODUCTION = credentials('backeth_production')
 
     // 도커 이미지, 컨테이너 이름
@@ -51,7 +52,7 @@ pipeline {
                   cp $FRONTEND_PRODUCTION frontend/.env.production.local & \
                   cp -R ../contracts frontend/src & \
                   cp $BACKETH_PRODUCTION backeth/.env.production & \
-                  cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml & \
+                  cat $BACKEND_PRODUCTION_DEMO >> backend/src/main/resources/application-production.yml & \
                 '
               }
             }
