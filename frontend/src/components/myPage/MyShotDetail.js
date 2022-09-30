@@ -2,14 +2,14 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
-import "./MyShotDetail.css";
+import styles from "./MyShotDetail.module.css";
 function MyShotDetail() {
   const { id } = useParams();
   const photoList = useSelector(selectUser).photos;
 
   return (
-    <div className="MyShotDetail">
-      <div className="HeaderMyShotDetail">
+    <div className={styles.MyShotDetail}>
+      <div className={styles.HeaderMyShotDetail}>
         <Link to="/my-shot-zip">
           <svg
             width="30"

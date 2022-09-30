@@ -1,6 +1,6 @@
 import { React, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./EditProfile.css";
+import styles from "./EditProfile.module.css";
 import UserAPI from "../../api/UserAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
@@ -61,8 +61,8 @@ function EditProfile() {
           key={index}
           className={
             interests.includes(totalInterests[index])
-              ? "selectItem"
-              : "disSelectItem"
+              ? styles.selectItem
+              : styles.disSelectItem
           }
           onClick={() => {
             addInterest(index);
@@ -112,8 +112,8 @@ function EditProfile() {
   };
 
   return (
-    <div className="EditProfile">
-      <div className="BackProfile">
+    <div className={styles.EditProfile}>
+      <div className={styles.BackProfile}>
         <Link to="/my-profile">
           <svg
             width="16"
@@ -129,11 +129,11 @@ function EditProfile() {
           </svg>
         </Link>
         <p>내 정보</p>
-        <p className="EditSave" onClick={editInfo}>
+        <p className={styles.EditSave} onClick={editInfo}>
           완료
         </p>
       </div>
-      <div className="Profile">
+      <div className={styles.Profile}>
         <img
           onClick={handleClick}
           style={{ width: "80px", height: "80px", borderRadius: "100px" }}
@@ -149,24 +149,24 @@ function EditProfile() {
           ref={photoInput}
         />
       </div>
-      <div className="inputBox">
+      <div className={styles.inputBox}>
         <p>닉네임</p>
         <input
           value={nickname}
           onChange={onChangeNickname}
-          className="NickName"
+          className={styles.NickName}
           maxLength={10}
         />
       </div>
-      <div className="checkMsg">
+      <div className={styles.checkMsg}>
         <p></p>
         <span>{checkMsg}</span>
       </div>
-      <div className="inputBox">
+      <div className={styles.inputBox}>
         <p>소개</p>
         {user.description == null ? (
           <input
-            className="EditDesc"
+            className={styles.EditDesc}
             placeholder="자신을 소개해보세요"
             value={description}
             onChange={onChangeDesc}
@@ -174,14 +174,14 @@ function EditProfile() {
           />
         ) : (
           <input
-            className="EditDesc"
+            className={styles.EditDesc}
             value={description}
             onChange={onChangeDesc}
             maxLength={18}
           />
         )}
       </div>
-      <div className="inputBox">
+      <div className={styles.inputBox}>
         <p>관심사</p>
         <span>{getInterest()}</span>
       </div>

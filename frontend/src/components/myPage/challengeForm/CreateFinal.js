@@ -134,7 +134,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   console.log("userId: ", useSelector(selectUser).id);
   const topic2id = {
     운동: 0,
-    생황: 1,
+    생활: 1,
     취미: 2,
     식생활: 3,
     학습: 4,
@@ -199,7 +199,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               await Contract.createDailyChallenge(daliyChallenge).then(
                 console.log
               );
-              navigate(`/create-loading/${challengeId}`);
+              navigate(`/create-loading/${challengeId}`, {
+                state: { state: false },
+              });
             }}
           >
             챌린지 발행하기
@@ -219,7 +221,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               await Contract.createDonationChallenge(donationChallenge).then(
                 console.log
               );
-              navigate(`/create-loading/${challengeId}`);
+              navigate(`/create-loading/${challengeId}`, {
+                state: { state: false },
+              });
             }}
           >
             챌린지 발행하기

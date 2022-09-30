@@ -2,14 +2,10 @@
   height: 56px;
   align-items: center;
   display: flex;
+  padding-left: 16px;
 }
 
 .LogoImg{
-  width: 24px;
-  height: 24px;
-}
-
-.Alarm{
-  width: 24px;
+  /* width: 24px; */
   height: 24px;
 }

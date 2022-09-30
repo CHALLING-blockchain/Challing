@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState,useEffect } from 'react';
+import { useState,useEffect ,useLayoutEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ChallengeShot.module.css';
 import { useSelector, useDispatch } from "react-redux";
@@ -19,16 +19,15 @@ function ChallengeShot(){
     const dispatch = useDispatch();
     const Contract = new ContractAPI();
     const navigate = useNavigate();
-
+ 
     useEffect(() => {
       async function load() {
-
+        
         let allChallengeList = {};
         await Contract.getAllChallenge().then((result)=>{
           allChallengeList = result;
         });
         dispatch(setChallengeList(allChallengeList));
-        console.log(user.id)
         const challengers= await Contract.getChallengersByUserId(user.id)
 
         setChallegers(challengers);
@@ -83,15 +82,21 @@ function ChallengeShot(){
       )
     }
     function YesChallenge(){
-      return(
-        <div className={styles.Contents}>
-          {
-            Object.values(allChallenge).map((challenge,index)=>{
-            return <ChallengeCard key={index} challengeInfo={challenge}></ChallengeCard>
-            })
-          }
-        </div>
-      )
+      if(challengers){
+        return(
+          <div className={styles.Contents}>
+            {
+              Object.values(allChallenge)
+              .filter(challenge=>{
+                return challengers.filter(el=>el.challengeId==challenge.challengeId)[0]
+              })
+              .map((challenge,index)=>{
+                return <ChallengeCard key={index} challengeInfo={challenge}></ChallengeCard>
+              })
+            }
+          </div>
+        )
+      }
     }
 
     return (
