@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import moment from "moment";
 import useWeb3 from "../../hooks/useWeb3";
+import * as getDayGab from "../main/Main.js";
 
 const FACING_MODE_USER = "user";
 const FACING_MODE_ENVIRONMENT = "environment";
@@ -125,7 +126,14 @@ function WebcamCapture() {
   }, [webcamRef, setImgSrc]);
 
   const challengeId = useLocation().state.challengeId;
-  const today = moment(new Date()).format("YYYY-MM-DD");
+  const today = Math.abs(
+    getDayGab.getDayGapFromDates(
+      challenge.startDate,
+      moment(new Date()).format("YYYY-MM-DD")
+    )
+  );
+  console.log("start", challenge.startDate);
+  console.log("today", Math.abs(today));
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
   useEffect(() => {
