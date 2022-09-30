@@ -139,7 +139,7 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
  * Response
  *   { result: string }
  */
-router.post("/endvote/:voteId", async (req, res, next) => {
+router.post("/endvote", async (req, res, next) => {
   console.log("==> 투표 종료", req.body);
 
   const {
@@ -151,10 +151,11 @@ router.post("/endvote/:voteId", async (req, res, next) => {
     challengeIdIndex,
   } = req.body;
 
-  const contract = await getContract("VoteContract");
+  const voteContract = await getContract("VoteContract");
+  const challengeContract = await getContract("ChallengeContract");
 
   try {
-    const r1 = await contract.methods.endVote(voteId).call({
+    const r1 = await voteContract.methods.endVote(voteId).call({
       from: appAccount.address,
       gasLimit: 3_000_000,
     });
@@ -164,7 +165,7 @@ router.post("/endvote/:voteId", async (req, res, next) => {
     // r1 =  { '0': false, '1': [ '50', '1', '50' ] };
 
     if (!r1["0"]) {
-      const r2 = await contract.methods
+      const r2 = await challengeContract.methods
         .applyVoteResult(
           challengeId,
           userId,
@@ -180,7 +181,7 @@ router.post("/endvote/:voteId", async (req, res, next) => {
       console.log("r2:", r2);
     }
 
-    const r3 = await contract.methods.receivePasscoin(r1["1"]).send({
+    const r3 = await challengeContract.methods.receivePasscoin(r1["1"]).send({
       from: appAccount.address,
       gasLimit: 3_000_000,
     });
