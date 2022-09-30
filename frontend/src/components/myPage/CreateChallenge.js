@@ -15,8 +15,7 @@ import { donationList } from "../../app/redux/DonationListSlice";
 import { useSelector } from "react-redux";
 
 function CreateChallenge() {
-  // const donations = useSelector(donationList).map(donation=>donation.name)
-  const donations = ["국경없는 의사회","세이브더 칠드런","초록우산","월드비전","유니세프"]
+  const donations = useSelector(donationList).map(donation=>donation.name)
 
   const [selects,setSelects] = useState({
     challengeId:"0",
