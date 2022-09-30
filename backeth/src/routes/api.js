@@ -125,27 +125,31 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
  *
  * Request
  *   /api/endvate/:voteId
+ *   body {
+ *     voteId: long,
+ *     challengeId: long,
+ *     userId: long,
+ *     challengerId: long,
+ *     userIdIndex: long,
+ *     challengeIdIndex: long
+ *   }
+ *
+ * vuint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex
  *
  * Response
  *   { result: string }
  */
-router.get("/endvote/:voteId", async (req, res, next) => {
-  console.log("==> 투표 종료", req.params);
+router.post("/endvote/:voteId", async (req, res, next) => {
+  console.log("==> 투표 종료", req.body);
 
-  // 찐
-  const voteId = Number.parseInt(req.params.voteId);
-  console.log("voteId:", voteId);
-
-  if (Number.isNaN(voteId) || voteId < 0) {
-    console.log("<== 투표 종료 FAIL", "Illegal argument:", voteId);
-
-    res.json({ result: "FAIL" });
-    return;
-  }
-
-  // test용
-  // const voteId = 987654321;
-  // console.log("[WARNING] voteId 987654321 로 하드코딩 돼 있음");
+  const {
+    voteId,
+    challengeId,
+    userId,
+    challengerId,
+    userIdIndex,
+    challengeIdIndex,
+  } = req.body;
 
   const contract = await getContract("VoteContract");
 
@@ -155,7 +159,35 @@ router.get("/endvote/:voteId", async (req, res, next) => {
       gasLimit: 3_000_000,
     });
 
-    console.log("<== 투표 종료 SUCCESS", r1);
+    console.log("r1", r1);
+
+    // r1 =  { '0': false, '1': [ '50', '1', '50' ] };
+
+    if (!r1["0"]) {
+      const r2 = await contract.methods
+        .applyVoteResult(
+          challengeId,
+          userId,
+          challengerId,
+          userIdIndex,
+          challengeIdIndex
+        )
+        .send({
+          from: appAccount.address,
+          gasLimit: 3_000_000,
+        });
+
+      console.log("r2:", r2);
+    }
+
+    const r3 = await contract.methods.receivePasscoin(r1["1"]).send({
+      from: appAccount.address,
+      gasLimit: 3_000_000,
+    });
+
+    console.log("r3:", r3);
+
+    console.log("<== 투표 종료 SUCCESS");
 
     res.json({ result: "SUCCESS" });
   } catch (e) {
