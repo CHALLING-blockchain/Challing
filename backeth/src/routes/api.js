@@ -134,9 +134,9 @@ router.get("/endvote/:voteId", async (req, res, next) => {
 
   // 찐
   const voteId = Number.parseInt(req.params.voteId);
-  console.log(`voteId: ${challengeId}`);
+  console.log("voteId:", voteId);
 
-  if (Number.isNaN(challengeId) || challengeId < 0) {
+  if (Number.isNaN(voteId) || voteId < 0) {
     console.log("<== 투표 종료 FAIL", "Illegal argument:", voteId);
 
     res.json({ result: "FAIL" });
