@@ -31,6 +31,8 @@ import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
 import CompletedDetail from "./components/myChallenge/CompletedDetail";
 import CreateLoading from "./components/myPage/CreateLoading";
 import JoinLoading from "./components/challengeRegister/JoinLoading";
+import CertifyLoading from "./components/challengeCertify/CertifyLoading";
+
 function App() {
   return (
     <div className="App">
@@ -62,6 +64,7 @@ function App() {
         <Route path="/join-loading/:id" element={<JoinLoading />} />
         <Route path="/success-register/:id" element={<SuccessRegister />} />
         <Route path="/web-cam-capture" element={<WebcamCapture />} />
+        <Route path="/certify-loading/:id" element={<CertifyLoading />} />
         <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
         <Route path="/completed-detail/:id" element={<CompletedDetail />} />
