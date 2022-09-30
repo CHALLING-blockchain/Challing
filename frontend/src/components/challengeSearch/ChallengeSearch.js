@@ -49,7 +49,12 @@ function ChallengeSearch() {
                 }}
               >
                 <br></br>
-                <p>{element.mainPicURL}</p>
+                <img
+                  src={element.mainPicURL}
+                  height="50"
+                  width="50"
+                  alt=""
+                ></img>
                 <p>{element.name}</p>
                 <p>{startDay} 시작</p>
                 <p>{period}주 동안</p>
@@ -73,7 +78,7 @@ function ChallengeSearch() {
               }}
             >
               <br></br>
-              <p>{element.mainPicURL}</p>
+              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
               <p>{element.name}</p>
               <p>{startDay} 시작</p>
             </div>
@@ -94,7 +99,7 @@ function ChallengeSearch() {
     <div>
       <div className={styles.Header}>
         <p className={styles.SearchHeader}>챌린지 검색</p>
-        <div style={{padding:'16px',paddingTop:'0px'}}>
+        <div style={{ padding: "16px", paddingTop: "0px" }}>
           <form className={styles.InputSearch}>
             <svg
               className={styles.SearchIcon}
