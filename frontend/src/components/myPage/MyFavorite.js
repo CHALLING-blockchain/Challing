@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./MyFavorite.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo, selectUser } from "../../app/redux/userSlice";
@@ -75,7 +75,11 @@ function MyFavorite() {
             <div>
               <img
                 className={styles.infoItemImg}
-                style={{ width: "150px", height: "120px", borderRadius: "10px" }}
+                style={{
+                  width: "150px",
+                  height: "120px",
+                  borderRadius: "10px",
+                }}
                 src={element.mainPicURL}
                 alt=""
               ></img>
@@ -86,9 +90,7 @@ function MyFavorite() {
                 </div>
                 <span className={styles.infoItem}>주 {weekTimes}회</span>
                 <span className={styles.infoItem}>{period / 7}주 동안</span>
-                
               </div>
-              
             </div>
           </div>
         );
