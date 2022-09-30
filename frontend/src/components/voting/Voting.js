@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import styles from "./Voting.module.css"
-import test from "../../img/test-back.jpg"
 import { useState } from "react";
 import styled, { keyframes } from 'styled-components';
-
-
+import ContractAPI from "../../api/ContractAPI";
+import useWeb3 from "../../hooks/useWeb3";
+import { selectUser } from "../../app/redux/userSlice";
+import { useSelector } from "react-redux";
 function Header() {
   const navigate = useNavigate();
   return (
@@ -47,55 +48,83 @@ function Description(){
 }
 
 function VoteImg(){
+    const vote=useLocation().state.vote;
+    console.log(vote)
     // url에서 id, prop으로 이미지 받아와서 이미지 넣어야 됨
     return(
         <div className={styles.voteImg}>
-            <img src={test} alt="" />
+            <img src={vote.photo.picURL} alt="" />
         </div>
     )
 }
 
 function Vote(){
+    const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+    // loading status
+    const [isLoading, setIsLoading] = useState(false);
+    // error messages
+    const [errorMessage, setErrorMessage] = useState("");
+
+    // get active account and balance data from useWeb3 hook
+    const {
+      connect,
+      disconnect,
+      provider,
+      account: activeAccount,
+    } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+
+    const vote=useLocation().state.vote;
     const [voteState, setVoteState] = useState(false);
-    const [pass, setPass] = useState(23);
-    const [fail, setFail] = useState(10);
-    const voted = (myVote) => {
+    const [pass, setPass] = useState(Number(vote.pass));
+    const [fail, setFail] = useState(Number(vote.fail));
+    let userId = useSelector(selectUser).id;
+    console.log(pass,fail)
+    if (activeAccount !== undefined && activeAccount !== "") {
+      const Contract=new ContractAPI(activeAccount)
+      const voted = (myVote) => {
         // 투표한걸로 상태 바꾸고 투표 퍼센테이지 다시 계산 로직
         setVoteState(true);
-        if (myVote === 1){
+        if (myVote ){
             // 찬성 +1
+            setPass(pass+1)
             console.log('pass');
         } else {
             // 반대 +1
+            setFail(fail+1)
             console.log('fail');
         }
+        Contract.voting(vote.challengeId, userId, vote.id, myVote)
+      }
+      // 투표 안 한 상태
+      if (voteState === false) {
+          return(
+              <div className={styles.prevoteBox}>
+                  <button className={styles.pass} onClick={()=>{voted(true)}}>👍 PASS</button>
+                  <button className={styles.fail} onClick={()=>{voted(false);}}>👎 FAIL</button>
+              </div>
+          )
+      } else { // 투표 했으면
+          return (
+            <div className={styles.votedBox}>
+              <div className={styles.passBox}>
+                <span>👍 PASS</span>
+                <Container>
+                  <Progress width={(pass * 100) / (pass + fail) + "%"} />
+                </Container>
+              </div>
+              <div className={styles.failBox}>
+                <span>👎 FAIL</span>
+                <Container>
+                  <Progress width={(fail * 100) / (pass + fail) + "%"} />
+                </Container>
+              </div>
+            </div>
+          );
+      }
     }
-    // 투표 안 한 상태
-    if (voteState === false) {
-        return(
-            <div className={styles.prevoteBox}>
-                <button className={styles.pass} onClick={()=>{voted(1)}}>👍 PASS</button>
-                <button className={styles.fail} onClick={()=>{voted(2);}}>👎 FAIL</button>
-            </div>
-        )
-    } else { // 투표 했으면
-        return (
-          <div className={styles.votedBox}>
-            <div className={styles.passBox}>
-              <span>👍 PASS</span>
-              <Container>
-                <Progress width={(pass * 100) / (pass + fail) + "%"} />
-              </Container>
-            </div>
-            <div className={styles.failBox}>
-              <span>👎 FAIL</span>
-              <Container>
-                <Progress width={(fail * 100) / (pass + fail) + "%"} />
-              </Container>
-            </div>
-          </div>
-        );
-    }
+    
+    
+    
 }
 
 function Voting(){

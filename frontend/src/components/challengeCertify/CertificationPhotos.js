@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
 import styles from "./CertificationPhotos.module.css"
 import camera from "../../img/camera.png"
@@ -9,6 +9,7 @@ import ContractAPI from "../../api/ContractAPI";
 import useWeb3 from "../../hooks/useWeb3";
 import { selectUser } from "../../app/redux/userSlice";
 import { useSelector } from "react-redux";
+import UserAPI from "../../api/UserAPI";
 function Header() {
   const navigate = useNavigate();
   

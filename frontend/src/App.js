@@ -58,8 +58,7 @@ function App() {
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
         <Route path="/votinghome" element={<VotingHome />} />
-        {/* <Route path="/voting/:id" element={<Voting />} /> */}
-        <Route path="/voting" element={<Voting />} />
+        <Route path="/voting/:id" element={<Voting />} />
         <Route path="/confirm-register/:id" element={<ConfirmRegister />} />
         <Route path="/join-loading/:id" element={<JoinLoading />} />
         <Route path="/success-register/:id" element={<SuccessRegister />} />

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './VotingHome.module.css'
 import { useNavigate,useLocation } from "react-router-dom";
-import test from "../../img/test-back.jpg"
+
 
 function Header() {
   const navigate = useNavigate();
@@ -31,16 +31,20 @@ function Header() {
 }
 
 function Shots({voteList}){
+  const navigate = useNavigate();
   console.log(voteList)
-  const moveDetail = () => {
-    console.log('디테일 페이지로 이동')
+  const moveDetail = (vote) => {
+    navigate(`/voting/${vote.id}`, {
+      state: { vote
+      }
+    });
   }
   return(
     <div className={styles.shots}>
       {
         voteList.map(vote=>{
           return (
-            <img onClick={moveDetail} src={vote.photo.picURL} alt="" />
+            <img onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
           )
         })
       }

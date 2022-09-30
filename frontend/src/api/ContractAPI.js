@@ -22,14 +22,18 @@ class ContractAPI {
     // console.log("init: ", this.account);
     this.networkId = await this.web3.eth.net.getId();
     this.Cabi = this.Cartifact.abi;
-    this.Caddress = this.Cartifact.networks[this.networkId].address;
-    //로컬에 저장
-    window.localStorage.setItem("Caddress", this.Caddress);
-    this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
-    this.Vabi = this.Vartifact.abi;
-    this.Vaddress = this.Vartifact.networks[this.networkId].address;
-    window.localStorage.setItem("Vaddress", this.Caddress);
-    this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
+    if (this.Cartifact.networks[this.networkId].address === undefined) {
+      alert("Goerli 네트워크의 계정으로 접속해주세요");
+    } else {
+      this.Caddress = this.Cartifact.networks[this.networkId].address;
+      //로컬에 저장
+      window.localStorage.setItem("Caddress", this.Caddress);
+      this.Ccontract = new this.web3.eth.Contract(this.Cabi, this.Caddress);
+      this.Vabi = this.Vartifact.abi;
+      this.Vaddress = this.Vartifact.networks[this.networkId].address;
+      window.localStorage.setItem("Vaddress", this.Caddress);
+      this.Vcontract = new this.web3.eth.Contract(this.Vabi, this.Vaddress);
+    }
   }
 
   // ChallengeContract
