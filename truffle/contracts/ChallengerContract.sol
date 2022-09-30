@@ -36,6 +36,9 @@ contract ChallengerContract is PassCoinContract{
     mapping(uint => Challenger[]) findByUserIdChallenger;
     mapping(uint => Challenger[]) findByChallengeIdChallenger;
 
+    function findByChallengerId(uint challengerId) public view returns(Challenger memory){
+        return challengerMap[challengerId];
+    }
     
     // 정산하기
     function refund(uint challengerId) public payable{
