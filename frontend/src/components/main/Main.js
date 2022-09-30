@@ -12,12 +12,14 @@ import {
 import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import MainCategory from "./MainCategory";
 
 function Main() {
   const selector = useSelector(challengeList);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   //주제 이름 저장
+  const [category, setCategory] = useState("");
   const [interest, setInterest] = useState("");
   const navigate = useNavigate();
 
@@ -27,11 +29,11 @@ function Main() {
       let allDonationList = [];
       const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
-        console.log("challenge result: ", result);
+        // console.log("challenge result: ", result);
         allChallengeList = result;
       });
       await Contract.getAllDonation().then((result) => {
-        console.log("donation result: ", result);
+        // console.log("donation result: ", result);
         allDonationList = result;
       });
 
@@ -42,7 +44,7 @@ function Main() {
       // }
     }
 
-    if (user.interests !== undefined) {
+    if (user.interests !== undefined || user.userInfo === null) {
       //로그인한 유저의 관심사 가져와서  저장
       let topicName = pickATopic(Object.keys(user.interests).length);
       setInterest(topicName);
@@ -63,12 +65,15 @@ function Main() {
 
   //추천 챌린지(일상)
   function dailyChallengeRendering() {
+    // console.log(selector);
     const result = [];
     for (let index = 1; index <= Object.keys(selector).length; index++) {
+      // console.log(selector[index]);
       if (selector[index] !== undefined) {
         const element = selector[index];
-        // console.log(element);
+        // console.log(element.name);
         let dayGap = getDayGapFromToday(element.startDate);
+        // console.log("dayGap", dayGap);
         let startDay = dayGap + "일 뒤";
         // (시작 전&&관심사 일치&&일상) 챌린지만
         if (
@@ -76,18 +81,25 @@ function Main() {
           interestIdToName(element.interestId) === interest &&
           "donationId" in element === false
         ) {
+          // console.log("element.name", element.name);
           result.push(
-            <span
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
-              <p>{element.name}</p>
-              <p>{startDay} 시작</p>
-            </span>
+            <div style={{ padding: "8px 4px" }}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img
+                  className={styles.Img}
+                  src={element.mainPicURL}
+                  alt=""
+                ></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{startDay} 시작</span>
+              </div>
+            </div>
           );
         }
       }
@@ -98,7 +110,7 @@ function Main() {
 
   //챌린지 디테일로 넘기기
   function toChallengeDetail(index) {
-    console.log("toChallengeDetail", index);
+    // console.log("toChallengeDetail", index);
     navigate(`/challenge-detail/${index}`);
   }
 
@@ -117,17 +129,59 @@ function Main() {
           "donationId" in element === true
         ) {
           result.push(
-            <span
-              key={index}
-              onClick={() => {
-                toChallengeDetail(element.challengeId);
-              }}
-            >
-              <br></br>
-              <img src={element.mainPicURL} height="50" width="50" alt=""></img>
-              <p>{element.name}</p>
-              <p>{dayGap}일 뒤 시작</p>
-            </span>
+            <div style={{ padding: "8px 4px" }}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img
+                  className={styles.Img}
+                  src={element.mainPicURL}
+                  alt=""
+                ></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{dayGap}일 뒤 시작</span>
+              </div>
+            </div>
+          );
+        }
+      }
+    }
+
+    return result;
+  }
+  //카테고리별 챌린지
+  function categoryChallengeRendering() {
+    const result = [];
+    for (let index = 1; index <= Object.keys(selector).length; index++) {
+      if (selector[index] !== undefined) {
+        const element = selector[index];
+        // console.log(element);
+        let dayGap = getDayGapFromToday(element.startDate);
+        let startDay = dayGap + "일 뒤";
+        // (시작 전&&카테고리 일치) 챌린지만
+        if (dayGap > 0 && element.interestId === category) {
+          result.push(
+            <div style={{ padding: "8px 4px" }}>
+              <div
+                className={styles.Box}
+                key={index}
+                onClick={() => {
+                  toChallengeDetail(element.challengeId);
+                }}
+              >
+                <img
+                  className={styles.Img}
+                  src={element.mainPicURL}
+                  alt=""
+                ></img>
+                <p className={styles.Title}>{element.name}</p>
+                <span className={styles.Tag}>{startDay} 시작</span>
+              </div>
+            </div>
           );
         }
       }
@@ -137,19 +191,39 @@ function Main() {
   }
 
   return (
-    <div className="Main">
+    <div>
       <Nav />
-      <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
-      <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
-      <p>
-        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
-      </p>
-      {dailyChallengeRendering()}
-      <p>
-        <br></br>
-        {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
-      </p>
-      {donateChallengeRendering()}
+      <div className={styles.Main}>
+        <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
+        <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
+        <MainCategory setCategory={(category) => setCategory(category)} />
+        {category === "" ? null : <div className={styles.Hr} />}
+        {category === "" ? null : (
+          <div style={{ padding: "16px" }}>
+            <p className={styles.Category}>
+              {interestIdToName(category)} 챌린지 목록
+            </p>
+            <div className={styles.Rendering}>
+              {categoryChallengeRendering()}
+            </div>
+            {console.log(category)}
+          </div>
+        )}
+        <div className={styles.Hr} />
+        <div style={{ padding: "16px" }}>
+          <p className={styles.Category}>
+            {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
+          </p>
+          <div className={styles.Rendering}>{dailyChallengeRendering()}</div>
+        </div>
+        <div className={styles.Hr} />
+        <div style={{ padding: "16px" }}>
+          <p className={styles.Category}>
+            {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (기부)
+          </p>
+          <div className={styles.Rendering}>{donateChallengeRendering()}</div>
+        </div>
+      </div>
     </div>
   );
 }

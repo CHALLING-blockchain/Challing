@@ -52,13 +52,15 @@ contract DailyChallengeContract is ChallengerContract{
     mapping(uint => DailyChallenge) dailyChallengeMap;
     DailyChallenge[] dailyChallenges;
 
+    event returnChallengeId(uint challengeId);
     // 챌린지 생성
     function createDailyChallenge(DailyChallenge memory dailyChallenge) public payable {
         dailyChallenge.challengeId=challengeSequence;
         dailyChallenge.deposit=msg.value;
         dailyChallenge.totalDeposit=msg.value;
         dailyChallengeMap[challengeSequence++]=dailyChallenge ;
-        
+
+        emit returnChallengeId(dailyChallenge.challengeId);
         /* 챌린지 생성자 챌린저에 추가 */
         // 챌린저 생성
         Challenger storage challenger=challengerMap[challengerSequence];
