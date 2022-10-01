@@ -7,8 +7,10 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectUser, setUserInfo } from './../../app/redux/userSlice';
 import { challengeList } from './../../app/redux/allChallengeSlice';
+import { donationList } from "../../app/redux/DonationListSlice";
 import UserAPI from "../../api/UserAPI";
 import { useParams } from 'react-router-dom';
+import donationHand from "../../img/donation-challenge-hand.png";
 
 
 function Header() {
@@ -243,18 +245,66 @@ function Btn(props) {
     );
 }
 
+function DonationSuccess(props){
+    const challenge = props.challenge;
+    const challengeId = props. challengeId;
+    const donationPlaces = useSelector(donationList);
+    const place = donationPlaces[challenge.donationId]
+
+    return (
+      <div className={styles.donationSuccess}>
+        <div className={styles.dsImgs}>
+          <img className={styles.fav} src={donationHand} alt="" />
+        </div>
+
+        <div className={styles.dsText}>
+          <p>💝기부챌린지 성공💝</p>
+          <span>{place}로 기부금이 전달되었습니다.</span>
+        </div>
+      </div>
+    );
+}
+
 function ChallengeComplete() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
+  console.log('element', element);
+
+  let type = "";
+  if ("deposit" in element) {
+    type = "daily";
+  } else {
+    type = "donation";
+  }
   return (
     <div>
       <Header></Header>
-      <Achieve challengeId={id} challenge={element}></Achieve>
-      <hr className={styles.hrTag} />
-      <Reward challengeId={id} challenge={element}></Reward>
-      <hr className={styles.hrTag} />
-      <Btn challengeId={id} challenge={element}></Btn>
+      {type === "donation" ? (
+        element.success == false ? (
+          <div className={styles.DonationChallengeSuccessBox}>
+            <DonationSuccess challengeId={id} challenge={element}></DonationSuccess>
+          </div>
+        ) : (
+          <div className={styles.DonationChallengeFailBox}>
+            <div>
+              <Achieve challengeId={id} challenge={element}></Achieve>
+              <hr className={styles.hrTag} />
+              <Reward challengeId={id} challenge={element}></Reward>
+              <hr className={styles.hrTag} />
+              <Btn challengeId={id} challenge={element}></Btn>
+            </div>
+          </div>
+        )
+      ) : (
+        <div className={styles.DailyChallengeCompleteBox}>
+          <Achieve challengeId={id} challenge={element}></Achieve>
+          <hr className={styles.hrTag} />
+          <Reward challengeId={id} challenge={element}></Reward>
+          <hr className={styles.hrTag} />
+          <Btn challengeId={id} challenge={element}></Btn>
+        </div>
+      )}
     </div>
   );
 }

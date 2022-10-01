@@ -58,3 +58,36 @@
     font-weight: bold;
     color: white;
 }
+
+.donationSuccess{
+  margin: 64px 16px;
+
+}
+
+.dsImgs{
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+  align-items: baseline;
+}
+
+.fav{
+  width: 120px;
+  height: 120px;
+}
+.com{
+  width: 36px;
+  height: 60px;
+}
+
+.dsText{
+  margin: 32px 0;
+  text-align: center;
+}
+.dsText p{
+  font-size: 20px;
+  margin: 8px 0;
+}
+.dsText span{
+  font-size: 14px;
+}
