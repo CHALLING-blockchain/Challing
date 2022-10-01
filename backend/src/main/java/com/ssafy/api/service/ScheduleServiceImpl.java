@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -55,12 +54,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     private static class NumGen {
         private long num;
         private final long interval = 15L;
+
         NumGen(long initNum) {
             num = initNum - interval;
         }
+
         long next() {
             return num += interval;
         }
+
         long get() {
             return num;
         }
@@ -72,23 +74,30 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         NumGen numGen = new NumGen(Instant.now().getEpochSecond() + 5L);
 
+        long DUMMY_NUM = 987654321L;
+
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDay" + numGen.next())
+                .challengeId(DUMMY_NUM)
                 .challengeType(ChallengeType.DAILY)
-                .triggerAt(numGen.get())
+                .triggerAt(numGen.next())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(ChallengeJobData.builder()
-                .challengeId("dummyDon" + numGen.next())
+                .challengeId(DUMMY_NUM)
                 .challengeType(ChallengeType.DONATION)
-                .triggerAt(numGen.get())
+                .triggerAt(numGen.next())
                 .build()
                 .toScheduleEntity());
 
         scheduleRepository.save(VoteJobData.builder()
-                .voteId("dummyVot" + numGen.next())
-                .triggerAt(numGen.get())
+                .voteId(DUMMY_NUM)
+                .challengeId(DUMMY_NUM)
+                .userId(DUMMY_NUM)
+                .challengerId(DUMMY_NUM)
+                .userIdIndex(DUMMY_NUM)
+                .challengeIdIndex(DUMMY_NUM)
+                .triggerAt(numGen.next())
                 .build()
                 .toScheduleEntity());
     }
@@ -111,10 +120,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void saveChallengeJob(ChallengeJobData jobData) {
 
-        log.info("챌린지 종료 스케줄 저장\nchallengeId: {}\nchallengeType: {}\ntriggerAt: {}",
-                jobData.getChallengeId(),
-                jobData.getChallengeType(),
-                jobData.getTriggerAt());
+        log.info("챌린지 종료 스케줄 저장\n{}", jobData);
 
         scheduleRepository.save(jobData.toScheduleEntity());
     }
@@ -123,9 +129,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void saveVoteJob(VoteJobData jobData) {
 
-        log.info("투표 종료 스케줄 저장\nvoteId: {}\ntriggerAt: {}",
-                jobData.getVoteId(),
-                jobData.getTriggerAt());
+        log.info("투표 종료 스케줄 저장\n{}", jobData);
 
         scheduleRepository.save(jobData.toScheduleEntity());
     }
@@ -134,10 +138,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void scheduleChallengeJob(ChallengeJobData jobData) throws SchedulerException {
 
-        log.info("챌린지 종료 스케줄링\nchallengeId: {}\nchallengeType: {}\ntriggerAt: {}",
-                jobData.getChallengeId(),
-                jobData.getChallengeType(),
-                jobData.getTriggerAt());
+        log.info("챌린지 종료 스케줄링\n{}", jobData);
 
         scheduler.scheduleJob(ChallengeJob.newChallengeJob(jobData), ChallengeJob.newTrigger(jobData));
     }
@@ -146,9 +147,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     public void scheduleVoteJob(VoteJobData jobData) throws SchedulerException {
 
-        log.info("투표 종료 스케줄링\nvoteId: {}\ntriggerAt: {}",
-                jobData.getVoteId(),
-                jobData.getTriggerAt());
+        log.info("투표 종료 스케줄링\n{}", jobData);
 
         scheduler.scheduleJob(VoteJob.newVoteJob(jobData), VoteJob.newTrigger(jobData));
     }

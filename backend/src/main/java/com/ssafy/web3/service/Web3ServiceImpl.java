@@ -2,6 +2,8 @@ package com.ssafy.web3.service;
 
 import com.ssafy.web3.job.ChallengeJobData;
 import com.ssafy.web3.job.VoteJobData;
+import com.ssafy.web3.request.EndVoteRequest;
+import com.ssafy.web3.response.BackEthResponse;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,15 +16,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @Slf4j
 public class Web3ServiceImpl implements Web3Service {
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @ToString
-    private static class ResponseBody {
-        private String result;
-    }
 
     private final WebClient webClient;
 
@@ -43,35 +36,36 @@ public class Web3ServiceImpl implements Web3Service {
                 return;
         }
 
-        String challengeId = challengeJobData.getChallengeId();
+        Long challengeId = challengeJobData.getChallengeId();
 
         log.info("Request to backeth: /api/{}/{}", basePath, challengeId);
 
-        ResponseBody responseBody = webClient.get()
+        BackEthResponse backEthResponse = webClient.get()
                 .uri("/" + basePath + "/" + challengeId)
                 .retrieve()
-                .bodyToMono(ResponseBody.class)
+                .bodyToMono(BackEthResponse.class)
                 .blockOptional()
-                .orElse(ResponseBody.builder().build());
+                .orElse(BackEthResponse.builder().build());
 
-        log.info("Response from backeth: {}", responseBody);
+        log.info("Response from backeth: {}", backEthResponse);
     }
 
     @Override
     public void endVote(VoteJobData voteJobData) {
         log.info("** Fire endVote job **");
 
-        String voteId = voteJobData.getVoteId();
+        EndVoteRequest endVoteRequest = voteJobData.toEndVoteRequest();
 
-        log.info("Request to backeth: /api/endvote/{}", voteId);
+        log.info("Request to backeth: /api/endvote body: {}", endVoteRequest);
 
-        ResponseBody responseBody = webClient.get()
-                .uri("/endvote/" + voteId)
+        BackEthResponse backEthResponse = webClient.post()
+                .uri("/endvote")
+                .bodyValue(endVoteRequest)
                 .retrieve()
-                .bodyToMono(ResponseBody.class)
+                .bodyToMono(BackEthResponse.class)
                 .blockOptional()
-                .orElse(ResponseBody.builder().build());
+                .orElse(BackEthResponse.builder().build());
 
-        log.info("Response from backeth: {}", responseBody);
+        log.info("Response from backeth: {}", backEthResponse);
     }
 }
