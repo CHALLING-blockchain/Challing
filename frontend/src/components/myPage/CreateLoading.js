@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setChallengeList } from "../../app/redux/allChallengeSlice";
 import ContractAPI from "../../api/ContractAPI";
+import Loading from "../common/Loading";
 
 function CreateLoading() {
   const { id } = useParams();
@@ -17,7 +18,6 @@ function CreateLoading() {
   }
 
   useEffect(() => {
-    console.log("flag", flag);
     if (flag) {
       linkToMain();
     }
@@ -25,8 +25,6 @@ function CreateLoading() {
     async function load() {
       const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
-        console.log("loading", Object.keys(result).length);
-
         setCheck(check + 1);
 
         if (Object.keys(result).length === Number(id)) {
@@ -40,7 +38,7 @@ function CreateLoading() {
 
   return (
     <div>
-      <h2>로딩중</h2>
+      <Loading></Loading>
     </div>
   );
 }

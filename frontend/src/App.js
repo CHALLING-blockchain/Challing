@@ -33,6 +33,7 @@ import CreateLoading from "./components/myPage/CreateLoading";
 import JoinLoading from "./components/challengeRegister/JoinLoading";
 import CertifyLoading from "./components/challengeCertify/CertifyLoading";
 import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
+import Loading from "./components/common/Loading";
 
 function App() {
   return (

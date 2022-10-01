@@ -41,26 +41,24 @@ function Shots({voteList}){
       }
     });
   }
-  return (
-    <div>
+  return(
+    <div >
       {voteList.length === 0 ? (
         <NoVoting></NoVoting>
-      ) : (
+      ): (
         <div className={styles.shots}>
-          {voteList.map((vote) => {
-            return (
-              <img
-                className={styles.voteImgs}
-                onClick={() => moveDetail(vote)}
-                src={vote.photo.picURL}
-                alt=""
-              />
-            );
-          })}
+          {
+            voteList.map(vote=>{
+              return (
+                <img className={styles.voteImgs} onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
+              )
+            })
+          }
         </div>
       )}
+      
     </div>
-  );
+  )
 }
 
 function NoVoting(){

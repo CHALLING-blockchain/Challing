@@ -49,8 +49,6 @@ function Description(){
 
 function VoteImg(){
     const vote=useLocation().state.vote;
-    console.log(vote)
-    // url에서 id, prop으로 이미지 받아와서 이미지 넣어야 됨
     return(
         <div className={styles.voteImg}>
             <img src={vote.photo.picURL} alt="" />
@@ -74,11 +72,11 @@ function Vote(){
     } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
 
     const vote=useLocation().state.vote;
+    const votedUsers = vote.userIdList;
     const [voteState, setVoteState] = useState(false);
     const [pass, setPass] = useState(Number(vote.pass));
     const [fail, setFail] = useState(Number(vote.fail));
     let userId = useSelector(selectUser).id;
-    console.log(pass,fail)
     if (activeAccount !== undefined && activeAccount !== "") {
       const Contract=new ContractAPI(activeAccount)
       const voted = (myVote) => {
@@ -95,32 +93,34 @@ function Vote(){
         }
         Contract.voting(vote.challengeId, userId, vote.id, myVote)
       }
-      // 투표 안 한 상태
-      if (voteState === false) {
-          return(
-              <div className={styles.prevoteBox}>
-                  <button className={styles.pass} onClick={()=>{voted(true)}}>👍 PASS</button>
-                  <button className={styles.fail} onClick={()=>{voted(false);}}>👎 FAIL</button>
-              </div>
-          )
-      } else { // 투표 했으면
-          return (
-            <div className={styles.votedBox}>
-              <div className={styles.passBox}>
-                <span>👍 PASS</span>
-                <Container>
-                  <Progress width={(pass * 100) / (pass + fail) + "%"} />
-                </Container>
-              </div>
-              <div className={styles.failBox}>
-                <span>👎 FAIL</span>
-                <Container>
-                  <Progress width={(fail * 100) / (pass + fail) + "%"} />
-                </Container>
-              </div>
+      // 투표 한 유저거나 방금 
+      if  ((voteState == true) || votedUsers.includes(userId.toString())){
+        return (
+          <div className={styles.votedBox}>
+            <div className={styles.passBox}>
+              <span>👍 PASS</span>
+              <Container>
+                <Progress width={(pass * 100) / (pass + fail) + "%"} />
+              </Container>
             </div>
-          );
+            <div className={styles.failBox}>
+              <span>👎 FAIL</span>
+              <Container>
+                <Progress width={(fail * 100) / (pass + fail) + "%"} />
+              </Container>
+            </div>
+          </div>
+        );
+      } else{
+        return(
+            <div className={styles.prevoteBox}>
+                <button className={styles.pass} onClick={()=>{voted(true)}}>👍 PASS</button>
+                <button className={styles.fail} onClick={()=>{voted(false);}}>👎 FAIL</button>
+            </div>
+        )
+
       }
+
     }
     
     
