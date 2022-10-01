@@ -13,7 +13,9 @@ class ContractAPI {
     const local = "http://localhost:7545";
 
 
-    this.web3 = new Web3(new Web3.providers.HttpProvider(ropstenUrl));
+    this.web3 = new Web3(
+      new Web3.providers.HttpProvider(process.env.REACT_APP_DEMO_URL)
+    );
 
 
     if (address !== undefined) {

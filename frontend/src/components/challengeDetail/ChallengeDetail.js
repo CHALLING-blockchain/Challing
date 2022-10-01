@@ -16,6 +16,7 @@ import favbook from "../../img/bookmark.png";
 import Next from "../common/NextButton";
 import * as getDayGap from "../main/Main.js";
 import { selectUser } from "../../app/redux/userSlice";
+import RefundPolicy from "../common/RefundPolicy";
 
 function Header(props) {
   const navigate = useNavigate();
@@ -195,34 +196,6 @@ function PeriodBox(props) {
   );
 }
 
-function RefundPolicy() {
-  return (
-    <div className={styles.paddingBox}>
-      <div className={styles.imgText}>
-        <img src={eth} alt="" />
-        <span style={{ fontSize: "16px" }}>환급정책</span>
-      </div>
-      <div className={styles.refundBox}>
-        <div className={styles.oneLine}>
-          <span className={styles.percentage}>100% 성공</span>
-          <span className={styles.policy}>참가비 전액 환급 + 성공 리워드</span>
-        </div>
-        <div className={styles.oneLine}>
-          <span className={styles.percentage}>99%이하 80%이상</span>
-          <span className={styles.policy}>참가비 전액 환급</span>
-        </div>
-        <div className={styles.oneLine}>
-          <span className={styles.percentage}>79%이하 40%이상</span>
-          <span className={styles.policy}>참가비 일부 환급</span>
-        </div>
-        <div className={styles.oneLine}>
-          <span className={styles.percentage}>40% 미만</span>
-          <span className={styles.policy}>환급금 없음</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function addDescription(props) {
   const desc = props.split("\n");
@@ -328,6 +301,12 @@ function ChallengeDetail() {
   const day = getDayGap.getDayGapFromToday(challenge.startDate);
   const [joinFlag, setJoinFlag] = useState(false);
   const [challengers, setChallengers] = useState();
+  let type = ""
+  if ("deposit" in challenge) {
+    type = "daily";
+  } else {
+    type = "donation";
+  }
 
   useEffect(() => {
     const Contract = new ContractAPI();
@@ -382,7 +361,7 @@ function ChallengeDetail() {
         <hr className={styles.hrTag} />
         <PeriodBox challenge={challenge}></PeriodBox>
         <hr className={styles.hrTag} />
-        <RefundPolicy></RefundPolicy>
+        <RefundPolicy type={type}></RefundPolicy>
         <hr className={styles.hrTag} />
         <Description challenge={challenge}></Description>
         <hr className={styles.hrTag} />
