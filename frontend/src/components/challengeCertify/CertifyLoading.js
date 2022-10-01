@@ -4,6 +4,7 @@ import ContractAPI from "../../api/ContractAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import UserAPI from "../../api/UserAPI";
+import Loading from "../common/Loading";
 
 function CertifyLoading() {
   const { id } = useParams();
@@ -43,7 +44,6 @@ function CertifyLoading() {
         photoUrl: url,
       };
       await UserAPI.addPhoto(body).then((response) => {
-        console.log("addphoto response", response);
         dispatch(setUserInfo(response.data.body));
       });
     }
@@ -53,7 +53,7 @@ function CertifyLoading() {
 
   return (
     <div>
-      <h2>로딩중</h2>
+      <Loading></Loading>
     </div>
   );
 }

@@ -42,14 +42,20 @@ function Shots({voteList}){
     });
   }
   return(
-    <div className={styles.shots}>
-      {
-        voteList.map(vote=>{
-          return (
-            <img onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
-          )
-        })
-      }
+    <div >
+      {voteList.length === 0 ? (
+        <NoVoting></NoVoting>
+      ): (
+        <div className={styles.shots}>
+          {
+            voteList.map(vote=>{
+              return (
+                <img className={styles.voteImgs} onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
+              )
+            })
+          }
+        </div>
+      )}
       
     </div>
   )
@@ -58,9 +64,9 @@ function Shots({voteList}){
 function NoVoting(){
   return (
     <div className={styles.noVoting}>
-      <div className={styles.bookImgs}>
-        <img className={styles.fav} src={pass} alt="" />
-        <img className={styles.com} src={fail} alt="" />
+      <div className={styles.votebubbles}>
+        <img className={styles.passbubble} src={pass} alt="" />
+        <img className={styles.failbubble} src={fail} alt="" />
       </div>
 
       <div className={styles.bookText}>

@@ -1,0 +1,93 @@
+.header{
+    background-color: white;
+    width: 100vw;
+    height: 54px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+.achBox{
+    margin: 16px;
+}
+.ach{
+    margin: 8px 0;
+}
+
+.countsBox{
+    font-size: 14px;
+}
+
+.rewardBox{
+    margin: 16px;
+}
+
+.hrTag {
+  width: 328px;
+  height: 0.5px;
+  background-color: #BABDFF;
+  border: none;
+  margin: 8px 16px;
+}
+
+.rewardDetail{
+    margin: 8px 0;
+}
+.rewardItem{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.totalReward{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.btn{
+    width: 328px;
+    height: 48px;
+    margin: 16px;
+    background: linear-gradient(45deg, #8397ff, #926bff);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.donationSuccess{
+  margin: 64px 16px;
+
+}
+
+.dsImgs{
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+  align-items: baseline;
+}
+
+.fav{
+  width: 120px;
+  height: 120px;
+}
+.com{
+  width: 36px;
+  height: 60px;
+}
+
+.dsText{
+  margin: 32px 0;
+  text-align: center;
+}
+.dsText p{
+  font-size: 20px;
+  margin: 8px 0;
+}
+.dsText span{
+  font-size: 14px;
+}
