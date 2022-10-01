@@ -281,7 +281,7 @@ function ChallengeComplete() {
     <div>
       <Header></Header>
       {type === "donation" ? (
-        element.success == false ? (
+        element.success == true ? (
           <div className={styles.DonationChallengeSuccessBox}>
             <DonationSuccess challengeId={id} challenge={element}></DonationSuccess>
           </div>

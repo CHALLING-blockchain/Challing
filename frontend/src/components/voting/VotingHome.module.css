@@ -13,11 +13,38 @@
     grid-template-columns: 1fr 1fr;
     padding: 8px;
 }
-.shots img{
+.voteImgs{
     width: 156px;
     height: 156px;
     margin: 8px;
     border: none;
     border-radius: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.votebubbles{
+  display: flex;
+  justify-content: center;
+  margin: 64px auto 32px;
+  align-items: baseline;
+}
+
+.passbubble{
+  width: 120px;
+  height: 120px;
+}
+.failbubble{
+  width: 60px;
+  height: 60px;
+}
+
+.bookText{
+  margin: 32px 0;
+  text-align: center;
+}
+.bookText p{
+  font-size: 20px;
+  margin: 8px 0;
+}
+.bookText span{
+  font-size: 14px;
 }

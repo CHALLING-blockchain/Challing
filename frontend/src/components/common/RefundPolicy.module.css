@@ -1,5 +1,5 @@
 .paddingBox{
-    width: 100vw;
+    width: 328px;
     padding: 16px;
 }
 
@@ -48,6 +48,7 @@
     width: 296px;
     padding: 16px;
     margin: 8px 0;
+    font-size: 14px;
 }
 
 .oneLine{
@@ -64,3 +65,7 @@
 .policy{
     font-size:14px ;
 }
+.textone{
+    margin: 4px 0 ;
+}
+
