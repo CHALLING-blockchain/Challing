@@ -10,6 +10,7 @@ import useWeb3 from "../../hooks/useWeb3";
 import { selectUser } from "../../app/redux/userSlice";
 import { useSelector } from "react-redux";
 import UserAPI from "../../api/UserAPI";
+import ScheduleAPI from "../../api/ScheduleAPI";
 function Header() {
   const navigate = useNavigate();
 
@@ -156,11 +157,27 @@ function Modal({ onClose, photoId }) {
   function handleClose() {
     onClose?.();
   }
-  function report() {
+  async function report() {
     if (activeAccount !== undefined && activeAccount !== "") {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
       const Contract = new ContractAPI(activeAccount);
       // console.log(challengeId, photoId, userId);
-      Contract.report(challengeId, photoId, userId);
+      const voteId=await Contract.report(challengeId, photoId, userId);
+      const challengerInfo=await Contract.findingChallenger(challengeId, userId);
+
+      const body={
+        voteId: voteId,
+        challengeId: challengeId,
+        userId: userId,
+        challengerId: challengerInfo[0],
+        userIdIndex: challengerInfo[1],
+        challengeIdIndex: challengerInfo[2],
+        triggerAt: tomorrow.getTime()
+        }
+
+      ScheduleAPI.vote(body)
     }
   }
   return (
