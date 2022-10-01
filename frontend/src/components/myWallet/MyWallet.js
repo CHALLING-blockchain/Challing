@@ -290,31 +290,32 @@ function MyWallet() {
       ) {
         date = "";
       }
+      // 이부분 데모 시연시 코드 변경해야함
       // 거래내역 확인하기
-      if (
-        txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
-        txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
-        txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
-        txData[index].from.toLowerCase() === Vaddress.toLowerCase()
-      ) {
-        // console.log("txData[index].filter", txData[index].filter);
-        result.push(
-          <div key={index} className={styles.historyContent}>
-            <p> {date} </p>
-            <div className={styles.content}>
-              <div className={styles.titleContent}>
-                <p>{filter(txData[index].filter)}</p>
-              </div>
-              <div></div>
-              <div className={styles.ethcontent}>
-                <p>
-                  {txData[index].etherValue}ETH {txData[index].sendOrReceive}
-                </p>
-              </div>
+      // if (
+      //   txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
+      //   txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
+      //   txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
+      //   txData[index].from.toLowerCase() === Vaddress.toLowerCase()
+      // ) {
+      // console.log("txData[index].filter", txData[index].filter);
+      result.push(
+        <div key={index} className={styles.historyContent}>
+          <p> {date} </p>
+          <div className={styles.content}>
+            <div className={styles.titleContent}>
+              <p>{filter(txData[index].filter)}</p>
+            </div>
+            <div></div>
+            <div className={styles.ethcontent}>
+              <p>
+                {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+              </p>
             </div>
           </div>
-        );
-      }
+        </div>
+      );
+      // }
     }
     return result;
   }
