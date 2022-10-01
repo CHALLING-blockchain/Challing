@@ -13,6 +13,7 @@ import text from "../../../img/text-front-color.png";
 import clock from "../../../img/clock-front-color.png";
 import styles from "./challengeForm.module.css";
 import ContractAPI from "../../../api/ContractAPI";
+import ScheduleAPI from "../../../api/ScheduleAPI";
 import moment from "moment";
 import { selectUser } from "../../../app/redux/userSlice";
 import { challengeList } from "../../../app/redux/allChallengeSlice";
@@ -151,7 +152,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     badPicURL: selects.badShotUrl,
     authTotalTimes:
       selects.nTimesAWeek * selects.authentications * selects.period,
-    authWeekTimes: selects.nTimesAWeek,
+      authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -177,7 +178,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     badPicURL: selects.badShotUrl,
     authTotalTimes:
       selects.nTimesAWeek * selects.authentications * selects.period,
-    authWeekTimes: selects.nTimesAWeek,
+      authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -192,15 +193,21 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   function DailyCreateButton() {
     if (activeAccount !== undefined && activeAccount !== "") {
       const Contract = new ContractAPI(activeAccount);
-
+      
       return (
         <div className={styles.buttonBox}>
           <button
             className={styles.NextButton}
             onClick={async () => {
-              await Contract.createDailyChallenge(daliyChallenge).then(
-                console.log
-              );
+              const date = new Date(donationChallenge.endDate);
+              const challengeId=await Contract.createDailyChallenge(daliyChallenge)
+              const body={
+                challengeId:challengeId,
+                challengeType:"DAILY",
+                triggerAt:date.getTime()
+              }
+              console.log(body)
+              ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },
               });
@@ -220,9 +227,16 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           <button
             className={styles.NextButton}
             onClick={async () => {
-              await Contract.createDonationChallenge(donationChallenge).then(
-                console.log
-              );
+              const date = new Date(donationChallenge.endDate);
+              
+              const challengeId=await Contract.createDonationChallenge(donationChallenge)
+              const body={
+                challengeId:challengeId,
+                challengeType:"DONATION",
+                triggerAt:date.getTime()
+              }
+              console.log(body)
+              ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },
               });
