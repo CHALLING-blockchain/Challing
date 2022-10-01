@@ -17,7 +17,6 @@ function CreateLoading() {
   }
 
   useEffect(() => {
-    console.log("flag", flag);
     if (flag) {
       linkToMain();
     }
@@ -25,8 +24,6 @@ function CreateLoading() {
     async function load() {
       const Contract = new ContractAPI();
       await Contract.getAllChallenge().then((result) => {
-        console.log("loading", Object.keys(result).length);
-
         setCheck(check + 1);
 
         if (Object.keys(result).length === Number(id)) {
