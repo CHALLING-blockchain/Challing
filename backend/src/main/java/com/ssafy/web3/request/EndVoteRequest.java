@@ -1,28 +1,17 @@
-package com.ssafy.api.request;
+package com.ssafy.web3.request;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VoteScheduleRequest {
-
-    @NotNull
+@ToString
+public class EndVoteRequest {
     private Long voteId;
-    @NotNull
     private Long challengeId;
-    @NotNull
     private Long userId;
-    @NotNull
     private Long challengerId;
-    @NotNull
     private Long userIdIndex;
-    @NotNull
     private Long challengeIdIndex;
-    @NotNull
-    private Long triggerAt;
 }

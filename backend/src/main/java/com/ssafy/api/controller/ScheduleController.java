@@ -52,7 +52,7 @@ public class ScheduleController {
     public String addScheduleTest() {
         try {
             scheduleService.scheduleChallengeJob(ChallengeJobData.builder()
-                    .challengeId("테스트")
+                    .challengeId(987654321L)
                     .triggerAt(Instant.now().plusSeconds(10).getEpochSecond())
                     .build());
         } catch (Exception e) {

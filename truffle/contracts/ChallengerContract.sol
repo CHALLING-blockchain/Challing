@@ -16,10 +16,11 @@ contract ChallengerContract is PassCoinContract{
         address userAddress;
 
         // 하루 성공횟수 구분을 위한 오늘 날짜 
-        string today;
+        uint today;
 
         // 전체 성공횟수, 하루 성공횟수
         uint totalCount;
+        uint weekCount;
         uint dailyCount;
 
         // 실제 예치금
@@ -77,11 +78,16 @@ contract ChallengerContract is PassCoinContract{
         challengerMap[findChallenger.id]=findChallenger;
     }
     // 패스코인 지급
-    function receivePasscoin(uint[] memory userIdList) public{
+    function receivePasscoin(uint[] memory userIdList,uint challengeId) public{
         /* 패스코인 지급 로직 */
         for (uint256 i = 0; i < userIdList.length; i++) {
-            Challenger memory challenger = findByUserIdChallenger[userIdList[i]][0];             
-            transfer(challenger.userAddress, 1);
+            Challenger[] memory challengers = findByUserIdChallenger[userIdList[i]];            
+            for(uint j=0;j<challengers.length;j++){
+                if(challengers[j].challengeId==challengeId){
+                    transfer(challengers[j].userAddress, 1);
+                    break;
+                }
+            }
         }
     }
 }

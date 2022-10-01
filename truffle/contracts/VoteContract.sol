@@ -26,7 +26,7 @@ contract VoteContract is PhotoContract{
 
     // 챌린지의 투표
     mapping(uint => Vote[]) findByChallengeIdVote;
-
+    event returnVoteId(uint voteId);
      // 신고하기
     function report(uint challengeId,uint photoId,uint userId) public{
         Photo memory findPhoto=photoMap[photoId];
@@ -38,7 +38,7 @@ contract VoteContract is PhotoContract{
         vote.startTimestamp=block.timestamp;
 
         findByChallengeIdVote[challengeId].push(vote);
-
+        emit returnVoteId(vote.id);
         voting(challengeId,userId, vote.id, false); // 투표한 사람 자동으로 반대 투표
     }
     // 찬반 투표

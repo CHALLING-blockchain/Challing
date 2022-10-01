@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import moment from "moment";
 import useWeb3 from "../../hooks/useWeb3";
+import * as getDayGab from "../main/Main.js";
 
 const FACING_MODE_USER = "user";
 const FACING_MODE_ENVIRONMENT = "environment";
@@ -18,6 +19,9 @@ const videoConstraints = {
 };
 
 function WebcamCapture() {
+  const challenge = useLocation().state.challengeInfo;
+  const percentage = useLocation().state.percentage;
+
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -111,7 +115,9 @@ function WebcamCapture() {
     setImgSrc(url);
     if (activeAccount !== undefined && activeAccount !== "") {
       await Contract.authenticate(challengeId, user.id, today, url);
-      // navigate(`/certify-loading/${id}`);
+      navigate(`/certify-loading/${challengeId}`, {
+        state: { challengeInfo: challenge, percentage: percentage, url: url },
+      });
     }
   }
   const capture = useCallback(() => {
@@ -120,7 +126,14 @@ function WebcamCapture() {
   }, [webcamRef, setImgSrc]);
 
   const challengeId = useLocation().state.challengeId;
-  const today = moment(new Date()).format("YYYY-MM-DD");
+  const today = Math.abs(
+    getDayGab.getDayGapFromDates(
+      challenge.startDate,
+      moment(new Date()).format("YYYY-MM-DD")
+    )
+  );
+  console.log("start", challenge.startDate);
+  console.log("today", Math.abs(today));
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
   useEffect(() => {

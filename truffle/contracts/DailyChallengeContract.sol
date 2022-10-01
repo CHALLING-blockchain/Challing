@@ -26,6 +26,7 @@ contract DailyChallengeContract is ChallengerContract{
         
         // 인증 빈도 이걸 전체 인증횟수로 쓰자
         uint authTotalTimes;
+        uint authWeekTimes;
         uint authDayTimes;
 
         // 인증가능시간
@@ -52,13 +53,15 @@ contract DailyChallengeContract is ChallengerContract{
     mapping(uint => DailyChallenge) dailyChallengeMap;
     DailyChallenge[] dailyChallenges;
 
+    event returnChallengeId(uint challengeId);
     // 챌린지 생성
     function createDailyChallenge(DailyChallenge memory dailyChallenge) public payable {
         dailyChallenge.challengeId=challengeSequence;
         dailyChallenge.deposit=msg.value;
         dailyChallenge.totalDeposit=msg.value;
         dailyChallengeMap[challengeSequence++]=dailyChallenge ;
-        
+
+        emit returnChallengeId(dailyChallenge.challengeId);
         /* 챌린지 생성자 챌린저에 추가 */
         // 챌린저 생성
         Challenger storage challenger=challengerMap[challengerSequence];
@@ -66,7 +69,6 @@ contract DailyChallengeContract is ChallengerContract{
         challenger.userId=dailyChallenge.ownerId;
         challenger.challengeId=dailyChallenge.challengeId;
         challenger.userAddress=msg.sender;
-        challenger.today=dailyChallenge.startDate;
         challenger.userDeposit=msg.value;
 
         // 챌린저 유저아이디 검색챌린저에 추가

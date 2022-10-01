@@ -2,6 +2,8 @@ package com.ssafy.web3.job;
 
 import com.ssafy.api.request.VoteScheduleRequest;
 import com.ssafy.db.entity.Schedule;
+import com.ssafy.web3.request.EndVoteRequest;
+import com.ssafy.web3.service.Web3ServiceImpl;
 import lombok.*;
 import org.quartz.JobDataMap;
 
@@ -10,14 +12,25 @@ import java.util.Date;
 
 @Data
 @Builder
+@ToString
 public class VoteJobData {
 
-    private String voteId;
+    private Long voteId;
+    private Long challengeId;
+    private Long userId;
+    private Long challengerId;
+    private Long userIdIndex;
+    private Long challengeIdIndex;
     private Long triggerAt;
 
     public JobDataMap toJobData() {
         JobDataMap jobData = new JobDataMap();
         jobData.put("voteId", voteId);
+        jobData.put("challengeId", challengeId);
+        jobData.put("userId", userId);
+        jobData.put("challengerId", challengerId);
+        jobData.put("userIdIndex", userIdIndex);
+        jobData.put("challengeIdIndex", challengeIdIndex);
         return jobData;
     }
 
@@ -25,7 +38,23 @@ public class VoteJobData {
         return Schedule.builder()
                 .jobType(ContractJobType.VOTE)
                 .voteId(voteId)
+                .challengeId(challengeId)
+                .userId(userId)
+                .challengerId(challengerId)
+                .userIdIndex(userIdIndex)
+                .challengeIdIndex(challengeIdIndex)
                 .triggerAt(triggerAt)
+                .build();
+    }
+
+    public EndVoteRequest toEndVoteRequest() {
+        return EndVoteRequest.builder()
+                .voteId(voteId)
+                .challengeId(challengeId)
+                .userId(userId)
+                .challengerId(challengerId)
+                .userIdIndex(userIdIndex)
+                .challengeIdIndex(challengeIdIndex)
                 .build();
     }
 
@@ -36,6 +65,11 @@ public class VoteJobData {
     public static VoteJobData of(VoteScheduleRequest voteScheduleRequest) {
         return VoteJobData.builder()
                 .voteId(voteScheduleRequest.getVoteId())
+                .challengeId(voteScheduleRequest.getChallengeId())
+                .userId(voteScheduleRequest.getUserId())
+                .challengerId(voteScheduleRequest.getChallengerId())
+                .userIdIndex(voteScheduleRequest.getUserIdIndex())
+                .challengeIdIndex(voteScheduleRequest.getChallengeIdIndex())
                 .triggerAt(voteScheduleRequest.getTriggerAt())
                 .build();
     }
@@ -43,13 +77,23 @@ public class VoteJobData {
     public static VoteJobData of(Schedule schedule) {
         return VoteJobData.builder()
                 .voteId(schedule.getVoteId())
+                .challengeId(schedule.getChallengeId())
+                .userId(schedule.getUserId())
+                .challengerId(schedule.getChallengerId())
+                .userIdIndex(schedule.getUserIdIndex())
+                .challengeIdIndex(schedule.getChallengeIdIndex())
                 .triggerAt(schedule.getTriggerAt())
                 .build();
     }
 
     public static VoteJobData of(JobDataMap jobData) {
         return VoteJobData.builder()
-                .voteId(jobData.getString("voteId"))
+                .voteId(jobData.getLong("voteId"))
+                .challengeId(jobData.getLong("challengeId"))
+                .userId(jobData.getLong("userId"))
+                .challengerId(jobData.getLong("challengerId"))
+                .userIdIndex(jobData.getLong("userIdIndex"))
+                .challengeIdIndex(jobData.getLong("challengeIdIndex"))
                 .build();
     }
 }

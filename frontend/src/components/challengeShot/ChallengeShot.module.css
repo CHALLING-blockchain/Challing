@@ -49,8 +49,12 @@
   margin-right: 8px;
 }
 .Contents{
-  height: 544px;
+  padding: 16px;
+  padding-top: 0px;
   overflow: scroll;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 .NoContents{
   height: 360px;
@@ -85,4 +89,36 @@ color: #755FFF;
   text-align: center;
   font-size: 20px;
   margin-bottom: 40px;
+}
+
+.GoShotBtn{
+  width: 56px;
+  height: 20px;
+  background: #E5E6FF;
+  border-radius: 3px;
+  font-size: 6px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.CardTitle{
+font-weight: 400;
+font-size: 12px;
+line-height: 100%;
+color: #000000;
+width: 80px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.CardHeader{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.CardBody{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 4px;
 }
