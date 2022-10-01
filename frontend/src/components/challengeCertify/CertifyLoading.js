@@ -26,7 +26,6 @@ function CertifyLoading() {
 
     async function getChallengerInfo(challengerId) {
       await Contract.findByChallengerId(challengerId).then((response) => {
-        //console.log(response);
         if (cnt === 0) setCnt(Number(response.totalCount));
         if (Number(response.totalCount) === cnt + 1) {
           addPhoto();

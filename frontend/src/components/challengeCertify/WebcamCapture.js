@@ -132,8 +132,6 @@ function WebcamCapture() {
       moment(new Date()).format("YYYY-MM-DD")
     )
   );
-  console.log("start", challenge.startDate);
-  console.log("today", Math.abs(today));
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
   useEffect(() => {
