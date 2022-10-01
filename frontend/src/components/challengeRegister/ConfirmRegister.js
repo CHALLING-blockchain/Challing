@@ -16,6 +16,7 @@ import Web3 from "web3";
 import ContractAPI from "../../api/ContractAPI";
 import * as getDayGap from "../main/Main.js";
 import { selectUser } from "../../app/redux/userSlice";
+import moment from "moment";
 
 function Header() {
   const navigate = useNavigate();
@@ -104,9 +105,12 @@ function Btn(props) {
   const web3 = new Web3(window.ethereum);
   const user = useSelector(selectUser);
   const navigate = useNavigate();
-  let today = new Date();
-  let todayStr =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  const today = Math.abs(
+    getDayGap.getDayGapFromDates(
+      props.challenge.startDate,
+      moment(new Date()).format("YYYY-MM-DD")
+    )
+  );
 
   return (
     <div className={styles.btnBox}>
@@ -125,7 +129,7 @@ function Btn(props) {
             props.activeAccount,
             props.challenge.challengeId,
             user.id,
-            todayStr,
+            today,
             web3.utils.fromWei(
               props.challenge.deposit || props.challenge.setDonation,
               "ether"
