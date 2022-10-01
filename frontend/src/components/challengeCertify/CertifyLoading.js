@@ -4,6 +4,7 @@ import ContractAPI from "../../api/ContractAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import UserAPI from "../../api/UserAPI";
+import Loading from "../common/Loading";
 
 function CertifyLoading() {
   const { id } = useParams();
@@ -26,7 +27,6 @@ function CertifyLoading() {
 
     async function getChallengerInfo(challengerId) {
       await Contract.findByChallengerId(challengerId).then((response) => {
-        //console.log(response);
         if (cnt === 0) setCnt(Number(response.totalCount));
         if (Number(response.totalCount) === cnt + 1) {
           addPhoto();
@@ -44,7 +44,6 @@ function CertifyLoading() {
         photoUrl: url,
       };
       await UserAPI.addPhoto(body).then((response) => {
-        console.log("addphoto response", response);
         dispatch(setUserInfo(response.data.body));
       });
     }
@@ -54,7 +53,7 @@ function CertifyLoading() {
 
   return (
     <div>
-      <h2>로딩중</h2>
+      <Loading></Loading>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ContractAPI from "../../api/ContractAPI";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/redux/userSlice";
+import Loading from "../common/Loading";
 
 function JoinLoading() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ function JoinLoading() {
 
   return (
     <div>
-      <h2>로딩중</h2>
+      <Loading></Loading>      
     </div>
   );
 }
