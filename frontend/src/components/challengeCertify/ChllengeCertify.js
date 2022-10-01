@@ -104,7 +104,7 @@ function Btn({ challengeId, challenge, percentage }) {
   );
 }
 
-function OtherShot({ photoList, challengeId }) {
+function OtherShot({ photoList, challengeId, title }) {
   const navigate = useNavigate();
 
   return (
@@ -118,6 +118,7 @@ function OtherShot({ photoList, challengeId }) {
               state: {
                 photoList: photoList,
                 challengeId: challengeId,
+                title: title,
               },
             });
           }}
@@ -196,8 +197,6 @@ function ChallengeCertify() {
     challengers.forEach(async (challenger) => {
       const photo = await Contract.getChallengerPhoto(challenger.id);
       photos = [...photos, ...photo];
-      // console.log("photo", photo);
-      // console.log("photos", photos);
       setPhotoList([...photos]);
     });
   }
@@ -216,6 +215,7 @@ function ChallengeCertify() {
       <OtherShot
         photoList={photoList}
         challengeId={challenge.challengeId}
+        title={challenge.name}
       ></OtherShot>
       <Voting voteList={voteList}></Voting>
       <div style={{ width: "100vw", height: "90px" }}></div>
