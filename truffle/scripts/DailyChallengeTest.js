@@ -27,6 +27,7 @@ const simulation = async () => {
     goodPicURL: "goodPicURL",
     badPicURL: "badPicURL",
     authTotalTimes: 10,
+    authWeekTimes:1,
     authDayTimes: 1,
     startTime: 10,
     endTime: 11,
@@ -52,6 +53,7 @@ const simulation = async () => {
       gasLimit: 3_000_000,
       value: 1e18,
     })
+    .on("receipt",(r)=>console.log(r.events.returnChallengeId.returnValues))
     .catch(console.error);
   console.log("챌린지 생성");
 
