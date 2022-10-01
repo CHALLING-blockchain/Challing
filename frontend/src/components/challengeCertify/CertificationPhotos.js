@@ -225,11 +225,23 @@ function Separately() {
   const [user, setUser] = useState("커다란 솜사탕");
   const [openModal, setOpenModal] = useState(false);
   const photoList = useLocation().state.photoList;
-  // console.log("Separately::photoList", photoList);
+  console.log("Separately::photoList", photoList);
   const [photoId, setPhotoId] = useState();
   const showModal = () => {
     setOpenModal(true);
   };
+  // const nicknameList = [];
+  // useEffect(() => {
+  //   const getNickname = async () => {
+  //     for (let i = 0; i < photoList.length; i++) {
+  //       await UserAPI.getUserById(photoList[i].userId).then((response) => {
+  //         console.log("user response", response);
+  //       });
+  //     }
+  //   };
+  //   getNickname();
+  // });
+
   return (
     <div className={styles.scroll}>
       {photoList.map((photo) => {
