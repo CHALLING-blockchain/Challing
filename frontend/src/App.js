@@ -32,6 +32,7 @@ import CompletedDetail from "./components/myChallenge/CompletedDetail";
 import CreateLoading from "./components/myPage/CreateLoading";
 import JoinLoading from "./components/challengeRegister/JoinLoading";
 import CertifyLoading from "./components/challengeCertify/CertifyLoading";
+import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
 
 function App() {
   return (
@@ -67,6 +68,9 @@ function App() {
         <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
         <Route path="/completed-detail/:id" element={<CompletedDetail />} />
+        <Route path="/challenge-complete/:id" element={<ChallengeComplete />} />
+        {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
+        
       </Routes>
       <Menu />
     </div>

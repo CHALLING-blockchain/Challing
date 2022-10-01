@@ -158,6 +158,12 @@ function ConfirmRegister() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
+  let type = ""
+  if ("deposit" in element) {
+    type = "daily";
+  } else {
+    type = "donation";
+  }
 
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
@@ -198,7 +204,7 @@ function ConfirmRegister() {
       ></RegisterCard>
       <Inform challenge={element} challengeId={id}></Inform>
       <MyBalance activeBalance={activeBalance}></MyBalance>
-      <RefundPolicy></RefundPolicy>
+      <RefundPolicy type={type}></RefundPolicy>
       <Btn challenge={element} activeAccount={activeAccount}></Btn>
     </div>
   );
