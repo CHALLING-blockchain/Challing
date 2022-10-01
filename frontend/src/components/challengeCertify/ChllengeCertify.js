@@ -104,9 +104,19 @@ function Btn({ challengeId, challenge, percentage }) {
   );
 }
 
-function OtherShot({ photoList, challengeId }) {
-  const navigate = useNavigate();
+// function picUrlRendering(picUrlList) {
+//   const result = [];
+//   for (let index = 0; index < picUrlList.length; index++) {
+//     result.push(<div className={styles.shots}>{picUrlList[index]}</div>);
+//   }
+// }
 
+function OtherShot({ picUrlAll, challengeId }) {
+  const navigate = useNavigate();
+  const picUrl = localStorage.getItem("picurl");
+  // console.log("Othershot", picUrl);
+  let url = JSON.parse(picUrl);
+  // console.log("OtherShot::url", url);
   return (
     <div className={styles.otherShot}>
       <div className={styles.shotTitle}>
@@ -116,7 +126,7 @@ function OtherShot({ photoList, challengeId }) {
           onClick={() => {
             navigate(`/certification-photos`, {
               state: {
-                photoList: photoList,
+                photoList: url,
                 challengeId: challengeId,
               },
             });
@@ -126,7 +136,7 @@ function OtherShot({ photoList, challengeId }) {
         </div>
       </div>
       <div className={styles.shots}>
-        {photoList.map((photo) => {
+        {url.map((photo) => {
           return <img src={photo.picURL} alt="" />;
         })}
       </div>
@@ -168,28 +178,34 @@ function Voting({ voteList }) {
     </div>
   );
 }
-
 function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
   const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
   const [voteList, setVoteList] = useState([]);
   const [photoList, setPhotoList] = useState([]);
-
   const Contract = new ContractAPI();
-
+  var picUrlAll = new Array();
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
       setChallegers(challengers);
-
       const vote = await Contract.getChallengeVote(challenge.challengeId);
       setVoteList(vote);
+      // console.log("useEffect 들옴");
 
       challengers.forEach(async (challenger) => {
         const photo = await Contract.getChallengerPhoto(challenger.id);
-        setPhotoList([...photoList, ...photo]);
+        // console.log("forEach photo", photo);
+        if (photo !== null && photo.length !== 0) {
+          for (let index = 0; index < photo.length; index++) {
+            const element = photo[index];
+            picUrlAll.push(element);
+            localStorage.setItem("picurl", JSON.stringify(picUrlAll));
+          }
+        }
       });
+      // console.log("배열에 저장한거", picUrlAll);
     }
     load();
   }, []);
@@ -206,7 +222,7 @@ function ChallengeCertify() {
       ></Btn>
       <hr className={styles.hrTag} />
       <OtherShot
-        photoList={photoList}
+        picUrlAll={picUrlAll}
         challengeId={challenge.challengeId}
       ></OtherShot>
       <Voting voteList={voteList}></Voting>
