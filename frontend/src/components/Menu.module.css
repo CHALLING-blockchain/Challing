@@ -1,4 +1,4 @@
-.Menu{
+.Menu {
   display: flex;
   justify-content: space-around;
   height: 64px;
@@ -9,7 +9,7 @@
   width: 100vw;
 }
 
-.Footer{
+.Footer {
   position: fixed;
   bottom: 0;
   width: 100vw;

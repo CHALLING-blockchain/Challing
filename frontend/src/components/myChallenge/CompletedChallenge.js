@@ -124,9 +124,7 @@ function ChallengeList() {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      console.log(user.id);
       const ids = await Contract.getMyChallenge(user.id);
-      console.log(ids);
 
       const filterIds = ids[1].filter((id) => selector[id].complete === true);
       for (const id of filterIds) {

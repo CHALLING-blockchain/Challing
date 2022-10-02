@@ -10,7 +10,6 @@ function EditProfile() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("user", user);
   const [fileImage, setFileImage] = useState(user.picURL);
   const [uploadImage, setUploadImage] = useState(user.picURL);
   const [nickname, setNickname] = useState(user.nickname);
@@ -100,9 +99,7 @@ function EditProfile() {
         description: desc,
         interests: interests,
       };
-      console.log("body", body);
       UserAPI.updateMyPage(body).then((response) => {
-        console.log("update response", response);
         dispatch(setUserInfo(response.data.body));
         navigate("/my-profile");
       });

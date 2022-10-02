@@ -180,6 +180,7 @@ function Modal({ onClose, photoId }) {
       };
 
       ScheduleAPI.vote(body);
+      handleClose();
     }
   }
   return (
@@ -240,8 +241,6 @@ function Modal({ onClose, photoId }) {
 
 function Separately() {
   // for 문 돌려서
-  const [userimg, setUserimg] = useState(profile);
-  const [user, setUser] = useState("커다란 솜사탕");
   const [openModal, setOpenModal] = useState(false);
   const photoList = useLocation().state.photoList;
   const [photoId, setPhotoId] = useState();

@@ -1,5 +1,5 @@
-.ShotHeader{
-  font-family: 'Inter';
+.ShotHeader {
+  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -7,8 +7,8 @@
   /* identical to box height, or 24px */
   text-align: center;
   letter-spacing: -0.01em;
-  
-  background: linear-gradient(268.03deg, #926DFF 42.47%, #8497FF 57.84%);
+
+  background: linear-gradient(268.03deg, #926dff 42.47%, #8497ff 57.84%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -17,108 +17,90 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-.Header{
   position: fixed;
   top:0;
+  left: 124px;
+  }
+.Content{
+  height: 544px;
+  overflow: scroll;
+  position: absolute;
+  top:56px;
 }
-.InputSearch{
-  width: 328px;
-  height: 40px;
-  background-color: #FBFBFB;
-  display: flex;
-  align-items: center;
-  /* padding: 8px; */
-  border-radius: 100px;
-  margin-bottom: 16px;
-}
-.Input{
-  font-weight: 600;
-  font-size: 16px;
-  /* color: #999999; */
-  background-color: #FBFBFB;
-  height: 32px;
-  width: 248px;
-  padding-left: 8px;
-}
-.Input:focus{
-  outline: none;
-}
-.SearchIcon{
-  margin-left: 16px;
-  margin-right: 8px;
-}
-.Contents{
+
+.Contents {
   padding: 16px;
   padding-top: 0px;
   overflow: scroll;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
-.NoContents{
+.NoContents {
   height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.AroundButton{
+.AroundButton {
   /* Rectangle 164 */
 
-box-sizing: border-box;
-width: 280px;
-height: 64px;
+  box-sizing: border-box;
+  width: 280px;
+  height: 64px;
 
-background: #FFFFFF;
-border: 1.5px solid #755FFF;
-border-radius: 10px;
+  background: #ffffff;
+  border: 1.5px solid #755fff;
+  border-radius: 10px;
 
-font-weight: 700;
-font-size: 20px;
-line-height: 150%;
-/* identical to box height, or 30px */
-text-align: center;
-letter-spacing: -0.01em;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 150%;
+  /* identical to box height, or 30px */
+  text-align: center;
+  letter-spacing: -0.01em;
 
-color: #755FFF;
-
-
+  color: #755fff;
 }
-.NoContent{
+.NoContent {
   text-align: center;
   font-size: 20px;
   margin-bottom: 40px;
 }
 
-.GoShotBtn{
+.GoShotBtn {
   width: 56px;
   height: 20px;
-  background: #E5E6FF;
+  background: #e5e6ff;
   border-radius: 3px;
   font-size: 6px;
   display: flex;
   justify-content: start;
   align-items: center;
 }
-.CardTitle{
-font-weight: 400;
-font-size: 12px;
-line-height: 100%;
-color: #000000;
-width: 80px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+.CardTitle {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  color: #000000;
+  width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.CardHeader{
+.CardHeader {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.CardBody{
+.CardBody {
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-top: 4px;
+}
+
+.CardBox{
+  margin-right: 4px;
 }

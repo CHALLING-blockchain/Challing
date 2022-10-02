@@ -111,8 +111,6 @@ function Reward(props){
     const deposit = challenge.deposit/1e18;
     const [reward, setReward] = useState("");
     const [donatorDeposit, setDonatorDeposit] = useState("");
-    console.log(challenge);
-
     // 일상이면 deposit 기부면 setDonation
     let type = "";
     if ("deposit" in challenge) {
@@ -292,7 +290,6 @@ function ChallengeComplete() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
-  console.log('element', element);
 
   let type = "";
   if ("deposit" in element) {
