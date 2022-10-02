@@ -77,13 +77,13 @@ function MyWallet() {
   const [passData, setPassData] = useState("");
 
   // 컨트랙트 주소들
-  const Caddress = window.localStorage.getItem("Caddress");
-  const Vaddress = window.localStorage.getItem("Vaddress");
+  // const Caddress = window.localStorage.getItem("Caddress");
+  // const Vaddress = window.localStorage.getItem("Vaddress");
 
   // get active account and balance data from useWeb3 hook
   const {
     connect,
-    disconnect,
+    // disconnect,
     provider,
     account: activeAccount,
   } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
@@ -209,7 +209,8 @@ function MyWallet() {
             //undefined 예외처리
             if (
               element.input !== undefined &&
-              !filter(txData[index].filter).includes("무슨함수")
+              element.filter !== undefined &&
+              !filter(element.filter).includes("무슨함수")
             ) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
               // if (element.input.includes("ecb18ceba781")) {
@@ -294,7 +295,7 @@ function MyWallet() {
     const result = [];
     for (let index = 0; index < txData.length; index++) {
       // 거래내역 종류
-      let txType = "";
+      // let txType = "";
       // 트랜젝션 발생 시간
       let date = txData[index].timeStamp;
       // 날짜별로 모아서 보여주기
