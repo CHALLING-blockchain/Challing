@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./CertificationPhotos.module.css";
 import camera from "../../img/camera.png";
 import megaphone from "../../img/megaphone.png";
-import testphoto from "../../img/test-back.jpg";
 import profile from "../../img/profile-basic.png";
 import ContractAPI from "../../api/ContractAPI";
 import useWeb3 from "../../hooks/useWeb3";
@@ -40,7 +39,7 @@ function Header() {
 }
 
 function Title() {
-  const [title, setTitle] = useState("영어, 외국어 10문장 쓰기");
+  const title = useLocation().state.title;
   return (
     <div className={styles.titleBox}>
       <span>
@@ -164,20 +163,24 @@ function Modal({ onClose, photoId }) {
       tomorrow.setDate(today.getDate() + 1);
       const Contract = new ContractAPI(activeAccount);
       // console.log(challengeId, photoId, userId);
-      const voteId=await Contract.report(challengeId, photoId, userId);
-      const challengerInfo=await Contract.findingChallenger(challengeId, userId);
+      const voteId = await Contract.report(challengeId, photoId, userId);
+      const challengerInfo = await Contract.findingChallenger(
+        challengeId,
+        userId
+      );
 
-      const body={
+      const body = {
         voteId: voteId,
         challengeId: challengeId,
         userId: userId,
         challengerId: challengerInfo[0],
         userIdIndex: challengerInfo[1],
         challengeIdIndex: challengerInfo[2],
-        triggerAt: tomorrow.getTime()
-        }
+        triggerAt: tomorrow.getTime(),
+      };
 
-      ScheduleAPI.vote(body)
+      ScheduleAPI.vote(body);
+      handleClose();
     }
   }
   return (
@@ -238,42 +241,57 @@ function Modal({ onClose, photoId }) {
 
 function Separately() {
   // for 문 돌려서
-  const [userimg, setUserimg] = useState(profile);
-  const [user, setUser] = useState("커다란 솜사탕");
   const [openModal, setOpenModal] = useState(false);
   const photoList = useLocation().state.photoList;
-  // console.log("Separately::photoList", photoList);
   const [photoId, setPhotoId] = useState();
   const showModal = () => {
     setOpenModal(true);
   };
+  const [userList, setUserList] = useState([]);
+  useEffect(() => {
+    const getNickname = async () => {
+      let users = [];
+      for (let i = 0; i < photoList.length; i++) {
+        await UserAPI.getUserById(photoList[i].userId).then((response) => {
+          users.push(response.data.body);
+        });
+      }
+      console.log("users", users);
+      setUserList([...users]);
+    };
+    getNickname();
+  }, []);
+
   return (
     <div className={styles.scroll}>
-      {photoList.map((photo) => {
-        return (
-          <div className={styles.separately}>
-            <div className={styles.userBox}>
-              <div className={styles.user}>
-                <img src={userimg} alt="" />
-                <span>{user}</span>
+      {photoList.map((photo, index) => {
+        if (userList.length !== 0) {
+          return (
+            <div className={styles.separately}>
+              <div className={styles.userBox}>
+                <div className={styles.user}>
+                  <img src={userList[index].picURL} alt="" />
+                  <span>{userList[index].nickname}</span>
+                </div>
+                <div className={styles.report}>
+                  <img
+                    src={megaphone}
+                    alt=""
+                    onClick={() => {
+                      showModal();
+                      setPhotoId(photo.id);
+                    }}
+                  />
+                </div>
               </div>
-              <div className={styles.report}>
-                <img
-                  src={megaphone}
-                  alt=""
-                  onClick={() => {
-                    showModal();
-                    setPhotoId(photo.id);
-                  }}
-                />
+              <div className={styles.shotBox}>
+                <img src={photo.picURL} alt="" />
               </div>
             </div>
-            <div className={styles.shotBox}>
-              <img src={photo.picURL} alt="" />
-            </div>
-          </div>
-        );
+          );
+        }
       })}
+
       {openModal && (
         <Modal
           photoId={photoId}

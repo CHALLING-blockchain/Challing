@@ -11,7 +11,7 @@ import { donationList } from "../../app/redux/DonationListSlice";
 import UserAPI from "../../api/UserAPI";
 import { useParams } from 'react-router-dom';
 import donationHand from "../../img/donation-challenge-hand.png";
-
+import useWeb3 from "../../hooks/useWeb3";
 
 function Header() {
   const navigate = useNavigate();
@@ -61,6 +61,7 @@ function Achieve(props) {
           let challengers = result;
           for (let i = 0; i < challengers.length; i++) {
             if (challengers[i].userId == user.id) {
+              
               setMyCount(challengers[i].totalCount);
             }
           }
@@ -78,11 +79,11 @@ function Achieve(props) {
             <span
               style={{ color: "#755FFF", fontSize: "14px", fontWeight: "bold" }}
             >
-              {(myCount * 100) / (totalCount + myCount)}%
+              {((myCount * 100) / (totalCount)).toFixed(2)}%
             </span>
             <Container>
               <Progress
-                width={(myCount * 100) / (totalCount + myCount) + "%"}
+                width={(myCount * 100) / (totalCount) + "%"}
               />
             </Container>
           </div>
@@ -107,7 +108,7 @@ function Reward(props){
     const challenge = props.challenge;
     const dispatch = useDispatch();
     const [user, setUser] = useState(useSelector(selectUser));
-    const deposit = challenge.deposit;
+    const deposit = challenge.deposit/1e18;
     const [reward, setReward] = useState("");
     const [donatorDeposit, setDonatorDeposit] = useState("");
     console.log(challenge);
@@ -132,9 +133,9 @@ function Reward(props){
           for (let i = 0; i < challengers.length; i++) {
             if (challengers[i].userId == user.id) {
               if (type === "daily") {
-                setReward(challengers[i].reward);
+                setReward(challengers[i].reward/1e18);
               } else if (type === "donation") {
-                setDonatorDeposit(challengers[i].userDeposit);
+                setDonatorDeposit(challengers[i].userDeposit/1e18);
               }
             }
           }
@@ -188,16 +189,31 @@ function Reward(props){
 }
 
 function Btn(props) {
+    const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+    // loading status
+    const [isLoading, setIsLoading] = useState(false);
+    // error messages
+    const [errorMessage, setErrorMessage] = useState("");
+
+    // get active account and balance data from useWeb3 hook
+    const {
+      connect,
+      disconnect,
+      provider,
+      account: activeAccount,
+    } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
     const challengeId = props.challengeId;
     const challenge = props.challenge;
-    const Contract = new ContractAPI();
+    const Contract = new ContractAPI(activeAccount);
     const dispatch = useDispatch();
     const [user, setUser] = useState(useSelector(selectUser));
     const [myCount, setMyCount] = useState("");
     const selector = useSelector(challengeList);
     const totalCount = selector[challengeId].authTotalTimes;
 
-
+    function refund(){
+      Contract.refund(challengeId, user.id)
+    }
     let type = "";
     if ("deposit" in challenge) {
       type = "daily";
@@ -229,14 +245,14 @@ function Btn(props) {
         {type === "daily" ? (
           myCount / totalCount >= 0.4 ? (
             <div>
-              <button className={styles.btn}>환급받기</button>
+              <button className={styles.btn} onClick={refund}>환급받기</button>
             </div>
           ) : (
             <div></div>
           )
         ) : challenge.success == false ? (
           <div>
-            <button className={styles.btn}>환급받기</button>
+            <button className={styles.btn} onClick={refund}>환급받기</button>
           </div>
         ) : (
           <div></div>

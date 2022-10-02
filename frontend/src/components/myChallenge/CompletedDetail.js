@@ -101,8 +101,8 @@ function MyAchRate(props){
         for (let i = 0; i < challengers.length; i++) {
           if (challengers[i].userId == user.id){
             if (type === "daily") {
-              setDeposit(challengers[i].userDeposit);
-              setReward(challengers[i].reward);
+              setDeposit(challengers[i].userDeposit/1e18);
+              setReward(challengers[i].reward/1e18);
             } else if (type === "donation"){
               setContribution(challengers[i].setDonation)
             }
@@ -120,11 +120,11 @@ function MyAchRate(props){
         <div className={styles.rateText}>
           <span>나의 달성률</span>
           <span style={{ color: "#755FFF" }}>
-            {(myCount * 100) / (totalCount + myCount)}%
+            {((myCount * 100) / (totalCount)).toFixed(2)}%
           </span>
         </div>
         <Container>
-          <Progress width={(myCount * 100) / (totalCount + myCount) + "%"} />
+          <Progress width={(myCount * 100) / (totalCount ) + "%"} />
         </Container>
         {type === "daily" ? (
           <div className={styles.rewardBox}>
@@ -169,7 +169,7 @@ function Inform(props){
       await Contract.getChallengers(challengeId).then((result) => {
         setPeople(result.length);
         if (type === "daily") {
-          setDeposit(people * challenge.deposit)
+          setDeposit(people * challenge.deposit/1e18)
         } else if (type === "donation") {
           setContribution(challenge.setDonation)
         }
