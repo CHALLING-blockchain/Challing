@@ -17,11 +17,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-.Header{
   position: fixed;
   top:0;
+  left: 124px;
+  }
+.Content{
+  height: 544px;
+  overflow: scroll;
+  position: absolute;
+  top:56px;
 }
+/* .Header{
+  position: fixed;
+  top:0;
+  display: flex;
+  justify-content: center;
+  height: 56px;
+} */
 .InputSearch{
   width: 328px;
   height: 40px;
@@ -121,4 +133,7 @@ text-overflow: ellipsis;
   justify-content: space-around;
   align-items: center;
   margin-top: 4px;
+}
+.CardBox{
+  margin-right: 4px;
 }
