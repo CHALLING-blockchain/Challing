@@ -68,6 +68,7 @@ function ChallengeShot() {
             state: {
               challengeInfo: props.challengeInfo,
               percentage: percentage,
+              challengerInfo:props.challengerInfo
             },
           });
         }}
@@ -90,6 +91,7 @@ function ChallengeShot() {
                   state: {
                     challengeInfo: props.challengeInfo,
                     percentage: percentage,
+                    challengerInfo:props.challengerInfo
                   },
                 }
               );
@@ -130,6 +132,7 @@ function ChallengeShot() {
   function YesChallenge() {
     let flag = false;
     if (challengers) {
+      
       const result = (
         <div className={styles.Contents}>
           {Object.values(allChallenge)
@@ -144,6 +147,7 @@ function ChallengeShot() {
                 <ChallengeCard
                   key={index}
                   challengeInfo={challenge}
+                  challengerInfo={challengers.filter(c=>c.challengeId==challenge.challengeId)[0]}
                 ></ChallengeCard>
               );
             })}

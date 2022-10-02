@@ -70,13 +70,12 @@ function Description({ info, percentage }) {
   );
 }
 
-function Btn({ challengeId, challenge, percentage }) {
-  const [state, setState] = useState(false);
+function Btn({ challengeId, challenge, percentage,challenger }) {
   const navigate = useNavigate();
-
+  console.log(challenger)
   return (
     <div>
-      {state === false ? (
+      {challenger.dailyCount<challenge.authDayTimes? (
         <div className={styles.btnBox}>
           <button
             className={styles.btn}
@@ -90,7 +89,7 @@ function Btn({ challengeId, challenge, percentage }) {
               });
             }}
           >
-            📸 인증하기
+            📸 인증하기 {challenger.dailyCount}/{challenge.authDayTimes}
           </button>
         </div>
       ) : (
@@ -172,18 +171,19 @@ function Voting({ voteList }) {
 
 function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
+  const challenger = useLocation().state.challengerInfo;
   const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
   const [voteList, setVoteList] = useState([]);
   const [photoList, setPhotoList] = useState([]);
 
   const Contract = new ContractAPI();
-
+   console.log("챌린지",challenge)
+  console.log("챌린저",challengers)
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
       setChallegers(challengers);
-
       const vote = await Contract.getChallengeVote(challenge.challengeId);
       setVoteList(vote);
 
@@ -210,6 +210,7 @@ function ChallengeCertify() {
         challengeId={challenge.challengeId}
         challenge={challenge}
         percentage={percentage}
+        challenger={challenger}
       ></Btn>
       <hr className={styles.hrTag} />
       <OtherShot
