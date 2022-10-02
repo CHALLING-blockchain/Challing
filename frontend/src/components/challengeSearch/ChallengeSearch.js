@@ -26,8 +26,11 @@ function ChallengeSearch() {
   //챌린지 검색
   function challengeSearchRendering() {
     const result = [];
+    //검색 안했을때 신규챌린지 10개 보여주기
     if (search !== "") {
-      for (let index = 1; index <= Object.keys(selector).length; index++) {
+      let length = Object.keys(selector).length;
+      if (length > 10) length = 10;
+      for (let index = 1; index <= length; index++) {
         if (
           selector[index] !== undefined &&
           selector[index].name.includes(search)
@@ -49,10 +52,15 @@ function ChallengeSearch() {
                   toChallengeDetail(element.challengeId);
                 }}
               >
-                <img className={styles.SearchAfterImg} src={element.mainPicURL} alt=""/>
-                <div style={{paddingLeft:'8px'}}>
+                <img
+                  className={styles.SearchAfterImg}
+                  src={element.mainPicURL}
+                  alt=""
+                />
+                <div style={{ paddingLeft: "8px" }}>
                   <p className={styles.SearchAfterTitle}>{element.name}</p>
-                  <span className={styles.SearchAfterTag}>{startDay} 시작</span><br/>
+                  <span className={styles.SearchAfterTag}>{startDay} 시작</span>
+                  <br />
                   <span className={styles.SearchAfterTag}>{period}주 동안</span>
                 </div>
               </div>
@@ -61,6 +69,7 @@ function ChallengeSearch() {
         }
       }
     } else {
+      //검색어 있을때
       for (let index = 1; index <= Object.keys(selector).length; index++) {
         const element = selector[index];
         let dayGap = getDayGap.getDayGapFromToday(element.startDate);
@@ -68,7 +77,7 @@ function ChallengeSearch() {
         // 시작 전 챌린지만
         if (dayGap > 0) {
           result.push(
-            <div style={{padding:'8px 4px'}}>
+            <div style={{ padding: "8px 4px" }}>
               <div
                 className={styles.SearchBeforeBox}
                 key={index}
@@ -76,7 +85,11 @@ function ChallengeSearch() {
                   toChallengeDetail(element.challengeId);
                 }}
               >
-                <img className={styles.SearchBeforeImg} src={element.mainPicURL} alt=""/>
+                <img
+                  className={styles.SearchBeforeImg}
+                  src={element.mainPicURL}
+                  alt=""
+                />
                 <p className={styles.SearchBeforeTitle}>{element.name}</p>
                 <span className={styles.SearchBeforeTag}>{startDay} 시작</span>
               </div>
@@ -123,16 +136,17 @@ function ChallengeSearch() {
           </form>
         </div>
       </div>
-      {search !== "" ?
-      <div className={styles.SearchContents}>
-        {/* <ChallengeSearch/> */}
-        {challengeSearchRendering()}
-      </div> :
-      <div className={styles.SearchBefore}>
-        {/* <ChallengeSearch/> */}
-        {challengeSearchRendering()}
-      </div>}
-      
+      {search !== "" ? (
+        <div className={styles.SearchContents}>
+          {/* <ChallengeSearch/> */}
+          {challengeSearchRendering()}
+        </div>
+      ) : (
+        <div className={styles.SearchBefore}>
+          {/* <ChallengeSearch/> */}
+          {challengeSearchRendering()}
+        </div>
+      )}
     </div>
   );
 }

@@ -12,11 +12,9 @@ class ContractAPI {
       "https://goerli.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY;
     const local = "http://localhost:7545";
 
-
     this.web3 = new Web3(
       new Web3.providers.HttpProvider(process.env.REACT_APP_DEMO_URL)
     );
-
 
     if (address !== undefined) {
       this.account = address;
@@ -103,8 +101,8 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-      challenges[0]=challenges[0].filter(challenge=>challenge!=='0')
-    
+    challenges[0] = challenges[0].filter((challenge) => challenge !== "0");
+
     return challenges;
   }
   async findingChallenger(challengeId, userId) {
@@ -241,8 +239,8 @@ class ContractAPI {
       .catch(console.error);
 
     const challengerId = info[0];
-    const userIdIndex = info[1]; 
-    const challengeIdIndex = info[2]
+    const userIdIndex = info[1];
+    const challengeIdIndex = info[2];
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -251,7 +249,15 @@ class ContractAPI {
             {
               from: this.account,
               to: this.Caddress,
-              data: this.Ccontract.methods.refund(challengeId, userId, challengerId, userIdIndex, challengeIdIndex).encodeABI(),
+              data: this.Ccontract.methods
+                .refund(
+                  challengeId,
+                  userId,
+                  challengerId,
+                  userIdIndex,
+                  challengeIdIndex
+                )
+                .encodeABI(),
             },
           ],
         })
@@ -360,14 +366,14 @@ class ContractAPI {
   // DailyChallengeContract
   async createDailyChallenge(dailyChallenge) {
     await this.init();
-    console.log("daily - 111", dailyChallenge);
+    // console.log("daily - 111", dailyChallenge);
     const deposit = dailyChallenge.deposit.toString();
     dailyChallenge.deposit = 1;
     dailyChallenge.totalDeposit = 1;
-    console.log("daily - 222", dailyChallenge);
-
+    // console.log("daily - 222", dailyChallenge);
+    console.log(dailyChallenge);
     if (this.account !== undefined && this.account !== "") {
-      const txHash=await window.ethereum
+      const txHash = await window.ethereum
         .request({
           method: "eth_sendTransaction",
           params: [
@@ -384,14 +390,18 @@ class ContractAPI {
           ],
         })
         .catch((error) => console.error);
-      const receipt=await this.web3.eth.getTransactionReceipt(txHash)
+      const receipt = await this.web3.eth.getTransactionReceipt(txHash);
 
-      const event=this.web3.eth.abi.decodeLog(this.Cabi[2].inputs,receipt.logs[0].data,receipt.logs[0].topics)
-      return event["challengeId"]
+      const event = this.web3.eth.abi.decodeLog(
+        this.Cabi[2].inputs,
+        receipt.logs[0].data,
+        receipt.logs[0].topics
+      );
+      return event["challengeId"];
     }
   }
 
-  async endDailyChallenge(challengeId) { 
+  async endDailyChallenge(challengeId) {
     await this.init();
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
@@ -420,7 +430,7 @@ class ContractAPI {
     donationChallenge.totalDonation = 1;
 
     if (this.account !== undefined && this.account !== "") {
-      const txHash=await window.ethereum
+      const txHash = await window.ethereum
         .request({
           method: "eth_sendTransaction",
           params: [
@@ -438,10 +448,14 @@ class ContractAPI {
         })
         .catch((error) => console.error);
 
-      const receipt=await this.web3.eth.getTransactionReceipt(txHash)
+      const receipt = await this.web3.eth.getTransactionReceipt(txHash);
 
-      const event=this.web3.eth.abi.decodeLog(this.Cabi[2].inputs,receipt.logs[0].data,receipt.logs[0].topics)
-      return event["challengeId"]
+      const event = this.web3.eth.abi.decodeLog(
+        this.Cabi[2].inputs,
+        receipt.logs[0].data,
+        receipt.logs[0].topics
+      );
+      return event["challengeId"];
     }
   }
 
@@ -513,7 +527,7 @@ class ContractAPI {
     await this.init();
 
     if (this.account !== undefined && this.account !== "") {
-      const txHash=await window.ethereum
+      const txHash = await window.ethereum
         .request({
           method: "eth_sendTransaction",
           params: [
@@ -527,9 +541,13 @@ class ContractAPI {
           ],
         })
         .catch((error) => console.error);
-      const receipt=await this.web3.eth.getTransactionReceipt(txHash)
-      const event=this.web3.eth.abi.decodeLog(this.Vabi[0].inputs,receipt.logs[0].data,receipt.logs[0].topics)
-      return event["voteId"]
+      const receipt = await this.web3.eth.getTransactionReceipt(txHash);
+      const event = this.web3.eth.abi.decodeLog(
+        this.Vabi[0].inputs,
+        receipt.logs[0].data,
+        receipt.logs[0].topics
+      );
+      return event["voteId"];
     }
   }
   async voting(challengeId, userId, voteId, pass) {
