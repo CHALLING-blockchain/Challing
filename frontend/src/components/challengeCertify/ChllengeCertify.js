@@ -9,7 +9,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import * as getDayGab from "../main/Main.js";
 import ContractAPI from "../../api/ContractAPI";
-
+import * as getDayGap from "../main/Main.js";
+import { selectUser } from "../../app/redux/userSlice";
+import { useSelector } from "react-redux";
+import useWeb3 from "../../hooks/useWeb3";
 function Header() {
   const navigate = useNavigate();
   return (
@@ -73,15 +76,40 @@ function Description({ info, percentage }) {
 
 
 function Btn({ challengeId, challenge, percentage,challenger }) {
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+  // loading status
+  const [isLoading, setIsLoading] = useState(false);
+  // error messages
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // get active account and balance data from useWeb3 hook
+  const {
+    connect,
+    disconnect,
+    provider,
+    account: activeAccount,
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
   const [openModal, setOpenModal] = useState(false);
-  const [state, setState] = useState(false);
+  const userId = useSelector(selectUser).id;
+  const today=Math.abs(
+    getDayGap.getDayGapFromDates(
+      challenge.startDate,
+      moment(new Date()).format("YYYY-MM-DD")
+    ))
+  console.log("today",today)
+  console.log("challenger.today",challenger.today)
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
   }
   function Modal({onClose}){
+    const Contract = new ContractAPI(activeAccount);
     function handleClose(){
       onClose ?.();
+    }
+    function usePasscoin(){
+      Contract.usePasscoin(challengeId, userId)
+      handleClose()
     }
     return (
       <div className={styles.Modal} onClick={handleClose}>
@@ -118,7 +146,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
             </p>
           </div>
           <div className={styles.buttonBox}>
-            <button className={styles.MdNextButton} onClick={() => {}}>
+            <button className={styles.MdNextButton} onClick={usePasscoin}>
               사용하기
             </button>
           </div>
@@ -129,7 +157,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
 
   return (
     <div>
-      {challenger.dailyCount<challenge.authDayTimes? (
+      {challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today ? (
         <div className={styles.btnBox}>
           <button
             className={styles.btnpre}
@@ -143,7 +171,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
               });
             }}
           >
-            📸 인증하기 {challenger.dailyCount}/{challenge.authDayTimes}
+            📸 인증하기 
           </button>
           <img
             src={dollarCoin}
@@ -248,8 +276,6 @@ function ChallengeCertify() {
   const [photoList, setPhotoList] = useState([]);
 
   const Contract = new ContractAPI();
-   console.log("챌린지",challenge)
-  console.log("챌린저",challengers)
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
