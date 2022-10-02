@@ -1,28 +1,37 @@
 import { useState } from "react";
-import styles from './challengeForm.module.css';
+import styles from "./challengeForm.module.css";
 
-function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
-  const [money,setMoney] = useState(0);
-  function NextButton(){
-    return(
+function SelectDeposit({ formCnt, setFormCnt, dailyMoney, setDailyMoney }) {
+  const [money, setMoney] = useState(0);
+  function NextButton() {
+    return (
       <div className={styles.buttonBox}>
-        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+        <button
+          className={styles.NextButton}
+          onClick={() => {
+            setFormCnt(formCnt + 1);
+          }}
+        >
+          Next( {formCnt} / 8)
+        </button>
       </div>
-    )
+    );
   }
-  function NextButtonX(){
-    return(
+  function NextButtonX() {
+    return (
       <div className={styles.buttonBox}>
         <button className={styles.NextButtonX}>Next( {formCnt} / 8)</button>
       </div>
-    )
+    );
   }
-  function Header(){
+  function Header() {
     return (
       <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
         <div className={styles.header}>
           <svg
-            onClick={()=>{setFormCnt(formCnt-1)}}
+            onClick={() => {
+              setFormCnt(formCnt - 1);
+            }}
             style={{ margin: "16px" }}
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -44,11 +53,15 @@ function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
   }
   return (
     <div>
-      <Header/>
-      <div style={{padding:'16px'}}>
+      <Header />
+      <div style={{ padding: "16px" }}>
         <p className={styles.FormHeader}>예치금을 설정해주세요.</p>
-        <p className={styles.FormEx}>챌린지 참여자의 예치금을 지정해주세요.<br/>
-                              챌린지 개설 후 예치금 변경이 불가합니다.<br/></p>
+        <p className={styles.FormEx}>
+          챌린지 참여자의 예치금을 지정해주세요.
+          <br />
+          챌린지 개설 후 예치금 변경이 불가합니다.
+          <br />
+        </p>
         <input
           className={styles.Input}
           placeholder="예치금을 입력해주세요."
@@ -62,9 +75,10 @@ function SelectDeposit({formCnt,setFormCnt,dailyMoney,setDailyMoney}) {
           }}
         />
         <p>*숫자만 입력가능합니다.</p>
+        <p>*최소 예치금은 0.0001 eth 입니다.</p>
       </div>
 
-     { money !== 0 ? <NextButton/> : <NextButtonX/>}
+      {money >= 0.0001 ? <NextButton /> : <NextButtonX />}
     </div>
   );
 }
