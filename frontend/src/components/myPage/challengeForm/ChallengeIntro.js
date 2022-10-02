@@ -22,7 +22,6 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
   // 파일 s3에 저장
   const s3SaveFileImage = async() => {
     const url=await uploadImageFile(s3file);
-    console.log(url)
     setExPhotoUrl(url);
   };
   

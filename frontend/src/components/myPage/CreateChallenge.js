@@ -42,7 +42,6 @@ function CreateChallenge() {
   
   const [formCnt,setFormCnt] = useState(0);
   
-  console.log(selects,formCnt);
 
   return(
     <div className={styles.CreateChallenge}>

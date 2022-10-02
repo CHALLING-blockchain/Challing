@@ -132,7 +132,6 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
 
   let userId = useSelector(selectUser).id;
-  console.log("userId: ", useSelector(selectUser).id);
   const topic2id = {
     운동: 0,
     생활: 1,
@@ -206,7 +205,6 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
                 challengeType:"DAILY",
                 triggerAt:date.getTime()
               }
-              console.log(body)
               ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },
@@ -235,7 +233,6 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
                 challengeType:"DONATION",
                 triggerAt:date.getTime()
               }
-              console.log(body)
               ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },

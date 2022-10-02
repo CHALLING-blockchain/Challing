@@ -34,7 +34,6 @@ function Header() {
 
 function Shots({voteList}){
   const navigate = useNavigate();
-  console.log(voteList)
   const moveDetail = (vote) => {
     navigate(`/voting/${vote.id}`, {
       state: { vote

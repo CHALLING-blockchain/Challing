@@ -85,11 +85,9 @@ function Vote(){
         if (myVote ){
             // 찬성 +1
             setPass(pass+1)
-            console.log('pass');
         } else {
             // 반대 +1
             setFail(fail+1)
-            console.log('fail');
         }
         Contract.voting(vote.challengeId, userId, vote.id, myVote)
       }
