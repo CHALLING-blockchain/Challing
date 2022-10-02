@@ -99,9 +99,9 @@ function SelectCertification({
     }
 
     useEffect(() => {
-      console.log("헤이 암히얼");
+      // console.log("헤이 암히얼");
       setEmptyFlag(inputNullCheck());
-      console.log("emptyFlag", emptyFlag);
+      // console.log("emptyFlag", emptyFlag);
     }, [weekValue, dayValue]);
 
     return (
