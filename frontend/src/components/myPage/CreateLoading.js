@@ -13,7 +13,6 @@ function CreateLoading() {
   let flag = true;
   flag = useLocation().state.state;
   function linkToMain() {
-    console.log("실행");
     navigate("/");
   }
 
