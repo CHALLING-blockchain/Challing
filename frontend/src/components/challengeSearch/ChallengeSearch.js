@@ -17,7 +17,6 @@ function ChallengeSearch() {
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
-      console.log("response", response);
       dispatch(setUserInfo(response.data.body));
       setUser(response.data.body);
     });
@@ -26,22 +25,19 @@ function ChallengeSearch() {
   //챌린지 검색
   function challengeSearchRendering() {
     const result = [];
-    //검색 안했을때 신규챌린지 10개 보여주기
+    //검색 했을 때 보여주기
     if (search !== "") {
-      let length = Object.keys(selector).length;
-      if (length > 10) length = 10;
-      for (let index = 1; index <= length; index++) {
+      for (let index = 1; index <= Object.keys(selector).length; index++) {
         if (
           selector[index] !== undefined &&
           selector[index].name.includes(search)
         ) {
           const element = selector[index];
-          console.log(element);
           let dayGap = getDayGap.getDayGapFromToday(element.startDate);
           let period = Math.floor(
             getDayGap.getDayGapFromDates(element.startDate, element.endDate) / 7
           );
-          let startDay = dayGap + "일 뒤";
+
           // 시작 전 챌린지만
           if (dayGap > 0) {
             result.push(
@@ -59,7 +55,9 @@ function ChallengeSearch() {
                 />
                 <div style={{ paddingLeft: "8px" }}>
                   <p className={styles.SearchAfterTitle}>{element.name}</p>
-                  <span className={styles.SearchAfterTag}>{startDay} 시작</span>
+                  <span className={styles.SearchAfterTag}>
+                    {dayGap} 일 뒤 시작
+                  </span>
                   <br />
                   <span className={styles.SearchAfterTag}>{period}주 동안</span>
                 </div>
@@ -69,13 +67,15 @@ function ChallengeSearch() {
         }
       }
     } else {
-      //검색어 있을때
-      for (let index = 1; index <= Object.keys(selector).length; index++) {
+      //검색어 없을 때
+      let cnt = 0;
+      for (let index = Object.keys(selector).length; index >= 1; index--) {
+        if (cnt === 10) break;
         const element = selector[index];
         let dayGap = getDayGap.getDayGapFromToday(element.startDate);
-        let startDay = dayGap + "일 뒤";
         // 시작 전 챌린지만
         if (dayGap > 0) {
+          cnt++;
           result.push(
             <div style={{ padding: "8px 4px" }}>
               <div
@@ -91,7 +91,9 @@ function ChallengeSearch() {
                   alt=""
                 />
                 <p className={styles.SearchBeforeTitle}>{element.name}</p>
-                <span className={styles.SearchBeforeTag}>{startDay} 시작</span>
+                <span className={styles.SearchBeforeTag}>
+                  {dayGap}일 뒤 시작
+                </span>
               </div>
             </div>
           );
@@ -103,7 +105,6 @@ function ChallengeSearch() {
 
   //챌린지 디테일로 넘기기
   function toChallengeDetail(index) {
-    console.log("toChallengeDetail", index);
     navigate(`/challenge-detail/${index}`);
   }
 
