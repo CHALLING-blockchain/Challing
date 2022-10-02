@@ -61,7 +61,7 @@ function Achieve(props) {
           let challengers = result;
           for (let i = 0; i < challengers.length; i++) {
             if (challengers[i].userId == user.id) {
-              
+              console.log(challengers[i])
               setMyCount(challengers[i].totalCount);
             }
           }
@@ -202,17 +202,19 @@ function Btn(props) {
       provider,
       account: activeAccount,
     } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+    const navigate = useNavigate();
     const challengeId = props.challengeId;
     const challenge = props.challenge;
     const Contract = new ContractAPI(activeAccount);
     const dispatch = useDispatch();
     const [user, setUser] = useState(useSelector(selectUser));
-    const [myCount, setMyCount] = useState("");
+    const [challenger, setChallenger] = useState("");
     const selector = useSelector(challengeList);
     const totalCount = selector[challengeId].authTotalTimes;
 
     function refund(){
       Contract.refund(challengeId, user.id)
+      navigate(`/completed-detail/${challengeId}`)
     }
     let type = "";
     if ("deposit" in challenge) {
@@ -232,7 +234,7 @@ function Btn(props) {
           let challengers = result;
           for (let i = 0; i < challengers.length; i++) {
             if (challengers[i].userId == user.id) {
-              setMyCount(challengers[i].totalCount);
+              setChallenger(challengers[i]);
             }
           }
         });
@@ -240,25 +242,30 @@ function Btn(props) {
       load();
     }, []);
 
-    return (
-      <div>
-        {type === "daily" ? (
-          myCount / totalCount >= 0.4 ? (
-            <div>
-              <button className={styles.btn} onClick={refund}>환급받기</button>
-            </div>
-          ) : (
-            <div></div>
-          )
-        ) : challenge.success == false ? (
-          <div>
-            <button className={styles.btn} onClick={refund}>환급받기</button>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
-    );
+    if(challenger.receiveRefund){
+      return <div >정산완료</div> //여기 css 수정해주라
+    }else{
+      return (
+        <div>
+          {type === "daily" ? (
+              challenger.totalCount / totalCount >= 0.4 ? (
+                <div>
+                  <button className={styles.btn} onClick={refund}>환급받기</button>
+                </div>
+              ) : (
+                <div></div>
+              )
+            ) : challenge.success == false ? (
+              <div>
+                <button className={styles.btn} onClick={refund}>환급받기</button>
+              </div>
+            ) : (
+              <div></div>
+            )}
+        </div>
+      );
+    }
+    
 }
 
 function DonationSuccess(props){
