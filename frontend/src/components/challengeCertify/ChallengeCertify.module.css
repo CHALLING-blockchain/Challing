@@ -61,9 +61,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 16px 16px;
 }
 
-.btn{
+.btnpre{
+  width: 278px;
+  height: 40px;
+  margin: auto 8px auto 0;
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+.btnafter{
   width: 328px;
   height: 40px;
   margin: 0 auto 16px;
@@ -149,4 +161,111 @@
 .votingSub{
     display: flex;
     align-items: center;
+}
+
+.passcoinImg{
+    width: 40px;
+    height: 40px;
+}
+
+
+/* modal창 외부화면 */
+.Modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+.ModalTitle{
+  position: absolute;
+  left: 28px;
+  top: 40px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #54595E;
+}
+.ModalText{
+  /* position: absolute;
+  left: 35px;
+  top: 76px; */
+  text-align: start;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  color: #4F4F4F;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  width: 280px;
+}
+.ModalImg{
+  display: flex;
+  justify-content: start;
+  padding: 32px;
+}
+/* modal창 */
+.ModalBody {
+  position: absolute;
+  width: 328px;
+  height: 336px;
+  padding: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
+.EXModalBody {
+  position: absolute;
+  width: 328px;
+  height: 268px;
+  padding: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
+.ImgBox{
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+.modalCloseBtn {
+position: absolute;
+right: 22px;
+top: 24px;
+  }
+
+.MdNextButton{
+  width: 248px;
+  height: 40px;
+  position: absolute;
+  left: 48px;
+  top: 284px;
+  /* margin: 16px; */
+  background: linear-gradient(45deg, #8397ff, #926bff);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+.OpenModal{
+  color:#926bff;
 }

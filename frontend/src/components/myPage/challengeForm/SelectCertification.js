@@ -12,6 +12,7 @@ function SelectCertification({
   setStartTime,
   setEndTime,
 }) {
+  const [emptyFlag, setEmptyFlag] = useState(0);
   const marks = {
     0: <strong>00:00</strong>,
     6: "06:00",
@@ -25,28 +26,30 @@ function SelectCertification({
     joo: null,
     horu: null,
   });
+
   function NextButton() {
-    return (
-      <div className={styles.buttonBox}>
-        <button
-          className={styles.NextButton}
-          onClick={() => {
-            setFormCnt(formCnt + 1);
-          }}
-        >
-          Next( {formCnt} / 8)
-        </button>
-      </div>
-    );
-  }
-  function NextButtonX() {
-    return (
-      <div className={styles.buttonBox}>
-        <button type="submit" className={styles.NextButtonX}>
-          Next( {formCnt} / 8)
-        </button>
-      </div>
-    );
+    if (emptyFlag !== 1) {
+      return (
+        <div className={styles.buttonBox}>
+          <button
+            className={styles.NextButton}
+            onClick={() => {
+              setFormCnt(formCnt + 1);
+            }}
+          >
+            Next( {formCnt} / 8)
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.buttonBox}>
+          <button type="submit" className={styles.NextButtonX}>
+            Next( {formCnt} / 8)
+          </button>
+        </div>
+      );
+    }
   }
   function checkRange(weekOrDay) {
     if (weekOrDay === "week") {
@@ -76,14 +79,31 @@ function SelectCertification({
         document.getElementById("week").value === "" ||
         document.getElementById("day").value === ""
       ) {
-        console.log("헤이 비엇잔아");
-        return true;
+        // console.log("true");
+        return 1;
       } else {
-        return false;
+        // console.log("false");
+        return 0;
       }
     }
   }
   function Header() {
+    let weekValue = "";
+    let dayValue = "";
+    if (
+      document.getElementById("week") !== null ||
+      document.getElementById("day") !== null
+    ) {
+      weekValue = document.getElementById("week").value;
+      dayValue = document.getElementById("day").value;
+    }
+
+    useEffect(() => {
+      // console.log("헤이 암히얼");
+      setEmptyFlag(inputNullCheck());
+      // console.log("emptyFlag", emptyFlag);
+    }, [weekValue, dayValue]);
+
     return (
       <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
         <div className={styles.header}>
@@ -202,11 +222,7 @@ function SelectCertification({
           />
         </div>
       </div>
-      {inputNullCheck() && Object.values(list).includes(null) ? (
-        <NextButtonX />
-      ) : (
-        <NextButton />
-      )}
+      <NextButton />
     </div>
   );
 }
