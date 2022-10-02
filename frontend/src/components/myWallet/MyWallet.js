@@ -207,7 +207,10 @@ function MyWallet() {
             };
 
             //undefined 예외처리
-            if (element.input !== undefined) {
+            if (
+              element.input !== undefined &&
+              !filter(txData[index].filter).includes("무슨함수")
+            ) {
               // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
               // if (element.input.includes("ecb18ceba781")) {
               // console.log(element);
@@ -265,13 +268,25 @@ function MyWallet() {
   }
 
   function filter(methodId) {
-    if (methodId === "0x9d4e1c1c") {
-      return "챌린지 인증";
-    } else if (methodId === "0x6a5e4c9e") {
-      return "챌린지 생성";
+    if (methodId === "0x69e2809e" || methodId === "0xd20b03c5") {
+      return "👍 챌링 인증";
+    } else if (methodId === "0x1d41860d") {
+      return "💪 챌링 생성(일상)";
+    } else if (methodId === "0xfb81a8a9") {
+      return "👋 챌링 생성(기부)";
+    } else if (methodId === "0xa1d9bafc") {
+      return "🚨 신고";
+    } else if (methodId === "0xc6884595") {
+      return "🚀 챌링 참여";
+    } else if (methodId === "0xc7a097b7") {
+      return "🏳‍🌈 투표 참여";
+    } else if (methodId === "??") {
+      return "🥈 챌링 환급 🥈";
+    } else if (methodId === "??") {
+      return "🥇 챌링 상금 🥇";
     } else {
       console.log(methodId);
-      return "챌린지" + methodId;
+      return "무슨함수" + methodId;
     }
   }
   // 거래내역 for문
@@ -283,6 +298,7 @@ function MyWallet() {
       // 트랜젝션 발생 시간
       let date = txData[index].timeStamp;
       // 날짜별로 모아서 보여주기
+
       if (
         index >= 1 &&
         index < txData.length &&
@@ -290,14 +306,8 @@ function MyWallet() {
       ) {
         date = "";
       }
-      // 이부분 데모 시연시 코드 변경해야함
-      // 거래내역 확인하기
-      // if (
-      //   txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
-      //   txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
-      //   txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
-      //   txData[index].from.toLowerCase() === Vaddress.toLowerCase()
-      // ) {
+
+      // if (!filter(txData[index].filter).includes("무슨함수")) {
       // console.log("txData[index].filter", txData[index].filter);
       result.push(
         <div key={index} className={styles.historyContent}>
@@ -316,7 +326,9 @@ function MyWallet() {
         </div>
       );
       // }
+      // }
     }
+
     return result;
   }
 
