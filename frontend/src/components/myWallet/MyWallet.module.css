@@ -96,7 +96,7 @@
   padding: 16px;
   height: 24px;
   display: grid;
-  grid-template-columns: 3fr 1fr 2fr;
+  grid-template-columns: 4fr 1fr 4fr;
   border: none;
   border-radius: 10px;
   align-items: center;
