@@ -10,7 +10,9 @@ import moment from "moment";
 import * as getDayGab from "../main/Main.js";
 import ContractAPI from "../../api/ContractAPI";
 import * as getDayGap from "../main/Main.js";
-
+import { selectUser } from "../../app/redux/userSlice";
+import { useSelector } from "react-redux";
+import useWeb3 from "../../hooks/useWeb3";
 function Header() {
   const navigate = useNavigate();
   return (
@@ -74,8 +76,21 @@ function Description({ info, percentage }) {
 
 
 function Btn({ challengeId, challenge, percentage,challenger }) {
-  const [openModal, setOpenModal] = useState(false);
+  const [exist, setExist] = useState(localStorage.getItem("myAccount"));
+  // loading status
+  const [isLoading, setIsLoading] = useState(false);
+  // error messages
+  const [errorMessage, setErrorMessage] = useState("");
 
+  // get active account and balance data from useWeb3 hook
+  const {
+    connect,
+    disconnect,
+    provider,
+    account: activeAccount,
+  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+  const [openModal, setOpenModal] = useState(false);
+  const userId = useSelector(selectUser).id;
   const today=Math.abs(
     getDayGap.getDayGapFromDates(
       challenge.startDate,
@@ -88,8 +103,13 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
     setOpenModal(true);
   }
   function Modal({onClose}){
+    const Contract = new ContractAPI(activeAccount);
     function handleClose(){
       onClose ?.();
+    }
+    function usePasscoin(){
+      Contract.usePasscoin(challengeId, userId)
+      handleClose()
     }
     return (
       <div className={styles.Modal} onClick={handleClose}>
@@ -126,7 +146,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
             </p>
           </div>
           <div className={styles.buttonBox}>
-            <button className={styles.MdNextButton} onClick={() => {}}>
+            <button className={styles.MdNextButton} onClick={usePasscoin}>
               사용하기
             </button>
           </div>
@@ -256,8 +276,6 @@ function ChallengeCertify() {
   const [photoList, setPhotoList] = useState([]);
 
   const Contract = new ContractAPI();
-   console.log("챌린지",challenge)
-  console.log("챌린저",challengers)
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
