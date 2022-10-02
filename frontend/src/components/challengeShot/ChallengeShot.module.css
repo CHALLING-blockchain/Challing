@@ -17,37 +17,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.Header {
   position: fixed;
-  top: 0;
+  top:0;
+  left: 124px;
+  }
+.Content{
+  height: 544px;
+  overflow: scroll;
+  position: absolute;
+  top:56px;
 }
-.InputSearch {
-  width: 328px;
-  height: 40px;
-  background-color: #fbfbfb;
-  display: flex;
-  align-items: center;
-  /* padding: 8px; */
-  border-radius: 100px;
-  margin-bottom: 16px;
-}
-.Input {
-  font-weight: 600;
-  font-size: 16px;
-  /* color: #999999; */
-  background-color: #fbfbfb;
-  height: 32px;
-  width: 248px;
-  padding-left: 8px;
-}
-.Input:focus {
-  outline: none;
-}
-.SearchIcon {
-  margin-left: 16px;
-  margin-right: 8px;
-}
+
 .Contents {
   padding: 16px;
   padding-top: 0px;
@@ -120,6 +100,7 @@
   align-items: center;
   margin-top: 4px;
 }
-.CardBox {
-  margin-top: 16px;
+
+.CardBox{
+  margin-right: 4px;
 }
