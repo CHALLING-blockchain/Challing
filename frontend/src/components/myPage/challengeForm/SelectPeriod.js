@@ -19,6 +19,7 @@ function SelectPeriod({
 }) {
   const [list, setList] = useState({
     Njoo: null,
+    startD: null,
     endD: null,
   });
   const [day, setDay] = useState(0);
@@ -26,14 +27,16 @@ function SelectPeriod({
   const [startDate, setStartDate] = useState(addDays(new Date(), 1));
   useEffect(() => {
     setStartDate(addDays(new Date(), 1));
+    console.log("startDate", startDate);
   }, []);
   useEffect(() => {
     setChallengeEnd(moment(endDate).format("YYYY-MM-DD"));
   }, [endDate]);
   useEffect(() => {
     const ddate = new Date(startDate);
+    setChallengeStart(moment(startDate).format("YYYY-MM-DD"));
     setEndDate(new Date(ddate.setDate(ddate.getDate() + day)));
-    setList((list) => ({ ...list, endD: endDate }));
+    setList((list) => ({ ...list, startD: startDate, endD: endDate }));
   }, [day]);
   function NextButton() {
     return (
@@ -186,7 +189,7 @@ function SelectPeriod({
               setStartDate(start);
               setChallengeStart(startData);
               setEndDate(new Date(date.setDate(date.getDate() + day)));
-              setList((list) => ({ ...list, endD: start }));
+              setList((list) => ({ ...list, startD: start, endD: start }));
             }}
             minDate={addDays(new Date(), 1)}
             maxDate={addMonths(new Date(), 5)}

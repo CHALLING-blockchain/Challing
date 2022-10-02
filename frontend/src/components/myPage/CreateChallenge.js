@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreateChallenge.module.css";
 import SelectChallenge from "./challengeForm/SelectChallenge";
 import SelectTopic from "./challengeForm/SelectTopic";
@@ -39,6 +39,10 @@ function CreateChallenge() {
     limitNum: 999,
     dailyMoney: 0,
   });
+
+  useEffect(() => {
+    console.log("selects", selects);
+  }, [selects]);
 
   const [formCnt, setFormCnt] = useState(0);
 
