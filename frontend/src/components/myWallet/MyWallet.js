@@ -265,10 +265,10 @@ function MyWallet() {
   }
 
   function filter(methodId) {
-    if (methodId === "0x9d4e1c1c") {
+    if (methodId === "0x69e2809e" || methodId === "0xd20b03c5") {
       return "챌린지 인증";
-    } else if (methodId === "0x6a5e4c9e") {
-      return "챌린지 생성";
+    } else if (methodId === "0x1d41860d") {
+      return "챌린지 생성 - 일상";
     } else {
       console.log(methodId);
       return "챌린지" + methodId;
@@ -292,30 +292,30 @@ function MyWallet() {
       }
       // 이부분 데모 시연시 코드 변경해야함
       // 거래내역 확인하기
-      // if (
-      //   txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
-      //   txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
-      //   txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
-      //   txData[index].from.toLowerCase() === Vaddress.toLowerCase()
-      // ) {
-      // console.log("txData[index].filter", txData[index].filter);
-      result.push(
-        <div key={index} className={styles.historyContent}>
-          <p> {date} </p>
-          <div className={styles.content}>
-            <div className={styles.titleContent}>
-              <p>{filter(txData[index].filter)}</p>
-            </div>
-            <div></div>
-            <div className={styles.ethcontent}>
-              <p>
-                {txData[index].etherValue}ETH {txData[index].sendOrReceive}
-              </p>
+      if (
+        txData[index].to.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Caddress.toLowerCase() ||
+        txData[index].to.toLowerCase() === Vaddress.toLowerCase() ||
+        txData[index].from.toLowerCase() === Vaddress.toLowerCase()
+      ) {
+        console.log("txData[index].filter", txData[index].filter);
+        result.push(
+          <div key={index} className={styles.historyContent}>
+            <p> {date} </p>
+            <div className={styles.content}>
+              <div className={styles.titleContent}>
+                <p>{filter(txData[index].filter)}</p>
+              </div>
+              <div></div>
+              <div className={styles.ethcontent}>
+                <p>
+                  {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      );
-      // }
+        );
+      }
     }
     return result;
   }
