@@ -1,29 +1,35 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './challengeForm.module.css';
 import donationIcon from '../../../img/donation-challenge-hand.png'
 import dailyIcon from '../../../img/daily-challenge-hand.png'
 
 function Header(){
+  const navigate = useNavigate();
   return (
     <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
       <div className={styles.header}>
-        <Link to="/my-page">
-          <svg
-            style={{ margin: "16px" }}
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            className="bi bi-chevron-left"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-            />
-          </svg>
-        </Link>
+        <svg
+          onClick={() => {
+            navigate(-1, {
+              state: {
+                state: true,
+              },
+            });
+          }}
+          style={{ margin: "16px" }}
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-chevron-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fillRule="evenodd"
+            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+          />
+        </svg>
         <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
         <div></div>
       </div>
