@@ -31,7 +31,7 @@ function CertifyLoading() {
         if (Number(response.totalCount) === cnt + 1) {
           addPhoto();
           navigate(`/challenge-certify/${id}`, {
-            state: { challengeInfo: challenge, percentage: percentage },
+            state: { challengeInfo: challenge, percentage: percentage,challengerInfo:response },
           });
         }
       });
