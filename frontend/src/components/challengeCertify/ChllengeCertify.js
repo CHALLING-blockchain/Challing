@@ -9,6 +9,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import * as getDayGab from "../main/Main.js";
 import ContractAPI from "../../api/ContractAPI";
+import * as getDayGap from "../main/Main.js";
 
 function Header() {
   const navigate = useNavigate();
@@ -74,7 +75,14 @@ function Description({ info, percentage }) {
 
 function Btn({ challengeId, challenge, percentage,challenger }) {
   const [openModal, setOpenModal] = useState(false);
-  const [state, setState] = useState(false);
+
+  const today=Math.abs(
+    getDayGap.getDayGapFromDates(
+      challenge.startDate,
+      moment(new Date()).format("YYYY-MM-DD")
+    ))
+  console.log("today",today)
+  console.log("challenger.today",challenger.today)
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
@@ -129,7 +137,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
 
   return (
     <div>
-      {challenger.dailyCount<challenge.authDayTimes? (
+      {challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today ? (
         <div className={styles.btnBox}>
           <button
             className={styles.btnpre}
@@ -143,7 +151,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
               });
             }}
           >
-            📸 인증하기 {challenger.dailyCount}/{challenge.authDayTimes}
+            📸 인증하기 
           </button>
           <img
             src={dollarCoin}
