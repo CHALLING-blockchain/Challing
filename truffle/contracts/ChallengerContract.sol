@@ -28,6 +28,10 @@ contract ChallengerContract is PassCoinContract{
 
         // 상금
         uint reward;
+
+        // 환급받았는지
+        bool receiveRefund;
+
     }
 
     uint challengerSequence=1;
@@ -42,9 +46,16 @@ contract ChallengerContract is PassCoinContract{
     }
     
     // 정산하기
-    function refund(uint challengerId) public payable{
+    function refund(uint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex) public payable{
         Challenger memory challenger=challengerMap[challengerId];
-       
+        challenger.receiveRefund=true;
+
+        // 챌린저 업데이트
+        findByUserIdChallenger[userId][userIdIndex]=challenger;
+        findByChallengeIdChallenger[challengeId][challengeIdIndex]=challenger;
+        challengerMap[challenger.id]=challenger;
+
+        // 유저에게 환급
         address userAddress=challenger.userAddress;
         payable(userAddress).transfer(challenger.userDeposit+challenger.reward);
     }

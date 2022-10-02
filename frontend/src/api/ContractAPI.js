@@ -103,7 +103,8 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-
+      challenges[0]=challenges[0].filter(challenge=>challenge!=='0')
+    
     return challenges;
   }
   async findingChallenger(challengeId, userId) {
@@ -240,7 +241,8 @@ class ContractAPI {
       .catch(console.error);
 
     const challengerId = info[0];
-
+    const userIdIndex = info[1]; 
+    const challengeIdIndex = info[2]
     if (this.account !== undefined && this.account !== "") {
       window.ethereum
         .request({
@@ -249,7 +251,7 @@ class ContractAPI {
             {
               from: this.account,
               to: this.Caddress,
-              data: this.Ccontract.methods.refund(challengerId).encodeABI(),
+              data: this.Ccontract.methods.refund(challengeId, userId, challengerId, userIdIndex, challengeIdIndex).encodeABI(),
             },
           ],
         })
