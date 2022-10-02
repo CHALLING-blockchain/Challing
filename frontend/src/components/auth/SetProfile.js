@@ -26,8 +26,6 @@ function SetProfile() {
 
   const handleChange = (e) => {
     setNickname(e.target.value);
-    // console.log("e", e.target.value);
-    // console.log("n", nickname);
     if (e.target.value !== "") {
       UserAPI.validCheck(e.target.value).then((response) => {
         if (response.data.body) {

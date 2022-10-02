@@ -134,7 +134,7 @@ function MyPage() {
           <div>
             <Link to="/ongoing-challenge">
               <p>{ingChal}</p>
-              <span>진행중</span>
+              <span>참여</span>
             </Link>
           </div>
           <div>

@@ -6,7 +6,6 @@ import styles from "./MyProfile.module.css";
 
 function MyProfile() {
   const user = useSelector(selectUser);
-  console.log(user);
   const fileImage = user.picURL;
   const totalInterests = ["운동", "학습", "생활", "취미", "식생활", "그 외"];
 
