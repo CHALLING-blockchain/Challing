@@ -103,7 +103,8 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-
+      // challenges[0]=challenges[0].filter(challenge=>challenge!=='0')
+    
     return challenges;
   }
   async findingChallenger(challengeId, userId) {
