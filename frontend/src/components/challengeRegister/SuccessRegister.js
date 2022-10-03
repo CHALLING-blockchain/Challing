@@ -65,7 +65,7 @@ function Inform(props) {
                 props.challenge.deposit || props.challenge.setDonation,
                 "ether"
               )
-            ).toFixed(3)}{" "}
+            ).toFixed(4)}{" "}
             eth
           </span>
         </div>
