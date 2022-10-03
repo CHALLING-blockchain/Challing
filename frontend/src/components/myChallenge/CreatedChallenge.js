@@ -96,9 +96,10 @@ function AchieveRateBox() {
 function ChallengeList() {
   const Contract = new ContractAPI();
   const [infos, setInfos] = useState([]);
-  const [counts, setCounts] = useState([]);
+  const [challengers, setChallengers] = useState([]);
   const [user, setUser] = useState(useSelector(selectUser));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const selector = useSelector(challengeList);
   const tmp = [];
   const tmpp = [];
@@ -117,15 +118,34 @@ function ChallengeList() {
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          tmpp.push(challenger.totalCount);
+          tmpp.push(challenger);
         });
         tmp.push(selector[id]);
       }
-      setCounts(tmpp);
+      setChallengers(tmpp);
       setInfos(tmp);
     }
     load();
   }, []);
+
+  function navigateDetail(info, index) {
+    const NoIng = getDayGap.getDayGapFromToday(info.startDate);
+    console.log(NoIng);
+    if (NoIng > 0) {
+      navigate(`/challenge-detail/${info.challengeId}`);
+    } else {
+      navigate(`/challenge-certify/${info.challengeId}`, {
+        state: {
+          challengeInfo: info,
+          percentage: (
+            (challengers[index].totalCount / info.authTotalTimes) *
+            100
+          ).toFixed(2),
+          challengerInfo: challengers[index],
+        },
+      });
+    }
+  }
 
   return (
     <div className={styles.listBox}>
@@ -135,14 +155,20 @@ function ChallengeList() {
         );
         let perWeek = Math.floor(info.authTotalTimes / week);
         return (
-          <MyChallengeCard
-            type={getInterestStr.interestIdToName(info.interestId)}
-            title={info.name}
-            times={perWeek}
-            period={info.startDate + "~" + info.endDate}
-            img={info.mainPicURL}
-            count={counts[index]}
-          ></MyChallengeCard>
+          <div
+            onClick={() => {
+              navigateDetail(info, index);
+            }}
+          >
+            <MyChallengeCard
+              type={getInterestStr.interestIdToName(info.interestId)}
+              title={info.name}
+              times={perWeek}
+              period={info.startDate + "~" + info.endDate}
+              img={info.mainPicURL}
+              count={challengers[index].totalCount}
+            ></MyChallengeCard>
+          </div>
         );
       })}
     </div>
