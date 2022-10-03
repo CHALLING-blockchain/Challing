@@ -178,7 +178,9 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
             📸 인증하기 
           </button>
         :
-          <div>인증못함</div>
+          <div className={styles.nobtnpre}>
+            <p>[ 인증 가능 시간 ] {challenge.startTime}:00~{challenge.endTime}:00</p>
+          </div>
         }
         
         
