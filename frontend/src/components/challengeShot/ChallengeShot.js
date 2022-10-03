@@ -13,7 +13,6 @@ import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import ContractAPI from "../../api/ContractAPI";
 import tick from "../../img/tick.png";
 import calender from "../../img/calender.png";
-import clock from "../../img/clock-front-color.png";
 import megaphone from "../../img/megaphone.png";
 // import useWeb3 from "../../../hooks/useWeb3";
 
@@ -43,6 +42,9 @@ function ChallengeShot() {
 
   function ChallengeCard(props) {
     const today = moment(new Date()).format("YYYY-MM-DD");
+    const NoIng = getDayGab.getDayGapFromToday(
+      props.challengeInfo.startDate
+    )
     const dayGab = getDayGab.getDayGapFromDates(
       today,
       props.challengeInfo.endDate
@@ -61,61 +63,87 @@ function ChallengeShot() {
     ).toFixed(2);
 
     return (
-      <div
-        className={styles.CardBox}
-        onClick={() => {
-          navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
-            state: {
-              challengeInfo: props.challengeInfo,
-              percentage: percentage,
-              challengerInfo:props.challengerInfo
-            },
-          });
-        }}
-      >
-        <img
-          style={{ borderRadius: "5px" }}
-          src={props.challengeInfo.mainPicURL}
-          height="120"
-          width="160"
-          alt=""
-        ></img>
-        <div className={styles.CardHeader}>
-          <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+      <div>
+        { NoIng>0 ? 
           <div
-            className={styles.GoShotBtn}
+          className={styles.CardBox}
+          onClick={() => {
+            navigate(`/challenge-detail/${props.challengeInfo.challengeId}`);
+          }}
+        >
+          <img
+            style={{ borderRadius: "5px" }}
+            src={props.challengeInfo.mainPicURL}
+            height="120"
+            width="160"
+            alt=""
+          ></img>
+
+          <div className={styles.CardBody}>
+            <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+            <p style={{ fontSize: "10px" ,display:'flex',alignItems:'center'}}>
+              <img src={calender} height="12" width="12" alt="" />
+              {NoIng}일 뒤 시작
+            </p>
+          </div>
+          {console.log(NoIng)}
+        </div> : 
+          <div
+            className={styles.CardBox}
             onClick={() => {
-              navigate(
-                `/challenge-certify/${props.challengeInfo.challengeId}`,
-                {
-                  state: {
-                    challengeInfo: props.challengeInfo,
-                    percentage: percentage,
-                    challengerInfo:props.challengerInfo
-                  },
-                }
-              );
+              navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
+                state: {
+                  challengeInfo: props.challengeInfo,
+                  percentage: percentage,
+                  challengerInfo:props.challengerInfo
+                },
+              });
             }}
           >
             <img
-              style={{ width: "10px", marginRight: "2px", marginLeft: "2px" }}
-              src={tick}
+              style={{ borderRadius: "5px" }}
+              src={props.challengeInfo.mainPicURL}
+              height="120"
+              width="160"
               alt=""
-            />
-            인증하기
-          </div>
-        </div>
-        <div className={styles.CardBody}>
-          <p style={{ fontSize: "10px" }}>
-            <img src={megaphone} height="12" width="12" alt="" />
-            현재{percentage}%달성
-          </p>
-          <p style={{ fontSize: "10px" }}>
-            <img src={calender} height="12" width="12" alt="" />
-            {dayGab}일 뒤 종료
-          </p>
-        </div>
-        {/* {console.log(props.challengeInfo)} */}
+            ></img>
+            <div className={styles.CardHeader}>
+              <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+              <div
+                className={styles.GoShotBtn}
+                onClick={() => {
+                  navigate(
+                    `/challenge-certify/${props.challengeInfo.challengeId}`,
+                    {
+                      state: {
+                        challengeInfo: props.challengeInfo,
+                        percentage: percentage,
+                        challengerInfo:props.challengerInfo
+                      },
+                    }
+                  );
+                }}
+              >
+                <img
+                  style={{ width: "10px", marginRight: "2px", marginLeft: "2px" }}
+                  src={tick}
+                  alt=""
+                />
+                인증하기
+              </div>
+            </div>
+            <div className={styles.CardBody}>
+              <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
+                <img src={megaphone} height="12" width="12" alt="" />
+                현재 {percentage}%달성
+              </p>
+              <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
+                <img src={calender} height="12" width="12" alt="" />
+                {dayGab}일 뒤 종료
+              </p>
+            </div>
+            {console.log(NoIng)}
+          </div> }
       </div>
     );
   }
