@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Menu.module.css";
-import { Link,useLocation  } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Menu() {
   const location = useLocation();
@@ -46,7 +46,8 @@ function Menu() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {location.pathname === "/challenge-search" || location.pathname.includes('/challenge-detail/')  ? (
+            {location.pathname === "/challenge-search" ||
+            location.pathname.includes("/challenge-detail/") ? (
               <path
                 d="M0 9.74649C0 15.1293 4.38832 19.4862 9.80926 19.4862C15.2222 19.4862 19.6173 15.1293 19.6173 9.74649C19.6173 4.36371 15.2222 0 9.80926 0C4.38832 0 0 4.36371 0 9.74649ZM3.10832 9.74649C3.10832 6.0671 6.10402 3.08986 9.80988 3.08986C13.5084 3.08986 16.5102 6.06771 16.5102 9.74649C16.5102 13.4259 13.5084 16.4037 9.80988 16.4037C6.10402 16.4037 3.10832 13.4253 3.10832 9.74649ZM16.7151 18.6838L20.9336 23.4893C21.613 24.1675 22.0511 24.173 22.7416 23.4893L24.0961 22.1471C24.7619 21.4819 24.8032 21.053 24.0961 20.3496L19.237 16.1804L16.7151 18.6838Z"
                 fill="#755fff"
@@ -67,9 +68,11 @@ function Menu() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {location.pathname === "/challenge-shot" || location.pathname.includes('/challenge-certify/') ||
-            location.pathname.includes('/web-cam-capture') || location.pathname.includes('/certification-photos')||
-            location.pathname.includes('/votinghome') ? (
+            {location.pathname === "/challenge-shot" ||
+            location.pathname.includes("/challenge-certify/") ||
+            location.pathname.includes("/web-cam-capture") ||
+            location.pathname.includes("/certification-photos") ||
+            location.pathname.includes("/votinghome") ? (
               <path
                 d="M3.6 25H24.4C25.836 25 27 23.8061 27 22.3333V8.46667C27 6.99391 25.836 5.8 24.4 5.8H20.5L17.25 1H10.75L7.5 5.8H3.6C2.16406 5.8 1 6.99391 1 8.46667V22.3333C1 23.8061 2.16406 25 3.6 25Z"
                 fill="#755fff"
@@ -87,9 +90,11 @@ function Menu() {
               />
             )}
 
-            {location.pathname === "/challenge-shot" || location.pathname.includes('/challenge-certify/') ||
-            location.pathname.includes('/web-cam-capture') || location.pathname.includes('/certification-photos') ||
-            location.pathname.includes('/votinghome') ? (
+            {location.pathname === "/challenge-shot" ||
+            location.pathname.includes("/challenge-certify/") ||
+            location.pathname.includes("/web-cam-capture") ||
+            location.pathname.includes("/certification-photos") ||
+            location.pathname.includes("/votinghome") ? (
               <path
                 d="M13.9999 19.6667C16.8718 19.6667 19.1999 17.2789 19.1999 14.3333C19.1999 11.3878 16.8718 9 13.9999 9C11.128 9 8.79993 11.3878 8.79993 14.3333C8.79993 17.2789 11.128 19.6667 13.9999 19.6667Z"
                 fill="white"
@@ -173,10 +178,16 @@ function Menu() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {location.pathname === "/my-page" || location.pathname.includes('/my-shot-detail/') || location.pathname === '/my-profile' ||
-            location.pathname === '/edit-profile' || location.pathname === "/ongoing-challenge" ||
-            location.pathname === '/completed-challenge' || location.pathname === '/my-shot-zip' ||
-            location.pathname === '/create-challenge' || location.pathname === '/my-favorite' ? (
+            {location.pathname === "/my-page" ||
+            location.pathname.includes("/my-shot-detail/") ||
+            location.pathname === "/my-profile" ||
+            location.pathname === "/edit-profile" ||
+            location.pathname === "/ongoing-challenge" ||
+            location.pathname === "/completed-challenge" ||
+            location.pathname === "/my-shot-zip" ||
+            location.pathname === "/create-challenge" ||
+            location.pathname === "/my-favorite" ||
+            location.pathname === "/created-challenge" ? (
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
