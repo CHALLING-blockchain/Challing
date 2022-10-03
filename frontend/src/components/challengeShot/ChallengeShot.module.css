@@ -37,11 +37,12 @@
   flex-wrap: wrap;
 }
 .NoContents {
-  height: 360px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 40px;
 }
 .AroundButton {
   /* Rectangle 164 */

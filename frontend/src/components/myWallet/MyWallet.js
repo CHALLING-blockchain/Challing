@@ -36,7 +36,7 @@ function Modal({ onClose }) {
             />
           </svg>
         </div>
-        <p className={styles.ModalTitle}>신고하기</p>
+        <p className={styles.ModalTitle}>Pass Coin</p>
         <div style={{ position: "absolute", left: "32px", top: "88px" }}>
           <p className={styles.ModalText}>
             패스코인을 쓰면 챌린지 인증 하루 실패가 인증완료로 변경됩니다.
