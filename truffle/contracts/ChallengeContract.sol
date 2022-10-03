@@ -116,14 +116,14 @@ contract ChallengeContract is DonationChallengeContract{
         // 다른날짜라면 하루 인증횟수 초기화
         if(findChallenger.today != today){
             findChallenger.dailyCount=0;
+            findChallenger.weekCount+=1;
             findChallenger.today=today;
         }
         if(findChallenger.today%7!=today%7){
             findChallenger.weekCount=0;
-            findChallenger.today=today;
+
         }
-        findChallenger.dailyCount+=1;
-        findChallenger.weekCount+=1;
+        findChallenger.dailyCount+=1;      
         findChallenger.totalCount+=1;
         
         // 챌린저 업데이트
