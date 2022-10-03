@@ -25,6 +25,8 @@ public class ScheduleController {
     @PostMapping("/challenge")
     public ResponseEntity<?> addChallengeSchedule(@RequestBody ChallengeScheduleRequest challengeScheduleRequest) {
 
+        log.info("챌린지 스케줄 요청: {}", challengeScheduleRequest);
+
         try {
             scheduleService.saveAndScheduleChallengeJob(ChallengeJobData.of(challengeScheduleRequest));
         } catch (Exception e) {
@@ -37,6 +39,8 @@ public class ScheduleController {
 
     @PostMapping("/vote")
     public ResponseEntity<?> addVoteSchedule(@RequestBody VoteScheduleRequest voteScheduleRequest) {
+
+        log.info("투표 스케줄 요청: {}", voteScheduleRequest);
 
         try {
             scheduleService.saveAndScheduleVoteJob(VoteJobData.of(voteScheduleRequest));
