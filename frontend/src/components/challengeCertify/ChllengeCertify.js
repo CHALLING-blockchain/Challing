@@ -96,8 +96,11 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
       challenge.startDate,
       moment(new Date()).format("YYYY-MM-DD")
     ))
-  console.log("today",today)
-  console.log("challenger.today",challenger.today)
+  console.log(challenge)
+  const hour=(new Date()).getHours()
+  
+  const flag=Number(challenge.startTime)<=hour&&hour<=Number(challenge.endTime)?true:false
+  console.log("flag",flag)
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
@@ -158,7 +161,8 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
   return (
     <div>
       {challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today ? (
-        <div className={styles.btnBox}>
+        <div className={styles.btnBox}>{
+          flag?
           <button
             className={styles.btnpre}
             onClick={() => {
@@ -173,6 +177,12 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
           >
             📸 인증하기 
           </button>
+        :
+          <div>인증못함</div>
+        }
+        
+        
+        
           <img
             src={dollarCoin}
             className={styles.passcoinImg}
