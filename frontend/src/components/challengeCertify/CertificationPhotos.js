@@ -239,6 +239,13 @@ function Modal({ onClose, photoId }) {
   );
 }
 
+function checkReport(photo) {
+  if (photo.report) {
+    alert("신고 접수된 인증샷 입니다.");
+    return false;
+  } else return true;
+}
+
 function Separately() {
   // for 문 돌려서
   const [openModal, setOpenModal] = useState(false);
@@ -278,8 +285,10 @@ function Separately() {
                     src={megaphone}
                     alt=""
                     onClick={() => {
-                      showModal();
-                      setPhotoId(photo.id);
+                      if (checkReport(photoList[index])) {
+                        showModal();
+                        setPhotoId(photo.id);
+                      }
                     }}
                   />
                 </div>

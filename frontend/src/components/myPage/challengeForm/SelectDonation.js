@@ -1,29 +1,46 @@
 import { useState } from "react";
-import styles from './challengeForm.module.css';
+import styles from "./challengeForm.module.css";
 
-function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,setDonationMoney,options}) {
-  const [money,setMoney] = useState(0);
-  const [dona,setDona] = useState("");
-  function NextButton(){
-    return(
+function SelectDonation({
+  formCnt,
+  setFormCnt,
+  donation,
+  setDonation,
+  donationMoney,
+  setDonationMoney,
+  options,
+}) {
+  const [money, setMoney] = useState(0);
+  const [dona, setDona] = useState("");
+  function NextButton() {
+    return (
       <div className={styles.buttonBox}>
-        <button className={styles.NextButton} onClick={()=>{setFormCnt(formCnt+1)}}>Next( {formCnt} / 8)</button>
+        <button
+          className={styles.NextButton}
+          onClick={() => {
+            setFormCnt(formCnt + 1);
+          }}
+        >
+          Next( {formCnt} / 8)
+        </button>
       </div>
-    )
+    );
   }
-  function NextButtonX(){
-    return(
+  function NextButtonX() {
+    return (
       <div className={styles.buttonBox}>
         <button className={styles.NextButtonX}>Next( {formCnt} / 8)</button>
       </div>
-    )
+    );
   }
-  function Header(){
+  function Header() {
     return (
       <div style={{ position: "sticky", top: "0px", backgroundColor: "white" }}>
         <div className={styles.header}>
           <svg
-            onClick={()=>{setFormCnt(formCnt-1)}}
+            onClick={() => {
+              setFormCnt(formCnt - 1);
+            }}
             style={{ margin: "16px" }}
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -45,12 +62,17 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
   }
   return (
     <div>
-      <Header/>
-      <div style={{padding:'16px'}}>
+      <Header />
+      <div style={{ padding: "16px" }}>
         <p className={styles.FormHeader}>기부금을 설정해주세요.</p>
-        <p className={styles.FormEx}>챌린지 성공 시 기부처로 전달될 기부금을 설정해주세요.<br/>
-                              최소금액은 0.05 ETH 입니다.<br/>
-                              챌린지 개설 후 기부금 변경이 불가합니다.<br/></p>
+        <p className={styles.FormEx}>
+          챌린지 성공 시 기부처로 전달될 기부금을 설정해주세요.
+          <br />
+          최소금액은 0.05 ETH 입니다.
+          <br />
+          챌린지 개설 후 기부금 변경이 불가합니다.
+          <br />
+        </p>
         <input
           className={styles.Input}
           placeholder="기부금을 입력해주세요."
@@ -65,17 +87,31 @@ function SelectDonation({formCnt,setFormCnt,donation,setDonation,donationMoney,s
         />
         <p className={styles.SmallText}>*숫자만 입력가능합니다.</p>
       </div>
-      <div style={{padding:'16px'}}>
+      <div style={{ padding: "16px" }}>
         <p className={styles.FormHeader}>기부처를 선택해주세요.</p>
-        <p className={styles.FormEx}>챌린지 성공 시 기부금이 전달 될 기부처를 선택해주세요.</p>
-        <select className={styles.Select} value={donation} onChange={(e)=>{setDonation(e.target.value); setDona(e.target.value);}}>
-          <option className={styles.Option} value=""> 기부처를 선택해주세요.</option>
-          {options.map((item)=>(
-            <option className={styles.Option} key={item} value={item}>{item}</option>
+        <p className={styles.FormEx}>
+          챌린지 성공 시 기부금이 전달 될 기부처를 선택해주세요.
+        </p>
+        <select
+          className={styles.Select}
+          value={donation}
+          onChange={(e) => {
+            setDonation(e.target.value);
+            setDona(e.target.value);
+          }}
+        >
+          <option className={styles.Option} value="">
+            {" "}
+            기부처를 선택해주세요.
+          </option>
+          {options.map((item) => (
+            <option className={styles.Option} key={item} value={item}>
+              {item}
+            </option>
           ))}
         </select>
       </div>
-     { money && dona !== "" ? <NextButton/> : <NextButtonX/>}
+      {money >= 0.05 && dona ? <NextButton /> : <NextButtonX />}
     </div>
   );
 }
