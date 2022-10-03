@@ -82,7 +82,7 @@ function Inform(props) {
                 props.challenge.deposit || props.challenge.setDonation,
                 "ether"
               )
-            ).toFixed(3)}{" "}
+            ).toFixed(4)}{" "}
             eth
           </span>
         </div>
@@ -122,7 +122,7 @@ function Btn(props) {
               props.challenge.deposit || props.challenge.setDonation,
               "ether"
             )
-          ).toFixed(3) + " ETH 지불하기"
+          ).toFixed(4) + " ETH 지불하기"
         }
         onClick={() => {
           joinChallenge(
@@ -158,7 +158,7 @@ function ConfirmRegister() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
-  let type = ""
+  let type = "";
   if ("deposit" in element) {
     type = "daily";
   } else {
