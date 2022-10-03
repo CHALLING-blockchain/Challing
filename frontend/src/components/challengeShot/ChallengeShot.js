@@ -135,7 +135,7 @@ function ChallengeShot() {
             <div className={styles.CardBody}>
               <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
                 <img src={megaphone} height="12" width="12" alt="" />
-                현재{percentage}%달성
+                현재 {percentage}%달성
               </p>
               <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
                 <img src={calender} height="12" width="12" alt="" />
