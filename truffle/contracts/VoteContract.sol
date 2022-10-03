@@ -28,9 +28,17 @@ contract VoteContract is PhotoContract{
     mapping(uint => Vote[]) findByChallengeIdVote;
     event returnVoteId(uint voteId);
      // 신고하기
-    function report(uint challengeId,uint photoId,uint userId) public{
+    function report(uint challengeId,uint photoId,uint userId, uint challengerId) public{
         Photo memory findPhoto=photoMap[photoId];
-        
+        findPhoto.report = true;
+        photoMap[photoId] = findPhoto;
+        for(uint i=0; i<findByChallengerIdPhoto[challengerId].length; i++){
+            if(findByChallengerIdPhoto[challengerId][i].id == photoId){
+                findByChallengerIdPhoto[challengerId][i] = findPhoto;
+                break;
+            }
+        }
+
         Vote storage vote=voteMap[voteSequence];
         vote.id=voteSequence++;
         vote.challengeId=challengeId;

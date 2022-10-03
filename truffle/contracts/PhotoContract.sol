@@ -7,7 +7,7 @@ contract PhotoContract{
         uint id;
         uint userId;
         uint challengerId;
-
+        bool report;
         string picURL;
         string timestamp;
     }
@@ -24,9 +24,9 @@ contract PhotoContract{
         photo.id=photoSequence++;
         photo.userId=userId;
         photo.challengerId=challengerId;
+        photo.report=false;
         photo.picURL=picURL;
         photo.timestamp=today;
-
         findByChallengerIdPhoto[challengerId].push(photo);
     }
 
