@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Menu.module.css";
-import { Link } from "react-router-dom";
+import { Link,useLocation  } from "react-router-dom";
 
 function Menu() {
-  const [homeFlag, setHomeFlag] = useState(true);
-  const [searchFlag, setSearchFlag] = useState(false);
-  const [photoFlag, setPhotoFlag] = useState(false);
-  const [walletFlag, setWalletFlag] = useState(false);
-  const [mypageFlag, setMypageFlag] = useState(false);
+  const location = useLocation();
 
   return (
     <div className={styles.Footer}>
+      {console.log(location.pathname)}
       <div className={styles.Menu}>
         <Link to="/">
           <svg
@@ -19,15 +16,8 @@ function Menu() {
             viewBox="0 0 26 26"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
-              setHomeFlag(true);
-              setSearchFlag(false);
-              setPhotoFlag(false);
-              setWalletFlag(false);
-              setMypageFlag(false);
-            }}
           >
-            {homeFlag ? (
+            {location.pathname === "/" ? (
               <path
                 d="M1 10.6667V23.6667C1 24.4031 1.59695 25 2.33333 25H8.23809C8.97448 25 9.57143 24.4031 9.57143 23.6667V14.7143H16.4285V23.6667C16.4285 24.4031 17.0255 25 17.7619 25H23.6667C24.4031 25 25 24.4031 25 23.6667V10.6667C25 10.247 24.8024 9.8518 24.4667 9.6L13 1L1.53333 9.6C1.19759 9.8518 1 10.247 1 10.6667V10.6667Z"
                 fill="#755fff"
@@ -55,15 +45,8 @@ function Menu() {
             viewBox="0 0 25 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
-              setHomeFlag(false);
-              setSearchFlag(true);
-              setPhotoFlag(false);
-              setWalletFlag(false);
-              setMypageFlag(false);
-            }}
           >
-            {searchFlag ? (
+            {location.pathname === "/challenge-search" || location.pathname.includes('/challenge-detail/')  ? (
               <path
                 d="M0 9.74649C0 15.1293 4.38832 19.4862 9.80926 19.4862C15.2222 19.4862 19.6173 15.1293 19.6173 9.74649C19.6173 4.36371 15.2222 0 9.80926 0C4.38832 0 0 4.36371 0 9.74649ZM3.10832 9.74649C3.10832 6.0671 6.10402 3.08986 9.80988 3.08986C13.5084 3.08986 16.5102 6.06771 16.5102 9.74649C16.5102 13.4259 13.5084 16.4037 9.80988 16.4037C6.10402 16.4037 3.10832 13.4253 3.10832 9.74649ZM16.7151 18.6838L20.9336 23.4893C21.613 24.1675 22.0511 24.173 22.7416 23.4893L24.0961 22.1471C24.7619 21.4819 24.8032 21.053 24.0961 20.3496L19.237 16.1804L16.7151 18.6838Z"
                 fill="#755fff"
@@ -83,15 +66,10 @@ function Menu() {
             viewBox="0 0 28 26"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
-              setHomeFlag(false);
-              setSearchFlag(false);
-              setPhotoFlag(true);
-              setWalletFlag(false);
-              setMypageFlag(false);
-            }}
           >
-            {photoFlag ? (
+            {location.pathname === "/challenge-shot" || location.pathname.includes('/challenge-certify/') ||
+            location.pathname.includes('/web-cam-capture') || location.pathname.includes('/certification-photos')||
+            location.pathname.includes('/votinghome') ? (
               <path
                 d="M3.6 25H24.4C25.836 25 27 23.8061 27 22.3333V8.46667C27 6.99391 25.836 5.8 24.4 5.8H20.5L17.25 1H10.75L7.5 5.8H3.6C2.16406 5.8 1 6.99391 1 8.46667V22.3333C1 23.8061 2.16406 25 3.6 25Z"
                 fill="#755fff"
@@ -109,7 +87,9 @@ function Menu() {
               />
             )}
 
-            {photoFlag ? (
+            {location.pathname === "/challenge-shot" || location.pathname.includes('/challenge-certify/') ||
+            location.pathname.includes('/web-cam-capture') || location.pathname.includes('/certification-photos') ||
+            location.pathname.includes('/votinghome') ? (
               <path
                 d="M13.9999 19.6667C16.8718 19.6667 19.1999 17.2789 19.1999 14.3333C19.1999 11.3878 16.8718 9 13.9999 9C11.128 9 8.79993 11.3878 8.79993 14.3333C8.79993 17.2789 11.128 19.6667 13.9999 19.6667Z"
                 fill="white"
@@ -135,15 +115,8 @@ function Menu() {
             viewBox="0 0 28 26"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
-              setHomeFlag(false);
-              setSearchFlag(false);
-              setPhotoFlag(false);
-              setWalletFlag(true);
-              setMypageFlag(false);
-            }}
           >
-            {walletFlag ? (
+            {location.pathname === "/my-wallet" ? (
               <path
                 d="M12.05 25C5.94723 25 0.999975 19.6274 0.999975 13C0.999975 6.37258 5.94723 1 12.05 1C18.1527 1 23.1 6.37258 23.1 13C23.1 19.6274 18.1527 25 12.05 25Z"
                 stroke="#755fff"
@@ -160,7 +133,7 @@ function Menu() {
                 strokeLinejoin="round"
               />
             )}
-            {walletFlag ? (
+            {location.pathname === "/my-wallet" ? (
               <path
                 d="M15.3 8.73329C14.4852 8.06352 13.4723 7.66663 12.3747 7.66663C9.68248 7.66663 7.5 10.0544 7.5 13C7.5 15.9454 9.68248 18.3333 12.3747 18.3333C13.4723 18.3333 14.4852 17.9364 15.3 17.2666"
                 stroke="#755fff"
@@ -177,7 +150,7 @@ function Menu() {
                 strokeLinejoin="round"
               />
             )}
-            {walletFlag ? (
+            {location.pathname === "/my-wallet" ? (
               <path
                 d="M12.7001 1C17.4668 1 27.0001 2.2 27.0001 13C27.0001 23.8 17.4668 25 12.7001 25"
                 stroke="#755fff"
@@ -199,15 +172,11 @@ function Menu() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
-              setHomeFlag(false);
-              setSearchFlag(false);
-              setPhotoFlag(false);
-              setWalletFlag(false);
-              setMypageFlag(true);
-            }}
           >
-            {mypageFlag ? (
+            {location.pathname === "/my-page" || location.pathname.includes('/my-shot-detail/') || location.pathname === '/my-profile' ||
+            location.pathname === '/edit-profile' || location.pathname === "/ongoing-challenge" ||
+            location.pathname === '/completed-challenge' || location.pathname === '/my-shot-zip' ||
+            location.pathname === '/create-challenge' || location.pathname === '/my-favorite' ? (
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"

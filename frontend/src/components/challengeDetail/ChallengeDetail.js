@@ -294,7 +294,9 @@ function Description(props) {
       props.challenge.endDate
     )
   );
-
+  const weekTimes =
+  Number(props.challenge.authTotalTimes) /
+  (Number(props.challenge.authDayTimes) * period);
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -314,10 +316,11 @@ function Description(props) {
           </p>
           <div style={{ margin: "0 4px" }}>
             <p>
-              ☝ {period / 7}주 동안, 하루에 {props.challenge.authDayTimes}번
+              ☝ {period / 7}주 동안 주 {weekTimes}회 하루 {props.challenge.authDayTimes}번
               인증샷을 촬영하셔야 합니다.
             </p>
             <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
+            <p>☝ 인증 가능 시간은 {props.challenge.startTime}:00 ~ {props.challenge.endTime}:00 까지 입니다.</p>
           </div>
         </div>
         <div style={{ margin: "8px 4px" }}>
