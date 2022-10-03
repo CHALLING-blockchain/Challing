@@ -75,6 +75,7 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
     );
   }
   const[list,setList] = useState([]);
+  console.log(fileImage)
   return (
     <div>
       <Header/>
@@ -118,7 +119,7 @@ function ChallengeIntro({formCnt,setFormCnt,explanation,setExplanation,exPhotoUr
           />
         </div>
       </div>
-      {list.length >=1   ? <NextButton/> : <NextButtonX/>}
+      {list.length >=1 && fileImage!==photoUpload ? <NextButton/> : <NextButtonX/>}
     </div>
   );
 }
