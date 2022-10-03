@@ -32,7 +32,7 @@ function Header() {
             d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
           />
         </svg>
-        <p style={{ fontSize: "20px", margin: "auto" }}>진행중 챌린지</p>
+        <p style={{ fontSize: "20px", margin: "auto" }}>참여 챌린지</p>
         <div></div>
       </div>
     </div>
@@ -108,9 +108,10 @@ function AchieveRateBox(){
 }
 
 function ChallengeList(){
+  const navigate = useNavigate();
   const Contract = new ContractAPI();
   const [infos,setInfos] = useState([]); 
-  const [counts,setCounts] = useState([]);
+  const [challengers,setChallengers] = useState([]);
   const [user, setUser] = useState(useSelector(selectUser));
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
@@ -131,33 +132,53 @@ function ChallengeList(){
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          tmpp.push(challenger.totalCount)
+          tmpp.push(challenger)
         });
         tmp.push(selector[id])
       }
-      setCounts(tmpp)
+      setChallengers(tmpp)
       setInfos(tmp);
 
     }
     load();
   }, []);
+  function navigateDetail(info,index){
+    const NoIng = getDayGap.getDayGapFromToday(info.startDate)
+    console.log(NoIng)
+    if(NoIng>0){
+      navigate(`/challenge-detail/${info.challengeId}`);
+    }else{
+      navigate(`/challenge-certify/${info.challengeId}`, {
+        state: {
+          challengeInfo: info,
+          percentage: ((challengers[index].totalCount / info.authTotalTimes) *100).toFixed(2),
+          challengerInfo:challengers[index]
+        },
+      });
+    }
 
+  }
     return (
       <div className={styles.listBox}>
           { infos.map(function(info, index){
+            console.log(info)
+            
             let week = Math.floor(
               getDayGap.getDayGapFromDates(info.startDate, info.endDate) / 7
             );
             let perWeek = Math.floor(info.authTotalTimes / week);
             return(
-              <MyChallengeCard
+              <div onClick={()=>{navigateDetail(info,index)}}>
+                <MyChallengeCard
                 type={getInterestStr.interestIdToName(info.interestId)}
                 title={info.name}
                 times={perWeek}
                 period={info.startDate + "~" + info.endDate}
                 img={info.mainPicURL}
-                count={counts[index]}
+                count={challengers[index].totalCount}
               ></MyChallengeCard>
+              </div>
+              
             )
           })}
         
