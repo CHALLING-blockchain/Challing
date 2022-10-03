@@ -18,6 +18,81 @@ import * as getDayGap from "../main/Main.js";
 import { selectUser } from "../../app/redux/userSlice";
 import RefundPolicy from "../common/RefundPolicy";
 
+function GoodShotModal({ onClose,props }) {
+  function handleClose() {
+    onClose?.();
+  }
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.ModalBody} onClick={(e) => e.stopPropagation()}>
+        <div>
+          <svg
+            className={styles.modalCloseBtn}
+            onClick={handleClose}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="24" height="24" rx="12" fill="#E5E5E5" />
+            <path
+              d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z"
+              fill="#4F4F4F"
+            />
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>👍 좋은 예시</p>
+        <div style={{ position: "absolute", left: "32px", top: "88px" }}>
+          <img className={styles.ModalImg} src={props.challenge.goodPicURL} alt=""/>
+        </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.NextButton} onClick={handleClose}>
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+function BadShotModal({ onClose,props }) {
+  function handleClose() {
+    onClose?.();
+  }
+  return (
+    <div className={styles.Modal} onClick={handleClose}>
+      <div className={styles.ModalBody} onClick={(e) => e.stopPropagation()}>
+        <div>
+          <svg
+            className={styles.modalCloseBtn}
+            onClick={handleClose}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="24" height="24" rx="12" fill="#E5E5E5" />
+            <path
+              d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z"
+              fill="#4F4F4F"
+            />
+          </svg>
+        </div>
+        <p className={styles.ModalTitle}>👎 나쁜 예시</p>
+        <div style={{ position: "absolute", left: "32px", top: "88px" }}>
+          <img className={styles.ModalImg} src={props.challenge.badPicURL} alt=""/>
+        </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.NextButton} onClick={handleClose}>
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Header(props) {
   const navigate = useNavigate();
   const [bookmark, setBookmark] = useState(false);
@@ -265,6 +340,14 @@ function Description(props) {
 }
 
 function ShotDescription(props) {
+  const [openModal, setOpenModal] = useState(false);
+  const showGoodShotModal = () => {
+    setOpenModal(true);
+  };
+  const [openBadModal, setOpenBadModal] = useState(false);
+  const showBaddShotModal = () => {
+    setOpenBadModal(true);
+  };
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
@@ -277,6 +360,7 @@ function ShotDescription(props) {
             style={{ width: "150px", height: "150px", margin: "auto" }}
             src={props.challenge.goodPicURL}
             alt=""
+            onClick={showGoodShotModal}
           />
           <p>👍 좋은 예시</p>
         </div>
@@ -285,10 +369,29 @@ function ShotDescription(props) {
             style={{ width: "150px", height: "150px", margin: "auto" }}
             src={props.challenge.badPicURL}
             alt=""
+            onClick={showBaddShotModal}
           />
           <p>👎 나쁜 예시</p>
         </div>
       </div>
+      {openModal && (
+          <GoodShotModal
+            open={openModal}
+            onClose={() => {
+              setOpenModal(false);
+            }}
+            props={props}
+          />
+        )}
+      {openBadModal && (
+          <BadShotModal
+            open={openBadModal}
+            onClose={() => {
+              setOpenBadModal(false);
+            }}
+            props={props}
+          />
+        )}
     </div>
   );
 }
