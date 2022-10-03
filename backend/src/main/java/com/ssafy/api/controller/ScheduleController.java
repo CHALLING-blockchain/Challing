@@ -4,14 +4,17 @@ import com.ssafy.api.request.ChallengeScheduleRequest;
 import com.ssafy.api.request.VoteScheduleRequest;
 import com.ssafy.api.response.BaseResponse;
 import com.ssafy.api.service.ScheduleService;
+import com.ssafy.db.entity.Schedule;
 import com.ssafy.web3.job.ChallengeJobData;
 import com.ssafy.web3.job.VoteJobData;
+import com.ssafy.web3.service.Web3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -21,6 +24,7 @@ import java.time.Instant;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+    private final Web3Service web3Service;
 
     @PostMapping("/challenge")
     public ResponseEntity<?> addChallengeSchedule(@RequestBody ChallengeScheduleRequest challengeScheduleRequest) {
@@ -52,16 +56,51 @@ public class ScheduleController {
         return BaseResponse.success();
     }
 
-    @GetMapping("/test")
-    public String addScheduleTest() {
+    @GetMapping("/admin/day")
+    public ResponseEntity<?> endDailyCh() {
+        log.info("** 어드민 ** 최근 추가된 일상 챌린지 종료");
         try {
-            scheduleService.scheduleChallengeJob(ChallengeJobData.builder()
-                    .challengeId(987654321L)
-                    .triggerAt(Instant.now().plusSeconds(10).getEpochSecond())
-                    .build());
+            Schedule schedule = scheduleService
+                    .getLastDailyChallengeSchedule()
+                    .orElseThrow();
+
+            web3Service.endChallenge(ChallengeJobData.of(schedule));
         } catch (Exception e) {
-            return "FAIL";
+            log.info("** 어드민 ** 최근 추가된 일상 챌린지 종료 실패");
+            return BaseResponse.fail("** 어드민 ** 최근 추가된 일상 챌린지 종료 실패");
         }
-        return "SUCCESS";
+        return BaseResponse.success();
+    }
+
+    @GetMapping("/admin/don")
+    public ResponseEntity<?> endDonaCh() {
+        log.info("** 어드민 ** 최근 추가된 기부 챌린지 종료");
+        try {
+            Schedule schedule = scheduleService
+                    .getLastDonationChallengeSchedule()
+                    .orElseThrow();
+
+            web3Service.endChallenge(ChallengeJobData.of(schedule));
+        } catch (Exception e) {
+            log.info("** 어드민 ** 최근 추가된 기부 챌린지 종료 실패");
+            return BaseResponse.fail("** 어드민 ** 최근 추가된 기부 챌린지 종료 실패");
+        }
+        return BaseResponse.success();
+    }
+
+    @GetMapping("/admin/vot")
+    public ResponseEntity<?> endVote() {
+        log.info("** 어드민 ** 최근 추가된 투표 종료");
+        try {
+            Schedule schedule = scheduleService
+                    .getLastVoteSchedule()
+                    .orElseThrow();
+
+            web3Service.endVote(VoteJobData.of(schedule));
+        } catch (Exception e) {
+            log.info("** 어드민 ** 최근 추가된 투표 종료 실패");
+            return BaseResponse.fail("** 어드민 ** 최근 추가된 투표 종료 실패");
+        }
+        return BaseResponse.success();
     }
 }

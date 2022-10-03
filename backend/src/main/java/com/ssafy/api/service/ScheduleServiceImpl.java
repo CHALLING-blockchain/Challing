@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -150,5 +151,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         log.info("투표 종료 스케줄링\n{}", jobData);
 
         scheduler.scheduleJob(VoteJob.newVoteJob(jobData), VoteJob.newTrigger(jobData));
+    }
+
+    @Override
+    public Optional<Schedule> getLastDailyChallengeSchedule() {
+        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.CHALLENGE, ChallengeType.DAILY);
+    }
+
+    @Override
+    public Optional<Schedule> getLastDonationChallengeSchedule() {
+        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.CHALLENGE, ChallengeType.DONATION);
+    }
+
+    @Override
+    public Optional<Schedule> getLastVoteSchedule() {
+        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.VOTE, null);
     }
 }
