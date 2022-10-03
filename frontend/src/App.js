@@ -28,6 +28,7 @@ import SuccessRegister from "./components/challengeRegister/SuccessRegister";
 import WebcamCapture from "./components/challengeCertify/WebcamCapture";
 import OngoingChallenge from "./components/myChallenge/OngoingChallenge";
 import CompletedChallenge from "./components/myChallenge/CompletedChallenge";
+import CreatedChallenge from "./components/myChallenge/CreatedChallenge";
 import CompletedDetail from "./components/myChallenge/CompletedDetail";
 import CreateLoading from "./components/myPage/CreateLoading";
 import JoinLoading from "./components/challengeRegister/JoinLoading";
@@ -68,10 +69,10 @@ function App() {
         <Route path="/certify-loading/:id" element={<CertifyLoading />} />
         <Route path="/ongoing-challenge" element={<OngoingChallenge />} />
         <Route path="/completed-challenge" element={<CompletedChallenge />} />
+        <Route path="/created-challenge" element={<CreatedChallenge />} />
         <Route path="/completed-detail/:id" element={<CompletedDetail />} />
         <Route path="/challenge-complete/:id" element={<ChallengeComplete />} />
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
-        
       </Routes>
       <Menu />
     </div>
