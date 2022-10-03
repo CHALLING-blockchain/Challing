@@ -10,43 +10,65 @@ import picture from "../../img/picture.png";
 import folder from "../../img/folder.png";
 import bookmark from "../../img/bookmark.png";
 import ContractAPI from "../../api/ContractAPI";
-import { challengeList } from './../../app/redux/allChallengeSlice';
+import { challengeList } from "./../../app/redux/allChallengeSlice";
 
-function Modal({onClose}){
+function Modal({ onClose }) {
   const navigate = useNavigate();
-  function handleClose(){
-    onClose ?.();
-  };
+  function handleClose() {
+    onClose?.();
+  }
   return (
     <div className={styles.Modal} onClick={handleClose}>
-      <div className={styles.ModalBody} onClick={(e)=>e.stopPropagation()}>
+      <div className={styles.ModalBody} onClick={(e) => e.stopPropagation()}>
         <div>
-          <svg className={styles.modalCloseBtn} onClick={handleClose} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="12" fill="#E5E5E5"/>
-            <path d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z" fill="#4F4F4F"/>
+          <svg
+            className={styles.modalCloseBtn}
+            onClick={handleClose}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="24" height="24" rx="12" fill="#E5E5E5" />
+            <path
+              d="M12 10.8891L15.8891 7L17 8.11094L13.1109 12L17 15.8891L15.8891 17L12 13.1109L8.11094 17L7 15.8891L10.8891 12L7 8.11094L8.11094 7L12 10.8891Z"
+              fill="#4F4F4F"
+            />
           </svg>
         </div>
         <p className={styles.ModalTitle}>챌린지 개설하기</p>
-        <div style={{position:'absolute',left:'36px',top:'88px'}}>
-          <p className={styles.ModalText}>☝ 생성된 챌린지는 삭제할 수 없습니다.</p>
-          <p className={styles.ModalText}>☝ 생성된 챌린지의 설정은 수정할 수 없습니다.</p>
-          <p className={styles.ModalText} style={{marginTop:'28px'}}>위 주의사항을 확인 후 챌린지를 개설해주세요!</p>
+        <div style={{ position: "absolute", left: "36px", top: "88px" }}>
+          <p className={styles.ModalText}>
+            ☝ 생성된 챌린지는 삭제할 수 없습니다.
+          </p>
+          <p className={styles.ModalText}>
+            ☝ 생성된 챌린지의 설정은 수정할 수 없습니다.
+          </p>
+          <p className={styles.ModalText} style={{ marginTop: "28px" }}>
+            위 주의사항을 확인 후 챌린지를 개설해주세요!
+          </p>
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.NextButton} onClick={() => {
-            navigate("/create-challenge");
-          }}>GO !</button>
+          <button
+            className={styles.NextButton}
+            onClick={() => {
+              navigate("/create-challenge");
+            }}
+          >
+            GO !
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function MyPage() {
   const [openModal, setOpenModal] = useState(false);
   const showModal = () => {
     setOpenModal(true);
-}
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
@@ -144,8 +166,10 @@ function MyPage() {
             </Link>
           </div>
           <div>
-            <p>{madeChal}</p>
-            <span>개설</span>
+            <Link to="/created-challenge">
+              <p>{madeChal}</p>
+              <span>개설</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -177,10 +201,7 @@ function MyPage() {
             />
           </svg>
         </div>
-        <div
-          className={styles.menuItem}
-          onClick={showModal}
-        >
+        <div className={styles.menuItem} onClick={showModal}>
           <div className={styles.menuTitle}>
             <img src={folder} alt="" />
             <p>챌린지 개설하기</p>
@@ -230,9 +251,14 @@ function MyPage() {
           </svg>
         </div>
       </div>
-      {openModal && (<Modal 
-          open={openModal} 
-          onClose={()=>{setOpenModal(false);}}/>)}
+      {openModal && (
+        <Modal
+          open={openModal}
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }
