@@ -11,7 +11,7 @@ function Header() {
       <div className={styles.header}>
         <svg
           style={{ margin: "auto" }}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/my-page")}
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"

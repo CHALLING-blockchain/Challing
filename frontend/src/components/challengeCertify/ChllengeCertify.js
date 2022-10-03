@@ -203,7 +203,7 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
       ) : (
         <div className={styles.btnBox}>
           <button className={styles.btnafter} disabled="true">
-            📸 인증완료
+            👍 인증완료
           </button>
         </div>
       )}
