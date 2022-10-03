@@ -45,4 +45,6 @@
 
 .listBox{
     margin: 16px 0;
+    height: 476px;
+    overflow: scroll;
 }
