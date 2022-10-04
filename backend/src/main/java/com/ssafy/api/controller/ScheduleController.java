@@ -13,9 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.util.Optional;
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/schedule")
@@ -56,8 +53,8 @@ public class ScheduleController {
         return BaseResponse.success();
     }
 
-    @GetMapping("/admin/day")
-    public ResponseEntity<?> endDailyCh() {
+    @GetMapping("/endlastdaily")
+    public ResponseEntity<?> endLastDailyChallenge() {
         log.info("** 어드민 ** 최근 추가된 일상 챌린지 종료");
         try {
             Schedule schedule = scheduleService
@@ -66,14 +63,14 @@ public class ScheduleController {
 
             web3Service.endChallenge(ChallengeJobData.of(schedule));
         } catch (Exception e) {
-            log.info("** 어드민 ** 최근 추가된 일상 챌린지 종료 실패");
+            log.error("** 어드민 ** 최근 추가된 일상 챌린지 종료 실패", e);
             return BaseResponse.fail("** 어드민 ** 최근 추가된 일상 챌린지 종료 실패");
         }
         return BaseResponse.success();
     }
 
-    @GetMapping("/admin/don")
-    public ResponseEntity<?> endDonaCh() {
+    @GetMapping("/endlastdonation")
+    public ResponseEntity<?> endLastDonationChallenge() {
         log.info("** 어드민 ** 최근 추가된 기부 챌린지 종료");
         try {
             Schedule schedule = scheduleService
@@ -82,14 +79,14 @@ public class ScheduleController {
 
             web3Service.endChallenge(ChallengeJobData.of(schedule));
         } catch (Exception e) {
-            log.info("** 어드민 ** 최근 추가된 기부 챌린지 종료 실패");
+            log.error("** 어드민 ** 최근 추가된 기부 챌린지 종료 실패", e);
             return BaseResponse.fail("** 어드민 ** 최근 추가된 기부 챌린지 종료 실패");
         }
         return BaseResponse.success();
     }
 
-    @GetMapping("/admin/vot")
-    public ResponseEntity<?> endVote() {
+    @GetMapping("/endlastvote")
+    public ResponseEntity<?> endLastVote() {
         log.info("** 어드민 ** 최근 추가된 투표 종료");
         try {
             Schedule schedule = scheduleService
@@ -98,7 +95,7 @@ public class ScheduleController {
 
             web3Service.endVote(VoteJobData.of(schedule));
         } catch (Exception e) {
-            log.info("** 어드민 ** 최근 추가된 투표 종료 실패");
+            log.error("** 어드민 ** 최근 추가된 투표 종료 실패", e);
             return BaseResponse.fail("** 어드민 ** 최근 추가된 투표 종료 실패");
         }
         return BaseResponse.success();

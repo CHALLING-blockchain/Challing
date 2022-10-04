@@ -154,17 +154,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Schedule> getLastDailyChallengeSchedule() {
-        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.CHALLENGE, ChallengeType.DAILY);
+        return scheduleRepository
+                .findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(
+                        ContractJobType.CHALLENGE, ChallengeType.DAILY);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Schedule> getLastDonationChallengeSchedule() {
-        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.CHALLENGE, ChallengeType.DONATION);
+        return scheduleRepository
+                .findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(
+                        ContractJobType.CHALLENGE, ChallengeType.DONATION);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Schedule> getLastVoteSchedule() {
-        return scheduleRepository.findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType.VOTE, null);
+        return scheduleRepository
+                .findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(
+                        ContractJobType.VOTE, null);
     }
 }
