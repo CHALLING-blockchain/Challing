@@ -6,7 +6,7 @@ import calender from "../../img/calender.png";
 import tea from "../../img/tea-cup.png";
 import plus from "../../img/plus.png";
 import paint from "../../img/paint-kit.png";
-import chart from "../../img/chart.png"
+import chart from "../../img/chart.png";
 
 function MyChallengeCard({ type, title, times, period, img, count }) {
   let typeImg = pencil;
@@ -18,7 +18,7 @@ function MyChallengeCard({ type, title, times, period, img, count }) {
     typeImg = paint;
   } else if (type === "식생활") {
     typeImg = tea;
-  } else if (type === '그 외') {
+  } else if (type === "그 외") {
     typeImg = plus;
   }
   return (
@@ -32,12 +32,11 @@ function MyChallengeCard({ type, title, times, period, img, count }) {
           <span>누적 참가횟수 {count}회</span>
         </div>
         <div className={styles.subBox}>
-            <div style={{display:'flex', alignItems:'center'}}>
-                <img src={typeImg} alt="" />
-                <span className={styles.title}>{title}</span>
-
-            </div>
-          <span className={styles.sub}>주 {times}일</span>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img src={typeImg} alt="" />
+            <span className={styles.title}>{title}</span>
+          </div>
+          <span className={styles.sub}>주 {times}회</span>
           <span className={styles.sub}>{period}</span>
         </div>
       </div>
