@@ -500,19 +500,17 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          <p>
-            {selects.peopleLimit === false ? (
-              <div className={styles.CardText}>
-                <p>인원 제한 없음</p>
-                <p>{selects.limitNum}명</p>
-              </div>
-            ) : (
-              <div className={styles.CardText}>
-                <p>인원 제한 있음</p>
-                <p>{selects.limitNum}명</p>
-              </div>
-            )}
-          </p>
+          {selects.peopleLimit === false ? (
+            <div className={styles.CardText}>
+              인원 제한 없음 <br></br>
+              {selects.limitNum}명
+            </div>
+          ) : (
+            <div className={styles.CardText}>
+              인원 제한 있음 <br></br>
+              {selects.limitNum}명
+            </div>
+          )}
         </div>
         {openModal && (
           <Modal
@@ -734,13 +732,13 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           <p>
             {selects.peopleLimit === false ? (
               <div className={styles.CardText}>
-                <p>인원 제한 없음</p>
-                <p>{selects.limitNum}명</p>
+                인원 제한 없음 <br></br>
+                {selects.limitNum}명
               </div>
             ) : (
               <div className={styles.CardText}>
-                <p>인원 제한 있음</p>
-                <p>{selects.limitNum}명</p>
+                인원 제한 있음 <br></br>
+                {selects.limitNum}명
               </div>
             )}
           </p>
