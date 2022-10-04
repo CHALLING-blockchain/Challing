@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Schedule {
 
     @Id
@@ -23,6 +24,7 @@ public class Schedule {
     private ContractJobType jobType;
     @Column(name = "challenge_id")
     private Long challengeId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "challenge_type")
     private ChallengeType challengeType;
     @Column(name = "vote_id")
