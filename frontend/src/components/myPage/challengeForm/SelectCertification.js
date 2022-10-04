@@ -155,7 +155,7 @@ function SelectCertification({
         </p>
         <div style={{ marginTop: "8px", fontWeight: "bold" }}>
           <div style={{ marginTop: "16px" }}>
-            <label for="week" style={{ marginRight: "8px" }}>
+            <label htmlFor="week" style={{ marginRight: "8px" }}>
               주
             </label>
             <input
@@ -173,7 +173,7 @@ function SelectCertification({
             회<br />
           </div>
           <div style={{ marginTop: "16px" }}>
-            <label for="day" style={{ marginRight: "8px" }}>
+            <label htmlFor="day" style={{ marginRight: "8px" }}>
               하루
             </label>
             <input

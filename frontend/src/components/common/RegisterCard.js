@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./RegisterCard.module.css";
 import pencil from "../../img/pencil.png";
 import gym from "../../img/gym.png";
@@ -8,7 +8,7 @@ import plus from "../../img/plus.png";
 import paint from "../../img/paint-kit.png";
 
 function RegisterCard({ type, title, times, period, img }) {
-  console.log(type);
+  // console.log(type);
   let typeImg = pencil;
   if (type === "운동") {
     typeImg = gym;

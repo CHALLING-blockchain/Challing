@@ -5,7 +5,7 @@ import heart from "../../img/heart.png";
 import calender from "../../img/calender.png";
 import chat from "../../img/chat.png";
 import dollarCoin from "../../img/dollarCoin.png";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import * as getDayGab from "../main/Main.js";
 import ContractAPI from "../../api/ContractAPI";
@@ -96,14 +96,14 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
       moment(new Date()).format("YYYY-MM-DD")
     )
   );
-  console.log(challenge);
+
   const hour = new Date().getHours();
 
   const flag =
     Number(challenge.startTime) <= hour && hour <= Number(challenge.endTime)
       ? true
       : false;
-  console.log("flag", flag);
+
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
@@ -209,7 +209,7 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
         </div>
       ) : (
         <div className={styles.btnBox}>
-          <button className={styles.btnafter} disabled="true">
+          <button className={styles.btnafter} disabled={true}>
             👍 인증완료
           </button>
         </div>
@@ -242,7 +242,7 @@ function OtherShot({ photoList, challengeId, title }) {
       </div>
       <div className={styles.shots}>
         {photoList.map((photo) => {
-          return <img src={photo.picURL} alt="" />;
+          return <img key={photo.id} src={photo.picURL} alt="" />;
         })}
       </div>
     </div>

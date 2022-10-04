@@ -90,7 +90,7 @@ function ChallengeShot() {
                 {NoIng}일 뒤 시작
               </p>
             </div>
-            {console.log(NoIng)}
+            {/* {console.log(NoIng)} */}
           </div>
         ) : (
           <div
@@ -166,7 +166,7 @@ function ChallengeShot() {
                 {dayGab}일 뒤 종료
               </p>
             </div>
-            {console.log(NoIng)}
+            {/* {console.log(NoIng)} */}
           </div>
         )}
       </div>

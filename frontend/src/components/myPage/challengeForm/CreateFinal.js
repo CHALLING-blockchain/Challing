@@ -114,7 +114,6 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   const exShowModal = () => {
     setExModal(true);
   };
-  const challengeId = Object.keys(useSelector(challengeList)).length + 1;
   const navigate = useNavigate();
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
@@ -124,12 +123,12 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   // get active account and balance data from useWeb3 hook
-  const {
-    connect,
-    disconnect,
-    provider,
-    account: activeAccount,
-  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+  const { account: activeAccount } = useWeb3(
+    setIsLoading,
+    setErrorMessage,
+    exist,
+    setExist
+  );
 
   let userId = useSelector(selectUser).id;
   const topic2id = {
@@ -150,7 +149,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
     authTotalTimes:
-      selects.nTimesAWeek * selects.authentications * (selects.period/7),
+      selects.nTimesAWeek * selects.authentications * (selects.period / 7),
     authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
@@ -176,8 +175,8 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
     authTotalTimes:
-      selects.nTimesAWeek * selects.authentications * (selects.period/7),
-      authWeekTimes: selects.nTimesAWeek,
+      selects.nTimesAWeek * selects.authentications * (selects.period / 7),
+    authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -192,19 +191,21 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   function DailyCreateButton() {
     if (activeAccount !== undefined && activeAccount !== "") {
       const Contract = new ContractAPI(activeAccount);
-      
+
       return (
         <div className={styles.buttonBox}>
           <button
             className={styles.NextButton}
             onClick={async () => {
               const date = new Date(donationChallenge.endDate);
-              const challengeId=await Contract.createDailyChallenge(daliyChallenge)
-              const body={
-                challengeId:challengeId,
-                challengeType:"DAILY",
-                triggerAt:date.getTime()
-              }
+              const challengeId = await Contract.createDailyChallenge(
+                daliyChallenge
+              );
+              const body = {
+                challengeId: challengeId,
+                challengeType: "DAILY",
+                triggerAt: date.getTime(),
+              };
               ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },
@@ -226,13 +227,15 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             className={styles.NextButton}
             onClick={async () => {
               const date = new Date(donationChallenge.endDate);
-              
-              const challengeId=await Contract.createDonationChallenge(donationChallenge)
-              const body={
-                challengeId:challengeId,
-                challengeType:"DONATION",
-                triggerAt:date.getTime()
-              }
+
+              const challengeId = await Contract.createDonationChallenge(
+                donationChallenge
+              );
+              const body = {
+                challengeId: challengeId,
+                challengeType: "DONATION",
+                triggerAt: date.getTime(),
+              };
               ScheduleAPI.challenge(body);
               navigate(`/create-loading/${challengeId}`, {
                 state: { state: false },

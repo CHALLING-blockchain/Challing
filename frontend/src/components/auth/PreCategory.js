@@ -30,7 +30,7 @@ function PreCategory() {
   const [nextFlag, setNextFlag] = useState(false);
 
   const addInterest = (props) => {
-    console.log("click", props.title);
+    // console.log("click", props.title);
     let newFlagList = [...flagList];
     let newInterests = [...interests];
 

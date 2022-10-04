@@ -375,7 +375,7 @@ class ContractAPI {
     dailyChallenge.deposit = 1;
     dailyChallenge.totalDeposit = 1;
     // console.log("daily - 222", dailyChallenge);
-    console.log(dailyChallenge);
+    // console.log(dailyChallenge);
     if (this.account !== undefined && this.account !== "") {
       const txHash = await window.ethereum
         .request({

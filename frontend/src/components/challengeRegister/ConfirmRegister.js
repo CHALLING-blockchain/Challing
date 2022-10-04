@@ -96,7 +96,7 @@ async function joinChallenge(activeAccount, challengeId, userId, today, value) {
   const Contract = new ContractAPI(activeAccount);
   await Contract.joinChallenge(challengeId, userId, today, value).then(
     (result) => {
-      console.log("join result", result);
+      // console.log("join result", result);
     }
   );
 }
@@ -168,9 +168,9 @@ function ConfirmRegister() {
   // localstorage에 wallet 연결 확인
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
-  const [isLoading, setIsLoading] = useState(false);
+  const [setIsLoading] = useState(false);
   // error messages
-  const [errorMessage, setErrorMessage] = useState("");
+  const [setErrorMessage] = useState("");
   // get active account and balance data from useWeb3 hook
   const { provider, account: activeAccount } = useWeb3(
     setIsLoading,

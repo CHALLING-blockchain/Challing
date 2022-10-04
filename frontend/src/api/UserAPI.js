@@ -15,7 +15,7 @@ class UserAPI {
   }
 
   join(body) {
-    console.log("body", body);
+    // console.log("body", body);
     return axios.post(`${base.baseUrl}/user/join`, body);
   }
 
@@ -32,7 +32,7 @@ class UserAPI {
   }
 
   validCheck(nickname) {
-    console.log("nickname", nickname);
+    // console.log("nickname", nickname);
     return axios.get(`${base.baseUrl}/user/check/${nickname}`);
   }
 
@@ -41,7 +41,7 @@ class UserAPI {
   }
 
   deleteFavorite(body) {
-    console.log("delete", body);
+    // console.log("delete", body);
     return axios.delete(`${base.baseUrl}/user/favorite`, { data: body });
   }
 

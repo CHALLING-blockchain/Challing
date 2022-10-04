@@ -20,12 +20,12 @@ function Header() {
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
-          fill="currentColor"
-          class="bi bi-chevron-left"
+          fillRule="currentColor"
+          className="bi bi-chevron-left"
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
           />
         </svg>
@@ -51,7 +51,7 @@ function MyFavorite() {
 
   const favoriteChallenges = () => {
     const favoriteChallenges = [];
-
+    let keyId = 0;
     for (let index = 0; index < user.challengeIds.length; index++) {
       const element = challenges[user.challengeIds[index]];
 
@@ -99,9 +99,12 @@ function MyFavorite() {
 
     const result = [];
     result.push(
-      <div className={styles.outsideBox}> {favoriteChallenges} </div>
+      <div key={keyId} className={styles.outsideBox}>
+        {" "}
+        {favoriteChallenges}{" "}
+      </div>
     );
-
+    keyId++;
     return favoriteChallenges.length === 0 ? NoBookmark() : result;
   };
 
