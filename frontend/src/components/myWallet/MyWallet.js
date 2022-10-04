@@ -71,6 +71,8 @@ function MyWallet() {
   const [errorMessage, setErrorMessage] = useState("");
   // challenge transaction Data
   const [txData, setTxData] = useState("");
+  // challenge internal transaction Data
+  const [interData, setInterData] = useState("");
   // ETH -> KRW
   const [exData, setExData] = useState("");
   // passCoin
@@ -101,14 +103,14 @@ function MyWallet() {
     const Contract = new ContractAPI(activeAccount);
     useEffect(() => {
       if (activeAccount !== undefined && activeAccount !== "") {
-        console.log("activeAccount", activeAccount);
+        // console.log("activeAccount", activeAccount);
         async function load() {
           await Contract.getPasscoin().then((result) => {
             setPassData(result);
           });
         }
         load();
-        console.log("passCoin", passData);
+        // console.log("passCoin", passData);
       }
     }, [activeAccount]);
 
@@ -122,7 +124,7 @@ function MyWallet() {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-question-circle"
+            className="bi bi-question-circle"
             viewBox="0 0 16 16"
           >
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -136,7 +138,7 @@ function MyWallet() {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-x-lg"
+            className="bi bi-x-lg"
             viewBox="0 0 16 16"
           >
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
@@ -167,10 +169,22 @@ function MyWallet() {
       if (accounts === undefined) {
         connect();
       } else {
-        //Etherscan API
+        //Etherscan API - transaction history
         const etherscan_url =
           process.env.REACT_APP_ETHERSCAN_API_URL +
           `&action=txlist&address=` +
+          accounts +
+          `&startblock=0` +
+          `&endblock=99999999` +
+          `&offset=5` +
+          `&sort=desc` +
+          `&apikey=` +
+          process.env.REACT_APP_ETHERSCAN_API_KEY;
+
+        //Etherscan API = internal transaction history (환급, 상금)
+        const etherscan_internal_tx_url =
+          process.env.REACT_APP_ETHERSCAN_API_URL +
+          `&action=txlistinternal&address=` +
           accounts +
           `&startblock=0` +
           `&endblock=99999999` +
@@ -187,7 +201,7 @@ function MyWallet() {
 
         // Etherscan API 요청
         axios.get(etherscan_url).then(function (result) {
-          console.log("etherscan api url: " + etherscan_url);
+          // console.log("etherscan api url: " + etherscan_url);
           const data = result.data.result;
           const tmpData = [];
           for (let index = 0; index < data.length; index++) {
@@ -197,6 +211,7 @@ function MyWallet() {
             const element = {
               from: data[index].from,
               to: data[index].to,
+              blockNumber: data[index].blockNumber,
               input: data[index].input,
               etherValue: Number(
                 web3.utils.fromWei(data[index].value, "ether")
@@ -212,9 +227,6 @@ function MyWallet() {
               element.filter !== undefined &&
               !filter(element.filter).includes("무슨함수")
             ) {
-              // "챌링" 단어를 data에 포함한 tx만 tmpData에 push
-              // if (element.input.includes("ecb18ceba781")) {
-              // console.log(element);
               if (element.from.toLowerCase() === accounts.toLowerCase()) {
                 element.sendOrReceive = "↓";
               }
@@ -223,17 +235,48 @@ function MyWallet() {
                 element.sendOrReceive = "↑";
               }
               tmpData.push(element);
-              // }
             }
           }
           setTxData(tmpData);
         });
 
+        //Etherscan API(internal_transaction) 요청
+        axios.get(etherscan_internal_tx_url).then(function (result) {
+          // console.log(
+          //   "etherscan_internal_tx_url: " + etherscan_internal_tx_url
+          // );
+          const data = result.data.result;
+          const internalTmpData = [];
+          for (let index = 0; index < data.length; index++) {
+            if (isNaN(data[index].value)) {
+              connect();
+            }
+            const element = {
+              from: data[index].from,
+              to: data[index].to,
+              blockNumber: data[index].blockNumber,
+              etherValue: Number(
+                web3.utils.fromWei(data[index].value, "ether")
+              ),
+              sendOrReceive: "",
+              timeStamp: timeConverter(data[index].timeStamp),
+              filter: data[index].input,
+            };
+
+            //undefined 예외처리
+            if (element.to.toLowerCase() === accounts.toLowerCase()) {
+              element.sendOrReceive = "↑";
+              internalTmpData.push(element);
+            }
+          }
+          setInterData(internalTmpData);
+        });
+
         // Crypto API 요청
         await axios.get(crypto_url).then(function (result) {
-          console.log("crypto api url: ", crypto_url);
+          // console.log("crypto api url: ", crypto_url);
           const KRW = result.data.KRW;
-          console.log("KRW" + KRW);
+          // console.log("KRW" + KRW);
           setExData(KRW);
         });
       }
@@ -269,11 +312,12 @@ function MyWallet() {
   }
 
   function filter(methodId) {
-    if (methodId === "0x69e2809e" || methodId === "0xd20b03c5") {
+    // 한번만 보이게 해야되니까 1개는 빼자|| methodId === "0xd20b03c5"
+    if (methodId === "0x69e2809e") {
       return "👍 챌링 인증";
     } else if (methodId === "0x1d41860d") {
       return "💪 챌링 생성(일상)";
-    } else if (methodId === "0xfb81a8a9") {
+    } else if (methodId === "0xfb81a8a90") {
       return "👋 챌링 생성(기부)";
     } else if (methodId === "0xa1d9bafc") {
       return "🚨 신고";
@@ -281,25 +325,36 @@ function MyWallet() {
       return "🚀 챌링 참여";
     } else if (methodId === "0xc7a097b7") {
       return "🏳‍🌈 투표 참여";
-    } else if (methodId === "??") {
-      return "🥈 챌링 환급 🥈";
-    } else if (methodId === "??") {
-      return "🥇 챌링 상금 🥇";
+    } else if (methodId === "0x0303f2e0") {
+      return "👑 챌링 상금 👑";
     } else {
-      console.log(methodId);
+      // console.log("넌무슨함수니?", methodId);
       return "무슨함수" + methodId;
     }
   }
+
   // 거래내역 for문
   function txRendering() {
+    if (txData.length !== 0 && interData.length !== 0) {
+      for (let txN = 0; txN < txData.length; txN++) {
+        for (let interN = 0; interN < interData.length; interN++) {
+          if (interData[interN].blockNumber === txData[txN].blockNumber) {
+            // console.log("txData[txN].blockNumber", txData[txN].blockNumber);
+            // console.log("txData[txN]", txData[txN]);
+            if (txData[txN].filter === "0x0303f2e0") {
+              txData[txN].etherValue = interData[interN].etherValue;
+              txData[txN].sendOrReceive = "↑";
+            }
+          }
+        }
+      }
+    }
     const result = [];
     for (let index = 0; index < txData.length; index++) {
-      // 거래내역 종류
-      // let txType = "";
+      // console.log("interData: ", interData);
       // 트랜젝션 발생 시간
       let date = txData[index].timeStamp;
       // 날짜별로 모아서 보여주기
-
       if (
         index >= 1 &&
         index < txData.length &&
@@ -307,9 +362,6 @@ function MyWallet() {
       ) {
         date = "";
       }
-
-      // if (!filter(txData[index].filter).includes("무슨함수")) {
-      // console.log("txData[index].filter", txData[index].filter);
       result.push(
         <div key={index} className={styles.historyContent}>
           <p> {date} </p>
@@ -320,14 +372,12 @@ function MyWallet() {
             <div></div>
             <div className={styles.ethcontent}>
               <p>
-                {txData[index].etherValue}ETH {txData[index].sendOrReceive}
+                {txData[index].etherValue} ETH {txData[index].sendOrReceive}
               </p>
             </div>
           </div>
         </div>
       );
-      // }
-      // }
     }
 
     return result;
