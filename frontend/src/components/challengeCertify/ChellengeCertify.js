@@ -286,7 +286,7 @@ function ChallengeCertify() {
   const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
   const [photoList, setPhotoList] = useState([]);
-  console.log("photos", photoList);
+  // console.log("photos", photoList);
   const Contract = new ContractAPI();
   useEffect(() => {
     async function load() {
