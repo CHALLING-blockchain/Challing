@@ -44,7 +44,6 @@ function AchieveRateBox() {
   const [user, setUser] = useState(useSelector(selectUser));
   const [ingChal, setIngChal] = useState("");
   const [totalDeposit, setTotalDeposit] = useState("");
-  const selector = useSelector(challengeList);
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));

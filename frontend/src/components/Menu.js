@@ -7,7 +7,6 @@ function Menu() {
 
   return (
     <div className={styles.Footer}>
-      {console.log(location.pathname)}
       <div className={styles.Menu}>
         <Link to="/">
           <svg

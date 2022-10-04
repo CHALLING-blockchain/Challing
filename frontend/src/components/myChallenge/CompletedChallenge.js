@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./CompletedChallenge.module.css";
 import { useNavigate } from "react-router-dom";
 import MyChallengeCard from "../common/MyChallengeCard";
-import test from "../../img/test-back.jpg";
 import ContractAPI from "../../api/ContractAPI";
 import { useSelector } from "react-redux";
 import { selectUser, setUserInfo } from "./../../app/redux/userSlice";
@@ -58,7 +57,7 @@ function AchieveRateBox() {
         const join = result[1];
         let edCount = 0;
         for (let i = 0; i < join.length; i++) {
-          if (selector[join[i]].complete ===true) {
+          if (selector[join[i]].complete === true) {
             edCount += 1;
           }
         }
@@ -75,12 +74,11 @@ function AchieveRateBox() {
         const myChallengeInfo = result;
         for (let i = 0; i < myChallengeInfo.length; i++) {
           let tmpInfo = myChallengeInfo[i];
-          if ("deposit" in tmpInfo){
+          if ("deposit" in tmpInfo) {
             if (tmpInfo.complete === true) {
-              tmpReward +=( tmpInfo.deposit);
-              tmpReward += (tmpInfo.reward);
+              tmpReward += tmpInfo.deposit;
+              tmpReward += tmpInfo.reward;
             }
-
           }
         }
         setTotalReward(tmpReward);
