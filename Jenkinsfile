@@ -50,10 +50,11 @@ pipeline {
                 sh '\
                   cp $FRONTEND_DEFAULT frontend/.env.local & \
                   cp $FRONTEND_PRODUCTION frontend/.env.production.local & \
-                  cp -R ../contracts frontend/src & \
                   cp $BACKETH_PRODUCTION backeth/.env.production & \
                   cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml & \
                 '
+                // 도중에 컨트랙트를 저장소에 트래킹하게 돼서 컨트랙트 복사 과정은 사라짐
+                // cp -R ../contracts frontend/src & \
               }
             }
           }
