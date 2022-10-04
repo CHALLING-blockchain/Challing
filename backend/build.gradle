@@ -46,6 +46,7 @@ dependencies {
 }
 
 tasks.named('bootRun') {
+	systemProperty 'com.ssafy.db.url.host', findProperty('db_host') ?: '127.0.0.1'
 	systemProperty 'spring.datasource.username', findProperty('db_username') ?: 'root'
 	systemProperty 'spring.datasource.password', findProperty('db_password') ?: 'root'
 	systemProperty 'com.ssafy.save_dummy_job', findProperty('save_dummy_job') ?: 'false'
