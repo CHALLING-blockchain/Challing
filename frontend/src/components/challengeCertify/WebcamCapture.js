@@ -129,7 +129,7 @@ function WebcamCapture() {
   const today = Math.abs(
     getDayGab.getDayGapFromDates(
       challenge.startDate,
-      moment(new Date()).format("YYYY-MM-DD")
+      moment(new Date()).format("YYYY-MM-DDThh-mm-ss")
     )
   );
   const dispatch = useDispatch();

@@ -9,6 +9,8 @@ import { selectUser } from "../../app/redux/userSlice";
 import { useSelector } from "react-redux";
 import UserAPI from "../../api/UserAPI";
 import ScheduleAPI from "../../api/ScheduleAPI";
+import moment from "moment";
+
 function Header() {
   const navigate = useNavigate();
 
@@ -250,10 +252,16 @@ function Separately() {
   const [openModal, setOpenModal] = useState(false);
   const photoList = useLocation().state.photoList;
   const [photoId, setPhotoId] = useState();
+  const [userList, setUserList] = useState([]);
   const showModal = () => {
     setOpenModal(true);
   };
-  const [userList, setUserList] = useState([]);
+  var today = new Date();
+  const yesterday = moment(new Date(today.setDate(today.getDate() - 1)))
+    .format()
+    .substring(0, 19);
+  today = moment(new Date()).format().substring(0, 19);
+
   useEffect(() => {
     const getNickname = async () => {
       let users = [];
@@ -262,7 +270,6 @@ function Separately() {
           users.push(response.data.body);
         });
       }
-      console.log("users", users);
       setUserList([...users]);
     };
     getNickname();
@@ -280,16 +287,20 @@ function Separately() {
                   <span>{userList[index].nickname}</span>
                 </div>
                 <div className={styles.report}>
-                  <img
-                    src={megaphone}
-                    alt=""
-                    onClick={() => {
-                      if (checkReport(photoList[index])) {
-                        showModal();
-                        setPhotoId(photo.id);
-                      }
-                    }}
-                  />
+                  {photo.timestamp > yesterday && photo.timestamp < today ? (
+                    <img
+                      src={megaphone}
+                      alt=""
+                      onClick={() => {
+                        if (checkReport(photoList[index])) {
+                          showModal();
+                          setPhotoId(photo.id);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
               <div className={styles.shotBox}>
