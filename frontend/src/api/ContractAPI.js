@@ -1,4 +1,6 @@
 import Web3 from "web3";
+import moment from "moment";
+
 class ContractAPI {
   constructor(address) {
     this.init(address);
@@ -130,7 +132,6 @@ class ContractAPI {
   }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
-
     // 챌린저 정보 가져오기
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
@@ -142,6 +143,7 @@ class ContractAPI {
     const challengerId = info[0];
     const userIdIndex = info[1];
     const challengeIdIndex = info[2];
+    const timestamp = moment(new Date()).format().substring(0, 19);
 
     if (this.account !== undefined && this.account !== "") {
       // 사진 저장
@@ -153,7 +155,7 @@ class ContractAPI {
               from: this.account,
               to: this.Vaddress,
               data: this.Vcontract.methods
-                .addPhoto(challengerId, userId, picURL, today)
+                .addPhoto(challengerId, userId, picURL, timestamp)
                 .encodeABI(),
             },
           ],
@@ -511,14 +513,17 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-    const result = photos.map((el) => {
-      const photo = Object.assign({}, el);
-      const size = Object.keys(photo).length;
-      for (let i = 0; i < size / 2; i++) {
-        delete photo[i];
-      }
-      return photo;
-    });
+    const result = photos
+      .map((el) => {
+        const photo = Object.assign({}, el);
+        const size = Object.keys(photo).length;
+        for (let i = 0; i < size / 2; i++) {
+          delete photo[i];
+        }
+
+        return photo;
+      })
+      .filter((photo) => photo.id !== "0");
 
     return result;
   }
