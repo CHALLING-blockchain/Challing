@@ -62,7 +62,7 @@ function MyFavorite() {
         );
         let weekTimes =
           Number(element.authTotalTimes) /
-          (Number(element.authDayTimes) * period);
+          (Number(element.authDayTimes) * (period / 7));
 
         favoriteChallenges.push(
           <div
