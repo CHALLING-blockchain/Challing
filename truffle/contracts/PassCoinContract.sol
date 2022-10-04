@@ -21,6 +21,7 @@ contract PassCoinContract is IERC20 {
     string public constant symbol = "PASS"; // 토큰의 단축약어
     uint8 public constant decimals = 0; // 소수점 단위
 
+    address owner;
     // 주소와 각 주소가 보유한 토큰량
     mapping(address => uint256) balances;
 
@@ -32,6 +33,7 @@ contract PassCoinContract is IERC20 {
 
     constructor() {
         balances[msg.sender] = totalSupply_;
+        owner=msg.sender;
     }
 
     // 발행된 총 토큰의 개수를 리턴함
@@ -78,8 +80,8 @@ contract PassCoinContract is IERC20 {
     }
 
     function useCoin(address user, uint256 numTokens) public {
-        require(numTokens <= balances[msg.sender]);
-        balances[msg.sender] = balances[msg.sender]+numTokens;
+        require(numTokens <= balances[owner]);
+        balances[owner] = balances[owner]+numTokens;
         balances[user] = balances[user]-numTokens;
     }
 }
