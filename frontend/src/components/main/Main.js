@@ -128,10 +128,9 @@ function Main() {
           "donationId" in element === true
         ) {
           result.push(
-            <div style={{ padding: "8px 4px" }}>
+            <div key={index} style={{ padding: "8px 4px" }}>
               <div
                 className={styles.Box}
-                key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
                 }}
