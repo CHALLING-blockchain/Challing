@@ -206,7 +206,7 @@ function Main() {
             <div className={styles.Rendering}>
               {categoryChallengeRendering()}
             </div>
-            {console.log(category)}
+            {/* {console.log(category)} */}
           </div>
         )}
         <div className={styles.Hr} />

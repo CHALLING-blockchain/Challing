@@ -53,7 +53,7 @@ function AchieveRateBox() {
   useEffect(() => {
     async function load() {
       await Contract.getMyChallenge(user.id).then((result) => {
-        console.log("result", result);
+        // console.log("result", result);
         setIngChal(result[0].length);
         getDeposit(result[0]);
       });
@@ -129,7 +129,7 @@ function ChallengeList() {
 
   function navigateDetail(info, index) {
     const NoIng = getDayGap.getDayGapFromToday(info.startDate);
-    console.log(NoIng);
+    // console.log(NoIng);
     if (NoIng > 0) {
       navigate(`/challenge-detail/${info.challengeId}`);
     } else {

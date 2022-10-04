@@ -31,12 +31,11 @@ function Header() {
   );
 }
 
-
 function MyShotZip() {
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   const photoList = user.photos;
-  console.log(photoList);
+  // console.log(photoList);
   const getPhotoList = () => {
     const photoItems = [];
     for (let index = 0; index < photoList.length; index++) {
@@ -56,7 +55,7 @@ function MyShotZip() {
   };
 
   const goPhotoDetail = (index) => {
-    console.log("index", index);
+    // console.log("index", index);
     navigate(`/my-shot-detail/${index}`);
   };
 

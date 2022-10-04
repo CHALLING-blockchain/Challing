@@ -103,7 +103,7 @@ function MyPage() {
         setEdChal(edCount);
         setIngChal(ingCount);
         setMadeChal(result[0].length);
-        console.log(result);
+        // console.log(result);
       });
     }
     load();
