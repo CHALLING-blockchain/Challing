@@ -500,10 +500,9 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           >
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
-          {selects.peopleLimit === false ? (
+          {selects.limitNum === 999 ? (
             <div className={styles.CardText}>
               인원 제한 없음 <br></br>
-              {selects.limitNum}명
             </div>
           ) : (
             <div className={styles.CardText}>
@@ -730,12 +729,11 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
             <path d="M0 0H2V80H0V0Z" fill="white" />
           </svg>
           <p>
-            {selects.peopleLimit === false ? (
-              <div className={styles.CardText}>
-                인원 제한 없음 <br></br>
-                {selects.limitNum}명
-              </div>
-            ) : (
+          {selects.limitNum === 999 ? (
+            <div className={styles.CardText}>
+              인원 제한 없음 <br></br>
+            </div>
+          ) : (
               <div className={styles.CardText}>
                 인원 제한 있음 <br></br>
                 {selects.limitNum}명
