@@ -1,27 +1,19 @@
-.SearchHeader{
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 100%;
-  /* identical to box height, or 24px */
-  text-align: center;
-  letter-spacing: -0.01em;
-  
-  background: linear-gradient(268.03deg, #926DFF 42.47%, #8497FF 57.84%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  /* text-fill-color: transparent; */
-  height: 56px;
+.header {
+  height: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-.Header{
-  position: fixed;
-  top:0;
-  /* height: 240px; */
+}
+.header p {
+  font-size: 24px;
+  font-weight: bold;
+  background: linear-gradient(
+    252.68deg,
+    rgba(146, 114, 255) 27.32%,
+    rgba(133, 150, 255) 93.21%
+  );
+  -webkit-background-clip: text;
+  color: transparent;
 }
 .InputSearch{
   width: 328px;

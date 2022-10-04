@@ -111,7 +111,9 @@ function MyPage() {
 
   return (
     <div>
-      <h2 className={styles.MyPageHeader}>마이페이지</h2>
+      <div className={styles.header}>
+        <p>마이페이지</p>
+      </div>
       <div
         className={styles.UserProfile}
         onClick={() => {
