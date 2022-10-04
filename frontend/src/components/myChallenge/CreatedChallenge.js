@@ -114,7 +114,7 @@ function ChallengeList() {
     async function load() {
       const ids = await Contract.getMyChallenge(user.id);
 
-      const filterIds = ids[1].filter((id) => selector[id].complete !== true);
+      const filterIds = ids[0].filter((id) => selector[id].complete !== true);
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
