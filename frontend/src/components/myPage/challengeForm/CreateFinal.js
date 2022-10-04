@@ -150,8 +150,8 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
     authTotalTimes:
-      selects.nTimesAWeek * selects.authentications * selects.period,
-      authWeekTimes: selects.nTimesAWeek,
+      selects.nTimesAWeek * selects.authentications * (selects.period/7),
+    authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
     endTime: selects.endTime,
@@ -176,7 +176,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
     goodPicURL: selects.goodShotUrl,
     badPicURL: selects.badShotUrl,
     authTotalTimes:
-      selects.nTimesAWeek * selects.authentications * selects.period,
+      selects.nTimesAWeek * selects.authentications * (selects.period/7),
       authWeekTimes: selects.nTimesAWeek,
     authDayTimes: selects.authentications,
     startTime: selects.startTime,
