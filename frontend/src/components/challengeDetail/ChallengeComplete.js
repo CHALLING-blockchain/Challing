@@ -128,7 +128,6 @@ function Reward(props) {
         for (let i = 0; i < challengers.length; i++) {
           if (Number(challengers[i].userId) === user.id) {
             if (type === "daily") {
-              console.log(challengers[i].reward);
               setReward(challengers[i].reward / 1e18);
             } else if (type === "donation") {
               setDonatorDeposit(challengers[i].userDeposit / 1e18);
@@ -182,6 +181,7 @@ function Reward(props) {
 }
 
 function Btn(props) {
+  
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -223,14 +223,13 @@ function Btn(props) {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getChallengers(challengeId).then((result) => {
-        let challengers = result;
-        for (let i = 0; i < challengers.length; i++) {
-          if (challengers[i].userId === user.id) {
-            setChallenger(challengers[i]);
-          }
+      const challengers=await Contract.getChallengers(challengeId)
+
+      for (let i = 0; i < challengers.length; i++) {
+        if (Number(challengers[i].userId) === user.id) {
+          setChallenger(challengers[i]);
         }
-      });
+      }
     }
     load();
   }, []);
