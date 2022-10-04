@@ -52,7 +52,7 @@ pipeline {
                   cp $FRONTEND_PRODUCTION frontend/.env.production.local & \
                   cp -R ../contracts frontend/src & \
                   cp $BACKETH_PRODUCTION backeth/.env.production & \
-                  cat $BACKEND_PRODUCTION_DEMO >> backend/src/main/resources/application-production.yml & \
+                  cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml & \
                 '
               }
             }
