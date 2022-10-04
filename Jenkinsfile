@@ -40,7 +40,7 @@ pipeline {
 
     // 빌드 전 정리 작업
     stage('pre_deploy') {
-      // 병렬 처리
+      // 병렬 처리 (파일 작업과 도커 작업)
       parallel {
         // 파일 (환경 변수) 세팅
         stage('file_work') {
@@ -61,15 +61,19 @@ pipeline {
                   cp $BACKETH_PRODUCTION backeth/.env.production & \
                   cat $BACKEND_PRODUCTION >> backend/src/main/resources/application-production.yml & \
                 '
-                // 도중에 컨트랙트를 저장소에 트래킹하게 돼서 컨트랙트 복사 과정은 사라짐
                 // cp -R ../contracts frontend/src & \
+                // 위와 같이 저장소에 ignore 됐던 컨트랙트 복사 작업도 있었으나
+                // 도중에 저장소에 트래킹하게 돼서 불필요해 짐
               }
             }
           }
         }
 
+        // 도커 관련 작업
         stage('docker_work') {
           stages {
+            // 안 쓰이는 이미지 제거
+            // 하지 않으면 서버가 아파함
             stage('prune_images') {
               steps {
                 catchError {
@@ -78,6 +82,7 @@ pipeline {
               }
             }
 
+            // 같은 이름을 계속 사용하기 때문에 기존에 돌아가던 컨테이너를 지움
             stage('remove_containers') {
               steps {
                 catchError {
@@ -90,10 +95,14 @@ pipeline {
       }
     }
 
+    // 배포 본 작업
     stage('deploy') {
+      // 병렬 처리 (프론트엔드와 백엔드)
       parallel {
+        // 프론트엔드
         stage('frontend') {
           stages {
+            // 빌드
             stage('frontend_build') {
               steps {
                 dir('frontend') {
@@ -102,12 +111,14 @@ pipeline {
               }
             }
 
+            // 런
             stage('frontend_serve') {
               steps {
                 sh "docker run -d -p 8081:80 --name ${FRONTEND_CONTAINER} ${FRONTEND_IMAGE}"
               }
             }
 
+            // 알림
             stage('mattermost_send_frontend_complete') {
               steps {
                 catchError {
@@ -121,20 +132,24 @@ pipeline {
           }
         }
 
+        // 백엔드
         stage('backend') {
           stages {
+            // Express 빌드
             stage('backeth_build') {
               steps {
                 sh "docker build --file backeth/Dockerfile --tag ${BACKETH_IMAGE} ."
               }
             }
 
+            // Express 런
             stage('backeth_run') {
               steps {
                 sh "docker run -d -p 8082:3000 --add-host=host.docker.internal:host-gateway --name ${BACKETH_CONTAINER} ${BACKETH_IMAGE}"
               }
             }
 
+            // Express 알림
             stage('mattermost_send_backeth_complete') {
               steps {
                 catchError {
@@ -146,6 +161,7 @@ pipeline {
               }
             }
 
+            // 스프링 빌드
             stage('backend_build') {
               steps {
                 dir('backend') {
@@ -154,12 +170,14 @@ pipeline {
               }
             }
 
+            // 스프링 런
             stage('backend_serve') {
               steps {
                 sh "docker run -d -p 8080:8080 -e profile=production --add-host=host.docker.internal:host-gateway --name ${BACKEND_CONTAINER} ${BACKEND_IMAGE}"
               }
             }
 
+            // 알림
             stage('mattermost_send_backend_complete') {
               steps {
                 catchError {
@@ -175,6 +193,7 @@ pipeline {
       }
     }
 
+    // 파이프라인 종료 알림
     stage('mattermost_send_end') {
       steps {
         catchError {

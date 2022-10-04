@@ -34,3 +34,80 @@
 | Frontend       | Node js  | NPM    | React       |
 | Backend (Main) | Java     | Gradle | Spring Boot |
 | Backend (Web3) | Node js  | NPM    | Express     |
+
+### 환경 변수
+
+개발시 환경 변수, 배포시 환경 변수 모두 필요
+
+#### 개발용
+
+- frontend
+	- .env.local
+- backeth
+	- .env
+
+- frontend/.env.local
+
+```
+REACT_APP_KAKAO_CLIENT_ID = ****
+REACT_APP_ETHERSCAN_API_KEY = ****
+REACT_APP_CRYPTO_API_KEY = ****
+REACT_APP_METAMASK_PRIVATE_KEY = ****
+REACT_APP_INFURA_API_KEY = ****
+REACT_APP_ACCESS_KEY = ****
+REACT_APP_SECRET_KEY = ****
+```
+
+- backeth/.env
+```
+PORT = "8082"
+APP_NODE_ENDPOINT = "https://j7b106.p.ssafy.io:8545"
+APP_ACCOUNT_PRIVATE_KEY = ****
+```
+
+#### 서버용
+
+- frontend
+	- .env.local
+	- .env.production.local
+- backend
+	- application-production-secret.yml
+- backeth
+	- .env.production4server
+
+- frontend/.env.local
+
+```
+REACT_APP_KAKAO_CLIENT_ID = ****
+REACT_APP_ETHERSCAN_API_KEY = ****
+REACT_APP_CRYPTO_API_KEY = ****
+REACT_APP_METAMASK_PRIVATE_KEY = ****
+REACT_APP_INFURA_API_KEY = ****
+REACT_APP_ACCESS_KEY = ****
+REACT_APP_SECRET_KEY = ****
+```
+
+- frontend/.env.production.local
+
+```
+REACT_APP_KAKAO_CLIENT_ID = ****
+```
+
+- backend/application-production-secret.yml
+
+```yml
+spring.datasource:
+  username: ****
+  password: ****
+
+jwt.secret: ****
+
+com.ssafy.kakao.client_id: ****
+```
+
+- backeth/.env.production4server
+
+```
+APP_NODE_ENDPOINT = "http://host.docker.internal:9425"
+APP_ACCOUNT_PRIVATE_KEY = ****
+```
