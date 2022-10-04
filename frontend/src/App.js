@@ -9,7 +9,7 @@ import PreCategory from "./components/auth/PreCategory";
 import ChallengeDetail from "./components/challengeDetail/ChallengeDetail";
 import ChallengeSearch from "./components/challengeSearch/ChallengeSearch";
 import ChallengeShot from "./components/challengeShot/ChallengeShot";
-import ChallengeCertify from "./components/challengeCertify/ChllengeCertify";
+import ChallengeCertify from "./components/challengeCertify/ChallengeCertify";
 import CertificationPhotos from "./components/challengeCertify/CertificationPhotos";
 import Main from "./components/main/Main";
 import MyPage from "./components/myPage/MyPage";
