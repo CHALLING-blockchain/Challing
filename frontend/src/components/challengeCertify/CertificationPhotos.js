@@ -262,7 +262,7 @@ function Separately() {
           users.push(response.data.body);
         });
       }
-      console.log("users", users);
+      // console.log("users", users);
       setUserList([...users]);
     };
     getNickname();

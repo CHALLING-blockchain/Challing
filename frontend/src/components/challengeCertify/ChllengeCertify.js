@@ -5,7 +5,7 @@ import heart from "../../img/heart.png";
 import calender from "../../img/calender.png";
 import chat from "../../img/chat.png";
 import dollarCoin from "../../img/dollarCoin.png";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import * as getDayGab from "../main/Main.js";
 import ContractAPI from "../../api/ContractAPI";
@@ -74,8 +74,7 @@ function Description({ info, percentage }) {
   );
 }
 
-
-function Btn({ challengeId, challenge, percentage,challenger }) {
+function Btn({ challengeId, challenge, percentage, challenger }) {
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -91,28 +90,32 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
   } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
   const [openModal, setOpenModal] = useState(false);
   const userId = useSelector(selectUser).id;
-  const today=Math.abs(
+  const today = Math.abs(
     getDayGap.getDayGapFromDates(
       challenge.startDate,
       moment(new Date()).format("YYYY-MM-DD")
-    ))
-  console.log(challenge)
-  const hour=(new Date()).getHours()
-  
-  const flag=Number(challenge.startTime)<=hour&&hour<=Number(challenge.endTime)?true:false
-  console.log("flag",flag)
+    )
+  );
+  // console.log(challenge);
+  const hour = new Date().getHours();
+
+  const flag =
+    Number(challenge.startTime) <= hour && hour <= Number(challenge.endTime)
+      ? true
+      : false;
+  // console.log("flag", flag);
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
-  }
-  function Modal({onClose}){
+  };
+  function Modal({ onClose }) {
     const Contract = new ContractAPI(activeAccount);
-    function handleClose(){
-      onClose ?.();
+    function handleClose() {
+      onClose?.();
     }
-    function usePasscoin(){
-      Contract.usePasscoin(challengeId, userId)
-      handleClose()
+    function usePasscoin() {
+      Contract.usePasscoin(challengeId, userId);
+      handleClose();
     }
     return (
       <div className={styles.Modal} onClick={handleClose}>
@@ -160,31 +163,33 @@ function Btn({ challengeId, challenge, percentage,challenger }) {
 
   return (
     <div>
-      {challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today ? (
-        <div className={styles.btnBox}>{
-          flag?
-          <button
-            className={styles.btnpre}
-            onClick={() => {
-              navigate(`/web-cam-capture`, {
-                state: {
-                  challengeId: challengeId,
-                  challengeInfo: challenge,
-                  percentage: percentage,
-                },
-              });
-            }}
-          >
-            📸 인증하기 
-          </button>
-        :
-          <div className={styles.nobtnpre}>
-            <p>[ 인증 가능 시간 ] {challenge.startTime}:00~{challenge.endTime}:00</p>
-          </div>
-        }
-        
-        
-        
+      {challenger.dailyCount < challenge.authDayTimes ||
+      Number(challenger.today) !== today ? (
+        <div className={styles.btnBox}>
+          {flag ? (
+            <button
+              className={styles.btnpre}
+              onClick={() => {
+                navigate(`/web-cam-capture`, {
+                  state: {
+                    challengeId: challengeId,
+                    challengeInfo: challenge,
+                    percentage: percentage,
+                  },
+                });
+              }}
+            >
+              📸 인증하기
+            </button>
+          ) : (
+            <div className={styles.nobtnpre}>
+              <p>
+                [ 인증 가능 시간 ] {challenge.startTime}:00~{challenge.endTime}
+                :00
+              </p>
+            </div>
+          )}
+
           <img
             src={dollarCoin}
             className={styles.passcoinImg}

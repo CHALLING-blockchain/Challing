@@ -41,7 +41,7 @@ function CreateChallenge() {
   });
 
   useEffect(() => {
-    console.log("selects", selects);
+    // console.log("selects", selects);
   }, [selects]);
 
   const [formCnt, setFormCnt] = useState(0);

@@ -10,9 +10,9 @@ function Login() {
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get("code");
-    console.log("code", code);
+    // console.log("code", code);
     UserAPI.kakaoLogin(code).then((response) => {
-      console.log("response", response);
+      // console.log("response", response);
       if (response.data.message === "noEmail") {
         alert("email 동의를 해주세요");
         window.location.replace(

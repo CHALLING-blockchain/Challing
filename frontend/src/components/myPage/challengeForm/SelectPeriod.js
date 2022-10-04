@@ -27,7 +27,7 @@ function SelectPeriod({
   const [startDate, setStartDate] = useState(addDays(new Date(), 1));
   useEffect(() => {
     setStartDate(addDays(new Date(), 1));
-    console.log("startDate", startDate);
+    // console.log("startDate", startDate);
   }, []);
   useEffect(() => {
     setChallengeEnd(moment(endDate).format("YYYY-MM-DD"));
@@ -86,7 +86,7 @@ function SelectPeriod({
       </div>
     );
   }
-  console.log("list", list);
+  // console.log("list", list);
   return (
     <div>
       <Header />

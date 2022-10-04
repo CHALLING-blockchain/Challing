@@ -77,10 +77,9 @@ function ChallengeSearch() {
         if (dayGap > 0) {
           cnt++;
           result.push(
-            <div style={{ padding: "8px 4px" }}>
+            <div key={index} style={{ padding: "8px 4px" }}>
               <div
                 className={styles.SearchBeforeBox}
-                key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
                 }}
@@ -113,7 +112,7 @@ function ChallengeSearch() {
       <div className={styles.header}>
         <p>챌린지 검색</p>
       </div>
-      <div style={{ padding: "16px", paddingTop: "0px", marginBottom:'16px' }}>
+      <div style={{ padding: "16px", paddingTop: "0px", marginBottom: "16px" }}>
         <form className={styles.InputSearch}>
           <svg
             className={styles.SearchIcon}

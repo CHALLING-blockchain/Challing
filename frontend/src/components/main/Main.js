@@ -83,10 +83,9 @@ function Main() {
         ) {
           // console.log("element.name", element.name);
           result.push(
-            <div style={{ padding: "8px 4px" }}>
+            <div key={index} style={{ padding: "8px 4px" }}>
               <div
                 className={styles.Box}
-                key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
                 }}
@@ -165,10 +164,9 @@ function Main() {
         // (시작 전&&카테고리 일치) 챌린지만
         if (dayGap > 0 && element.interestId === category) {
           result.push(
-            <div style={{ padding: "8px 4px" }}>
+            <div key={index} style={{ padding: "8px 4px" }}>
               <div
                 className={styles.Box}
-                key={index}
                 onClick={() => {
                   toChallengeDetail(element.challengeId);
                 }}
@@ -206,7 +204,7 @@ function Main() {
             <div className={styles.Rendering}>
               {categoryChallengeRendering()}
             </div>
-            {console.log(category)}
+            {/* {console.log(category)} */}
           </div>
         )}
         <div className={styles.Hr} />
