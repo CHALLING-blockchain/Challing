@@ -132,7 +132,6 @@ class ContractAPI {
   }
   async authenticate(challengeId, userId, today, picURL) {
     await this.init();
-    console.log("today", today);
     // 챌린저 정보 가져오기
     const info = await this.Ccontract.methods
       .findingChallenger(challengeId, userId)
@@ -146,7 +145,6 @@ class ContractAPI {
     const challengeIdIndex = info[2];
     const timestamp = moment(new Date()).format().substring(0, 19);
 
-    console.log("time", timestamp);
     if (this.account !== undefined && this.account !== "") {
       // 사진 저장
       window.ethereum
@@ -515,14 +513,17 @@ class ContractAPI {
         from: this.account,
       })
       .catch(console.error);
-    const result = photos.map((el) => {
-      const photo = Object.assign({}, el);
-      const size = Object.keys(photo).length;
-      for (let i = 0; i < size / 2; i++) {
-        delete photo[i];
-      }
-      return photo;
-    });
+    const result = photos
+      .map((el) => {
+        const photo = Object.assign({}, el);
+        const size = Object.keys(photo).length;
+        for (let i = 0; i < size / 2; i++) {
+          delete photo[i];
+        }
+
+        return photo;
+      })
+      .filter((photo) => photo.id !== "0");
 
     return result;
   }

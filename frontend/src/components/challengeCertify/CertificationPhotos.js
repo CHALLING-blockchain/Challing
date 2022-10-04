@@ -143,7 +143,7 @@ function Gather() {
 function Modal({ onClose, photoId }) {
   const challengeId = useLocation().state.challengeId;
   const userId = useSelector(selectUser).id;
-
+  const navigate = useNavigate();
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -184,8 +184,9 @@ function Modal({ onClose, photoId }) {
         triggerAt: tomorrow.getTime(),
       };
 
-      ScheduleAPI.vote(body);
+      await ScheduleAPI.vote(body);
       handleClose();
+      navigate(`/votinghome/${challengeId}`);
     }
   }
   return (

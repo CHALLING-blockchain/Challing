@@ -60,8 +60,8 @@ function Achieve(props) {
       await Contract.getChallengers(challengeId).then((result) => {
         let challengers = result;
         for (let i = 0; i < challengers.length; i++) {
-          if (challengers[i].userId === user.id) {
-            // console.log(challengers[i]);
+          if (Number(challengers[i].userId) === user.id) {
+            console.log(challengers[i]);
             setMyCount(challengers[i].totalCount);
           }
         }
@@ -106,8 +106,8 @@ function Reward(props) {
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
   const deposit = challenge.deposit / 1e18;
-  const [reward, setReward] = useState("");
-  const [donatorDeposit, setDonatorDeposit] = useState("");
+  const [reward, setReward] = useState(0);
+  const [donatorDeposit, setDonatorDeposit] = useState(0);
   // 일상이면 deposit 기부면 setDonation
   let type = "";
   if ("deposit" in challenge) {
@@ -126,8 +126,9 @@ function Reward(props) {
       await Contract.getChallengers(challengeId).then((result) => {
         let challengers = result;
         for (let i = 0; i < challengers.length; i++) {
-          if (challengers[i].userId === user.id) {
+          if (Number(challengers[i].userId) === user.id) {
             if (type === "daily") {
+              console.log(challengers[i].reward);
               setReward(challengers[i].reward / 1e18);
             } else if (type === "donation") {
               setDonatorDeposit(challengers[i].userDeposit / 1e18);
