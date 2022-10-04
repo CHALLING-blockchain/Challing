@@ -7,7 +7,7 @@ Dockerfile 및 커맨드로 정리 (선행 조건 및 자세한 내용은 [dev_b
 - 로컬 Ethereum Network 구동
 
 ```cmd
-ganache-cli -d -p 7545 --gasLimit=2000000000 --allow-unlimited-contract-size -m "melt chapter spread company mention airport ethics rubber once movie arm pool"
+ganache-cli -d -p 7545 --gasLimit=2000000000 --allow-unlimited-contract-size -m "<MNEMONIC_PHRASE>"
 ```
 
 - Truffle CLI 로 컨트랙트 배포 및 마이그레이션

@@ -91,19 +91,24 @@ function MyPage() {
         const join = result[1];
         let ingCount = 0;
         let edCount = 0;
-        if (join.length !== 0) {
-          for (let i = 0; i < join.length; i++) {
-            if (selector[join[i]].complete === true) {
-              edCount += 1;
-            } else {
-              ingCount += 1;
-            }
+        let madeCount = 0;
+
+        for (let i = 0; i < join.length; i++) {
+          if (
+            Number(selector[join[i]].ownerId) === user.id &&
+            selector[join[i]].complete === false
+          )
+            madeCount += 1;
+          if (selector[join[i]].complete === true) {
+            edCount += 1;
+          } else {
+            ingCount += 1;
           }
         }
+
         setEdChal(edCount);
         setIngChal(ingCount);
-        setMadeChal(result[0].length);
-        // console.log(result);
+        setMadeChal(madeCount);
       });
     }
     load();

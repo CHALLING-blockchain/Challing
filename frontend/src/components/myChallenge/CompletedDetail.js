@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CompletedDetail.module.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import backdrop from "../../img/test-back.jpg";
 import heart from "../../img/heart.png";
 import calender from "../../img/calender.png";
@@ -8,14 +8,13 @@ import person from "../../img/person.png";
 import coin from "../../img/ethCoin.png";
 import chart from "../../img/chart.png";
 import styled, { keyframes } from "styled-components";
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { challengeList } from './../../app/redux/allChallengeSlice';
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { challengeList } from "./../../app/redux/allChallengeSlice";
 import { selectUser, setUserInfo } from "../../app/redux/userSlice";
 import UserAPI from "../../api/UserAPI";
-import { useDispatch } from 'react-redux';
-import ContractAPI from './../../api/ContractAPI';
-
+import { useDispatch } from "react-redux";
+import ContractAPI from "./../../api/ContractAPI";
 
 function Header() {
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ function Description(props) {
   );
 }
 
-function MyAchRate(props){
+function MyAchRate(props) {
   const challengeId = props.challengeId;
   const Contract = new ContractAPI();
   const challenge = props.challenge;
@@ -84,9 +83,9 @@ function MyAchRate(props){
 
   let type = "";
   if ("deposit" in challenge) {
-    type = "daily"
+    type = "daily";
   } else {
-    type = "donation"
+    type = "donation";
   }
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
@@ -99,60 +98,59 @@ function MyAchRate(props){
       await Contract.getChallengers(challengeId).then((result) => {
         let challengers = result;
         for (let i = 0; i < challengers.length; i++) {
-          if (challengers[i].userId == user.id){
+          if (challengers[i].userId == user.id) {
             if (type === "daily") {
-              setDeposit(challengers[i].userDeposit/1e18);
-              setReward(challengers[i].reward/1e18);
-            } else if (type === "donation"){
-              setContribution(challengers[i].setDonation)
+              setDeposit(challengers[i].userDeposit / 1e18);
+              setReward(challengers[i].reward / 1e18);
+            } else if (type === "donation") {
+              setContribution(challengers[i].setDonation);
             }
             setMyCount(challengers[i].totalCount);
           }
-          
         }
-      })
+      });
     }
     load();
-  }, [])
-  
-    return (
-      <div className={styles.MyAchRate}>
-        <div className={styles.rateText}>
-          <span>나의 달성률</span>
-          <span style={{ color: "#755FFF" }}>
-            {((myCount * 100) / (totalCount)).toFixed(2)}%
-          </span>
-        </div>
-        <Container>
-          <Progress width={(myCount * 100) / (totalCount ) + "%"} />
-        </Container>
-        {type === "daily" ? (
-          <div className={styles.rewardBox}>
-            <div>
-              <p style={{ fontSize: "14px" }}>{(deposit + reward)} ETH 환급</p>
-              <p style={{ fontSize: "10px", color: "#6A6A6A" }}>
-                예치금 {deposit} ETH
-              </p>
-            </div>
-            <div className={styles.reward}>
-              <span>상금 {reward}ETH</span>
-            </div>
-          </div>
-        ) : (
-          <div className={styles.rewardBox}>
-            <div>
-              <p style={{ fontSize: "14px" }}>기부금 {contributions}</p>
-            </div>
-          </div>
-        )}
-        <hr className={styles.hrTag} />
+  }, []);
+
+  return (
+    <div className={styles.MyAchRate}>
+      <div className={styles.rateText}>
+        <span>나의 달성률</span>
+        <span style={{ color: "#755FFF" }}>
+          {((myCount * 100) / totalCount).toFixed(2)}%
+        </span>
       </div>
-    );
+      <Container>
+        <Progress width={(myCount * 100) / totalCount + "%"} />
+      </Container>
+      {type === "daily" ? (
+        <div className={styles.rewardBox}>
+          <div>
+            <p style={{ fontSize: "14px" }}>{deposit + reward} ETH 환급</p>
+            <p style={{ fontSize: "10px", color: "#6A6A6A" }}>
+              예치금 {deposit} ETH
+            </p>
+          </div>
+          <div className={styles.reward}>
+            <span>상금 {reward}ETH</span>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.rewardBox}>
+          <div>
+            <p style={{ fontSize: "14px" }}>기부금 {contributions}</p>
+          </div>
+        </div>
+      )}
+      <hr className={styles.hrTag} />
+    </div>
+  );
 }
 
-function Inform(props){
-  const challengeId = props.challengeId
-  const challenge = props.element
+function Inform(props) {
+  const challengeId = props.challengeId;
+  const challenge = props.element;
   const [people, setPeople] = useState("");
   const Contract = new ContractAPI();
   const [deposit, setDeposit] = useState("");
@@ -169,66 +167,64 @@ function Inform(props){
       await Contract.getChallengers(challengeId).then((result) => {
         setPeople(result.length);
         if (type === "daily") {
-          setDeposit(people * challenge.deposit/1e18)
+          setDeposit((people * challenge.deposit) / 1e18);
         } else if (type === "donation") {
-          setContribution(challenge.setDonation)
+          setContribution(challenge.setDonation);
         }
-      })
+      });
     }
     load();
-  },[])
+  }, []);
 
-  
-
-    return (
-      <div className={styles.informBox}>
+  return (
+    <div className={styles.informBox}>
+      <div className={styles.informOne}>
+        <img src={person} alt="" />
+        <span>
+          총 <span style={{ color: "#755FFF" }}>{people}</span>명 참가
+        </span>
+      </div>
+      {type === "daily" ? (
         <div className={styles.informOne}>
-          <img src={person} alt="" />
+          <img src={coin} alt="" />
           <span>
-            총 <span style={{ color: "#755FFF" }}>{people}</span>명 참가
+            총 예치금 <span style={{ color: "#755FFF" }}>{deposit}</span>ETH
           </span>
         </div>
-        {type === "daily" ? (
-          <div className={styles.informOne}>
-            <img src={coin} alt="" />
-            <span>
-              총 예치금 <span style={{ color: "#755FFF" }}>{deposit}</span>ETH
-            </span>
-          </div>
-        ) : (
-          <div className={styles.informOne}>
-            <img src={coin} alt="" />
-            <span>
-              기부금 <span style={{ color: "#755FFF" }}>{contribution}</span>ETH
-            </span>
-          </div>
-        )}
-        {/* <div className={styles.informOne}>
+      ) : (
+        <div className={styles.informOne}>
+          <img src={coin} alt="" />
+          <span>
+            기부금 <span style={{ color: "#755FFF" }}>{contribution}</span>ETH
+          </span>
+        </div>
+      )}
+      {/* <div className={styles.informOne}>
           <img src={chart} alt="" />
           <span>
             참가자 평균 달성률 <span style={{ color: "#755FFF" }}>{rate}%</span>
           </span>
         </div> */}
-      </div>
-    );
+    </div>
+  );
 }
 
-function CompletedDetail(){
+function CompletedDetail() {
   const { id } = useParams();
   const selector = useSelector(challengeList);
   const element = selector[id];
-    return (
-      <div>
-        <Header></Header>
-        <BackDrop url={element.mainPicURL}></BackDrop>
-        <Description
-          title = {element.name}
-          period={element.startDate + " ~ " + element.endDate}
-        ></Description>
-        <MyAchRate challengeId={id} challenge={element}></MyAchRate>
-        <Inform element={element} challengeId={id}></Inform>
-      </div>
-    );
+  return (
+    <div>
+      <Header></Header>
+      <BackDrop url={element.mainPicURL}></BackDrop>
+      <Description
+        title={element.name}
+        period={element.startDate + " ~ " + element.endDate}
+      ></Description>
+      <MyAchRate challengeId={id} challenge={element}></MyAchRate>
+      <Inform element={element} challengeId={id}></Inform>
+    </div>
+  );
 }
 
 export default CompletedDetail;
