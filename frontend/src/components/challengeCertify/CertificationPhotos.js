@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./CertificationPhotos.module.css";
 import camera from "../../img/camera.png";
 import megaphone from "../../img/megaphone.png";
-import profile from "../../img/profile-basic.png";
 import ContractAPI from "../../api/ContractAPI";
 import useWeb3 from "../../hooks/useWeb3";
 import { selectUser } from "../../app/redux/userSlice";
@@ -141,17 +140,17 @@ function Modal({ onClose, photoId }) {
 
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
-  const [isLoading, setIsLoading] = useState(false);
+  const [setIsLoading] = useState(false);
   // error messages
-  const [errorMessage, setErrorMessage] = useState("");
+  const [setErrorMessage] = useState("");
 
   // get active account and balance data from useWeb3 hook
-  const {
-    connect,
-    disconnect,
-    provider,
-    account: activeAccount,
-  } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
+  const { account: activeAccount } = useWeb3(
+    setIsLoading,
+    setErrorMessage,
+    exist,
+    setExist
+  );
 
   function handleClose() {
     onClose?.();
