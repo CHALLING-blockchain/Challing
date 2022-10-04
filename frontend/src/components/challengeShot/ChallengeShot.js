@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./ChallengeShot.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,15 +9,14 @@ import {
 } from "../../app/redux/allChallengeSlice";
 import * as getDayGab from "../main/Main.js";
 import moment from "moment";
-import { selectUser, setUserInfo } from "../../app/redux/userSlice";
+import { selectUser } from "../../app/redux/userSlice";
 import ContractAPI from "../../api/ContractAPI";
 import tick from "../../img/tick.png";
 import calender from "../../img/calender.png";
 import megaphone from "../../img/megaphone.png";
-// import useWeb3 from "../../../hooks/useWeb3";
 
 function ChallengeShot() {
-  const [myChallenge, setMyChallenge] = useState("");
+  const [setMyChallenge] = useState("");
   const onChange = (event) => setMyChallenge(event.target.value);
   const allChallenge = useSelector(challengeList);
   const user = useSelector(selectUser);
@@ -42,9 +41,7 @@ function ChallengeShot() {
 
   function ChallengeCard(props) {
     const today = moment(new Date()).format("YYYY-MM-DD");
-    const NoIng = getDayGab.getDayGapFromToday(
-      props.challengeInfo.startDate
-    )
+    const NoIng = getDayGab.getDayGapFromToday(props.challengeInfo.startDate);
     const dayGab = getDayGab.getDayGapFromDates(
       today,
       props.challengeInfo.endDate
@@ -54,7 +51,7 @@ function ChallengeShot() {
 
     if (challengers) {
       userCount = challengers.filter(
-        (el) => el.challengeId == props.challengeInfo.challengeId
+        (el) => el.challengeId === props.challengeInfo.challengeId
       )[0].totalCount;
     }
     const percentage = (
@@ -65,40 +62,50 @@ function ChallengeShot() {
     return (
       <div>
         {/* { NoIng>0 ?  */}
-        { false ? 
-          <div
-          className={styles.CardBox}
-          onClick={() => {
-            navigate(`/challenge-detail/${props.challengeInfo.challengeId}`);
-          }}
-        >
-          <img
-            style={{ borderRadius: "5px" }}
-            src={props.challengeInfo.mainPicURL}
-            height="120"
-            width="160"
-            alt=""
-          ></img>
-
-          <div className={styles.CardBody}>
-            <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
-            <p style={{ fontSize: "10px" ,display:'flex',alignItems:'center'}}>
-              <img src={calender} height="12" width="12" alt="" />
-              {NoIng}일 뒤 시작
-            </p>
-          </div>
-          {console.log(NoIng)}
-        </div> : 
+        {false ? (
           <div
             className={styles.CardBox}
             onClick={() => {
-              navigate(`/challenge-certify/${props.challengeInfo.challengeId}`, {
-                state: {
-                  challengeInfo: props.challengeInfo,
-                  percentage: percentage,
-                  challengerInfo:props.challengerInfo
-                },
-              });
+              navigate(`/challenge-detail/${props.challengeInfo.challengeId}`);
+            }}
+          >
+            <img
+              style={{ borderRadius: "5px" }}
+              src={props.challengeInfo.mainPicURL}
+              height="120"
+              width="160"
+              alt=""
+            ></img>
+
+            <div className={styles.CardBody}>
+              <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+              <p
+                style={{
+                  fontSize: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <img src={calender} height="12" width="12" alt="" />
+                {NoIng}일 뒤 시작
+              </p>
+            </div>
+            {console.log(NoIng)}
+          </div>
+        ) : (
+          <div
+            className={styles.CardBox}
+            onClick={() => {
+              navigate(
+                `/challenge-certify/${props.challengeInfo.challengeId}`,
+                {
+                  state: {
+                    challengeInfo: props.challengeInfo,
+                    percentage: percentage,
+                    challengerInfo: props.challengerInfo,
+                  },
+                }
+              );
             }}
           >
             <img
@@ -119,14 +126,18 @@ function ChallengeShot() {
                       state: {
                         challengeInfo: props.challengeInfo,
                         percentage: percentage,
-                        challengerInfo:props.challengerInfo
+                        challengerInfo: props.challengerInfo,
                       },
                     }
                   );
                 }}
               >
                 <img
-                  style={{ width: "10px", marginRight: "2px", marginLeft: "2px" }}
+                  style={{
+                    width: "10px",
+                    marginRight: "2px",
+                    marginLeft: "2px",
+                  }}
                   src={tick}
                   alt=""
                 />
@@ -134,17 +145,30 @@ function ChallengeShot() {
               </div>
             </div>
             <div className={styles.CardBody}>
-              <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
+              <p
+                style={{
+                  fontSize: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <img src={megaphone} height="12" width="12" alt="" />
                 현재 {percentage}%달성
               </p>
-              <p style={{ fontSize: "10px",display:'flex',alignItems:'center' }}>
+              <p
+                style={{
+                  fontSize: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <img src={calender} height="12" width="12" alt="" />
                 {dayGab}일 뒤 종료
               </p>
             </div>
             {console.log(NoIng)}
-          </div> }
+          </div>
+        )}
       </div>
     );
   }
@@ -161,13 +185,12 @@ function ChallengeShot() {
   function YesChallenge() {
     let flag = false;
     if (challengers) {
-      
       const result = (
         <div className={styles.Contents}>
           {Object.values(allChallenge)
             .filter((challenge) => {
               return challengers.filter(
-                (el) => el.challengeId == challenge.challengeId
+                (el) => el.challengeId === challenge.challengeId
               )[0];
             })
             .map((challenge, index) => {
@@ -176,7 +199,11 @@ function ChallengeShot() {
                 <ChallengeCard
                   key={index}
                   challengeInfo={challenge}
-                  challengerInfo={challengers.filter(c=>c.challengeId==challenge.challengeId)[0]}
+                  challengerInfo={
+                    challengers.filter(
+                      (c) => c.challengeId === challenge.challengeId
+                    )[0]
+                  }
                 ></ChallengeCard>
               );
             })}
