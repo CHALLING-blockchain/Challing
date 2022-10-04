@@ -125,7 +125,7 @@ function ChallengeIntro({
       </div>
       <div style={{ padding: "16px" }}>
         <div className="PhotoBox">
-          <p style={{ marginBottom: "8px" }}>챌린지 대표 사진(선택)</p>
+          <p style={{ marginBottom: "8px" }}>챌린지 대표 사진(필수)</p>
           <img
             onClick={handleClick}
             style={{ width: "120px", height: "120px" }}
