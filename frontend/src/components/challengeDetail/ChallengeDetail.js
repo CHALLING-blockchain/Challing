@@ -302,7 +302,7 @@ function Description(props) {
   );
   const weekTimes =
     Number(props.challenge.authTotalTimes) /
-    (Number(props.challenge.authDayTimes) * period);
+    (Number(props.challenge.authDayTimes) * (period / 7));
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
