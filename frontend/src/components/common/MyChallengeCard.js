@@ -29,7 +29,7 @@ function MyChallengeCard({ type, title, times, period, img, count }) {
       <div className={styles.des}>
         <div className={styles.count}>
           <img src={chart} alt="" />
-          <span>누적 참가횟수 {count}회</span>
+          <span>누적 인증횟수 {count}회</span>
         </div>
         <div className={styles.subBox}>
           <div style={{ display: "flex", alignItems: "center" }}>

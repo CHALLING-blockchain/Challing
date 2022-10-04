@@ -42,8 +42,9 @@ function AchieveRateBox() {
   const Contract = new ContractAPI();
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
-  const [ingChal, setIngChal] = useState("");
+  const [madeChal, setMadeChal] = useState("");
   const [totalDeposit, setTotalDeposit] = useState("");
+  const selector = useSelector(challengeList);
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
@@ -53,9 +54,11 @@ function AchieveRateBox() {
   useEffect(() => {
     async function load() {
       await Contract.getMyChallenge(user.id).then((result) => {
-        // console.log("result", result);
-        setIngChal(result[0].length);
-        getDeposit(result[0]);
+        const filterIds = result[0].filter(
+          (id) => selector[id].complete === false
+        );
+        setMadeChal(filterIds.length);
+        getDeposit(filterIds);
       });
     }
     load();
@@ -79,7 +82,7 @@ function AchieveRateBox() {
       <div className={styles.boxLeft}>
         <p>챌린지</p>
         <p>
-          <span>{ingChal}</span> 개
+          <span>{madeChal}</span> 개
         </p>
       </div>
       <div className={styles.boxRight}>
@@ -100,8 +103,6 @@ function ChallengeList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selector = useSelector(challengeList);
-  const tmp = [];
-  const tmpp = [];
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
@@ -112,17 +113,21 @@ function ChallengeList() {
   useEffect(() => {
     async function load() {
       const ids = await Contract.getMyChallenge(user.id);
-
       const filterIds = ids[0].filter((id) => selector[id].complete !== true);
+      let challengerInfo = [];
+      let challengeInfo = [];
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          tmpp.push(challenger);
+          if (Number(challenger.userId) === user.id) {
+            challengerInfo.push(challenger);
+            return false;
+          }
         });
-        tmp.push(selector[id]);
+        challengeInfo.push(selector[id]);
       }
-      setChallengers(tmpp);
-      setInfos(tmp);
+      setChallengers(challengerInfo);
+      setInfos(challengeInfo);
     }
     load();
   }, []);
@@ -155,7 +160,6 @@ function ChallengeList() {
         let perWeek = Math.floor(info.authTotalTimes / week);
         return (
           <div
-            key={index}
             onClick={() => {
               navigateDetail(info, index);
             }}

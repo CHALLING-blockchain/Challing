@@ -107,12 +107,11 @@ function AchieveRateBox() {
 function ChallengeList() {
   const Contract = new ContractAPI();
   const [infos, setInfos] = useState([]);
-  const [counts, setCounts] = useState([]);
+  const [challengers, setChallengers] = useState([]);
   const [user, setUser] = useState(useSelector(selectUser));
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
-  const tmp = [];
-  const tmpp = [];
+  const navigate = useNavigate();
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
@@ -123,20 +122,31 @@ function ChallengeList() {
   useEffect(() => {
     async function load() {
       const ids = await Contract.getMyChallenge(user.id);
-
       const filterIds = ids[1].filter((id) => selector[id].complete === true);
+      let challengerInfo = [];
+      let challengeInfo = [];
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          tmpp.push(challenger.totalCount);
+          if (Number(challenger.userId) === user.id) {
+            challengerInfo.push(challenger);
+            return false;
+          }
         });
-        tmp.push(selector[id]);
+        challengeInfo.push(selector[id]);
       }
-      setCounts(tmpp);
-      setInfos(tmp);
+      setChallengers(challengerInfo);
+      setInfos(challengeInfo);
+      console.log("challenger", challengerInfo);
     }
     load();
   }, []);
+
+  function checkReceive(info, challenger) {
+    challenger.receiveRefund
+      ? navigate(`/completed-detail/${info.challengeId}`)
+      : navigate(`/challenge-complete/${info.challengeId}`);
+  }
 
   return (
     <div className={styles.listBox}>
@@ -146,14 +156,20 @@ function ChallengeList() {
         );
         let perWeek = Math.floor(info.authTotalTimes / week);
         return (
-          <MyChallengeCard
-            type={getInterestStr.interestIdToName(info.interestId)}
-            title={info.name}
-            times={perWeek}
-            period={info.startDate + "~" + info.endDate}
-            img={info.mainPicURL}
-            count={counts[index]}
-          ></MyChallengeCard>
+          <div
+            onClick={() => {
+              checkReceive(info, challengers[index]);
+            }}
+          >
+            <MyChallengeCard
+              type={getInterestStr.interestIdToName(info.interestId)}
+              title={info.name}
+              times={perWeek}
+              period={info.startDate + "~" + info.endDate}
+              img={info.mainPicURL}
+              count={challengers[index].totalCount}
+            ></MyChallengeCard>
+          </div>
         );
       })}
     </div>

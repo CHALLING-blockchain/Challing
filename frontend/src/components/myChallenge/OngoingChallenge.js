@@ -58,7 +58,7 @@ function AchieveRateBox() {
         const join = result[1];
         let ingCount = 0;
         for (let i = 0; i < join.length; i++) {
-          if (join[i].complete !== true) {
+          if (selector[join[i]].complete !== true) {
             ingCount += 1;
           }
         }
@@ -114,8 +114,6 @@ function ChallengeList() {
   const [user, setUser] = useState(useSelector(selectUser));
   const dispatch = useDispatch();
   const selector = useSelector(challengeList);
-  const tmp = [];
-  const tmpp = [];
 
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
@@ -126,17 +124,21 @@ function ChallengeList() {
   useEffect(() => {
     async function load() {
       const ids = await Contract.getMyChallenge(user.id);
-
       const filterIds = ids[1].filter((id) => selector[id].complete !== true);
+      let challengerInfo = [];
+      let challengeInfo = [];
       for (const id of filterIds) {
         let challengers = await Contract.getChallengers(id);
         challengers.forEach((challenger) => {
-          tmpp.push(challenger);
+          if (Number(challenger.userId) === user.id) {
+            challengerInfo.push(challenger);
+            return false;
+          }
         });
-        tmp.push(selector[id]);
+        challengeInfo.push(selector[id]);
       }
-      setChallengers(tmpp);
-      setInfos(tmp);
+      setChallengers(challengerInfo);
+      setInfos(challengeInfo);
     }
     load();
   }, []);
@@ -161,8 +163,6 @@ function ChallengeList() {
   return (
     <div className={styles.listBox}>
       {infos.map(function (info, index) {
-        // console.log(info);
-
         let week = Math.floor(
           getDayGap.getDayGapFromDates(info.startDate, info.endDate) / 7
         );
