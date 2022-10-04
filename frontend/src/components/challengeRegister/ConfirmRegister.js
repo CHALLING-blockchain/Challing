@@ -190,7 +190,8 @@ function ConfirmRegister() {
     getDayGap.getDayGapFromDates(element.startDate, element.endDate)
   );
   let perWeek =
-    Number(element.authTotalTimes) / (Number(element.authDayTimes) * period);
+    Number(element.authTotalTimes) /
+    (Number(element.authDayTimes) * (period / 7));
 
   return (
     <div>
