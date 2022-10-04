@@ -186,7 +186,9 @@ function Menu() {
             location.pathname === "/my-shot-zip" ||
             location.pathname === "/create-challenge" ||
             location.pathname === "/my-favorite" ||
-            location.pathname === "/created-challenge" ? (
+            location.pathname === "/created-challenge" ||
+            location.pathname.includes("/challenge-complete") ||
+            location.pathname.includes("/completed-detail") ? (
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"

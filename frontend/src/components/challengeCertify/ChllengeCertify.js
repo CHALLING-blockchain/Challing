@@ -163,8 +163,7 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
 
   return (
     <div>
-      {challenger.dailyCount < challenge.authDayTimes ||
-      Number(challenger.today) !== today ? (
+      {true ? (
         <div className={styles.btnBox}>
           {flag ? (
             <button
