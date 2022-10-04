@@ -183,9 +183,9 @@ function Reward(props) {
 function Btn(props) {
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
-  const [setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // error messages
-  const [setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // get active account and balance data from useWeb3 hook
   const { account: activeAccount } = useWeb3(
