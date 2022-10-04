@@ -30,6 +30,23 @@ contract PhotoContract{
         findByChallengerIdPhoto[challengerId].push(photo);
     }
 
+    function deletePhoto(uint challengerId, uint photoId) public {
+        Photo storage photo = photoMap[photoId];
+        photo.id = 0;
+        photo.userId = 0;
+        photo.challengerId = 0;
+        photo.report = false;
+        photo.picURL = "";
+        photo.timestamp = "";
+
+        for(uint i=0; i<findByChallengerIdPhoto[challengerId].length; i++){
+            if(findByChallengerIdPhoto[challengerId][i].id == photoId){
+                findByChallengerIdPhoto[challengerId][i] = photo;
+                break;
+            }
+        }
+    }
+
     //유저의 사진 조회
     function getChallengerPhoto(uint challengerId) public view returns(Photo[] memory){
         return findByChallengerIdPhoto[challengerId];

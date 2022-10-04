@@ -169,6 +169,7 @@ function ChallengeList() {
         let perWeek = Math.floor(info.authTotalTimes / week);
         return (
           <div
+            key={index}
             onClick={() => {
               navigateDetail(info, index);
             }}

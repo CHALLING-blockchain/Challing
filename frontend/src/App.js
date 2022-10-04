@@ -60,7 +60,7 @@ function App() {
         <Route path="/create-loading/:id" element={<CreateLoading />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
-        <Route path="/votinghome" element={<VotingHome />} />
+        <Route path="/votinghome/:id" element={<VotingHome />} />
         <Route path="/voting/:id" element={<Voting />} />
         <Route path="/confirm-register/:id" element={<ConfirmRegister />} />
         <Route path="/join-loading/:id" element={<JoinLoading />} />
