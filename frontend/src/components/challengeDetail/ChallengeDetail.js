@@ -18,7 +18,7 @@ import * as getDayGap from "../main/Main.js";
 import { selectUser } from "../../app/redux/userSlice";
 import RefundPolicy from "../common/RefundPolicy";
 
-function GoodShotModal({ onClose,props }) {
+function GoodShotModal({ onClose, props }) {
   function handleClose() {
     onClose?.();
   }
@@ -44,7 +44,11 @@ function GoodShotModal({ onClose,props }) {
         </div>
         <p className={styles.ModalTitle}>👍 좋은 예시</p>
         <div style={{ position: "absolute", left: "32px", top: "88px" }}>
-          <img className={styles.ModalImg} src={props.challenge.goodPicURL} alt=""/>
+          <img
+            className={styles.ModalImg}
+            src={props.challenge.goodPicURL}
+            alt=""
+          />
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.NextButton} onClick={handleClose}>
@@ -55,7 +59,7 @@ function GoodShotModal({ onClose,props }) {
     </div>
   );
 }
-function BadShotModal({ onClose,props }) {
+function BadShotModal({ onClose, props }) {
   function handleClose() {
     onClose?.();
   }
@@ -81,7 +85,11 @@ function BadShotModal({ onClose,props }) {
         </div>
         <p className={styles.ModalTitle}>👎 나쁜 예시</p>
         <div style={{ position: "absolute", left: "32px", top: "88px" }}>
-          <img className={styles.ModalImg} src={props.challenge.badPicURL} alt=""/>
+          <img
+            className={styles.ModalImg}
+            src={props.challenge.badPicURL}
+            alt=""
+          />
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.NextButton} onClick={handleClose}>
@@ -196,7 +204,7 @@ function TopBox(props) {
 
   const weekTimes =
     Number(props.challenge.authTotalTimes) /
-    (Number(props.challenge.authDayTimes) * period);
+    (Number(props.challenge.authDayTimes) * (period / 7));
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -226,7 +234,6 @@ function TopBox(props) {
               하루 {props.challenge.authDayTimes}번
             </span>
           </div>
-
         </div>
         {/* 참가인원수, 예치금 */}
         <div className={styles.subtext}>
@@ -271,7 +278,6 @@ function PeriodBox(props) {
   );
 }
 
-
 function addDescription(props) {
   const desc = props.split("\n");
   const descList = [];
@@ -295,12 +301,12 @@ function Description(props) {
     )
   );
   const weekTimes =
-  Number(props.challenge.authTotalTimes) /
-  (Number(props.challenge.authDayTimes) * period);
+    Number(props.challenge.authTotalTimes) /
+    (Number(props.challenge.authDayTimes) * (period / 7));
   return (
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
-        <img style={{width:"14px"}} src={bulb} alt="" />
+        <img style={{ width: "14px" }} src={bulb} alt="" />
         <span style={{ fontSize: "16px" }}>챌린지 설명</span>
       </div>
       <div className={styles.description}>
@@ -316,11 +322,14 @@ function Description(props) {
           </p>
           <div style={{ margin: "0 4px" }}>
             <p>
-              ☝ {period / 7}주 동안 주 {weekTimes}회 하루 {props.challenge.authDayTimes}번
-              인증샷을 촬영하셔야 합니다.
+              ☝ {period / 7}주 동안 주 {weekTimes}회 하루{" "}
+              {props.challenge.authDayTimes}번 인증샷을 촬영하셔야 합니다.
             </p>
             <p>☝ 인증샷 피드에 인증샷이 공개됩니다.</p>
-            <p>☝ 인증 가능 시간은 {props.challenge.startTime}:00 ~ {props.challenge.endTime}:00 까지 입니다.</p>
+            <p>
+              ☝ 인증 가능 시간은 {props.challenge.startTime}:00 ~{" "}
+              {props.challenge.endTime}:00 까지 입니다.
+            </p>
           </div>
         </div>
         <div style={{ margin: "8px 4px" }}>
@@ -355,7 +364,7 @@ function ShotDescription(props) {
     <div className={styles.paddingBox}>
       <div className={styles.imgText}>
         <img src={camera} alt="" />
-        <span style={{ fontSize: "16px"}}>인증샷 이렇게 찍어주세요!</span>
+        <span style={{ fontSize: "16px" }}>인증샷 이렇게 찍어주세요!</span>
       </div>
       <div className={styles.shots}>
         <div className={styles.shot}>
@@ -378,23 +387,23 @@ function ShotDescription(props) {
         </div>
       </div>
       {openModal && (
-          <GoodShotModal
-            open={openModal}
-            onClose={() => {
-              setOpenModal(false);
-            }}
-            props={props}
-          />
-        )}
+        <GoodShotModal
+          open={openModal}
+          onClose={() => {
+            setOpenModal(false);
+          }}
+          props={props}
+        />
+      )}
       {openBadModal && (
-          <BadShotModal
-            open={openBadModal}
-            onClose={() => {
-              setOpenBadModal(false);
-            }}
-            props={props}
-          />
-        )}
+        <BadShotModal
+          open={openBadModal}
+          onClose={() => {
+            setOpenBadModal(false);
+          }}
+          props={props}
+        />
+      )}
     </div>
   );
 }
@@ -407,7 +416,7 @@ function ChallengeDetail() {
   const day = getDayGap.getDayGapFromToday(challenge.startDate);
   const [joinFlag, setJoinFlag] = useState(false);
   const [challengers, setChallengers] = useState();
-  let type = ""
+  let type = "";
   if ("deposit" in challenge) {
     type = "daily";
   } else {
@@ -472,7 +481,6 @@ function ChallengeDetail() {
         <Description challenge={challenge}></Description>
         <hr className={styles.hrTag} />
         <ShotDescription challenge={challenge}></ShotDescription>
-
       </div>
     </div>
   );

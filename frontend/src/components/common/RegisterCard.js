@@ -33,7 +33,7 @@ function RegisterCard({ type, title, times, period, img }) {
         </div>
         <div className={styles.subBox}>
           <p className={styles.title}>{title}</p>
-          <span className={styles.sub}>주 {times}일</span>
+          <span className={styles.sub}>주 {times}회</span>
           <span className={styles.sub}>{period}</span>
         </div>
       </div>

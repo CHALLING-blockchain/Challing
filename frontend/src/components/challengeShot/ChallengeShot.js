@@ -64,7 +64,8 @@ function ChallengeShot() {
 
     return (
       <div>
-        { NoIng>0 ? 
+        {/* { NoIng>0 ?  */}
+        { false ? 
           <div
           className={styles.CardBox}
           onClick={() => {
@@ -187,8 +188,8 @@ function ChallengeShot() {
 
   return (
     <div>
-      <div className={styles.Header}>
-        <p className={styles.ShotHeader}>챌린지 인증</p>
+      <div className={styles.header}>
+        <p>챌린지 인증</p>
       </div>
       <div className={styles.Content}>
         {Object.values(allChallenge).length === 0 ? (
