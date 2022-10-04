@@ -155,11 +155,11 @@ function Header(props) {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-chevron-left"
+          className="bi bi-chevron-left"
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
           />
         </svg>
@@ -321,6 +321,7 @@ function Description(props) {
             챌린지 진행 시 꼭 알아주세요!
           </p>
           <div style={{ margin: "0 4px" }}>
+            addDescription
             <p>
               ☝ {period / 7}주 동안 주 {weekTimes}회 하루{" "}
               {props.challenge.authDayTimes}번 인증샷을 촬영하셔야 합니다.
@@ -342,9 +343,9 @@ function Description(props) {
           >
             인증 방법 및 주의사항
           </p>
-          <p style={{ margin: "8px 4px" }}>
+          <div style={{ margin: "8px 4px" }}>
             {addDescription(props.challenge.desc)}
-          </p>
+          </div>
         </div>
       </div>
     </div>
