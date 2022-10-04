@@ -9,7 +9,7 @@ import PreCategory from "./components/auth/PreCategory";
 import ChallengeDetail from "./components/challengeDetail/ChallengeDetail";
 import ChallengeSearch from "./components/challengeSearch/ChallengeSearch";
 import ChallengeShot from "./components/challengeShot/ChallengeShot";
-import ChallengeCertify from "./components/challengeCertify/ChllengeCertify";
+import ChallengeCertify from "./components/challengeCertify/ChallengeCertify";
 import CertificationPhotos from "./components/challengeCertify/CertificationPhotos";
 import Main from "./components/main/Main";
 import MyPage from "./components/myPage/MyPage";
@@ -60,7 +60,7 @@ function App() {
         <Route path="/create-loading/:id" element={<CreateLoading />} />
         <Route path="/my-favorite" element={<MyFavorite />} />
         <Route path="/my-wallet" element={<MyWallet />} />
-        <Route path="/votinghome" element={<VotingHome />} />
+        <Route path="/votinghome/:id" element={<VotingHome />} />
         <Route path="/voting/:id" element={<Voting />} />
         <Route path="/confirm-register/:id" element={<ConfirmRegister />} />
         <Route path="/join-loading/:id" element={<JoinLoading />} />

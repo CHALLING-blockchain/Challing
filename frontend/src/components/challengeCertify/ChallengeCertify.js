@@ -96,14 +96,14 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
       moment(new Date()).format("YYYY-MM-DD")
     )
   );
-  // console.log(challenge);
+
   const hour = new Date().getHours();
 
   const flag =
     Number(challenge.startTime) <= hour && hour <= Number(challenge.endTime)
       ? true
       : false;
-  // console.log("flag", flag);
+
   const navigate = useNavigate();
   const showModal = () => {
     setOpenModal(true);
@@ -249,18 +249,14 @@ function OtherShot({ photoList, challengeId, title }) {
   );
 }
 
-function Voting({ voteList }) {
+function Voting({ id }) {
   const navigate = useNavigate();
 
   return (
     <div
       className={styles.voting}
       onClick={() => {
-        navigate(`/votinghome`, {
-          state: {
-            voteList: voteList,
-          },
-        });
+        navigate(`/votinghome/${id}`);
       }}
     >
       <div className={styles.votingSub}>
@@ -289,17 +285,13 @@ function ChallengeCertify() {
   const challenger = useLocation().state.challengerInfo;
   const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
-  const [voteList, setVoteList] = useState([]);
   const [photoList, setPhotoList] = useState([]);
-
+  // console.log("photos", photoList);
   const Contract = new ContractAPI();
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
       setChallegers(challengers);
-      const vote = await Contract.getChallengeVote(challenge.challengeId);
-      setVoteList(vote);
-
       getPhotos(challengers);
     }
     load();
@@ -331,7 +323,7 @@ function ChallengeCertify() {
         challengeId={challenge.challengeId}
         title={challenge.name}
       ></OtherShot>
-      <Voting voteList={voteList}></Voting>
+      <Voting id={challenge.challengeId}></Voting>
       <div style={{ width: "100vw", height: "90px" }}></div>
     </div>
   );

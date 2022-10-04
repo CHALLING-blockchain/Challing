@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./VotingHome.module.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import pass from "../../img/passBubble.png";
 import fail from "../../img/failBubble.png";
+import ContractAPI from "../../api/ContractAPI";
 
 function Header() {
   const navigate = useNavigate();
@@ -77,7 +78,18 @@ function NoVoting() {
 }
 
 function VotingHome() {
-  const voteList = useLocation().state.voteList;
+  const { id } = useParams();
+  const [voteList, setVoteList] = useState([]);
+  const Contract = new ContractAPI();
+
+  useEffect(() => {
+    async function load() {
+      const vote = await Contract.getChallengeVote(id);
+      setVoteList(vote);
+    }
+    load();
+  });
+
   return (
     <div>
       <Header></Header>
