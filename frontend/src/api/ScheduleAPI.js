@@ -8,14 +8,14 @@ const base = {
 
 class ScheduleAPI {
   challenge(body) {
-    console.log("body", body);
+    // console.log("body", body);
     return axios.post(`${base.baseUrl}/schedule/challenge`, body);
   }
 
   vote(body) {
-    console.log("body", body);
+    // console.log("body", body);
     return axios.post(`${base.baseUrl}/schedule/vote`, body);
   }
 }
 
-export default new ScheduleAPI;
+export default new ScheduleAPI();
