@@ -15,19 +15,19 @@ public class Web3ServiceTest {
     @Autowired
     Web3Service web3Service;
 
-    @Test
-    void endChallengeTest() {
-        web3Service.endChallenge(ChallengeJobData.builder()
-                .challengeId("0")
-                .build());
-    }
-
-    @Test
-    void endVoteTest() {
-        web3Service.endVote(VoteJobData.builder()
-                .challengeId("chid")
-                .voteId("vtid")
-                .challengerId("chrid")
-                .build());
-    }
+//    @Test
+//    void endChallengeTest() {
+//        web3Service.endChallenge(ChallengeJobData.builder()
+//                .challengeId("0")
+//                .build());
+//    }
+//
+//    @Test
+//    void endVoteTest() {
+//        web3Service.endVote(VoteJobData.builder()
+//                .challengeId("chid")
+//                .voteId("vtid")
+//                .challengerId("chrid")
+//                .build());
+//    }
 }

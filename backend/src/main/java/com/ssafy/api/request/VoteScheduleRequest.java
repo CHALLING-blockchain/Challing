@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class VoteScheduleRequest {
 
     @NotNull
