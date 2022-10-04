@@ -321,7 +321,7 @@ function Description(props) {
             챌린지 진행 시 꼭 알아주세요!
           </p>
           <div style={{ margin: "0 4px" }}>
-            addDescription
+            {/* addDescription */}
             <p>
               ☝ {period / 7}주 동안 주 {weekTimes}회 하루{" "}
               {props.challenge.authDayTimes}번 인증샷을 촬영하셔야 합니다.

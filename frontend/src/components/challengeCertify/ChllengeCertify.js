@@ -209,7 +209,7 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
         </div>
       ) : (
         <div className={styles.btnBox}>
-          <button className={styles.btnafter} disabled="true">
+          <button className={styles.btnafter} disabled={true}>
             👍 인증완료
           </button>
         </div>
@@ -242,7 +242,7 @@ function OtherShot({ photoList, challengeId, title }) {
       </div>
       <div className={styles.shots}>
         {photoList.map((photo) => {
-          return <img src={photo.picURL} alt="" />;
+          return <img key={photo.id} src={photo.picURL} alt="" />;
         })}
       </div>
     </div>

@@ -1,9 +1,8 @@
 import React from "react";
-import styles from './VotingHome.module.css'
-import { useNavigate,useLocation } from "react-router-dom";
-import pass from "../../img/passBubble.png"
-import fail from "../../img/failBubble.png"
-
+import styles from "./VotingHome.module.css";
+import { useNavigate, useLocation } from "react-router-dom";
+import pass from "../../img/passBubble.png";
+import fail from "../../img/failBubble.png";
 
 function Header() {
   const navigate = useNavigate();
@@ -17,11 +16,11 @@ function Header() {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-chevron-left"
+          className="bi bi-chevron-left"
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
           />
         </svg>
@@ -32,35 +31,37 @@ function Header() {
   );
 }
 
-function Shots({voteList}){
+function Shots({ voteList }) {
   const navigate = useNavigate();
   const moveDetail = (vote) => {
     navigate(`/voting/${vote.id}`, {
-      state: { vote
-      }
+      state: { vote },
     });
-  }
-  return(
-    <div >
+  };
+  return (
+    <div>
       {voteList.length === 0 ? (
         <NoVoting></NoVoting>
-      ): (
+      ) : (
         <div className={styles.shots}>
-          {
-            voteList.map(vote=>{
-              return (
-                <img className={styles.voteImgs} onClick={()=>moveDetail(vote)} src={vote.photo.picURL} alt="" />
-              )
-            })
-          }
+          {voteList.map((vote) => {
+            return (
+              <img
+                key={vote.id}
+                className={styles.voteImgs}
+                onClick={() => moveDetail(vote)}
+                src={vote.photo.picURL}
+                alt=""
+              />
+            );
+          })}
         </div>
       )}
-      
     </div>
-  )
+  );
 }
 
-function NoVoting(){
+function NoVoting() {
   return (
     <div className={styles.noVoting}>
       <div className={styles.votebubbles}>
@@ -70,7 +71,6 @@ function NoVoting(){
 
       <div className={styles.bookText}>
         <p>진행중인 투표가 없습니다.</p>
-        
       </div>
     </div>
   );
@@ -78,12 +78,12 @@ function NoVoting(){
 
 function VotingHome() {
   const voteList = useLocation().state.voteList;
-  return <div>
-    <Header></Header>
-    <Shots voteList={voteList}></Shots>
-
-
-  </div>;
+  return (
+    <div>
+      <Header></Header>
+      <Shots voteList={voteList}></Shots>
+    </div>
+  );
 }
 
 export default VotingHome;

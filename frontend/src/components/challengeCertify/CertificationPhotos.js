@@ -22,11 +22,11 @@ function Header() {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-chevron-left"
+          className="bi bi-chevron-left"
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
           />
         </svg>
@@ -74,7 +74,7 @@ function Tabs() {
         onChange={handleClickBtn}
         ref={gatherInput}
       />
-      <label className={styles.tabItem} for="gather" onClick={handleClick1}>
+      <label className={styles.tabItem} htmlFor="gather" onClick={handleClick1}>
         모아보기
       </label>
       <input
@@ -86,7 +86,11 @@ function Tabs() {
         onChange={handleClickBtn}
         ref={sepaInput}
       />
-      <label className={styles.tabItem} for="seperately" onClick={handleClick2}>
+      <label
+        className={styles.tabItem}
+        htmlFor="seperately"
+        onClick={handleClick2}
+      >
         따로보기
       </label>
 
@@ -114,7 +118,7 @@ function Gather() {
     <div className={styles.scroll}>
       <div className={styles.gather}>
         {photoList.map((photo) => {
-          return <img src={photo.picURL} alt="" />;
+          return <img key={photo.id} src={photo.picURL} alt="" />;
         })}
         {/* {modalOpen && <GatherModal setModalOpen={setModalOpen} />} */}
       </div>
@@ -140,9 +144,9 @@ function Modal({ onClose, photoId }) {
 
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
-  const [setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // error messages
-  const [setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // get active account and balance data from useWeb3 hook
   const { account: activeAccount } = useWeb3(
@@ -273,7 +277,7 @@ function Separately() {
       {photoList.map((photo, index) => {
         if (userList.length !== 0) {
           return (
-            <div className={styles.separately}>
+            <div key={photo.id} className={styles.separately}>
               <div className={styles.userBox}>
                 <div className={styles.user}>
                   <img src={userList[index].picURL} alt="" />
