@@ -27,11 +27,11 @@ function ChallengeShot() {
 
   useEffect(() => {
     async function load() {
-      let allChallengeList = {};
-      await Contract.getAllChallenge().then((result) => {
-        allChallengeList = result;
-      });
-      dispatch(setChallengeList(allChallengeList));
+      // let allChallengeList = {};
+      // await Contract.getAllChallenge().then((result) => {
+      //   allChallengeList = result;
+      // });
+      // dispatch(setChallengeList(allChallengeList));
       const challengers = await Contract.getChallengersByUserId(user.id);
 
       setChallegers(challengers);
