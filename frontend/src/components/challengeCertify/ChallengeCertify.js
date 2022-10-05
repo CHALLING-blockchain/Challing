@@ -109,12 +109,18 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
     setOpenModal(true);
   };
   function Modal({ onClose }) {
+    const navigate = useNavigate();
     const Contract = new ContractAPI(activeAccount);
     function handleClose() {
       onClose?.();
     }
     function usePasscoin() {
       Contract.usePasscoin(challengeId, userId);
+      navigate(`/passcoin-loading/${challengeId}/${challenger.id}`, {
+        state: {
+          challengeInfo: challenge,
+        },
+      });
       handleClose();
     }
     return (
@@ -281,16 +287,31 @@ function Voting({ id }) {
 
 function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
-  const challenger = useLocation().state.challengerInfo;
-  const percentage = useLocation().state.percentage;
+  const [challenger, setChallenger] = useState();
+  // const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
   const [photoList, setPhotoList] = useState([]);
+  const [percentage, setPercentage] = useState();
+  const userId = useSelector(selectUser).id;
   // console.log("photos", photoList);
   const Contract = new ContractAPI();
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
+      let userCount = 0;
+      if (challengers) {
+        const challenger = challengers.filter(
+          (el) => Number(el.userId) === userId
+        )[0];
+        userCount = challenger.totalCount;
+        console.log(challenger);
+        setChallenger(challenger);
+      }
+      const percentage = ((userCount / challenge.authTotalTimes) * 100).toFixed(
+        2
+      );
       setChallegers(challengers);
+      setPercentage(percentage);
       getPhotos(challengers);
     }
     load();

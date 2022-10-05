@@ -21,6 +21,7 @@ public class VoteJobData {
     private Long challengerId;
     private Long userIdIndex;
     private Long challengeIdIndex;
+    private Long photoId;
     private Long triggerAt;
 
     public JobDataMap toJobData() {
@@ -31,6 +32,7 @@ public class VoteJobData {
         jobData.put("challengerId", challengerId);
         jobData.put("userIdIndex", userIdIndex);
         jobData.put("challengeIdIndex", challengeIdIndex);
+        jobData.put("photoId", photoId);
         return jobData;
     }
 
@@ -43,6 +45,7 @@ public class VoteJobData {
                 .challengerId(challengerId)
                 .userIdIndex(userIdIndex)
                 .challengeIdIndex(challengeIdIndex)
+                .photoId(photoId)
                 .triggerAt(triggerAt)
                 .build();
     }
@@ -55,6 +58,7 @@ public class VoteJobData {
                 .challengerId(challengerId)
                 .userIdIndex(userIdIndex)
                 .challengeIdIndex(challengeIdIndex)
+                .photoId(photoId)
                 .build();
     }
 
@@ -70,6 +74,7 @@ public class VoteJobData {
                 .challengerId(voteScheduleRequest.getChallengerId())
                 .userIdIndex(voteScheduleRequest.getUserIdIndex())
                 .challengeIdIndex(voteScheduleRequest.getChallengeIdIndex())
+                .photoId(voteScheduleRequest.getPhotoId())
                 .triggerAt(voteScheduleRequest.getTriggerAt())
                 .build();
     }
@@ -82,6 +87,7 @@ public class VoteJobData {
                 .challengerId(schedule.getChallengerId())
                 .userIdIndex(schedule.getUserIdIndex())
                 .challengeIdIndex(schedule.getChallengeIdIndex())
+                .photoId(schedule.getPhotoId())
                 .triggerAt(schedule.getTriggerAt())
                 .build();
     }
@@ -94,6 +100,7 @@ public class VoteJobData {
                 .challengerId(jobData.getLong("challengerId"))
                 .userIdIndex(jobData.getLong("userIdIndex"))
                 .challengeIdIndex(jobData.getLong("challengeIdIndex"))
+                .photoId(jobData.getLong("photoId"))
                 .build();
     }
 }

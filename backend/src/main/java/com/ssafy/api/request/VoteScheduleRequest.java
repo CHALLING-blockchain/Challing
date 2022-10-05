@@ -25,5 +25,7 @@ public class VoteScheduleRequest {
     @NotNull
     private Long challengeIdIndex;
     @NotNull
+    private Long photoId;
+    @NotNull
     private Long triggerAt;
 }

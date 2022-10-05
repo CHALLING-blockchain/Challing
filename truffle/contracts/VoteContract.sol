@@ -100,4 +100,8 @@ contract VoteContract is PhotoContract{
     function getChallengeVote(uint challengeId)public view returns(Vote[] memory){
         return findByChallengeIdVote[challengeId];
     }
+
+    function getVote(uint voteId) public view returns(Vote memory){
+        return voteMap[voteId];
+    }
 }

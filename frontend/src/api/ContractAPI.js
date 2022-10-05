@@ -343,6 +343,22 @@ class ContractAPI {
         .catch((error) => console.error);
     }
   }
+  async getVote(voteId) {
+    await this.init();
+    const vote = await this.Vcontract.methods
+      .getVote(voteId)
+      .call({
+        from: this.account,
+      })
+      .catch(console.error);
+
+    const result = Object.assign({}, vote);
+    const size = Object.keys(result).length;
+    for (let i = 0; i < size / 2; i++) {
+      delete result[i];
+    }
+    return result;
+  }
   async receivePasscoin(userIdList) {
     await this.init();
 

@@ -69,20 +69,17 @@ function AchieveRateBox() {
 
   useEffect(() => {
     async function load() {
-      await Contract.getChallengersByUserId(user.id).then((result) => {
-        let tmpReward = 0;
-        const myChallengeInfo = result;
-        for (let i = 0; i < myChallengeInfo.length; i++) {
-          let tmpInfo = myChallengeInfo[i];
-          if ("deposit" in tmpInfo) {
-            if (tmpInfo.complete === true) {
-              tmpReward += tmpInfo.deposit;
-              tmpReward += tmpInfo.reward;
-            }
-          }
+      const challengerInfo = await Contract.getChallengersByUserId(user.id);
+      let tmpReward = 0;
+      for (let i = 0; i < challengerInfo.length; i++) {
+        if (challengerInfo[i].receiveRefund) {
+          let deposit = selector[challengerInfo[i].challengeId].deposit / 1e18;
+          let reward = challengerInfo[i].reward / 1e18;
+          let fine = deposit - challengerInfo[i].userDeposit / 1e18;
+          tmpReward += deposit + reward - fine;
         }
-        setTotalReward(tmpReward);
-      });
+      }
+      setTotalReward(tmpReward.toFixed(4));
     }
     load();
   }, []);
@@ -137,7 +134,6 @@ function ChallengeList() {
       }
       setChallengers(challengerInfo);
       setInfos(challengeInfo);
-      console.log("challenger", challengerInfo);
     }
     load();
   }, []);

@@ -100,4 +100,20 @@ public class ScheduleController {
         }
         return BaseResponse.success();
     }
+
+    @GetMapping("/endhardcoded")
+    public ResponseEntity<?> endHardcoded() {
+        log.info("** 어드민 ** 하드코딩 챌린지 종료");
+        try {
+            Schedule schedule = scheduleService
+                    .getHardCodedOne()
+                    .orElseThrow();
+
+            web3Service.endChallenge(ChallengeJobData.of(schedule));
+        } catch (Exception e) {
+            log.error("** 어드민 ** 하드코딩 챌린지 종료 실패", e);
+            return BaseResponse.fail("** 어드민 ** 하드코딩 챌린지 종료 실패");
+        }
+        return BaseResponse.success();
+    }
 }

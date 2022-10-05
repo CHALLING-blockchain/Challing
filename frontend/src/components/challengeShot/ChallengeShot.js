@@ -27,11 +27,11 @@ function ChallengeShot() {
 
   useEffect(() => {
     async function load() {
-      let allChallengeList = {};
-      await Contract.getAllChallenge().then((result) => {
-        allChallengeList = result;
-      });
-      dispatch(setChallengeList(allChallengeList));
+      // let allChallengeList = {};
+      // await Contract.getAllChallenge().then((result) => {
+      //   allChallengeList = result;
+      // });
+      // dispatch(setChallengeList(allChallengeList));
       const challengers = await Contract.getChallengersByUserId(user.id);
 
       setChallegers(challengers);
@@ -100,8 +100,7 @@ function ChallengeShot() {
                 {
                   state: {
                     challengeInfo: props.challengeInfo,
-                    percentage: percentage,
-                    challengerInfo: props.challengerInfo,
+
                   },
                 }
               );
@@ -117,6 +116,33 @@ function ChallengeShot() {
             <div className={styles.cardbody}>
 
               <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+              <div
+                className={styles.GoShotBtn}
+                onClick={() => {
+                  navigate(
+                    `/challenge-certify/${props.challengeInfo.challengeId}`,
+                    {
+                      state: {
+                        challengeInfo: props.challengeInfo,
+                        
+                      },
+                    }
+                  );
+                }}
+              >
+                <img
+                  style={{
+                    width: "10px",
+                    marginRight: "2px",
+                    marginLeft: "2px",
+                  }}
+                  src={tick}
+                  alt=""
+                />
+                인증하기
+              </div>
+            </div>
+            <div className={styles.CardBody}>
               <p
                 style={{
                   fontSize: "14px",

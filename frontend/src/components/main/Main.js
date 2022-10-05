@@ -22,7 +22,7 @@ function Main() {
   const [category, setCategory] = useState("");
   const [interest, setInterest] = useState("");
   const navigate = useNavigate();
-
+  const wallet = localStorage.getItem("myAccount");
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
@@ -43,18 +43,28 @@ function Main() {
       dispatch(setDonationList(allDonationList));
       // }
     }
-
-    if (user.interests !== undefined || user.userInfo === null) {
-      //로그인한 유저의 관심사 가져와서  저장
-      let topicName = pickATopic(Object.keys(user.interests).length);
-      setInterest(topicName);
-    } else {
+    // console.log("Main::user", user);
+    if (user === null || Object.keys(user).length === 0) {
+      console.log("1111111 ::: 유저정보 없음");
       navigate("/auth");
+    } //wallet 없으면
+    else if (wallet === undefined || !wallet) {
+      navigate("/my-wallet");
+    } else {
+      // console.log("2222222222 ::: user가 null이 아님");
+      if (user.userInfo === null) {
+        // console.log("333333333333 ::: user는 null이 아닌데 userInfo가 null");
+        // navigate("/auth");
+      } else {
+        // console.log("4444444444444 ::: 유저정보가 저장되어있음");
+        let topicName = pickATopic(Object.keys(user.interests).length);
+        setInterest(topicName);
+        navigate("/");
+      }
     }
 
     load();
   }, []);
-
   //관심사가 여러개일 경우 랜덤으로 하나 뽑기
   function pickATopic(length) {
     let min = 0;
@@ -211,6 +221,7 @@ function Main() {
           <p className={styles.Category}>
             {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
           </p>
+
           <div className={styles.Rendering}>{dailyChallengeRendering()}</div>
         </div>
         <div className={styles.Hr} />
