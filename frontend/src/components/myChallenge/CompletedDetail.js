@@ -74,6 +74,7 @@ function MyAchRate(props) {
   const challenge = props.challenge;
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
+  const challengeDeposit = challenge.deposit / 1e18;
   const [deposit, setDeposit] = useState("");
   const [reward, setReward] = useState("");
   const [contributions, setContribution] = useState("");
@@ -129,7 +130,7 @@ function MyAchRate(props) {
           <div>
             <p style={{ fontSize: "14px" }}>{deposit + reward} ETH 환급</p>
             <p style={{ fontSize: "10px", color: "#6A6A6A" }}>
-              예치금 {deposit} ETH
+              예치금 {challengeDeposit} ETH
             </p>
           </div>
           <div className={styles.reward}>
