@@ -28,6 +28,7 @@ padding: 8px;
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 4fr 1fr;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
 .SelectChallenge{

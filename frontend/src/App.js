@@ -35,6 +35,8 @@ import JoinLoading from "./components/challengeRegister/JoinLoading";
 import CertifyLoading from "./components/challengeCertify/CertifyLoading";
 import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
 import Loading from "./components/common/Loading";
+import Intro from "./components/welcome/Intro";
+
 
 function App() {
   return (
@@ -72,7 +74,7 @@ function App() {
         <Route path="/created-challenge" element={<CreatedChallenge />} />
         <Route path="/completed-detail/:id" element={<CompletedDetail />} />
         <Route path="/challenge-complete/:id" element={<ChallengeComplete />} />
-        {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
+        <Route path="/intro" element={<Intro />} />
       </Routes>
       <Menu />
     </div>

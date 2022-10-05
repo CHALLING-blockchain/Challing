@@ -76,22 +76,24 @@ function Modal({onClose}){
   return (
     <div>
       <Header/>
-      <div style={{padding:'16px'}}>
-        <p className={styles.FormHeader}>어떤 형태의 챌린지인가요?</p>
-        <div className={styles.SelectChallenge} value={value} onClick={()=>{
-          setValue('기부챌린지');
-          showModal();
-          }
-          }>
-          <img src={donationIcon} alt="donationIcon" style={{width:'120px'}}/>
-          <p>기부 챌린지</p>
-        </div>
-        <div className={styles.SelectChallenge} onClick={()=>{
-          setValue('일상챌린지')
-          setFormCnt(formCnt+1)
-          }}>
-          <p>일상챌린지</p>
-          <img src={dailyIcon} alt="dailyIcon" style={{height:'120px'}}/>
+      <div style={{display:"flex", alignItems:"center", height:"620px"}}>
+        <div style={{padding:'16px'}}>
+          <p className={styles.FormHeader}>어떤 형태의 챌린지인가요?</p>
+          <div className={styles.SelectChallenge} value={value} onClick={()=>{
+            setValue('기부챌린지');
+            showModal();
+            }
+            }>
+            <img src={donationIcon} alt="donationIcon" style={{width:'120px'}}/>
+            <p>기부 챌린지</p>
+          </div>
+          <div className={styles.SelectChallenge} onClick={()=>{
+            setValue('일상챌린지')
+            setFormCnt(formCnt+1)
+            }}>
+            <p>일상챌린지</p>
+            <img src={dailyIcon} alt="dailyIcon" style={{height:'120px'}}/>
+          </div>
         </div>
       </div>
       {openModal && (<Modal 

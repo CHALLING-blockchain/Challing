@@ -46,14 +46,14 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
   return (
     <div>
       <Header/>
-      <div style={{padding:'16px'}}>
-        <p className={styles.FormHeader}>챌린지 제목을 작성해주세요.</p>
-        <p className={styles.FormEx}>챌린지를 잘 표현하는 제목을 사용해주세요.<br/>
+      <div style={{padding:'16px', marginTop:"64px"}}>
+        <p className={styles.FormHeader} style={{marginBottom:"16px"}}>챌린지 제목을 작성해주세요.</p>
+        <p className={styles.FormEx} style={{marginBottom:"8px"}}>챌린지를 잘 표현하는 제목을 사용해주세요.<br/>
           비속어와 같은 타인에게 불쾌감을 주는 언어 사용시 <br/>
           계정이 영구적으로 정지 될 수 있습니다.</p>
         <input
           className={styles.Input}
-          placeholder="제목을 작성해주세요."
+          placeholder="제목을 작성해주세요.(50자 이내)"
           // value는 텍스트인풋에서 넘겨준 props
           value={value}
           type="text"
@@ -64,7 +64,6 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
             setTitle(e.target.value)
           }}
         />
-        <p style={{margin:'4px'}}>(50자이내)</p>
       </div>
       {title !== "" ? <NextButton/> : <NextButtonX/>}
     </div>

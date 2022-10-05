@@ -147,43 +147,50 @@ function SelectPeople({
   return (
     <div>
       <Header />
-      <div style={{ padding: "16px" }}>
-        <p className={styles.FormHeader}>모집인원을 설정해주세요.</p>
-        <p className={styles.FormEx}>
-          챌린지에 참여할 인원 수를 정해수세요.
-          <br />
-          챌린지 개설후 인원 수 변경이 불가합니다.
-          <br />
-        </p>
-        <p style={{ marginTop: "16px", marginBottom: "16px" }}>
-          <img src={tick} alt="tick" style={{ width: "16px" }} /> 인원 제한 여부
-        </p>
-        <div className={styles.Limit}>
-          <div
-            className={tF === true ? styles.SelectLimit : styles.SelectLimitX}
-            value={peopleLimit}
-            onClick={() => {
-              setPeopleLimit("true");
-              setTF(true);
-              setLimitNum(people);
-            }}
-          >
-            <p>인원 제한 있음</p>
+      <div style={{ marginTop: "72px" }}>
+        <div style={{ padding: "16px" }}>
+          <p className={styles.FormHeader} style={{ marginBottom: "16px" }}>
+            모집인원을 설정해주세요.
+          </p>
+          <p className={styles.FormEx} style={{ marginBottom: "8px" }}>
+            챌린지에 참여할 인원 수를 정해수세요.
+            <br />
+            챌린지 개설후 인원 수 변경이 불가합니다.
+            <br />
+          </p>
+          <p style={{ marginTop: "16px", marginBottom: "16px" }}>
+            <img src={tick} alt="tick" style={{ width: "16px" }} /> 인원 제한
+            여부
+          </p>
+          <div className={styles.Limit}>
+            <div
+              className={tF === true ? styles.SelectLimit : styles.SelectLimitX}
+              value={peopleLimit}
+              onClick={() => {
+                setPeopleLimit("true");
+                setTF(true);
+                setLimitNum(people);
+              }}
+            >
+              <p>인원 제한 있음</p>
+            </div>
+            <div
+              className={
+                tF === false ? styles.SelectLimit : styles.SelectLimitX
+              }
+              value={peopleLimit}
+              onClick={() => {
+                setPeopleLimit("false");
+                setTF(false);
+              }}
+            >
+              <p>인원 제한 없음</p>
+            </div>
           </div>
-          <div
-            className={tF === false ? styles.SelectLimit : styles.SelectLimitX}
-            value={peopleLimit}
-            onClick={() => {
-              setPeopleLimit("false");
-              setTF(false);
-            }}
-          >
-            <p>인원 제한 없음</p>
-          </div>
+          {tF === false || tF === null ? <LimitFalse /> : <LimitTrue />}
         </div>
-        {tF === false || tF === null ? <LimitFalse /> : <LimitTrue />}
+        {tF !== null ? <NextButton /> : <NextButtonX />}
       </div>
-      {tF !== null ? <NextButton /> : <NextButtonX />}
     </div>
   );
 }
