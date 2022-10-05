@@ -12,10 +12,9 @@ function VoteLoading() {
     const Contract = new ContractAPI();
     async function load() {
       const newVote = await Contract.getVote(vote.id);
-      console.log("vr", newVote);
       if (newVote.userIdList.length > vote.userIdList.length) {
         navigate(`/voting/${vote.id}`, {
-          state: { newVote },
+          state: { vote: newVote },
         });
       }
       setCnt(cnt + 1);

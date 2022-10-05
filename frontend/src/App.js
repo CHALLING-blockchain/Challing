@@ -81,7 +81,7 @@ function App() {
           path="/passcoin-loading/:id/:cid"
           element={<PassCoinLoading />}
         />
-        <Route path="/vote-loading/:id" element={<VoteLoading />} />
+        <Route path="/vote-loading" element={<VoteLoading />} />
 
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>

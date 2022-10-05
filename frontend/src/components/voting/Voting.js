@@ -72,7 +72,7 @@ function Vote() {
   } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
   const navigate = useNavigate();
   const vote = useLocation().state.vote;
-  console.log("vote", vote);
+
   const votedUsers = vote.userIdList;
   const pass = Number(vote.pass);
   const fail = Number(vote.fail);
