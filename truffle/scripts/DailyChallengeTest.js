@@ -1,6 +1,8 @@
 const Web3 = require("web3");
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://j7b106.p.ssafy.io:8545"));
+const web3 = new Web3(
+  new Web3.providers.HttpProvider("https://j7b106.p.ssafy.io:8545")
+);
 
 const Cartifact = require("../../frontend/src/contracts/ChallengeContract.json");
 const Vartifact = require("../../frontend/src/contracts/VoteContract.json");
@@ -27,7 +29,7 @@ const simulation = async () => {
     goodPicURL: "goodPicURL",
     badPicURL: "badPicURL",
     authTotalTimes: 10,
-    authWeekTimes:1,
+    authWeekTimes: 1,
     authDayTimes: 1,
     startTime: 10,
     endTime: 11,
@@ -36,7 +38,7 @@ const simulation = async () => {
     personnel: 10,
     deposit: 1e9,
 
-    totalDeposit:1e9,
+    totalDeposit: 1e9,
 
     complet: false,
   };
@@ -46,17 +48,16 @@ const simulation = async () => {
   // });
 
   // 챌린지 생성
-  console.log(accounts)
-  const createDailyChallenge = await Ccontract.methods
-    .receivePasscoin([1,1,1,1,1],1)
-    .send({
-      from: accounts[5],
-      gasLimit: 3_000_000,
-
-    })
-
-    .catch(console.error);
-  console.log("챌린지 생성");
+  // const createDailyChallenge = await Ccontract.methods
+  //   .createDailyChallenge(daliyChallenge)
+  //   .send({
+  //     from: accounts[0],
+  //     gasLimit: 3_000_000,
+  //     value: 1e18,
+  //   })
+  //   .on("receipt",(r)=>console.log(r.events.returnChallengeId.returnValues))
+  //   .catch(console.error);
+  // console.log("챌린지 생성");
 
   // // 유저 10명 참가
   // accounts.slice(1).forEach(async (account, index) => {
@@ -113,14 +114,14 @@ const simulation = async () => {
   // }
   // console.log("유저 인증 완료");
 
-  // const endDailyChallenge = await Ccontract.methods
-  //   .endDailyChallenge(1)
-  //   .send({
-  //     from: accounts[0],
-  //     gasLimit: 3_000_000,
-  //   })
-  //   .catch(console.error);
-  // console.log("챌린지 종료");
+  const endDailyChallenge = await Ccontract.methods
+    .endDailyChallenge(11)
+    .send({
+      from: accounts[0],
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+  console.log("챌린지 종료");
 
   // await accounts.forEach(async (account, index) => {
   //   const findingChallenger = await Ccontract.methods

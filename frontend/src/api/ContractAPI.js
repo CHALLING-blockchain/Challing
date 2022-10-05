@@ -343,6 +343,15 @@ class ContractAPI {
         .catch((error) => console.error);
     }
   }
+  async getVote(voteId) {
+    await this.init();
+    return this.Ccontract.methods
+      .getVoteId(voteId)
+      .call({
+        from: this.account,
+      })
+      .catch(console.error);
+  }
   async receivePasscoin(userIdList) {
     await this.init();
 

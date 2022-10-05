@@ -70,29 +70,23 @@ function Vote() {
     provider,
     account: activeAccount,
   } = useWeb3(setIsLoading, setErrorMessage, exist, setExist);
-
+  const navigate = useNavigate();
   const vote = useLocation().state.vote;
+  console.log("vote", vote);
   const votedUsers = vote.userIdList;
-  const [voteState, setVoteState] = useState(false);
-  const [pass, setPass] = useState(Number(vote.pass));
-  const [fail, setFail] = useState(Number(vote.fail));
+  const pass = Number(vote.pass);
+  const fail = Number(vote.fail);
   let userId = useSelector(selectUser).id;
   if (activeAccount !== undefined && activeAccount !== "") {
     const Contract = new ContractAPI(activeAccount);
     const voted = (myVote) => {
-      // 투표한걸로 상태 바꾸고 투표 퍼센테이지 다시 계산 로직
-      setVoteState(true);
-      if (myVote) {
-        // 찬성 +1
-        setPass(pass + 1);
-      } else {
-        // 반대 +1
-        setFail(fail + 1);
-      }
       Contract.voting(vote.challengeId, userId, vote.id, myVote);
+      navigate(`/vote-loading`, {
+        state: { vote },
+      });
     };
     // 투표 한 유저거나 방금
-    if (voteState == true || votedUsers.includes(userId.toString())) {
+    if (votedUsers.includes(userId.toString())) {
       return (
         <div className={styles.votedBox}>
           <div className={styles.passBox}>

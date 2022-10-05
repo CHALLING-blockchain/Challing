@@ -35,7 +35,8 @@ import JoinLoading from "./components/challengeRegister/JoinLoading";
 import CertifyLoading from "./components/challengeCertify/CertifyLoading";
 import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
 import CompleteLoading from "./components/myChallenge/CompleteLoading";
-
+import PassCoinLoading from "./components/challengeCertify/PassCoinLoading";
+import VoteLoading from "./components/voting/VoteLoading";
 function App() {
   return (
     <div className="App">
@@ -76,6 +77,12 @@ function App() {
           path="/complete-loading/:id/:cid"
           element={<CompleteLoading />}
         />
+        <Route
+          path="/passcoin-loading/:id/:cid"
+          element={<PassCoinLoading />}
+        />
+        <Route path="/vote-loading/:id" element={<VoteLoading />} />
+
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>
       <Menu />
