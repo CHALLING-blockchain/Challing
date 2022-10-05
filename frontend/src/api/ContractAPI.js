@@ -544,17 +544,17 @@ class ContractAPI {
     return result;
   }
 
-  async report(challengeId, photoId, userId) {
+  async report(challengeId, photoId, userId,reportUserId) {
     await this.init();
     const info = await this.Ccontract.methods
-      .findingChallenger(challengeId, userId)
+      .findingChallenger(challengeId, reportUserId)
       .call({
         from: this.account,
       })
       .catch(console.error);
 
     const challengerId = info[0];
-
+    
     if (this.account !== undefined && this.account !== "") {
       const txHash = await window.ethereum
         .request({
