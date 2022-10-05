@@ -17,4 +17,5 @@ public interface ScheduleService {
     Optional<Schedule> getLastDailyChallengeSchedule();
     Optional<Schedule> getLastDonationChallengeSchedule();
     Optional<Schedule> getLastVoteSchedule();
+    Optional<Schedule> getHardCodedOne();
 }
