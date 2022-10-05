@@ -70,24 +70,24 @@ function ChallengeShot() {
             }}
           >
             <img
-              style={{ borderRadius: "5px" }}
+              style={{ borderRadius: "10px 0 0 10px" }}
               src={props.challengeInfo.mainPicURL}
               height="120"
               width="160"
               alt=""
             ></img>
-            <div>
-                <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
-                <p
-                  style={{
-                    fontSize: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  >
-                  <img src={calender} height="12" width="12" alt="" />
-                  {NoIng}일 뒤 시작
-                </p>
+            <div className={styles.cardbody}>
+              <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
+              <p
+                style={{
+                  fontSize: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <img src={calender} height="12" width="12" alt="" />
+                {NoIng}일 뒤 시작
+              </p>
             </div>
             {/* {console.log(NoIng)} */}
           </div>
@@ -100,7 +100,6 @@ function ChallengeShot() {
                 {
                   state: {
                     challengeInfo: props.challengeInfo,
-
                   },
                 }
               );
@@ -114,42 +113,14 @@ function ChallengeShot() {
               alt=""
             ></img>
             <div className={styles.cardbody}>
-
               <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
-              <div
-                className={styles.GoShotBtn}
-                onClick={() => {
-                  navigate(
-                    `/challenge-certify/${props.challengeInfo.challengeId}`,
-                    {
-                      state: {
-                        challengeInfo: props.challengeInfo,
-                        
-                      },
-                    }
-                  );
-                }}
-              >
-                <img
-                  style={{
-                    width: "10px",
-                    marginRight: "2px",
-                    marginLeft: "2px",
-                  }}
-                  src={tick}
-                  alt=""
-                />
-                인증하기
-              </div>
-            </div>
-            <div className={styles.CardBody}>
               <p
                 style={{
                   fontSize: "14px",
                   display: "flex",
                   alignItems: "center",
                 }}
-                >
+              >
                 <img src={megaphone} height="14" width="14" alt="" />
                 현재 {percentage}%달성
               </p>
@@ -163,7 +134,7 @@ function ChallengeShot() {
                 <img src={calender} height="14" width="14" alt="" />
                 {dayGab}일 뒤 종료
               </p>
-            {/* {console.log(NoIng)} */}
+              {/* {console.log(NoIng)} */}
             </div>
           </div>
         )}
