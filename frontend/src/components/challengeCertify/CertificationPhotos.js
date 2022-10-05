@@ -116,6 +116,7 @@ function Gather() {
   //     setId(id);
   //     setModalOpen(true);
   // }
+
   return (
     <div className={styles.scroll}>
       <div className={styles.gather}>
@@ -140,7 +141,7 @@ function Gather() {
 //     )
 // }
 
-function Modal({ onClose, photoId }) {
+function Modal({ onClose, photoId ,reportUserId}) {
   const challengeId = useLocation().state.challengeId;
   const userId = useSelector(selectUser).id;
   const navigate = useNavigate();
@@ -168,7 +169,7 @@ function Modal({ onClose, photoId }) {
       tomorrow.setDate(today.getDate() + 1);
       const Contract = new ContractAPI(activeAccount);
       // console.log(challengeId, photoId, userId);
-      const voteId = await Contract.report(challengeId, photoId, userId);
+      const voteId = await Contract.report(challengeId, photoId, userId,reportUserId);
       const challengerInfo = await Contract.findingChallenger(
         challengeId,
         userId
@@ -258,6 +259,7 @@ function Separately() {
   const [openModal, setOpenModal] = useState(false);
   const photoList = useLocation().state.photoList;
   const [photoId, setPhotoId] = useState();
+  const [reportUserId, setReportUserId] = useState();
   const [userList, setUserList] = useState([]);
   const showModal = () => {
     setOpenModal(true);
@@ -301,6 +303,7 @@ function Separately() {
                         if (checkReport(photoList[index])) {
                           showModal();
                           setPhotoId(photo.id);
+                          setReportUserId(photo.userId);
                         }
                       }}
                     />
@@ -320,6 +323,7 @@ function Separately() {
       {openModal && (
         <Modal
           photoId={photoId}
+          reportUserId={reportUserId}
           open={openModal}
           onClose={() => {
             setOpenModal(false);
