@@ -43,7 +43,7 @@ function Main() {
       dispatch(setDonationList(allDonationList));
       // }
     }
-    console.log("Main::user", user);
+    // console.log("Main::user", user);
     if (user === null || Object.keys(user).length === 0) {
       console.log("1111111 ::: 유저정보 없음");
       navigate("/auth");
