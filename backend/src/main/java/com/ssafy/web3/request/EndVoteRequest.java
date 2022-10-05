@@ -14,4 +14,5 @@ public class EndVoteRequest {
     private Long challengerId;
     private Long userIdIndex;
     private Long challengeIdIndex;
+    private Long photoId;
 }

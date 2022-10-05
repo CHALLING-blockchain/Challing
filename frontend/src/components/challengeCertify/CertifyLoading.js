@@ -15,7 +15,7 @@ function CertifyLoading() {
   const [cnt, setCnt] = useState(-2);
   const url = useLocation().state.url;
   const challenge = useLocation().state.challengeInfo;
-  const percentage = useLocation().state.percentage;
+
 
   useEffect(() => {
     const Contract = new ContractAPI();
@@ -33,8 +33,7 @@ function CertifyLoading() {
           navigate(`/challenge-certify/${id}`, {
             state: {
               challengeInfo: challenge,
-              percentage: percentage,
-              challengerInfo: response,
+
             },
           });
         }

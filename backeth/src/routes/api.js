@@ -131,7 +131,8 @@ router.get("/enddonationchallenge/:challengeId", async (req, res, next) => {
  *     userId: long,
  *     challengerId: long,
  *     userIdIndex: long,
- *     challengeIdIndex: long
+ *     challengeIdIndex: long,
+ *     photoId: long
  *   }
  *
  * vuint challengeId,uint userId,uint challengerId,uint userIdIndex,uint challengeIdIndex
@@ -149,6 +150,7 @@ router.post("/endvote", async (req, res, next) => {
     challengerId,
     userIdIndex,
     challengeIdIndex,
+    photoId,
   } = req.body;
 
   const voteContract = await getContract("VoteContract");
@@ -177,6 +179,15 @@ router.post("/endvote", async (req, res, next) => {
         });
 
       console.log("r2:", r2);
+
+      const r22 = await voteContract.methods
+        .deletePhoto(challengerId, photoId)
+        .send({
+          from: appAccount.address,
+          gasLimit: 3_000_000,
+        });
+
+      console.log("r22:", r22);
     }
 
     const r3 = await challengeContract.methods
