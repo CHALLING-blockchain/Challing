@@ -109,7 +109,7 @@ public class ScheduleController {
                     .getHardCodedOne()
                     .orElseThrow();
 
-            web3Service.endVote(VoteJobData.of(schedule));
+            web3Service.endChallenge(ChallengeJobData.of(schedule));
         } catch (Exception e) {
             log.error("** 어드민 ** 하드코딩 챌린지 종료 실패", e);
             return BaseResponse.fail("** 어드민 ** 하드코딩 챌린지 종료 실패");
