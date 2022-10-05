@@ -72,6 +72,7 @@ function AchieveRateBox() {
       await Contract.getChallengersByUserId(user.id).then((result) => {
         let tmpReward = 0;
         const myChallengeInfo = result;
+        // console.log("result", result);
         for (let i = 0; i < myChallengeInfo.length; i++) {
           let tmpInfo = myChallengeInfo[i];
           if ("deposit" in tmpInfo) {
@@ -137,7 +138,6 @@ function ChallengeList() {
       }
       setChallengers(challengerInfo);
       setInfos(challengeInfo);
-      console.log("challenger", challengerInfo);
     }
     load();
   }, []);

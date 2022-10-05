@@ -165,11 +165,9 @@ function Inform(props) {
   useEffect(() => {
     async function load() {
       await Contract.getChallengers(challengeId).then((result) => {
-        
         setPeople(result.length);
         if (type === "daily") {
-          console.log(people)
-          setDeposit((people * challenge.deposit) / 1e18);
+          setDeposit((result.length * challenge.deposit) / 1e18);
         } else if (type === "donation") {
           setContribution(challenge.setDonation);
         }
