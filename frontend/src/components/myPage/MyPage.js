@@ -65,13 +65,29 @@ function Modal({ onClose }) {
 }
 
 function MyPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
+  // console.log("mypage:::::", user);
+  useEffect(() => {
+    // console.log("MyPage::user", user);
+    if (user === null || Object.keys(user).length === 0) {
+      // console.log("1111111 ::: 유저정보 없음");
+      navigate("/auth");
+    } else {
+      // console.log("2222222222 ::: user가 null이 아님");
+      if (user.userInfo === null) {
+        // console.log("333333333333 ::: user는 null이 아닌데 userInfo가 null");
+        navigate("/auth");
+      } else {
+        // console.log("4444444444444 ::: 유저정보가 저장되어있음");
+      }
+    }
+  }, []);
   const [openModal, setOpenModal] = useState(false);
   const showModal = () => {
     setOpenModal(true);
   };
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [user, setUser] = useState(useSelector(selectUser));
   const fileImage = user.picURL;
   const web3 = new Web3(window.ethereum);
   const Contract = new ContractAPI();
@@ -87,29 +103,33 @@ function MyPage() {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getMyChallenge(user.id).then((result) => {
-        const join = result[1];
-        let ingCount = 0;
-        let edCount = 0;
-        let madeCount = 0;
+      if (user === null) {
+        navigate("/auth");
+      } else {
+        await Contract.getMyChallenge(user.id).then((result) => {
+          const join = result[1];
+          let ingCount = 0;
+          let edCount = 0;
+          let madeCount = 0;
 
-        for (let i = 0; i < join.length; i++) {
-          if (
-            Number(selector[join[i]].ownerId) === user.id &&
-            selector[join[i]].complete === false
-          )
-            madeCount += 1;
-          if (selector[join[i]].complete === true) {
-            edCount += 1;
-          } else {
-            ingCount += 1;
+          for (let i = 0; i < join.length; i++) {
+            if (
+              Number(selector[join[i]].ownerId) === user.id &&
+              selector[join[i]].complete === false
+            )
+              madeCount += 1;
+            if (selector[join[i]].complete === true) {
+              edCount += 1;
+            } else {
+              ingCount += 1;
+            }
           }
-        }
 
-        setEdChal(edCount);
-        setIngChal(ingCount);
-        setMadeChal(madeCount);
-      });
+          setEdChal(edCount);
+          setIngChal(ingCount);
+          setMadeChal(madeCount);
+        });
+      }
     }
     load();
   }, [user.id]);
