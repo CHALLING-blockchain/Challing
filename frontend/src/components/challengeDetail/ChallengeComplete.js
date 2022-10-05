@@ -211,7 +211,7 @@ function Btn(props) {
 
   function refund() {
     Contract.refund(challengeId, user.id);
-    navigate(`/completed-detail/${challengeId}`);
+    navigate(`/complete-loading/${challengeId}/${challenger.id}`);
   }
   let type = "";
   if ("deposit" in challenge) {
