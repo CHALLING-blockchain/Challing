@@ -36,6 +36,8 @@ import CertifyLoading from "./components/challengeCertify/CertifyLoading";
 import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
 import CompleteLoading from "./components/myChallenge/CompleteLoading";
 import { useLocation } from "react-router-dom";
+import PassCoinLoading from "./components/challengeCertify/PassCoinLoading";
+import VoteLoading from "./components/voting/VoteLoading";
 function App() {
   const location = useLocation();
   return (
@@ -77,6 +79,12 @@ function App() {
           path="/complete-loading/:id/:cid"
           element={<CompleteLoading />}
         />
+        <Route
+          path="/passcoin-loading/:id/:cid"
+          element={<PassCoinLoading />}
+        />
+        <Route path="/vote-loading" element={<VoteLoading />} />
+
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>
       {location.pathname !== "/auth" ? <Menu /> : null}
