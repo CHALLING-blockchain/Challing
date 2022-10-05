@@ -5,7 +5,6 @@ import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
 import { useSelector, useDispatch } from "react-redux";
 import ContractAPI from "../../api/ContractAPI";
-import useWeb3 from "../../hooks/useWeb3";
 import {
   setChallengeList,
   challengeList,
@@ -44,12 +43,21 @@ function Main() {
       dispatch(setDonationList(allDonationList));
       // }
     }
-    //로그인 했으면
+    console.log("Main::user", user);
     if (user === null || Object.keys(user).length === 0) {
+      console.log("1111111 ::: 유저정보 없음");
       navigate("/auth");
     } else {
-      let topicName = pickATopic(Object.keys(user.interests).length);
-      setInterest(topicName);
+      // console.log("2222222222 ::: user가 null이 아님");
+      if (user.userInfo === null) {
+        // console.log("333333333333 ::: user는 null이 아닌데 userInfo가 null");
+        // navigate("/auth");
+      } else {
+        // console.log("4444444444444 ::: 유저정보가 저장되어있음");
+        let topicName = pickATopic(Object.keys(user.interests).length);
+        setInterest(topicName);
+        navigate("/");
+      }
     }
     //wallet 없으면
     if (wallet === undefined || !wallet) {
@@ -57,7 +65,6 @@ function Main() {
     }
     load();
   }, []);
-
   //관심사가 여러개일 경우 랜덤으로 하나 뽑기
   function pickATopic(length) {
     let min = 0;
@@ -189,25 +196,7 @@ function Main() {
 
     return result;
   }
-  useEffect(() => {
-    // login check------------------------------------------------------------------
-    // 로그인 되어있을때
-    if (
-      user !== undefined ||
-      user !== null ||
-      user.userInfo !== undefined ||
-      user.userInfo !== null ||
-      user.interests !== null ||
-      user.interests !== undefined
-    ) {
-      // navigate("/auth");
-    } else {
-      //로그인한 유저의 관심사 가져와서  저장
-      let topicName = pickATopic(Object.keys(user.interests).length);
-      setInterest(topicName);
-    }
-    // login check end -------------------------------------------------------------
-  });
+
   return (
     <div>
       <Nav />

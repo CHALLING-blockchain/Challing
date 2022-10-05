@@ -68,9 +68,20 @@ function MyPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState(useSelector(selectUser));
+  // console.log("mypage:::::", user);
   useEffect(() => {
-    if (user === undefined || user === null || user.userInfo === null) {
-      // navigate("/auth");
+    // console.log("MyPage::user", user);
+    if (user === null || Object.keys(user).length === 0) {
+      // console.log("1111111 ::: 유저정보 없음");
+      navigate("/auth");
+    } else {
+      // console.log("2222222222 ::: user가 null이 아님");
+      if (user.userInfo === null) {
+        // console.log("333333333333 ::: user는 null이 아닌데 userInfo가 null");
+        navigate("/auth");
+      } else {
+        // console.log("4444444444444 ::: 유저정보가 저장되어있음");
+      }
     }
   }, []);
   const [openModal, setOpenModal] = useState(false);
@@ -84,7 +95,6 @@ function MyPage() {
   const [edChal, setEdChal] = useState(0);
   const [madeChal, setMadeChal] = useState(0);
   const selector = useSelector(challengeList);
-
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));
