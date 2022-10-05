@@ -1,6 +1,6 @@
 const Web3 = require("web3");
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://j7b106.p.ssafy.io:8545"));
 
 const Cartifact = require("../../frontend/src/contracts/ChallengeContract.json");
 const Vartifact = require("../../frontend/src/contracts/VoteContract.json");
@@ -46,14 +46,15 @@ const simulation = async () => {
   // });
 
   // 챌린지 생성
+  console.log(accounts)
   const createDailyChallenge = await Ccontract.methods
-    .createDailyChallenge(daliyChallenge)
+    .receivePasscoin([1,1,1,1,1],1)
     .send({
-      from: accounts[0],
+      from: accounts[5],
       gasLimit: 3_000_000,
-      value: 1e18,
+
     })
-    .on("receipt",(r)=>console.log(r.events.returnChallengeId.returnValues))
+
     .catch(console.error);
   console.log("챌린지 생성");
 

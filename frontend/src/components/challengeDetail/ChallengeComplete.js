@@ -227,14 +227,13 @@ function Btn(props) {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getChallengers(challengeId).then((result) => {
-        let challengers = result;
-        for (let i = 0; i < challengers.length; i++) {
-          if (challengers[i].userId === user.id) {
-            setChallenger(challengers[i]);
-          }
+      const challengers = await Contract.getChallengers(challengeId);
+
+      for (let i = 0; i < challengers.length; i++) {
+        if (Number(challengers[i].userId) === user.id) {
+          setChallenger(challengers[i]);
         }
-      });
+      }
     }
     load();
   }, []);
