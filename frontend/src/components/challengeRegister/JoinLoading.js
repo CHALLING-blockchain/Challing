@@ -27,7 +27,7 @@ function JoinLoading() {
 
   return (
     <div>
-      <Loading></Loading>      
+      <Loading></Loading>
     </div>
   );
 }
