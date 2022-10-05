@@ -25,6 +25,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final Scheduler scheduler;
     @Value("${com.ssafy.save_dummy_job}")
     private Boolean SAVE_DUMMY_JOB;
+    @Value("${com.ssafy.hardcoded_challenge_id}")
+    private Long CHALLENGE_ID;
 
     @PostConstruct
     @Transactional(rollbackFor = Exception.class)
@@ -175,5 +177,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository
                 .findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(
                         ContractJobType.VOTE, null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Schedule> getHardCodedOne() {
+        return scheduleRepository
+                .findByJobTypeAndChallengeTypeAndChallengeId(
+                        ContractJobType.CHALLENGE, ChallengeType.DAILY, CHALLENGE_ID);
     }
 }
