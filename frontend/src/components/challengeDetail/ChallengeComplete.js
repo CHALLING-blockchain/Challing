@@ -107,6 +107,7 @@ function Reward(props) {
   const [user, setUser] = useState(useSelector(selectUser));
   const deposit = challenge.deposit / 1e18;
   const [reward, setReward] = useState(0);
+  const [fine, setFine] = useState(0);
   const [donatorDeposit, setDonatorDeposit] = useState(0);
   // 일상이면 deposit 기부면 setDonation
   let type = "";
@@ -123,18 +124,18 @@ function Reward(props) {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getChallengers(challengeId).then((result) => {
-        let challengers = result;
-        for (let i = 0; i < challengers.length; i++) {
-          if (Number(challengers[i].userId) === user.id) {
-            if (type === "daily") {
-              setReward(challengers[i].reward / 1e18);
-            } else if (type === "donation") {
-              setDonatorDeposit(challengers[i].userDeposit / 1e18);
-            }
+      const challengers = await Contract.getChallengers(challengeId);
+      for (let i = 0; i < challengers.length; i++) {
+        if (Number(challengers[i].userId) === user.id) {
+          if (type === "daily") {
+            console.log(challengers[i].reward);
+            setReward(challengers[i].reward / 1e18);
+            setFine(deposit - challengers[i].userDeposit / 1e18);
+          } else if (type === "donation") {
+            setDonatorDeposit(challengers[i].userDeposit / 1e18);
           }
         }
-      });
+      }
     }
     load();
   }, []);
@@ -151,12 +152,16 @@ function Reward(props) {
             </div>
             <div className={styles.rewardItem}>
               <span style={{ color: "#8397FF" }}>상금</span>
-              <span style={{ color: "#8397FF" }}>{reward} ETH</span>
+              <span style={{ color: "#8397FF" }}>+ {reward} ETH</span>
+            </div>
+            <div className={styles.rewardItem}>
+              <span style={{ color: "#8397FF" }}>벌금</span>
+              <span style={{ color: "#8397FF" }}>- {fine} ETH</span>
             </div>
             <div className={styles.totalReward}>
               <span style={{ color: "#755FFF" }}>총 환급금</span>
               <span style={{ color: "#755FFF" }}>
-                {Number(deposit) + Number(reward)} ETH
+                {Number(deposit) + Number(reward) - Number(fine)} ETH
               </span>
             </div>
           </div>
@@ -181,7 +186,6 @@ function Reward(props) {
 }
 
 function Btn(props) {
-  
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -207,7 +211,7 @@ function Btn(props) {
 
   function refund() {
     Contract.refund(challengeId, user.id);
-    navigate(`/completed-detail/${challengeId}`);
+    navigate(`/complete-loading/${challengeId}/${challenger.id}`);
   }
   let type = "";
   if ("deposit" in challenge) {
@@ -223,7 +227,7 @@ function Btn(props) {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      const challengers=await Contract.getChallengers(challengeId)
+      const challengers = await Contract.getChallengers(challengeId);
 
       for (let i = 0; i < challengers.length; i++) {
         if (Number(challengers[i].userId) === user.id) {
@@ -247,7 +251,11 @@ function Btn(props) {
               </button>
             </div>
           ) : (
-            <div></div>
+            <div>
+              <button className={styles.btn} onClick={refund}>
+                확인
+              </button>
+            </div>
           )
         ) : challenge.success === false ? (
           <div>
@@ -256,7 +264,11 @@ function Btn(props) {
             </button>
           </div>
         ) : (
-          <div></div>
+          <div>
+            <button className={styles.btn} onClick={refund}>
+              확인
+            </button>
+          </div>
         )}
       </div>
     );

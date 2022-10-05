@@ -50,6 +50,7 @@ tasks.named('bootRun') {
 	systemProperty 'spring.datasource.username', findProperty('db_username') ?: 'root'
 	systemProperty 'spring.datasource.password', findProperty('db_password') ?: 'root'
 	systemProperty 'com.ssafy.save_dummy_job', findProperty('save_dummy_job') ?: 'false'
+	systemProperty 'com.ssafy.backeth.base_url', findProperty('backeth_base_url') ?: 'http://localhost:8082/api'
 }
 
 tasks.named('test') {

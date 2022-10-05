@@ -40,4 +40,7 @@ public class Schedule {
     private Long userIdIndex;
     @Column(name = "challenge_id_index")
     private Long challengeIdIndex;
+
+    @Column(name = "photo_id")
+    private Long photoId;
 }

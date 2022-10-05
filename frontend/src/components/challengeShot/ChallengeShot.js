@@ -101,8 +101,7 @@ function ChallengeShot() {
                 {
                   state: {
                     challengeInfo: props.challengeInfo,
-                    percentage: percentage,
-                    challengerInfo: props.challengerInfo,
+
                   },
                 }
               );
@@ -125,8 +124,7 @@ function ChallengeShot() {
                     {
                       state: {
                         challengeInfo: props.challengeInfo,
-                        percentage: percentage,
-                        challengerInfo: props.challengerInfo,
+                        
                       },
                     }
                   );
