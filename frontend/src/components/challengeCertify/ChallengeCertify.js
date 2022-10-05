@@ -281,11 +281,12 @@ function Voting({ id }) {
 
 function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
-  const challenger = useLocation().state.challengerInfo;
+  const [challenger,setChallenger] = useState()
   // const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
   const [photoList, setPhotoList] = useState([]);
   const [percentage, setPercentage] = useState();
+  const userId = useSelector(selectUser).id;
   // console.log("photos", photoList);
   const Contract = new ContractAPI();
   useEffect(() => {
@@ -293,9 +294,12 @@ function ChallengeCertify() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
       let userCount = 0;
       if (challengers) {
-        userCount = challengers.filter(
-          (el) => el.challengeId === challenge.challengeId
-        )[0].totalCount;
+        const challenger=challengers.filter(
+          (el) => Number(el.userId) === userId
+        )[0]
+        userCount = challenger.totalCount;
+        console.log(challenger)
+        setChallenger(challenger)
       }
       const percentage = ((userCount / challenge.authTotalTimes) * 100).toFixed(
         2
