@@ -54,31 +54,37 @@ function SelectDeposit({ formCnt, setFormCnt, dailyMoney, setDailyMoney }) {
   return (
     <div>
       <Header />
-      <div style={{ padding: "16px" }}>
-        <p className={styles.FormHeader}>예치금을 설정해주세요.</p>
-        <p className={styles.FormEx}>
-          챌린지 참여자의 예치금을 지정해주세요.
-          <br />
-          챌린지 개설 후 예치금 변경이 불가합니다.
-          <br />
-        </p>
-        <input
-          className={styles.Input}
-          placeholder="예치금을 입력해주세요."
-          // value는 텍스트인풋에서 넘겨준 props
-          value={dailyMoney}
-          type="number"
-          // 값이 바뀔때를 감지하여 setValue값을 변경시켜주어 넘겨주자
-          onChange={(e) => {
-            setDailyMoney(e.target.value);
-            setMoney(e.target.value);
-          }}
-        />
-        <p>*숫자만 입력가능합니다.</p>
-        <p>*최소 예치금은 0.0001 eth 입니다.</p>
-      </div>
+      <div style={{ marginTop: "80px" }}>
+        <div style={{ padding: "16px" }}>
+          <p className={styles.FormHeader} style={{ marginBottom: "16px" }}>
+            예치금을 설정해주세요.
+          </p>
+          <p className={styles.FormEx} style={{ marginBottom: "8px" }}>
+            챌린지 참여자의 예치금을 지정해주세요.
+            <br />
+            챌린지 개설 후 예치금 변경이 불가합니다.
+            <br />
+          </p>
+          <input
+            className={styles.Input}
+            placeholder="예치금을 입력해주세요."
+            // value는 텍스트인풋에서 넘겨준 props
+            value={dailyMoney}
+            type="number"
+            // 값이 바뀔때를 감지하여 setValue값을 변경시켜주어 넘겨주자
+            onChange={(e) => {
+              setDailyMoney(e.target.value);
+              setMoney(e.target.value);
+            }}
+          />
+          <p style={{ fontSize: "14px", marginTop: "8px" }}>
+            *숫자만 입력가능합니다.
+          </p>
+          <p style={{ fontSize: "14px" }}>*최소 예치금은 0.0001 eth 입니다.</p>
+        </div>
 
-      {money >= 0.0001 ? <NextButton /> : <NextButtonX />}
+        {money >= 0.0001 ? <NextButton /> : <NextButtonX />}
+      </div>
     </div>
   );
 }

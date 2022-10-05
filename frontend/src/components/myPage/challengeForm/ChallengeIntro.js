@@ -98,55 +98,59 @@ function ChallengeIntro({
   return (
     <div>
       <Header />
-      <div style={{ padding: "16px" }}>
-        <p className={styles.FormHeader}>챌린지와 인증방법을 설명해주세요.</p>
-        <p className={styles.FormEx}>
-          챌린지 참가자가 이해할 수 있도록 챌린지에 대한 자세한 설명과 구체적인
-          인증방법을 작성해주세요.
-          <br />
-          개설된 챌린지의 설명은 수정할 수 없습니다.
-          <br />
-        </p>
-        <p style={{ marginTop: "16px" }}>챌린지 설명</p>
-        <textarea
-          className={styles.InputIntro}
-          // value는 텍스트인풋에서 넘겨준 props
-          value={explanation}
-          type="text"
-          maxLength="1000"
-          // 값이 바뀔때를 감지하여 setValue값을 변경시켜주어 넘겨주자
-          onChange={(e) => {
-            setExplanation(e.target.value);
-            setLength(e.target.value.length);
-            setList(e.target.value);
-          }}
-        />
-        <p style={{ marginTop: "8px" }}>{length}/1000자 이내</p>
-      </div>
-      <div style={{ padding: "16px" }}>
-        <div className="PhotoBox">
-          <p style={{ marginBottom: "8px" }}>챌린지 대표 사진(필수)</p>
-          <img
-            onClick={handleClick}
-            style={{ width: "120px", height: "120px" }}
-            src={fileImage}
-            alt="sample"
-          />
-          <input
-            type="file"
-            name="imgUpload"
-            accept="image/*"
-            onChange={selectFileImage}
-            style={{ display: "none" }}
-            ref={photoInput}
-          />
+      <div style={{display:"flex", alignItems:"center", height:"560px"}}>
+        <div>
+          <div style={{ padding: "16px" }}>
+            <p className={styles.FormHeader}>챌린지와 인증방법을 설명해주세요.</p>
+            <p className={styles.FormEx}>
+              챌린지 참가자가 이해할 수 있도록 챌린지에 대한 자세한 설명과 구체적인
+              인증방법을 작성해주세요.
+              <br />
+              개설된 챌린지의 설명은 수정할 수 없습니다.
+              <br />
+            </p>
+            <p style={{ marginTop: "16px" }}>챌린지 설명</p>
+            <textarea
+              className={styles.InputIntro}
+              // value는 텍스트인풋에서 넘겨준 props
+              value={explanation}
+              type="text"
+              maxLength="1000"
+              // 값이 바뀔때를 감지하여 setValue값을 변경시켜주어 넘겨주자
+              onChange={(e) => {
+                setExplanation(e.target.value);
+                setLength(e.target.value.length);
+                setList(e.target.value);
+              }}
+              />
+            <p style={{ marginTop: "8px" }}>{length}/1000자 이내</p>
+          </div>
+          <div style={{ padding: "16px" }}>
+            <div className="PhotoBox">
+              <p style={{ marginBottom: "8px" }}>챌린지 대표 사진(필수)</p>
+              <img
+                onClick={handleClick}
+                style={{ width: "120px", height: "120px" }}
+                src={fileImage}
+                alt="sample"
+                />
+              <input
+                type="file"
+                name="imgUpload"
+                accept="image/*"
+                onChange={selectFileImage}
+                style={{ display: "none" }}
+                ref={photoInput}
+                />
+            </div>
+          </div>
+          </div>
         </div>
-      </div>
-      {list.length >= 1 && fileImage !== photoUpload ? (
-        <NextButton />
-      ) : (
-        <NextButtonX />
-      )}
+          {list.length >= 1 && fileImage !== photoUpload ? (
+            <NextButton />
+            ) : (
+              <NextButtonX />
+              )}
     </div>
   );
 }

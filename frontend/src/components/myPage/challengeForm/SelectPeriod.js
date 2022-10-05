@@ -90,125 +90,130 @@ function SelectPeriod({
   return (
     <div>
       <Header />
-      <div style={{ padding: "16px" }}>
-        <p className={styles.FormHeader}>챌린지의 기간을 설정해주세요.</p>
-        <p className={styles.FormEx}>
-          챌린지의 시작일자와 기간을 설정해주세요.
-          <br />
-          챌린지 개설 후 변경이 불가합니다.
-          <br />
-        </p>
-        <p style={{ marginTop: "16px", marginBottom: "16px" }}>
-          <img src={tick} alt="tick" style={{ width: "16px" }} /> 챌린지 기간
-        </p>
-        <div className={styles.Weeks}>
-          <div
-            className={day === 7 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(7);
-              setDay(7);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>1주</p>
-          </div>
-          <div
-            className={day === 14 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(14);
-              setDay(14);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>2주</p>
-          </div>
-          <div
-            className={day === 21 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(21);
-              setDay(21);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>3주</p>
-          </div>
-          <div
-            className={day === 28 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(28);
-              setDay(28);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>4주</p>
-          </div>
-          <div
-            className={day === 35 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(35);
-              setDay(35);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>5주</p>
-          </div>
-          <div
-            className={day === 42 ? styles.SelectWeeks : styles.SelectWeekX}
-            value={period}
-            onClick={() => {
-              setPeriod(42);
-              setDay(42);
-              setList((list) => ({ ...list, Njoo: 1 }));
-            }}
-          >
-            <p>6주</p>
-          </div>
-        </div>
-        <p style={{ marginTop: "16px", marginBottom: "16px" }}>
-          <img src={tick} alt="tick" style={{ width: "16px" }} /> 챌린지 시작일
-        </p>
-        <div className={styles.SelectDate}>
-          <img
-            style={{ width: "24px", height: "24px" }}
-            src={Calender}
-            alt="calenderIcon"
-          />
-          <DatePicker
-            className={styles.DatePicker}
-            dateFormat="yyyy/MM/dd"
-            locale={ko}
-            selected={startDate}
-            onChange={(date) => {
-              const start = new Date(date);
-              const startData = moment(date).format("YYYY-MM-DD");
-              setStartDate(start);
-              setChallengeStart(startData);
-              setEndDate(new Date(date.setDate(date.getDate() + day)));
-              setList((list) => ({ ...list, startD: start, endD: start }));
-            }}
-            minDate={addDays(new Date(), 1)}
-            maxDate={addMonths(new Date(), 5)}
-            showDisabledMonthNavigation
-          />
-        </div>
-        <div>
-          <p style={{ marginTop: "16px", marginBottom: "16px" }}>
-            <img src={tick} alt="tick" style={{ width: "16px" }} /> 예상 챌린지
-            기간
+      <div style={{ marginTop: "64px" }}>
+        <div style={{ padding: "16px" }}>
+          <p className={styles.FormHeader} style={{ marginBottom: "16px" }}>
+            챌린지의 기간을 설정해주세요.
           </p>
-          <div className={styles.Periods}>
-            <p>{moment(startDate).format("YYYY년 MM월 DD일")}</p>
-            <p>~</p>
-            <p>{moment(endDate).format("YYYY년 MM월 DD일")}</p>
+          <p className={styles.FormEx} style={{ marginBottom: "8px" }}>
+            챌린지의 시작일자와 기간을 설정해주세요.
+            <br />
+            챌린지 개설 후 변경이 불가합니다.
+            <br />
+          </p>
+          <p style={{ marginTop: "16px", marginBottom: "16px" }}>
+            <img src={tick} alt="tick" style={{ width: "16px" }} /> 챌린지 기간
+          </p>
+          <div className={styles.Weeks}>
+            <div
+              className={day === 7 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(7);
+                setDay(7);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>1주</p>
+            </div>
+            <div
+              className={day === 14 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(14);
+                setDay(14);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>2주</p>
+            </div>
+            <div
+              className={day === 21 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(21);
+                setDay(21);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>3주</p>
+            </div>
+            <div
+              className={day === 28 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(28);
+                setDay(28);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>4주</p>
+            </div>
+            <div
+              className={day === 35 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(35);
+                setDay(35);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>5주</p>
+            </div>
+            <div
+              className={day === 42 ? styles.SelectWeeks : styles.SelectWeekX}
+              value={period}
+              onClick={() => {
+                setPeriod(42);
+                setDay(42);
+                setList((list) => ({ ...list, Njoo: 1 }));
+              }}
+            >
+              <p>6주</p>
+            </div>
+          </div>
+          <p style={{ marginTop: "16px", marginBottom: "16px" }}>
+            <img src={tick} alt="tick" style={{ width: "16px" }} /> 챌린지
+            시작일
+          </p>
+          <div className={styles.SelectDate}>
+            <img
+              style={{ width: "24px", height: "24px" }}
+              src={Calender}
+              alt="calenderIcon"
+            />
+            <DatePicker
+              className={styles.DatePicker}
+              dateFormat="yyyy/MM/dd"
+              locale={ko}
+              selected={startDate}
+              onChange={(date) => {
+                const start = new Date(date);
+                const startData = moment(date).format("YYYY-MM-DD");
+                setStartDate(start);
+                setChallengeStart(startData);
+                setEndDate(new Date(date.setDate(date.getDate() + day)));
+                setList((list) => ({ ...list, startD: start, endD: start }));
+              }}
+              minDate={addDays(new Date(), 1)}
+              maxDate={addMonths(new Date(), 5)}
+              showDisabledMonthNavigation
+            />
+          </div>
+          <div>
+            <p style={{ marginTop: "16px", marginBottom: "16px" }}>
+              <img src={tick} alt="tick" style={{ width: "16px" }} /> 예상
+              챌린지 기간
+            </p>
+            <div className={styles.Periods}>
+              <p>{moment(startDate).format("YYYY년 MM월 DD일")}</p>
+              <p>~</p>
+              <p>{moment(endDate).format("YYYY년 MM월 DD일")}</p>
+            </div>
           </div>
         </div>
+        {Object.values(list).includes(null) ? <NextButtonX /> : <NextButton />}
       </div>
-      {Object.values(list).includes(null) ? <NextButtonX /> : <NextButton />}
     </div>
   );
 }
