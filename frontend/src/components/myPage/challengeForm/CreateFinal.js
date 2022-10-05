@@ -682,7 +682,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           <p className={styles.OpenModal}>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
+          <img src={clock} alt="ethCoin" style={{ width: "40px" }} />
           <svg
             width="2"
             height="80"
@@ -702,7 +702,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           </div>
         </div>
         <div className={styles.Card2}>
-          <img src={clock} alt="calender" style={{ width: "40px" }} />
+          <img src={calender} alt="calender" style={{ width: "40px" }} />
           <svg
             width="2"
             height="80"

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./challengeForm.module.css";
-import Slider from "rc-slider";
+import Slider, {Range} from "rc-slider";
 import tick from "../../../img/tick.png";
-import "../../../../node_modules/rc-slider/assets/index.css";
-
+import "rc-slider/assets/index.css";
 function SelectCertification({
   formCnt,
   setFormCnt,
@@ -15,9 +14,9 @@ function SelectCertification({
   const [emptyFlag, setEmptyFlag] = useState(0);
   const marks = {
     0: <strong>00:00</strong>,
-    6: "06:00",
-    12: "12:00",
-    18: "18:00",
+    // 6: "06:00",
+    // 12: "12:00",
+    // 18: "18:00",
     24: <strong>24:00</strong>,
   };
   const [list, setList] = useState({
@@ -150,7 +149,7 @@ function SelectCertification({
           인증 빈도
         </p>
         <p className={styles.FormEx}>
-          주간 참여 횟수와 하루 인증 횟수를 작성해주세요. 숫자만 입력
+          주간 참여 횟수와 하루 인증 횟수를 작성해주세요. <br /> 숫자만 입력
           가능합니다.
         </p>
         <div style={{ marginTop: "8px", fontWeight: "bold" }}>

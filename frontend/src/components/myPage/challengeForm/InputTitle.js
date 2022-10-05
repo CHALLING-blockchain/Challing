@@ -64,7 +64,7 @@ function InputTitle({formCnt,setFormCnt,value,setValue }) {
             setTitle(e.target.value)
           }}
         />
-        <p>(50자이내)</p>
+        <p style={{margin:'4px'}}>(50자이내)</p>
       </div>
       {title !== "" ? <NextButton/> : <NextButtonX/>}
     </div>
