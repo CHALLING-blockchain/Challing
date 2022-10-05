@@ -12,4 +12,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findAllByTriggerAtGreaterThan(Long triggerAt);
     Optional<Schedule> findFirstByJobTypeAndChallengeTypeOrderByScheduleIdDesc(ContractJobType jobType, ChallengeType challengeType);
+    Optional<Schedule> findByJobTypeAndChallengeTypeAndChallengeId(ContractJobType jobType, ChallengeType challengeType, Long challengeId);
 }
