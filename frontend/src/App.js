@@ -35,8 +35,9 @@ import JoinLoading from "./components/challengeRegister/JoinLoading";
 import CertifyLoading from "./components/challengeCertify/CertifyLoading";
 import ChallengeComplete from "./components/challengeDetail/ChallengeComplete";
 import CompleteLoading from "./components/myChallenge/CompleteLoading";
-
+import { useLocation } from "react-router-dom";
 function App() {
+  const location = useLocation();
   return (
     <div className="App">
       <Routes>
@@ -78,7 +79,7 @@ function App() {
         />
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>
-      <Menu />
+      {location.pathname !== "/auth" ? <Menu /> : null}
     </div>
   );
 }

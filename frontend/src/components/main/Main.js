@@ -47,6 +47,9 @@ function Main() {
     if (user === null || Object.keys(user).length === 0) {
       console.log("1111111 ::: 유저정보 없음");
       navigate("/auth");
+    } //wallet 없으면
+    else if (wallet === undefined || !wallet) {
+      navigate("/my-wallet");
     } else {
       // console.log("2222222222 ::: user가 null이 아님");
       if (user.userInfo === null) {
@@ -59,10 +62,7 @@ function Main() {
         navigate("/");
       }
     }
-    //wallet 없으면
-    if (wallet === undefined || !wallet) {
-      navigate("/my-wallet");
-    }
+
     load();
   }, []);
   //관심사가 여러개일 경우 랜덤으로 하나 뽑기

@@ -103,29 +103,33 @@ function MyPage() {
   }, [user.email, dispatch]);
   useEffect(() => {
     async function load() {
-      await Contract.getMyChallenge(user.id).then((result) => {
-        const join = result[1];
-        let ingCount = 0;
-        let edCount = 0;
-        let madeCount = 0;
+      if (user === null) {
+        navigate("/auth");
+      } else {
+        await Contract.getMyChallenge(user.id).then((result) => {
+          const join = result[1];
+          let ingCount = 0;
+          let edCount = 0;
+          let madeCount = 0;
 
-        for (let i = 0; i < join.length; i++) {
-          if (
-            Number(selector[join[i]].ownerId) === user.id &&
-            selector[join[i]].complete === false
-          )
-            madeCount += 1;
-          if (selector[join[i]].complete === true) {
-            edCount += 1;
-          } else {
-            ingCount += 1;
+          for (let i = 0; i < join.length; i++) {
+            if (
+              Number(selector[join[i]].ownerId) === user.id &&
+              selector[join[i]].complete === false
+            )
+              madeCount += 1;
+            if (selector[join[i]].complete === true) {
+              edCount += 1;
+            } else {
+              ingCount += 1;
+            }
           }
-        }
 
-        setEdChal(edCount);
-        setIngChal(ingCount);
-        setMadeChal(madeCount);
-      });
+          setEdChal(edCount);
+          setIngChal(ingCount);
+          setMadeChal(madeCount);
+        });
+      }
     }
     load();
   }, [user.id]);
