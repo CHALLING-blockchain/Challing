@@ -78,10 +78,6 @@ function MyWallet() {
   // passCoin
   const [passData, setPassData] = useState("");
 
-  // 컨트랙트 주소들
-  // const Caddress = window.localStorage.getItem("Caddress");
-  // const Vaddress = window.localStorage.getItem("Vaddress");
-
   // get active account and balance data from useWeb3 hook
   const {
     connect,

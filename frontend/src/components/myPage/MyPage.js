@@ -65,13 +65,18 @@ function Modal({ onClose }) {
 }
 
 function MyPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(useSelector(selectUser));
+  useEffect(() => {
+    if (user === undefined || user === null || user.userInfo === null) {
+      // navigate("/auth");
+    }
+  }, []);
   const [openModal, setOpenModal] = useState(false);
   const showModal = () => {
     setOpenModal(true);
   };
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [user, setUser] = useState(useSelector(selectUser));
   const fileImage = user.picURL;
   const web3 = new Web3(window.ethereum);
   const Contract = new ContractAPI();
@@ -79,6 +84,7 @@ function MyPage() {
   const [edChal, setEdChal] = useState(0);
   const [madeChal, setMadeChal] = useState(0);
   const selector = useSelector(challengeList);
+
   useEffect(() => {
     UserAPI.mypage(user.email).then((response) => {
       dispatch(setUserInfo(response.data.body));

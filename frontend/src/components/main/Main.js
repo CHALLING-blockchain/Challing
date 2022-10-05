@@ -5,6 +5,7 @@ import Banner_1 from "../../img/배너1.png";
 import Banner_2 from "../../img/배너2.png";
 import { useSelector, useDispatch } from "react-redux";
 import ContractAPI from "../../api/ContractAPI";
+import useWeb3 from "../../hooks/useWeb3";
 import {
   setChallengeList,
   challengeList,
@@ -22,7 +23,7 @@ function Main() {
   const [category, setCategory] = useState("");
   const [interest, setInterest] = useState("");
   const navigate = useNavigate();
-
+  const wallet = localStorage.getItem("myAccount");
   useEffect(() => {
     async function load() {
       let allChallengeList = {};
@@ -43,15 +44,17 @@ function Main() {
       dispatch(setDonationList(allDonationList));
       // }
     }
-
-    if (user.interests !== undefined || user.userInfo === null) {
-      //로그인한 유저의 관심사 가져와서  저장
+    //로그인 했으면
+    if (user === null || Object.keys(user).length === 0) {
+      navigate("/auth");
+    } else {
       let topicName = pickATopic(Object.keys(user.interests).length);
       setInterest(topicName);
-    } else {
-      navigate("/auth");
     }
-
+    //wallet 없으면
+    if (wallet === undefined || !wallet) {
+      navigate("/my-wallet");
+    }
     load();
   }, []);
 
@@ -186,7 +189,25 @@ function Main() {
 
     return result;
   }
-
+  useEffect(() => {
+    // login check------------------------------------------------------------------
+    // 로그인 되어있을때
+    if (
+      user !== undefined ||
+      user !== null ||
+      user.userInfo !== undefined ||
+      user.userInfo !== null ||
+      user.interests !== null ||
+      user.interests !== undefined
+    ) {
+      // navigate("/auth");
+    } else {
+      //로그인한 유저의 관심사 가져와서  저장
+      let topicName = pickATopic(Object.keys(user.interests).length);
+      setInterest(topicName);
+    }
+    // login check end -------------------------------------------------------------
+  });
   return (
     <div>
       <Nav />
@@ -211,6 +232,7 @@ function Main() {
           <p className={styles.Category}>
             {user.nickname}님에게 딱 맞는 {interest} 챌린지 목록 (일상)
           </p>
+
           <div className={styles.Rendering}>{dailyChallengeRendering()}</div>
         </div>
         <div className={styles.Hr} />
