@@ -182,6 +182,7 @@ function Modal({ onClose, photoId }) {
         userIdIndex: challengerInfo[1],
         challengeIdIndex: challengerInfo[2],
         triggerAt: tomorrow.getTime(),
+        photoId:photoId
       };
 
       await ScheduleAPI.vote(body);

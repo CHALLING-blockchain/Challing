@@ -269,7 +269,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
               d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
             />
           </svg>
-          <p style={{ fontSize: "20px", margin: "auto" }}>챌린지 개설하기</p>
+          <p style={{ fontSize: "20px", margin: "auto" }}>{selects.title}</p>
           <div></div>
         </div>
       </div>
@@ -413,7 +413,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           ) : null}
         </div>
         <div className={styles.Card1}>
-          <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
+          <img src={ethCoin} alt="ethCoin" style={{ width: "40px", height:"40px" }} />
           <svg
             width="80"
             height="2"
@@ -643,7 +643,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           ) : null}
         </div>
         <div className={styles.Card1}>
-          <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
+          <img src={ethCoin} alt="ethCoin" style={{ width: "40px", margin:"4px" }} />
           <svg
             width="80"
             height="2"
@@ -682,7 +682,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           <p className={styles.OpenModal}>인증샷 예시 보기</p>
         </div>
         <div className={styles.Card2}>
-          <img src={ethCoin} alt="ethCoin" style={{ width: "40px" }} />
+          <img src={clock} alt="ethCoin" style={{ width: "40px" }} />
           <svg
             width="2"
             height="80"
@@ -702,7 +702,7 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
           </div>
         </div>
         <div className={styles.Card2}>
-          <img src={clock} alt="calender" style={{ width: "40px" }} />
+          <img src={calender} alt="calender" style={{ width: "40px" }} />
           <svg
             width="2"
             height="80"
@@ -769,23 +769,25 @@ function CreateFinal({ selects, formCnt, setFormCnt }) {
   return (
     <div>
       <Header />
+      <div style={{marginTop:"16px"}}>
+
       <div style={{ padding: "16px" }}>
         <p className={styles.FormHeader}>챌린지 설정을 확인해주세요.</p>
         <p className={styles.FormEx}>
           챌린지 설정을 확인하고 챌린지를 시작해보세요!
         </p>
       </div>
-      <p className={styles.ChallengTitle}>{selects.title}</p>
       {selects.challenge === "기부챌린지" ? (
         <DonationChallenge />
       ) : (
         <DailyChallenge />
-      )}
+        )}
       {selects.challenge === "기부챌린지" ? (
         <DonationCreateButton />
-      ) : (
-        <DailyCreateButton />
-      )}
+        ) : (
+          <DailyCreateButton />
+          )}
+      </div>
     </div>
   );
 }

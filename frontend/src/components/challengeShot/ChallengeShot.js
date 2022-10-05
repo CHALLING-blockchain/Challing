@@ -27,11 +27,11 @@ function ChallengeShot() {
 
   useEffect(() => {
     async function load() {
-      let allChallengeList = {};
-      await Contract.getAllChallenge().then((result) => {
-        allChallengeList = result;
-      });
-      dispatch(setChallengeList(allChallengeList));
+      // let allChallengeList = {};
+      // await Contract.getAllChallenge().then((result) => {
+      //   allChallengeList = result;
+      // });
+      // dispatch(setChallengeList(allChallengeList));
       const challengers = await Contract.getChallengersByUserId(user.id);
 
       setChallegers(challengers);
@@ -57,7 +57,7 @@ function ChallengeShot() {
     const percentage = (
       (userCount / props.challengeInfo.authTotalTimes) *
       100
-    ).toFixed(2);
+    ).toFixed(0);
 
     return (
       <div>
@@ -70,14 +70,13 @@ function ChallengeShot() {
             }}
           >
             <img
-              style={{ borderRadius: "5px" }}
+              style={{ borderRadius: "10px 0 0 10px" }}
               src={props.challengeInfo.mainPicURL}
               height="120"
               width="160"
               alt=""
             ></img>
-
-            <div className={styles.CardBody}>
+            <div className={styles.cardbody}>
               <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
               <p
                 style={{
@@ -101,70 +100,42 @@ function ChallengeShot() {
                 {
                   state: {
                     challengeInfo: props.challengeInfo,
-
                   },
                 }
               );
             }}
           >
             <img
-              style={{ borderRadius: "5px" }}
+              style={{ borderRadius: "10px 0 0 10px" }}
               src={props.challengeInfo.mainPicURL}
               height="120"
               width="160"
               alt=""
             ></img>
-            <div className={styles.CardHeader}>
+            <div className={styles.cardbody}>
               <p className={styles.CardTitle}>{props.challengeInfo.name}</p>
-              <div
-                className={styles.GoShotBtn}
-                onClick={() => {
-                  navigate(
-                    `/challenge-certify/${props.challengeInfo.challengeId}`,
-                    {
-                      state: {
-                        challengeInfo: props.challengeInfo,
-                        
-                      },
-                    }
-                  );
-                }}
-              >
-                <img
-                  style={{
-                    width: "10px",
-                    marginRight: "2px",
-                    marginLeft: "2px",
-                  }}
-                  src={tick}
-                  alt=""
-                />
-                인증하기
-              </div>
-            </div>
-            <div className={styles.CardBody}>
               <p
                 style={{
-                  fontSize: "10px",
+                  fontSize: "14px",
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <img src={megaphone} height="12" width="12" alt="" />
+                <img src={megaphone} height="14" width="14" alt="" />
                 현재 {percentage}%달성
               </p>
               <p
                 style={{
-                  fontSize: "10px",
+                  fontSize: "14px",
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <img src={calender} height="12" width="12" alt="" />
+                <img src={calender} height="14" width="14" alt="" />
                 {dayGab}일 뒤 종료
               </p>
+              {/* {console.log(NoIng)} */}
             </div>
-            {/* {console.log(NoIng)} */}
           </div>
         )}
       </div>

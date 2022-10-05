@@ -93,50 +93,59 @@ function ShotExample({formCnt,setFormCnt,setGoodShotUrl,setBadShotUrl}){
   }
   return (
     <div>
-      <Header/>
-      <div style={{padding:'16px'}}>
-        <p className={styles.FormHeader}>인증샷 예시를 등록해주세요.</p>
-        <p className={styles.FormEx}>챌린지 참여자의 혼란을 방지하고, 참여자의 인증샷이<br/> 
-                              올바른지 판단할 수 있는 기준을 마련해주세요.<br/> 
-                              챌린지 개설 수 인증샷 예시는 변경할 수 없습니다.<br/> </p>
-      </div>
-      <div className={styles.ShotEX}>
-        <div className="PhotoBox">
-          <p style={{marginBottom:'8px'}}>👍 좋은 인증샷 예시</p>
-          <img
-            onClick={goodClick}
-            style={{ width: "160px", height: "160px" }}
-            src={good}
-            alt="sample"
-          />
-          <input
-            type="file"
-            name="imgUpload"
-            accept="image/*"
-            onChange={saveGoodFileImage}
-            style={{ display: "none" }}
-            ref={goodInput}
-          />
+      <Header />
+        <div style={{padding:'16px', marginTop:"64px"}}>
+          <div style={{ padding: "16px 0" }}>
+            <p className={styles.FormHeader} style={{ marginBottom: "16px" }}>
+              인증샷 예시를 등록해주세요.
+            </p>
+            <p className={styles.FormEx} style={{ marginBottom: "8px" }}>
+              챌린지 참여자의 혼란을 방지하고, 참여자의 인증샷이
+              <br />
+              올바른지 판단할 수 있는 기준을 마련해주세요.
+              <br />
+              챌린지 개설 수 인증샷 예시는 변경할 수 없습니다.
+              <br />{" "}
+            </p>
+          </div>
+          <div className={styles.ShotEX}>
+            <div className="PhotoBox">
+              <p style={{ marginBottom: "8px" }}>👍 좋은 인증샷 예시</p>
+              <img
+                onClick={goodClick}
+                style={{ width: "160px", height: "160px" }}
+                src={good}
+                alt="sample"
+                />
+              <input
+                type="file"
+                name="imgUpload"
+                accept="image/*"
+                onChange={saveGoodFileImage}
+                style={{ display: "none" }}
+                ref={goodInput}
+                />
+            </div>
+            <div className="PhotoBox">
+              <p style={{ marginBottom: "8px" }}>👎 나쁜 인증샷 예시</p>
+              <img
+                onClick={badClick}
+                style={{ width: "160px", height: "160px" }}
+                src={bad}
+                alt="sample"
+                />
+              <input
+                type="file"
+                name="imgUpload"
+                accept="image/*"
+                onChange={saveBadFileImage}
+                style={{ display: "none" }}
+                ref={badInput}
+                />
+            </div>
         </div>
-        <div className="PhotoBox">
-          <p style={{marginBottom:'8px'}}>👎 나쁜 인증샷 예시</p>
-          <img
-            onClick={badClick}
-            style={{ width: "160px", height: "160px" }}
-            src={bad}
-            alt="sample"
-          />
-          <input
-            type="file"
-            name="imgUpload"
-            accept="image/*"
-            onChange={saveBadFileImage}
-            style={{ display: "none" }}
-            ref={badInput}
-          />
-        </div>
       </div>
-      {good && bad !== photoUpload   ? <NextButton/> : <NextButtonX/>}
+      {good && bad !== photoUpload ? <NextButton /> : <NextButtonX />}
     </div>
   );
 }

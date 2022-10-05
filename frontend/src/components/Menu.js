@@ -1,10 +1,8 @@
 import React from "react";
 import styles from "./Menu.module.css";
 import { Link, useLocation } from "react-router-dom";
-
 function Menu() {
   const location = useLocation();
-
   return (
     <div className={styles.Footer}>
       <div className={styles.Menu}>

@@ -53,7 +53,7 @@ function SelectTopic({formCnt,setFormCnt,value,setValue}){
   return (
     <div>
       <Header/>
-      <p style={{padding:'16px'}} className={styles.FormHeader}>어떤 주제의 챌린지인가요?</p>
+      <p style={{padding:'28px 16px 4px'}} className={styles.FormHeader2}>어떤 주제의 챌린지인가요?</p>
       <div className={categoryStyles.cardBox}>
         <div className={topic === "운동" ? cardStyles.card : cardStyles.cardX} value={value} onClick={()=>{setValue('운동');setTopic('운동');}}>
           <div>
