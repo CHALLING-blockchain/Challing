@@ -20,7 +20,6 @@ const videoConstraints = {
 
 function WebcamCapture() {
   const challenge = useLocation().state.challengeInfo;
-  const percentage = useLocation().state.percentage;
 
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
@@ -116,7 +115,7 @@ function WebcamCapture() {
     if (activeAccount !== undefined && activeAccount !== "") {
       await Contract.authenticate(challengeId, user.id, today, url);
       navigate(`/certify-loading/${challengeId}`, {
-        state: { challengeInfo: challenge, percentage: percentage, url: url },
+        state: { challengeInfo: challenge, url: url },
       });
     }
   }

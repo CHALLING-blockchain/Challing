@@ -141,11 +141,6 @@ function ChallengeList() {
       navigate(`/challenge-certify/${info.challengeId}`, {
         state: {
           challengeInfo: info,
-          percentage: (
-            (challengers[index].totalCount / info.authTotalTimes) *
-            100
-          ).toFixed(2),
-          challengerInfo: challengers[index],
         },
       });
     }
