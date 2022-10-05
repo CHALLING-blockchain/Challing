@@ -12,7 +12,7 @@ function CertifyLoading() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [check, setCheck] = useState(0);
-  const [cnt, setCnt] = useState(0);
+  const [cnt, setCnt] = useState(-2);
   const url = useLocation().state.url;
   const challenge = useLocation().state.challengeInfo;
   const percentage = useLocation().state.percentage;
@@ -27,11 +27,15 @@ function CertifyLoading() {
 
     async function getChallengerInfo(challengerId) {
       await Contract.findByChallengerId(challengerId).then((response) => {
-        if (cnt === 0) setCnt(Number(response.totalCount));
+        if (cnt === -2) setCnt(Number(response.totalCount));
         if (Number(response.totalCount) === cnt + 1) {
           addPhoto();
           navigate(`/challenge-certify/${id}`, {
-            state: { challengeInfo: challenge, percentage: percentage,challengerInfo:response },
+            state: {
+              challengeInfo: challenge,
+              percentage: percentage,
+              challengerInfo: response,
+            },
           });
         }
       });
