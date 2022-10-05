@@ -58,7 +58,6 @@ function ChallengeSearch() {
                   <span className={styles.SearchAfterTag}>
                     {dayGap} 일 뒤 시작
                   </span>
-                  <br />
                   <span className={styles.SearchAfterTag}>{period}주 동안</span>
                 </div>
               </div>
@@ -112,7 +111,7 @@ function ChallengeSearch() {
       <div className={styles.header}>
         <p>챌린지 검색</p>
       </div>
-      <div style={{ padding: "16px", paddingTop: "0px", marginBottom: "16px" }}>
+      <div style={{ margin: "16px"}}>
         <form className={styles.InputSearch}>
           <svg
             className={styles.SearchIcon}
