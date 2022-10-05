@@ -251,7 +251,11 @@ function Btn(props) {
               </button>
             </div>
           ) : (
-            <div></div>
+            <div>
+              <button className={styles.btn} onClick={refund}>
+                확인
+              </button>
+            </div>
           )
         ) : challenge.success === false ? (
           <div>
@@ -260,7 +264,11 @@ function Btn(props) {
             </button>
           </div>
         ) : (
-          <div></div>
+          <div>
+            <button className={styles.btn} onClick={refund}>
+              확인
+            </button>
+          </div>
         )}
       </div>
     );
