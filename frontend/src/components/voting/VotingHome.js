@@ -80,6 +80,7 @@ function NoVoting() {
 function VotingHome() {
   const { id } = useParams();
   const [voteList, setVoteList] = useState([]);
+  
   const Contract = new ContractAPI();
 
   useEffect(() => {
@@ -88,7 +89,7 @@ function VotingHome() {
       setVoteList(vote);
     }
     load();
-  });
+  },[]);
 
   return (
     <div>
