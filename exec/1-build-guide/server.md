@@ -255,7 +255,7 @@ sudo docker exec -it jenkins bash
 		- `ID` 지정 (Jenkinsfile 의 환경변수 부분 참고)
 		- `Create` 으로 생성
 
-- 크리덴셜 파일 목록 (내용은 [Build guide](./) 참고)
+- 크리덴셜 파일 목록 (내용은 [Build guide](../1-build-guide/) 참고)
 	- frontend
 		- .env.local
 		- .env.production.local
