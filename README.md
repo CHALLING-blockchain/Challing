@@ -110,6 +110,7 @@ _서비스를 두줄로 요약해보겠습니다._
 <img src="https://img.shields.io/badge/spring%20boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="spring boot">
 <img src="https://img.shields.io/badge/jpa-59666C?style=for-the-badge&logo=hibernate&logoColor=white" alt="jpa">
 <br>
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="mysql">
 <img src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="jwt">
 <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="swagger">
 <img src="https://img.shields.io/badge/quartz-000000?style=for-the-badge&logo=quartz&logoColor=white" alt="quartz">
@@ -241,7 +242,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 
 - 챌린지 기간이 종료되면 인증 달성률에 따라 정산을 받습니다.
 	- 100% 달성하지 못할 경우, ( 예치금 × 달성률 ) 에 해당하는 금액을 환급 받습니다.
-	- 100% 달성할 경우, 100% 달성하지 못한 사용자에게서 남은 예치금을 모두 나눠 갖습니다.
+	- 100% 달성할 경우, 자신의 예치금을 모두 환급 받고 100% 달성하지 못한 사용자에게서 남은 예치금을 모두 나눠 갖습니다.
 
 ### ✔ 거래 내역
 
