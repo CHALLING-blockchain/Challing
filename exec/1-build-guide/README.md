@@ -21,7 +21,7 @@
 | Truffle       | Truffle v5.5.28 (core: 5.5.28) |
 | Node js       | v16.17.0 |
 | Java          | Azul Zulu version 11.0.16 |
-| MySQL         | Server version: 8.0.28 MySQL Community Server - GPL |
+| MySQL         | Server version: 8.0.23 MySQL Community Server - GPL |
 | VS Code       | 1.70.2 |
 | IntelliJ IDEA | IntelliJ IDEA 2022.2.2 (Community Edition) |
 
