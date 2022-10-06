@@ -136,7 +136,7 @@ function Main() {
         let dayGap = getDayGapFromToday(element.startDate);
         // (시작 전&&관심사 일치&&기부) 챌린지만
         if (
-          dayGap >= 0 &&
+          dayGap > 0 &&
           interestIdToName(element.interestId) === interest &&
           "donationId" in element === true
         ) {
