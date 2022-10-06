@@ -61,8 +61,7 @@ function ChallengeShot() {
 
     return (
       <div>
-        {/* { NoIng>0 ?  */}
-        {false ? (
+        {NoIng > 0 ? (
           <div
             className={styles.CardBox}
             onClick={() => {
