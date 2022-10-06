@@ -14,7 +14,6 @@ import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import MainCategory from "./MainCategory";
 import Carousel from 'react-material-ui-carousel'
-import { Paper, Button } from '@mui/material'
 
 function Main() {
   const selector = useSelector(challengeList);
@@ -250,7 +249,9 @@ function Main() {
     <div>
       <Nav />
       <div className={styles.Main}>
-        <Carousel>
+        <Carousel
+          NextIcon={}
+          PrevIcon={} >
           <img 
             onClick={() => {
               toChallengeDetail(39);

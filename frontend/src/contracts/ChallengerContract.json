@@ -5611,10 +5611,10 @@
         929
       ],
       "IERC20": [
-        1823
+        1845
       ],
       "PassCoinContract": [
-        2097
+        2119
       ]
     },
     "id": 930,
@@ -5648,7 +5648,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 930,
-        "sourceUnit": 2098,
+        "sourceUnit": 2120,
         "src": "81:32:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5661,7 +5661,7 @@
               "id": 631,
               "name": "PassCoinContract",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2097,
+              "referencedDeclaration": 2119,
               "src": "148:16:1"
             },
             "id": 632,
@@ -5676,8 +5676,8 @@
         "id": 929,
         "linearizedBaseContracts": [
           929,
-          2097,
-          1823
+          2119,
+          1845
         ],
         "name": "ChallengerContract",
         "nameLocation": "126:18:1",
@@ -7702,7 +7702,7 @@
                       "name": "useCoin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2096,
+                      "referencedDeclaration": 2118,
                       "src": "2387:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -8785,7 +8785,7 @@
                                         "name": "transfer",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 1938,
+                                        "referencedDeclaration": 1960,
                                         "src": "3392:8:1",
                                         "typeDescriptions": {
                                           "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -9219,7 +9219,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-10-06T06:02:53.059Z",
+  "updatedAt": "2022-10-05T18:52:25.910Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
