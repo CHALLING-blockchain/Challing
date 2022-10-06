@@ -249,9 +249,7 @@ function Main() {
     <div>
       <Nav />
       <div className={styles.Main}>
-        <Carousel
-          NextIcon={}
-          PrevIcon={} >
+        <Carousel>
           <img 
             onClick={() => {
               toChallengeDetail(39);
