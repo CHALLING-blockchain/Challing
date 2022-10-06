@@ -14,7 +14,6 @@ import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import MainCategory from "./MainCategory";
 import Carousel from 'react-material-ui-carousel'
-import { Paper, Button } from '@mui/material'
 
 function Main() {
   const selector = useSelector(challengeList);
@@ -250,23 +249,25 @@ function Main() {
     <div>
       <Nav />
       <div className={styles.Main}>
-        <Carousel>
-          <img 
-            onClick={() => {
-              toChallengeDetail(39);
-            }}
-            className={styles.Banner1} src={banner1.mainPicURL} alt="Banner1" />
-          <img 
-            onClick={() => {
-              toChallengeDetail(46);
-            }}
-            className={styles.Banner1} src={banner2.mainPicURL} alt="Banner2" />
-          <img 
-            onClick={() => {
-              toChallengeDetail(47);
-            }}
-            className={styles.Banner1} src={banner3.mainPicURL} alt="Banner3" />
-        </Carousel>
+        {
+          banner1 ? (<Carousel>
+            <img 
+              onClick={() => {
+                toChallengeDetail(39);
+              }}
+              className={styles.Banner1} src={banner1.mainPicURL} alt="Banner1" />
+            <img 
+              onClick={() => {
+                toChallengeDetail(46);
+              }}
+              className={styles.Banner1} src={banner2.mainPicURL} alt="Banner2" />
+            <img 
+              onClick={() => {
+                toChallengeDetail(47);
+              }}
+              className={styles.Banner1} src={banner3.mainPicURL} alt="Banner3" />
+          </Carousel>) : null
+        }
         {/* <img className={styles.Banner1} src={Banner_1} alt="Banner1" /> */}
         <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
         <MainCategory setCategory={(category) => setCategory(category)} />
