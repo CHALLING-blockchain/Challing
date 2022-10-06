@@ -5,6 +5,7 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 4fr 1fr;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .achRateBox{
