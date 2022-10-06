@@ -19,6 +19,7 @@ function PassCoinLoading() {
           navigate(`/challenge-certify/${id}`, {
             state: {
               challengeInfo: challenge,
+              use: true,
             },
           });
         }
