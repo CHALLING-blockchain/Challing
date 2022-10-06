@@ -90,7 +90,9 @@ function App() {
 
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>
-      {location.pathname !== "/auth" ? <Menu /> : null}
+      {location.pathname === "/auth" || location.pathname === "/intro" ? null : (
+        <Menu />
+      )}
     </div>
   );
 }
