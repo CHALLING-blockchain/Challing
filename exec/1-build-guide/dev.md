@@ -1,6 +1,6 @@
 ## 개발용 빌드
 
-Dockerfile 및 커맨드로 정리 (선행 조건 및 자세한 내용은 [dev_batches](../../dev_batches/) 폴더 참고)
+Dockerfile 및 커맨드로 정리 (선행 조건 및 자세한 내용은 [dev_batches](../../dev_batches/) 참고)
 
 ### Smart Contract
 
