@@ -27,9 +27,7 @@ _서비스를 두줄로 요약해보겠습니다._
 
 ## 🌟 팀
 
-<div align="center">
-<img src="./docs/figs/team-photo.jpg" alt="team-photo" width="200px">
-</div>
+![team-photo](./docs/figs/team-photo.jpg)
 
 | 조항주 | 권다솜 | 송제영 | 이예은 | 정아현 | 차송희 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
@@ -47,6 +45,7 @@ _서비스를 두줄로 요약해보겠습니다._
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" alt="gitlab">
 <img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white" alt="ec2">
 <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white" alt="s3">
+<br>
 <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="linux">
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="docker">
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" alt="jenkins">
@@ -62,6 +61,7 @@ _서비스를 두줄로 요약해보겠습니다._
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="javascript">
 <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="node.js">
 <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm">
+<br>
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="react">
 <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white" alt="redux">
 <img src="https://img.shields.io/badge/web3.js-F16822?style=for-the-badge&logo=web3.js&logoColor=white" alt="web3.js">
@@ -78,13 +78,12 @@ _서비스를 두줄로 요약해보겠습니다._
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" alt="gradle">
 <img src="https://img.shields.io/badge/spring%20boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="spring boot">
 <img src="https://img.shields.io/badge/jpa-59666C?style=for-the-badge&logo=hibernate&logoColor=white" alt="jpa">
+<br>
 <img src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="jwt">
 <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="swagger">
 <img src="https://img.shields.io/badge/quartz-000000?style=for-the-badge&logo=quartz&logoColor=white" alt="quartz">
 <img src="https://img.shields.io/badge/webflux-000000?style=for-the-badge&logo=webflux&logoColor=white" alt="webflux">
-
 <br>
-
 <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="node.js">
 <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm">
 <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white" alt="express">
@@ -253,7 +252,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 
 인증 사진의 유효성은 **스마트 컨트랙트**를 이용하여 챌린지에 **참여 중인 사람들**의 신고와 투표로 **투명하게** 판정됩니다.
 
-이를 통해 사용자는 **제 3 자 (Middleman)**의 개입 없이 서비스를 **신뢰**할 수 있습니다.
+이를 통해 사용자는 **제 3자 \(Middleman)**의 개입 없이 서비스를 **신뢰**할 수 있습니다.
 
 > 다수는 옳다.
 
