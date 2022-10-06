@@ -114,22 +114,22 @@ const simulation = async () => {
   // }
   // console.log("유저 인증 완료");
 
-  const endDailyChallenge = await Ccontract.methods
-    .endDailyChallenge(19)
-    .send({
-      from: accounts[0],
-      gasLimit: 3_000_000,
-    })
-    .catch(console.error);
-  console.log("챌린지 종료");
-  // const re = await Ccontract.methods
-  //   .receivePasscoin([21,21,21,21,21,21,21,21,21],19)
+  // const endDailyChallenge = await Ccontract.methods
+  //   .endDailyChallenge(19)
   //   .send({
-  //     from: accounts[7],
+  //     from: accounts[0],
   //     gasLimit: 3_000_000,
   //   })
   //   .catch(console.error);
   // console.log("챌린지 종료");
+  const re = await Ccontract.methods
+    .receivePasscoin([21,21,21,21,21,21,21,21,21],4)
+    .send({
+      from: accounts[5],
+      gasLimit: 3_000_000,
+    })
+    .catch(console.error);
+  console.log("챌린지 종료");
 
   // await accounts.forEach(async (account, index) => {
   //   const findingChallenger = await Ccontract.methods

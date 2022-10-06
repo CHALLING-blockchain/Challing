@@ -102,7 +102,7 @@ const simulation = async () => {
     .catch(console.error);
     
     const addPhotoTest = await Vcontract.methods
-      .addPhoto(findingChallenger2[0], 118, "https://special7333.s3.ap-northeast-2.amazonaws.com/1bfc8f15-7ff8-4b2d-b444-83f38782bef8.jpg", 0)
+      .addPhoto(findingChallenger2[0], 118, "https://special7333.s3.ap-northeast-2.amazonaws.com/1bfc8f15-7ff8-4b2d-b444-83f38782bef8.jpg", "2022-10-07T00:58:45")
       .send({
         from: accounts[5],
         gasLimit: 3_000_000,
@@ -133,7 +133,7 @@ const simulation = async () => {
         })
     .catch(console.error);
   const addPhoto2 = await Vcontract.methods
-    .addPhoto(findingChallenger3[0], 118, "https://special7333.s3.ap-northeast-2.amazonaws.com/a5e023b9-4e45-4497-9828-32fd18337a8a.jpg", 0)
+    .addPhoto(findingChallenger3[0], 1, "https://special7333.s3.ap-northeast-2.amazonaws.com/a5e023b9-4e45-4497-9828-32fd18337a8a.jpg", "2022-10-07T00:58:45")
     .send({
       from: accounts[7],
       gasLimit: 3_000_000,
