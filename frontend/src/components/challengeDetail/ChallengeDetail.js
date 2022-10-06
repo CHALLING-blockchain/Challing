@@ -123,12 +123,12 @@ function Header(props) {
     };
     if (bookmark === true) {
       await UserAPI.deleteFavorite(body).then((response) => {
-        console.log("delete", response);
+        // console.log("delete", response);
       });
       setBookmark(false);
     } else {
       await UserAPI.addFavorite(body).then((response) => {
-        console.log("add", response);
+        // console.log("add", response);
       });
       setBookmark(true);
     }

@@ -61,7 +61,7 @@ function Achieve(props) {
         let challengers = result;
         for (let i = 0; i < challengers.length; i++) {
           if (Number(challengers[i].userId) === user.id) {
-            console.log(challengers[i]);
+            // console.log(challengers[i]);
             setMyCount(challengers[i].totalCount);
           }
         }
@@ -128,7 +128,7 @@ function Reward(props) {
       for (let i = 0; i < challengers.length; i++) {
         if (Number(challengers[i].userId) === user.id) {
           if (type === "daily") {
-            console.log(challengers[i].reward);
+            // console.log(challengers[i].reward);
             setReward(challengers[i].reward / 1e18);
             setFine(deposit - challengers[i].userDeposit / 1e18);
           } else if (type === "donation") {
