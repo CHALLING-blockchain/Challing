@@ -13,16 +13,16 @@ import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import MainCategory from "./MainCategory";
-import Carousel from 'react-material-ui-carousel'
+import Carousel from "react-material-ui-carousel";
 
 function Main() {
   const selector = useSelector(challengeList);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   // 캐러셀에 쓸 챌린지
-  const banner1 = selector[39]
-  const banner2 = selector[46]
-  const banner3 = selector[47]
+  // const banner1 = selector[39]
+  // const banner2 = selector[46]
+  // const banner3 = selector[25]
   //주제 이름 저장
   const [category, setCategory] = useState("");
   const [interest, setInterest] = useState("");
@@ -42,15 +42,13 @@ function Main() {
         allDonationList = result;
       });
 
-      // 로컬에 챌린지 목록이 없을때 -> redux에 저장
-      // if (Object.keys(selector).length === 0) {
+      //메인 들어올때 마다 리덕스에 저장
       dispatch(setChallengeList(allChallengeList));
       dispatch(setDonationList(allDonationList));
-      // }
     }
     // console.log("Main::user", user);
     if (user === null || Object.keys(user).length === 0) {
-      console.log("1111111 ::: 유저정보 없음");
+      // console.log("1111111 ::: 유저정보 없음");
       navigate("/auth");
     } //wallet 없으면
     else if (wallet === undefined || !wallet) {
@@ -201,73 +199,40 @@ function Main() {
 
     return result;
   }
-  // function dailyChallengeRendering() {
-  //   // console.log(selector);
-  //   const result = [];
-  //   for (let index = 1; index <= Object.keys(selector).length; index++) {
-  //     // console.log(selector[index]);
-  //     if (selector[index] !== undefined) {
-  //       const element = selector[index];
-  //       // console.log(element.name);
-  //       let dayGap = getDayGapFromToday(element.startDate);
-  //       // console.log("dayGap", dayGap);
-  //       let startDay = dayGap + "일 뒤";
-  //       // (시작 전&&관심사 일치&&일상) 챌린지만
-  //       if (
-  //         dayGap > 0 &&
-  //         interestIdToName(element.interestId) === interest &&
-  //         "donationId" in element === false
-  //       ) {
-  //         // console.log("element.name", element.name);
-  //         result.push(
-  //           <div key={index} style={{ padding: "8px 4px" }}>
-  //             <div
-  //               className={styles.Box}
-  //               onClick={() => {
-  //                 toChallengeDetail(element.challengeId);
-  //               }}
-  //             >
-  //               <img
-  //                 className={styles.Img}
-  //                 src={element.mainPicURL}
-  //                 alt=""
-  //               ></img>
-  //               <p className={styles.Title}>{element.name}</p>
-  //               <span className={styles.Tag}>{startDay} 시작</span>
-  //             </div>
-  //           </div>
-  //         );
-  //       }
-  //     }
-  //   }
-
-  //   return result;
-  // }
-
 
   return (
     <div>
       <Nav />
       <div className={styles.Main}>
-        {
-          banner1 ? (<Carousel>
-            <img 
+        {/* {console.log(selector)} */}
+        {Object.keys(selector).length !== 0 ? (
+          <Carousel>
+            <img
               onClick={() => {
                 toChallengeDetail(39);
               }}
-              className={styles.Banner1} src={banner1.mainPicURL} alt="Banner1" />
-            <img 
+              className={styles.Banner1}
+              src={selector[39].mainPicURL}
+              alt="Banner1"
+            />
+            <img
               onClick={() => {
                 toChallengeDetail(46);
               }}
-              className={styles.Banner1} src={banner2.mainPicURL} alt="Banner2" />
-            <img 
+              className={styles.Banner1}
+              src={selector[46].mainPicURL}
+              alt="Banner2"
+            />
+            <img
               onClick={() => {
-                toChallengeDetail(47);
+                toChallengeDetail(25);
               }}
-              className={styles.Banner1} src={banner3.mainPicURL} alt="Banner3" />
-          </Carousel>) : null
-        }
+              className={styles.Banner1}
+              src={selector[25].mainPicURL}
+              alt="Banner3"
+            />
+          </Carousel>
+        ) : null}
         {/* <img className={styles.Banner1} src={Banner_1} alt="Banner1" /> */}
         <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
         <MainCategory setCategory={(category) => setCategory(category)} />
