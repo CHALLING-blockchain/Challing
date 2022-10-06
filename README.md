@@ -29,11 +29,11 @@ _서비스를 두줄로 요약해보겠습니다._
 
 ![team-photo](./docs/figs/team-photo.jpg)
 
-| 조항주 | 권다솜 | 송제영 | 이예은 | 정아현 | 차송희 |
+| 🏍 조항주 | 📢 권다솜 | 👷🏻‍♂️ 송제영 | 🍮 이예은 | 🎙 정아현 | 🎀 차송희 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | <img src="./docs/figs/member/hj.jpg" alt="조항주" width="100px"> | <img src="./docs/figs/member/ds.png" alt="권다솜" width="100px"> | <img src="./docs/figs/member/jy.png" alt="송제영" width="100px"> | <img src="./docs/figs/member/ye.png" alt="이예은" width="100px"> | <img src="./docs/figs/member/ah.png" alt="정아현" width="100px"> | <img src="./docs/figs/member/sh.png" alt="차송희" width="100px"> |
 | **팀장** | 팀원 | 팀원 | 팀원 | 팀원 | 팀원 |
-| Smart Contract, BE, FE | FE, Smart Contract, UCC | BE, Deploing, Smart Contract | BE, FE, Smart Contract | FE, Smart Contract, Presentation | BE, FE, Smart Contract |
+| Smart Contract, BE, FE | FE, Smart Contract, UCC | BE, Deploying, Smart Contract | BE, FE, Smart Contract | FE, Smart Contract, Presentation | BE, FE, Smart Contract |
 
 ## 🛠️ 기술 스택
 
@@ -252,7 +252,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 
 인증 사진의 유효성은 **스마트 컨트랙트**를 이용하여 챌린지에 **참여 중인 사람들**의 신고와 투표로 **투명하게** 판정됩니다.
 
-이를 통해 사용자는 **제 3자 \(Middleman)**의 개입 없이 서비스를 **신뢰**할 수 있습니다.
+이를 통해 사용자는 **Middleman** (중개인) 의 개입 없이 서비스를 **신뢰**할 수 있습니다.
 
 > 다수는 옳다.
 
