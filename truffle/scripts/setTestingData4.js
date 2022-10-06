@@ -24,11 +24,11 @@ const simulation = async () => {
   // 조항주 참가
   for(let i=0;i<10;i++){
     const joinChallenge1 = await Ccontract.methods
-      .joinChallenge(4, 100, 0)
+      .joinChallenge(11, 100, 0)
       .send({
         from: accounts[4],
         gasLimit: 3_000_000,
-        value: 1e17,
+        value: 1e15,
       })
       .catch(console.error);
   }
