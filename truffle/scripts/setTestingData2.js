@@ -58,7 +58,7 @@ const simulation = async () => {
 
   // 조항주 참가
   const joinChallenge1 = await Ccontract.methods
-      .joinChallenge(challengeId, 21, 0)
+      .joinChallenge(challengeId, 358, 0)
       .send({
         from: accounts[4],
         gasLimit: 3_000_000,
@@ -79,7 +79,7 @@ const simulation = async () => {
 
     //조항주 인증
     const findingChallenger1 = await Ccontract.methods
-    .findingChallenger(challengeId, 21)
+    .findingChallenger(challengeId, 358)
     .call({
         from: accounts[0],
     })
@@ -89,7 +89,7 @@ const simulation = async () => {
     const authenticate1 = await Ccontract.methods
         .authenticate(
             challengeId,
-            21,
+            358,
         findingChallenger1[0],
         findingChallenger1[1],
         findingChallenger1[2],
