@@ -90,7 +90,7 @@ function ChallengeShot() {
             </div>
             {/* {console.log(NoIng)} */}
           </div>
-        ) : (
+        ) : dayGab>0? (
           <div
             className={styles.CardBox}
             onClick={() => {
@@ -136,7 +136,7 @@ function ChallengeShot() {
               {/* {console.log(NoIng)} */}
             </div>
           </div>
-        )}
+        ):null}
       </div>
     );
   }
