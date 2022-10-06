@@ -169,7 +169,7 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
 
   return (
     <div>
-      {true ? (
+      {challenger && (challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today )? (
         <div className={styles.btnBox}>
           {flag ? (
             <button
@@ -298,6 +298,7 @@ function ChallengeCertify() {
   useEffect(() => {
     async function load() {
       const challengers = await Contract.getChallengers(challenge.challengeId);
+
       let userCount = 0;
       if (challengers) {
         const challenger = challengers.filter(
@@ -325,7 +326,7 @@ function ChallengeCertify() {
       setPhotoList([...photos]);
     });
   }
-
+  
   return (
     <div>
       <Header></Header>
