@@ -42,10 +42,15 @@ import PassCoinLoading from "./components/challengeCertify/PassCoinLoading";
 import VoteLoading from "./components/voting/VoteLoading";
 function App() {
   const location = useLocation();
+  const flag = localStorage.getItem("isIntro");
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Main />} />
+        {flag ? (
+          <Route path="/" element={<Main />} />
+        ) : (
+          <Route path="/" element={<Intro />} />
+        )}
         <Route path="/auth" element={<Auth />} />
         <Route path="/loginresult" element={<Login />} />
         <Route path="/logoutresult" element={<Logout />} />
@@ -90,7 +95,8 @@ function App() {
 
         {/* <Route path="/challenge-complete" element={<ChallengeComplete />} /> */}
       </Routes>
-      {location.pathname === "/auth" || location.pathname === "/intro" ? null : (
+      {location.pathname === "/auth" ||
+      location.pathname === "/intro" ? null : (
         <Menu />
       )}
     </div>

@@ -111,23 +111,24 @@ function MyPage() {
           let ingCount = 0;
           let edCount = 0;
           let madeCount = 0;
-
-          for (let i = 0; i < join.length; i++) {
-            if (
-              Number(selector[join[i]].ownerId) === user.id &&
-              selector[join[i]].complete === false
-            )
-              madeCount += 1;
-            if (selector[join[i]].complete === true) {
-              edCount += 1;
-            } else {
-              ingCount += 1;
+          if (Object.keys(selector).length !== 0) {
+            for (let i = 0; i < join.length; i++) {
+              if (
+                Number(selector[join[i]].ownerId) === user.id &&
+                selector[join[i]].complete === false
+              )
+                madeCount += 1;
+              if (selector[join[i]].complete === true) {
+                edCount += 1;
+              } else {
+                ingCount += 1;
+              }
             }
-          }
 
-          setEdChal(edCount);
-          setIngChal(ingCount);
-          setMadeChal(madeCount);
+            setEdChal(edCount);
+            setIngChal(ingCount);
+            setMadeChal(madeCount);
+          }
         });
       }
     }
