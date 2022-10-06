@@ -28,11 +28,11 @@ _서비스를 두줄로 요약해보겠습니다._
 ## 🌟 팀
 
 <div align="center">
-<img src="./docs/figs/team-photo.png" alt="team-photo" width="200px">
+<img src="./docs/figs/team-photo.jpg" alt="team-photo" width="200px">
 </div>
 
 | 조항주 | 권다솜 | 송제영 | 이예은 | 정아현 | 차송희 |
-| --- | --- | --- | --- | --- | --- |
+|:---:|:---:|:---:|:---:|:---:|:---:|
 | <img src="./docs/figs/member/hj.jpg" alt="조항주" width="100px"> | <img src="./docs/figs/member/ds.png" alt="권다솜" width="100px"> | <img src="./docs/figs/member/jy.png" alt="송제영" width="100px"> | <img src="./docs/figs/member/ye.png" alt="이예은" width="100px"> | <img src="./docs/figs/member/ah.png" alt="정아현" width="100px"> | <img src="./docs/figs/member/sh.png" alt="차송희" width="100px"> |
 | **팀장** | 팀원 | 팀원 | 팀원 | 팀원 | 팀원 |
 | Smart Contract, BE, FE | FE, Smart Contract, UCC | BE, Deploing, Smart Contract | BE, FE, Smart Contract | FE, Smart Contract, Presentation | BE, FE, Smart Contract |
@@ -105,16 +105,14 @@ _서비스를 두줄로 요약해보겠습니다._
 
 ## 👷🏻‍♂️ 아키텍처
 
-<div align="center">
-<img src="./docs/figs/architecture.png" alt="architecture" width="600px">
-</div>
+![Architecture](./docs/figs/architecture.png)
 
 Jenkins, GitLab Web hook 을 이용한 자동배포
 
 ## 🌱 기획 배경
 
 <div align="center">
-<img src="./docs/figs/ritual-life.png" alt="ritual-life" width="200px">
+<img src="./docs/figs/ritual-life.png" alt="ritual-life" width="400px">
 </div>
 
 > Ritual life : 리추얼 라이프란 자신의 삶에 긍정적인 변화를 주고자 형성하는, 일상에 활력을 불어넣는 규칙적인 습관을 말합니다.
@@ -128,7 +126,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 홈 화면
 
 <div align="center">
-<img src="./docs/figs/feature/home.png" alt="home" width="200px">
+<img src="./docs/figs/feature/home.png" alt="home" width="400px">
 </div>
 
 - 홈 화면에서 현재 참여자 모집 중인 챌린지를 볼 수 있습니다.
@@ -137,7 +135,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 로그인
 
 <div align="center">
-<img src="./docs/figs/feature/login.png" alt="login" width="200px">
+<img src="./docs/figs/feature/login.png" alt="login" width="400px">
 </div>
 
 - 소셜 인증을 통해 손쉽게 로그인이 가능합니다.
@@ -146,14 +144,14 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 챌린지 개설
 
 <div align="center">
-<img src="./docs/figs/feature/open-challenge.png" alt="open-challenge" width="200px">
+<img src="./docs/figs/feature/open-challenge.png" alt="open-challenge" width="400px">
 </div>
 
 - 좋은 습관을 만들기 위해 다양한 카테고리의 **일상 챌린지**를 개설할 수 있습니다.
 - 인플루언서는 **기부 챌린지**를 개설해 좋은 일을 하며 자신의 팬들에게 선한 영향력을 행사할 수 있습니다.
 
 <div align="center">
-<img src="./docs/figs/feature/confirm-opening.png" alt="confirm-opening" width="200px">
+<img src="./docs/figs/feature/confirm-opening.png" alt="confirm-opening" width="400px">
 </div>
 
 - 챌린지 개설 최종 확인 화면
@@ -161,13 +159,13 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 챌린지 참여
 
 <div align="center">
-<img src="./docs/figs/feature/challenge-detail.png" alt="challenge-detail" width="200px">
+<img src="./docs/figs/feature/challenge-detail.png" alt="challenge-detail" width="400px">
 </div>
 
 - 챌린지 상세 페이지에서 챌린지 참여가 가능합니다.
 
 <div align="center">
-<img src="./docs/figs/feature/apply-challenge.png" alt="apply-challenge" width="200px">
+<img src="./docs/figs/feature/apply-challenge.png" alt="apply-challenge" width="400px">
 </div>
 
 - 챌린지 개설시 설정된 예치금을 지불하는 것으로 챌린지에 참여합니다.
@@ -175,7 +173,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 챌린지 활동 인증
 
 <div align="center">
-<img src="./docs/figs/feature/certify-activity.png" alt="certify-activity" width="200px">
+<img src="./docs/figs/feature/certify-activity.png" alt="certify-activity" width="400px">
 </div>
 
 - 인증샷 촬영으로 챌린지 활동을 인증합니다.
@@ -183,7 +181,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 패스코인 사용
 
 <div align="center">
-<img src="./docs/figs/feature/pass-coin.png" alt="pass-coin" width="200px">
+<img src="./docs/figs/feature/pass-coin.png" alt="pass-coin" width="400px">
 </div>
 
 - 인증하는 대신 **패스코인**을 지불하는 것으로 인증을 대체할 수 있습니다.
@@ -191,7 +189,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 허위 인증샷 신고
 
 <div align="center">
-<img src="./docs/figs/feature/report-photo.png" alt="report-photo" width="200px">
+<img src="./docs/figs/feature/report-photo.png" alt="report-photo" width="400px">
 </div>
 
 - 유효하지 않은 인증샷을 신고할 수 있습니다.
@@ -199,7 +197,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 인증샷 투표
 
 <div align="center">
-<img src="./docs/figs/feature/vote.png" alt="vote" width="200px">
+<img src="./docs/figs/feature/vote.png" alt="vote" width="400px">
 </div>
 
 - 참여 중인 사용자들은 신고 당한 인증샷에 대해 그 유효성을 **투표**할 수 있습니다.
@@ -208,7 +206,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 정산
 
 <div align="center">
-<img src="./docs/figs/feature/redeem.png" alt="redeem" width="200px">
+<img src="./docs/figs/feature/redeem.png" alt="redeem" width="400px">
 </div>
 
 - 챌린지 기간이 종료되면 인증 달성률에 따라 정산을 받습니다.
@@ -218,7 +216,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### ✔ 거래 내역
 
 <div align="center">
-<img src="./docs/figs/feature/history.png" alt="history" width="200px">
+<img src="./docs/figs/feature/history.png" alt="history" width="400px">
 </div>
 
 - 서비스를 이용한 내역을 확인할 수 있습니다.
@@ -226,7 +224,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ## ❓ Why 블록체인
 
 <div align="center">
-<img src="./docs/figs/blockchain.png" alt="blockchain" width="200px">
+<img src="./docs/figs/blockchain.png" alt="blockchain" width="400px">
 </div>
 
 **예치금**, **기부금**을 입금하고 챌린지 결과에 따라 리워드가 지급되는 서비스 입니다.
@@ -238,7 +236,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### 💰 서비스 재화
 
 <div align="center">
-<img src="./docs/figs/wallet.png" alt="wallet" width="200px">
+<img src="./docs/figs/wallet.png" alt="wallet" width="400px">
 </div>
 
 **메타마스크**를 이용하여 사용자는 본인의 **이더리움**을 예치 또는 기부의 지불 수단으로 사용합니다.
@@ -248,7 +246,7 @@ Jenkins, GitLab Web hook 을 이용한 자동배포
 ### 🗝 탈중앙화
 
 <div align="center">
-<img src="./docs/figs/vault.png" alt="vault" width="200px">
+<img src="./docs/figs/vault.png" alt="vault" width="400px">
 </div>
 
 인증 사진이 실제로 해당 챌린지의 **유효한** 인증 사진인지 **판정**이 필요합니다. 그렇지 않으면 반쪽짜리 서비스이기 때문입니다.
