@@ -74,7 +74,7 @@ function Description({ info, percentage }) {
   );
 }
 
-function Btn({ challengeId, challenge, percentage, challenger }) {
+function Btn({ challengeId, challenge, percentage, challenger, cnt }) {
   const [exist, setExist] = useState(localStorage.getItem("myAccount"));
   // loading status
   const [isLoading, setIsLoading] = useState(false);
@@ -169,7 +169,9 @@ function Btn({ challengeId, challenge, percentage, challenger }) {
 
   return (
     <div>
-      {challenger && (challenger.dailyCount<challenge.authDayTimes || Number(challenger.today)!==today )? (
+      {challenger &&
+      (Number(challenger.dailyCount) + cnt < Number(challenge.authDayTimes) ||
+        Number(challenger.today) + cnt !== today) ? (
         <div className={styles.btnBox}>
           {flag ? (
             <button
@@ -287,6 +289,7 @@ function Voting({ id }) {
 
 function ChallengeCertify() {
   const challenge = useLocation().state.challengeInfo;
+  const cnt = useLocation().state.use ? 1 : 0;
   const [challenger, setChallenger] = useState();
   // const percentage = useLocation().state.percentage;
   const [challengers, setChallegers] = useState();
@@ -305,7 +308,6 @@ function ChallengeCertify() {
           (el) => Number(el.userId) === userId
         )[0];
         userCount = challenger.totalCount;
-        console.log(challenger);
         setChallenger(challenger);
       }
       const percentage = ((userCount / challenge.authTotalTimes) * 100).toFixed(
@@ -326,7 +328,7 @@ function ChallengeCertify() {
       setPhotoList([...photos]);
     });
   }
-  
+
   return (
     <div>
       <Header></Header>
@@ -337,6 +339,7 @@ function ChallengeCertify() {
         challenge={challenge}
         percentage={percentage}
         challenger={challenger}
+        cnt={cnt}
       ></Btn>
       <hr className={styles.hrTag} />
       <OtherShot
