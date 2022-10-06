@@ -8,6 +8,37 @@
 
 > 도전을 뜻하는 Challenge (챌린지) 와 동전소리 Cling (클링) 을 합한 이름입니다.
 
+## Table of content
+
+- [프로젝트 개요](#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EC%9A%94)
+- [개발 기간](#%EA%B0%9C%EB%B0%9C-%EA%B8%B0%EA%B0%84)
+- [서비스 소개 영상](#%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%86%8C%EA%B0%9C-%EC%98%81%EC%83%81)
+- [팀](#%ED%8C%80)
+- [기술 스택](#%EF%B8%8F-%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D)
+	- [Infra](#infra)
+	- [Front-End](#front-end)
+	- [Back-End](#back-end)
+	- [Blockchain](#blockchain)
+- [아키텍처](#%EF%B8%8F-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
+- [기획 배경](#%EA%B8%B0%ED%9A%8D-%EB%B0%B0%EA%B2%BD)
+- [주요 기능](#%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
+	- [홈 화면](#%ED%99%88-%ED%99%94%EB%A9%B4)
+	- [로그인](#%EB%A1%9C%EA%B7%B8%EC%9D%B8)
+	- [챌린지 개설](#%EC%B1%8C%EB%A6%B0%EC%A7%80-%EA%B0%9C%EC%84%A4)
+	- [챌린지 참여](#%EC%B1%8C%EB%A6%B0%EC%A7%80-%EC%B0%B8%EC%97%AC)
+	- [챌린지 활동 인증](#%EC%B1%8C%EB%A6%B0%EC%A7%80-%ED%99%9C%EB%8F%99-%EC%9D%B8%EC%A6%9D)
+	- [패스코인 사용](#%ED%8C%A8%EC%8A%A4%EC%BD%94%EC%9D%B8-%EC%82%AC%EC%9A%A9)
+	- [허위 인증샷 신고](#%ED%97%88%EC%9C%84-%EC%9D%B8%EC%A6%9D%EC%83%B7-%EC%8B%A0%EA%B3%A0)
+	- [인증샷 투표](#%EC%9D%B8%EC%A6%9D%EC%83%B7-%ED%88%AC%ED%91%9C)
+	- [정산](#%EC%A0%95%EC%82%B0)
+	- [거래 내역](#%EA%B1%B0%EB%9E%98-%EB%82%B4%EC%97%AD)
+- [Why 블록체인](#why-%EB%B8%94%EB%A1%9D%EC%B2%B4%EC%9D%B8)
+	- [서비스 재화](#%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9E%AC%ED%99%94)
+	- [탈중앙화](#%ED%83%88%EC%A4%91%EC%95%99%ED%99%94)
+- [Wiki](#wiki)
+	- [Team Notion](#team-notion)
+	- [Porting manual](#porting-manual)
+
 ## 📑 프로젝트 개요
 
 **예치금을 내고 매일 챌린지를 인증하여 좋은 습관을 형성하거나 기부 캠페인에 참여하는 _블록체인_ 챌린지 플랫폼 Challing 입니다.**
