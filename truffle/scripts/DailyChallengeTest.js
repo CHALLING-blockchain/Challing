@@ -22,32 +22,32 @@ const simulation = async () => {
   const daliyChallenge = {
     challengeId: 0,
     interestId: 1,
-    ownerId: 17,
-    name: "하루 한잔 물마시기",
-    desc: "desc",
-    mainPicURL: "mainPicURL",
-    goodPicURL: "goodPicURL",
-    badPicURL: "badPicURL",
-    authTotalTimes: 10,
-    authWeekTimes: 1,
+    ownerId: 1,
+    name: "일회용품 줄이기",
+    desc: "일회용품 줄이기 챌린지입니다",
+    mainPicURL: "https://special7333.s3.ap-northeast-2.amazonaws.com/15672cf4-1cb9-4194-9c39-58616c2aea89.jpg",
+    goodPicURL: "https://special7333.s3.ap-northeast-2.amazonaws.com/a75b924a-99f5-43df-b4e6-19b067b90d08.jpg",
+    badPicURL: "https://special7333.s3.ap-northeast-2.amazonaws.com/6d60a272-236b-4c21-9c24-d623e3e4a43f.jpg",
+    authTotalTimes: 7,
+    authWeekTimes: 7,
     authDayTimes: 1,
-    startTime: 10,
-    endTime: 11,
-    startDate: "2022-10-01",
-    endDate: "2022-10-19",
+    startTime: 0,
+    endTime: 24,
+    startDate: "2022-09-29",
+    endDate: "2022-10-06",
     personnel: 10,
     deposit: 1e9,
 
     totalDeposit: 1e9,
 
-    complet: false,
+    complete: false,
   };
   // accounts.forEach(async (account, index) => {
   //   const blance = await web3.eth.getBalance(account);
   //   console.log(index + ":", blance, "ether");
   // });
 
-  // 챌린지 생성
+
   // const createDailyChallenge = await Ccontract.methods
   //   .createDailyChallenge(daliyChallenge)
   //   .send({
@@ -115,13 +115,21 @@ const simulation = async () => {
   // console.log("유저 인증 완료");
 
   const endDailyChallenge = await Ccontract.methods
-    .endDailyChallenge(11)
+    .endDailyChallenge(19)
     .send({
       from: accounts[0],
       gasLimit: 3_000_000,
     })
     .catch(console.error);
   console.log("챌린지 종료");
+  // const re = await Ccontract.methods
+  //   .receivePasscoin([21,21,21,21,21,21,21,21,21],19)
+  //   .send({
+  //     from: accounts[7],
+  //     gasLimit: 3_000_000,
+  //   })
+  //   .catch(console.error);
+  // console.log("챌린지 종료");
 
   // await accounts.forEach(async (account, index) => {
   //   const findingChallenger = await Ccontract.methods
