@@ -1,5 +1,6 @@
 <div align="center">
 <img src="./docs/figs/challing-logo.png" alt="challing-logo" width="96px">
+<img src="./docs/figs/title.png" alt="title" width="500px">
 </div>
 
 # Challing
@@ -12,7 +13,7 @@
 
 <details>
 <summary>Table of content</summary>
-<div markdown="1">
+<div>
 
 - [프로젝트 개요](#-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EC%9A%94)
 - [개발 기간](#-%EA%B0%9C%EB%B0%9C-%EA%B8%B0%EA%B0%84)
