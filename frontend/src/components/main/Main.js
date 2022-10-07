@@ -13,11 +13,17 @@ import { setDonationList } from "../../app/redux/DonationListSlice";
 import { selectUser } from "../../app/redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import MainCategory from "./MainCategory";
+import Carousel from 'react-material-ui-carousel'
+import { Paper, Button } from '@mui/material'
 
 function Main() {
   const selector = useSelector(challengeList);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  // 캐러셀에 쓸 챌린지
+  const banner1 = selector[39]
+  const banner2 = selector[46]
+  const banner3 = selector[47]
   //주제 이름 저장
   const [category, setCategory] = useState("");
   const [interest, setInterest] = useState("");
@@ -196,12 +202,72 @@ function Main() {
 
     return result;
   }
+  // function dailyChallengeRendering() {
+  //   // console.log(selector);
+  //   const result = [];
+  //   for (let index = 1; index <= Object.keys(selector).length; index++) {
+  //     // console.log(selector[index]);
+  //     if (selector[index] !== undefined) {
+  //       const element = selector[index];
+  //       // console.log(element.name);
+  //       let dayGap = getDayGapFromToday(element.startDate);
+  //       // console.log("dayGap", dayGap);
+  //       let startDay = dayGap + "일 뒤";
+  //       // (시작 전&&관심사 일치&&일상) 챌린지만
+  //       if (
+  //         dayGap > 0 &&
+  //         interestIdToName(element.interestId) === interest &&
+  //         "donationId" in element === false
+  //       ) {
+  //         // console.log("element.name", element.name);
+  //         result.push(
+  //           <div key={index} style={{ padding: "8px 4px" }}>
+  //             <div
+  //               className={styles.Box}
+  //               onClick={() => {
+  //                 toChallengeDetail(element.challengeId);
+  //               }}
+  //             >
+  //               <img
+  //                 className={styles.Img}
+  //                 src={element.mainPicURL}
+  //                 alt=""
+  //               ></img>
+  //               <p className={styles.Title}>{element.name}</p>
+  //               <span className={styles.Tag}>{startDay} 시작</span>
+  //             </div>
+  //           </div>
+  //         );
+  //       }
+  //     }
+  //   }
+
+  //   return result;
+  // }
+
 
   return (
     <div>
       <Nav />
       <div className={styles.Main}>
-        <img className={styles.Banner1} src={Banner_1} alt="Banner1" />
+        <Carousel>
+          <img 
+            onClick={() => {
+              toChallengeDetail(39);
+            }}
+            className={styles.Banner1} src={banner1.mainPicURL} alt="Banner1" />
+          <img 
+            onClick={() => {
+              toChallengeDetail(46);
+            }}
+            className={styles.Banner1} src={banner2.mainPicURL} alt="Banner2" />
+          <img 
+            onClick={() => {
+              toChallengeDetail(47);
+            }}
+            className={styles.Banner1} src={banner3.mainPicURL} alt="Banner3" />
+        </Carousel>
+        {/* <img className={styles.Banner1} src={Banner_1} alt="Banner1" /> */}
         <img className={styles.Banner2} src={Banner_2} alt="Banner2" />
         <MainCategory setCategory={(category) => setCategory(category)} />
         {category === "" ? null : <div className={styles.Hr} />}
