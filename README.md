@@ -10,6 +10,10 @@
 
 ## Table of content
 
+<details>
+<summary>Table of content</summary>
+<div markdown="1">
+
 - [프로젝트 개요](#-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EC%9A%94)
 - [개발 기간](#-%EA%B0%9C%EB%B0%9C-%EA%B8%B0%EA%B0%84)
 - [서비스 소개 영상](#-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%86%8C%EA%B0%9C-%EC%98%81%EC%83%81)
@@ -38,6 +42,9 @@
 - [Wiki](#-wiki)
 	- [Team Notion](#-team-notion)
 	- [Porting manual](#-porting-manual)
+
+</div>
+</details>
 
 ## 📑 프로젝트 개요
 
